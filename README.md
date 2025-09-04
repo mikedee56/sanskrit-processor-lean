@@ -11,16 +11,42 @@ A focused, maintainable implementation for processing Yoga Vedanta lecture SRT f
 
 ## 🚀 **Quick Start**
 
-### Basic Usage
+### Windows 11 Usage
+
+#### **Command Prompt (cmd)**
+```cmd
+REM Install dependencies
+pip install -r requirements.txt
+
+REM Process SRT file with basic corrections
+python simple_cli.py input.srt output.srt --lexicons lexicons
+
+REM Enhanced processing with external services
+python enhanced_cli.py input.srt output.srt --config config.yaml
+```
+
+#### **PowerShell**
+```powershell
+# Install dependencies
+pip install -r requirements.txt
+
+# Process SRT file with basic corrections
+python simple_cli.py input.srt output.srt --lexicons lexicons
+
+# Enhanced processing with external services
+python enhanced_cli.py input.srt output.srt --config config.yaml
+```
+
+#### **WSL2 Ubuntu**
 ```bash
 # Install dependencies
 pip install -r requirements.txt
 
 # Process SRT file with basic corrections
-python simple_cli.py input.srt output.srt
+python3 simple_cli.py input.srt output.srt --lexicons lexicons
 
 # Enhanced processing with external services
-python enhanced_cli.py input.srt output.srt --config config.yaml
+python3 enhanced_cli.py input.srt output.srt --config config.yaml
 ```
 
 ### Example Processing
@@ -94,26 +120,26 @@ processing:
 ## 🎯 **Usage Examples**
 
 ### Basic Processing
-```bash
-# Simple corrections only
-python simple_cli.py lecture.srt processed_lecture.srt
+```cmd
+REM Command Prompt - Simple corrections only
+python simple_cli.py lecture.srt processed_lecture.srt --lexicons lexicons
 ```
 
-### Enhanced Processing
-```bash
-# With MCP and API services
+### Enhanced Processing  
+```powershell
+# PowerShell - With MCP and API services
 python enhanced_cli.py lecture.srt processed_lecture.srt --verbose
 ```
 
 ### Service Status Check
 ```bash
-# Check all service availability
-python enhanced_cli.py --status-only
+# WSL2 Ubuntu - Check all service availability
+python3 enhanced_cli.py --status-only
 ```
 
 ### Custom Configuration
-```bash
-# Use custom config file
+```cmd
+REM Command Prompt - Use custom config file
 python enhanced_cli.py lecture.srt output.srt --config custom_config.yaml
 ```
 
@@ -167,33 +193,42 @@ All external services include circuit breakers to prevent cascade failures:
 
 ## 🔍 **Troubleshooting**
 
-### Common Issues
+### Common Issues for Windows 11
 
 **Import Errors**
-```bash
-# Ensure you're in the correct directory
-cd sanskrit-processor-lean
+```cmd
+REM Command Prompt - Ensure you're in the correct directory
+cd D:\sanskrit-processor-lean
 python simple_cli.py --help
 ```
 
 **Missing Dependencies**
-```bash
-# Install all requirements
+```powershell  
+# PowerShell - Install all requirements
 pip install -r requirements.txt
+```
+
+**Python Command Issues**
+```cmd
+REM If 'python' not found, try:
+python3 simple_cli.py --help
+
+REM Or use full Python path:
+py simple_cli.py --help
 ```
 
 **Service Connection Issues**
 ```bash
-# Check service status
-python enhanced_cli.py --status-only
+# WSL2 Ubuntu - Check service status
+python3 enhanced_cli.py --status-only
 
 # Disable external services if needed
 # Edit config.yaml: enabled: false
 ```
 
 ### Debug Mode
-```bash
-# Run with verbose logging
+```powershell
+# PowerShell - Run with verbose logging
 python enhanced_cli.py input.srt output.srt --verbose
 ```
 
