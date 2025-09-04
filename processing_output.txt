@@ -1,0 +1,53 @@
+=== Working Sanskrit SRT Processor ===
+
+Loaded corrections.yaml
+Loaded corrections_backup_before_emergency_fix.yaml
+Loaded corrections_emergency_safe.yaml
+Loaded corrections_original_backup.yaml
+Loaded phrases.yaml
+Loaded proper_nouns.yaml
+Loaded verses.yaml
+Loaded 135 correction rules
+Found 25 SRT files:
+   1. engine_0_whisperx_large-v2_WhisperXEngine_large-v2 (5).srt
+   2. engine_0_whisperx_large-v2_WhisperXEngine_large-v2 (6).srt
+   3. engine_1_whisperx_large-v3_WhisperXEngine_large-v3.srt
+   4. HighlightsTulsiRamayana102816HQ#28.srt
+   5. HighlightsTulsiRamayana110416HQ#29.srt
+   6. Ramayana_2016-27 102116.srt
+   7. sample_corrections_test.srt
+   8. sample_sanskrit_lecture.srt
+   9. sample_yoga_vedanta.srt
+   10. SrimadBhagavadGita112913.srt
+   ... and 15 more files
+
+--- Processing File 1: engine_0_whisperx_large-v2_WhisperXEngine_large-v2 (5).srt ---
+File size: 28994 characters
+Corrections made: 20
+Output saved to: data\processed_srts\engine_0_whisperx_large-v2_WhisperXEngine_large-v2 (5)_processed.srt
+Sample corrections:
+   1. 'arjuna' -> 'Arjuna' (1x)
+   2. 'arjun' -> 'Arjuna' (1x)
+   3. 'yoga' -> 'yoga' (2x)
+   4. 'yog' -> 'yoga' (2x)
+   5. 'yogaa' -> 'yoga' (2x)
+
+--- Processing File 2: engine_0_whisperx_large-v2_WhisperXEngine_large-v2 (6).srt ---
+File size: 17670 characters
+Corrections made: 8
+Output saved to: data\processed_srts\engine_0_whisperx_large-v2_WhisperXEngine_large-v2 (6)_processed.srt
+Sample corrections:
+   1. 'yoga' -> 'yoga' (3x)
+   2. 'yog' -> 'yoga' (6x)
+   3. 'yogaa' -> 'yoga' (3x)
+Traceback (most recent call last):
+  File "D:\Post-Processing-Shruti\working_srt_processor.py", line 179, in <module>
+    main()
+    ~~~~^^
+  File "D:\Post-Processing-Shruti\working_srt_processor.py", line 158, in main
+    print(f"   {j+1}. '{correction['original']}' -> '{correction['corrected']}' ({correction['count']}x)")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\miked\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u0101' in position 21: character maps to <undefined>

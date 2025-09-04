@@ -1,0 +1,23 @@
+# Proper Nouns Lexicon - Compatible format
+entries:
+  - term: "Krishna"
+    variations: ["krishna", "krsna", "krishn", "krishnaa"]
+    category: "deity"
+  - term: "Arjuna" 
+    variations: ["arjuna", "arjun", "arjuuna"]
+    category: "character"
+  - term: "Vishnu"
+    variations: ["vishnu", "visnu", "vishnuu"]
+    category: "deity"
+  - term: "Shiva"
+    variations: ["shiva", "siva", "shiv", "shiiva"]
+    category: "deity"
+  - term: "Vedanta"
+    variations: ["vedanta", "vedant", "vedaanta"]
+    category: "philosophy"
+  - term: "Upanishads"
+    variations: ["upanishads", "upanisads", "upanishad"]
+    category: "scripture"
+  - term: "Vedas"
+    variations: ["vedas", "veds", "vedaas"]
+    category: "scripture"
