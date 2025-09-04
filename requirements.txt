@@ -1,0 +1,15 @@
+# Sanskrit Processor - Lean Architecture Requirements
+
+# Core dependencies
+pyyaml>=6.0
+requests>=2.28.0
+
+# Optional MCP dependencies (install if using MCP services)
+# websocket-client>=1.4.0
+
+# Development and testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Performance monitoring (optional)
+psutil>=5.9.0

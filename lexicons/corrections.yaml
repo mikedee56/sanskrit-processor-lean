@@ -1,0 +1,49 @@
+# Sanskrit/Hindi Corrections Lexicon - Compatible format
+entries:
+  - original_term: "Bhagavad Gita"
+    variations: ["bhagavad gita", "bhagvad geeta", "bhagwad gita", "bhagavat gita"]
+    transliteration: "Bhagavad Gītā"
+    is_proper_noun: true
+    category: "scripture"
+    confidence: 1.0
+    source_authority: "IAST"
+
+  - original_term: "dharma"
+    variations: ["dhrma", "dharama", "darma"]
+    transliteration: "dharma"
+    is_proper_noun: false
+    category: "concept"
+    confidence: 1.0
+    source_authority: "IAST"
+
+  - original_term: "yoga"
+    variations: ["yog", "yogaa", "youga"]
+    transliteration: "yoga"
+    is_proper_noun: false
+    category: "practice"
+    confidence: 1.0
+    source_authority: "IAST"
+
+  - original_term: "karma"
+    variations: ["karm", "karmaa", "carma"]
+    transliteration: "karma"
+    is_proper_noun: false
+    category: "concept"
+    confidence: 1.0
+    source_authority: "IAST"
+
+  - original_term: "moksha"
+    variations: ["moksh", "mokshaa", "moksa"]
+    transliteration: "mokṣa"
+    is_proper_noun: false
+    category: "concept"
+    confidence: 1.0
+    source_authority: "IAST"
+
+  - original_term: "samsara"
+    variations: ["samsaar", "sansara", "samsaara"]
+    transliteration: "saṃsāra"
+    is_proper_noun: false
+    category: "concept"
+    confidence: 1.0
+    source_authority: "IAST"

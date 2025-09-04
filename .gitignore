@@ -1,0 +1,47 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Output files
+*.srt.processed
+test_output*.srt
+*_output.srt
+*_enhanced_output.srt
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Configuration with secrets (create config.local.yaml for local settings)
+config.local.yaml
+.env
+
+# Temporary files
+*.tmp
+*.temp
+temp_*
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Test artifacts
+.pytest_cache/
+.tox/
