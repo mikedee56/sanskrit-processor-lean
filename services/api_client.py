@@ -103,12 +103,57 @@ class ExternalAPIClient:
             self.session.headers.update({
                 'User-Agent': 'Sanskrit-Processor/1.0 (Academic Research)'
             })
+        
+        # Initialize verse cache for local lookups
+        try:
+            from .verse_cache import create_verse_cache
+            self.verse_cache = create_verse_cache(config.__dict__ if hasattr(config, '__dict__') else {})
+            # Ensure cache is populated
+            if not self.verse_cache.is_cache_valid():
+                logger.info("Populating verse cache on first use...")
+                self.verse_cache.download_verses()
+        except Exception as e:
+            logger.warning(f"Verse cache initialization failed: {e}")
+            self.verse_cache = None
     
     def lookup_scripture(self, text_snippet: str) -> Optional[ScriptureMatch]:
-        """Look up potential scripture verses in the text."""
+        """Look up potential scripture verses in the text - cache first, API fallback."""
         if not self.config.enabled:
             return None
         
+        # Try local verse cache first (fast local lookup)
+        if self.verse_cache:
+            try:
+                # Detect verse references in text
+                references = self.verse_cache.detect_verse_references(text_snippet)
+                if references:
+                    # Get first detected reference
+                    chapter, verse = references[0]
+                    cached_verse = self.verse_cache.get_verse(chapter, verse)
+                    if cached_verse:
+                        return ScriptureMatch(
+                            verse_reference=f"BG {chapter}.{verse}",
+                            sanskrit_text=cached_verse.sanskrit,
+                            translation=cached_verse.translation,
+                            confidence=0.95,  # High confidence for exact matches
+                            source="local_cache"
+                        )
+                
+                # Try content search in cache
+                search_results = self.verse_cache.search_content(text_snippet)
+                if search_results:
+                    best_match = search_results[0]
+                    return ScriptureMatch(
+                        verse_reference=f"BG {best_match.chapter}.{best_match.verse}",
+                        sanskrit_text=best_match.sanskrit,
+                        translation=best_match.translation,
+                        confidence=0.8,  # Lower confidence for content search
+                        source="local_cache"
+                    )
+            except Exception as e:
+                logger.warning(f"Cache lookup failed: {e}")
+        
+        # Fallback to external API (existing behavior)
         # Try Bhagavad Gita first
         result = self._lookup_bhagavad_gita(text_snippet)
         if result and result.confidence > 0.7:

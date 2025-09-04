@@ -31,3 +31,10 @@ processing:
 circuit_breaker:
   failure_threshold: 5
   recovery_timeout: 60
+
+# Verse cache settings
+verse_cache:
+  enabled: true
+  cache_path: "data/verse_cache.json"
+  cache_expiry_days: 30
+  auto_download: true
