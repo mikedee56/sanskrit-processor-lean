@@ -455,7 +455,7 @@ class SanskritProcessor:
         return text, corrections
     
     def _normalize_text(self, text: str) -> str:
-        """Basic text normalization."""
+        """Basic text normalization with punctuation enhancement."""
         # Remove excessive whitespace
         text = re.sub(r'\s+', ' ', text)
         
@@ -467,7 +467,128 @@ class SanskritProcessor:
         for filler in self.filler_words:
             text = re.sub(rf'\b{re.escape(filler)}\b', '', text, flags=re.IGNORECASE)
         
+        # Apply punctuation enhancement if enabled
+        if self.config.get('punctuation', {}).get('enabled', False):
+            text = self._enhance_punctuation(text)
+        
         return text.strip()
+
+    def _enhance_punctuation(self, text: str) -> str:
+        """Enhanced punctuation using rule-based patterns with metrics."""
+        # Skip if Sanskrit context detected
+        if self._is_sanskrit_context(text):
+            return text
+            
+        mode = self.config.get('punctuation', {}).get('mode', 'balanced')
+        punctuation_config = self.config.get('punctuation', {})
+        changes_made = 0
+        
+        # Define base punctuation patterns
+        ending_phrases = [
+            "thank you very much", "thank you", "namaste", "om shanti", 
+            "hari om", "may all beings be happy", "may you be blessed",
+            "peace be with you", "god bless"
+        ]
+        
+        # Add custom ending phrases from configuration
+        custom_endings = punctuation_config.get('custom_endings', [])
+        if custom_endings:
+            ending_phrases.extend(custom_endings)
+        
+        transition_phrases = [
+            "however", "therefore", "thus", "nevertheless", 
+            "furthermore", "moreover", "in addition"
+        ]
+        
+        # Conservative mode uses fewer patterns
+        if mode == 'conservative':
+            ending_phrases = ending_phrases[:4]
+            transition_phrases = transition_phrases[:3]
+        
+        original_text = text
+        
+        # Process ending phrases - only at end of text
+        for phrase in ending_phrases:
+            lower_text = text.lower().rstrip()
+            lower_phrase = phrase.lower()
+            
+            # Check if text ends with this phrase (no period after)
+            if lower_text.endswith(lower_phrase) and not lower_text.endswith(lower_phrase + '.'):
+                text = text.rstrip() + '.'
+                changes_made += 1
+                break  # Only add one period
+        
+        # Add commas before transitions (balanced/aggressive modes)
+        if mode in ['balanced', 'aggressive']:
+            for transition in transition_phrases:
+                # Add comma if transition found but not at start or already with comma
+                pattern = rf'(?<!^)\s+{re.escape(transition)}\b'
+                if re.search(pattern, text, re.IGNORECASE) and f', {transition.lower()}' not in text.lower():
+                    new_text = re.sub(pattern, f', {transition}', text, flags=re.IGNORECASE)
+                    if new_text != text:
+                        text = new_text
+                        changes_made += 1
+        
+        # Capitalize first letter after periods
+        text = re.sub(r'\.(\s+)([a-z])', 
+                      lambda m: f'.{m.group(1)}{m.group(2).upper()}', text)
+        
+        # Handle common abbreviations - don't capitalize after them
+        abbreviations = ['Dr', 'Sri', 'Swami', 'Mt', 'St']
+        for abbr in abbreviations:
+            # Fix overcapitalization after abbreviations
+            pattern = rf'{re.escape(abbr)}\.(\s+)([A-Z])'
+            text = re.sub(pattern, 
+                         lambda m: f'{abbr}.{m.group(1)}{m.group(2).lower()}', text)
+        
+        # Enhanced question detection (both aggressive and balanced modes)
+        if mode in ['balanced', 'aggressive']:
+            question_starters = ['what', 'where', 'when', 'why', 'how', 'who', 'which', 'can', 'could', 'would', 'should']
+            for starter in question_starters:
+                # Match questions at start of text or after punctuation
+                pattern = rf'(^|[.!?]\s+){re.escape(starter)}\s+[^.?!]*[^.?!]$'
+                if re.search(pattern, text, re.IGNORECASE):
+                    if not text.rstrip().endswith('?'):
+                        text = text.rstrip() + '?'
+                        changes_made += 1
+                        break
+        
+        # Handle exclamations in aggressive mode
+        if mode == 'aggressive':
+            exclamation_starters = ['wow', 'amazing', 'wonderful', 'excellent', 'fantastic']
+            for starter in exclamation_starters:
+                pattern = rf'^{re.escape(starter)}\b.*[^!.]$'
+                if re.search(pattern, text, re.IGNORECASE):
+                    text = text.rstrip() + '!'
+                    changes_made += 1
+                    break
+        
+        # Clean spacing around punctuation
+        text = re.sub(r'\s+([.,:;!?])', r'\1', text)  # Remove space before
+        text = re.sub(r'([.!?])([A-Z])', r'\1 \2', text)  # Add space after
+        
+        # Log performance metrics if enabled and metrics collector available
+        if punctuation_config.get('log_changes', False) and hasattr(self, 'metrics_collector') and self.metrics_collector:
+            if changes_made > 0:
+                self.metrics_collector.record_processing_detail(
+                    'punctuation_enhancement', 
+                    f"{changes_made} punctuation changes applied"
+                )
+        
+        return text
+
+    def _is_sanskrit_context(self, text: str) -> bool:
+        """Check if text contains Sanskrit/sacred content that should be preserved."""
+        sanskrit_indicators = [
+            r'\d+\.\d+',  # Verse references like "2.47"
+            r'chapter\s+\d+',  # "Chapter 2"  
+            r'[āīūṛṅṇṭḍṣśḥṃ]',  # IAST characters
+            r'om\s+\w+\s+om',  # Mantras
+            'bhagavad gita', 'upanishad', 'vedas'
+        ]
+        
+        return any(re.search(pattern, text, re.IGNORECASE) 
+                  for pattern in sanskrit_indicators)
     
     def _apply_lexicon_corrections(self, text: str) -> tuple[str, int]:
         """Apply corrections from lexicon files with fuzzy matching fallback."""

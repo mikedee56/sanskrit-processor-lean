@@ -36,6 +36,14 @@ circuit_breaker:
   failure_threshold: 5
   recovery_timeout: 60
 
+# Punctuation enhancement settings
+punctuation:
+  enabled: true
+  mode: "balanced"  # conservative, balanced, aggressive
+  preserve_sanskrit: true
+  log_changes: true
+  custom_endings: []  # Add custom ending phrases beyond defaults
+
 # Verse cache settings
 verse_cache:
   enabled: true
