@@ -26,6 +26,10 @@ processing:
   enable_scripture_lookup: true
   enable_iast_validation: true
   confidence_threshold: 0.7
+  fuzzy_matching:
+    enabled: true
+    threshold: 0.6
+    log_matches: false
 
 # Circuit breaker settings
 circuit_breaker:

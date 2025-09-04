@@ -128,10 +128,13 @@ class SRTParser:
 class SanskritProcessor:
     """Lean Sanskrit text processor focused on core functionality."""
     
-    def __init__(self, lexicon_dir: Path = None):
-        """Initialize processor with lexicon directory."""
-        self.lexicon_dir = lexicon_dir or Path("data/lexicons")
+    def __init__(self, lexicon_dir: Path = None, config_path: Path = None):
+        """Initialize processor with lexicon directory and configuration."""
+        self.lexicon_dir = lexicon_dir or Path("lexicons")
         self.lexicons = LexiconLoader(self.lexicon_dir)
+        
+        # Load configuration
+        self.config = self._load_config(config_path or Path("config.yaml"))
         
         # Basic text normalization patterns
         self.filler_words = ['um', 'uh', 'er', 'ah', 'like', 'you know']
@@ -143,6 +146,39 @@ class SanskritProcessor:
         }
         
         logger.info("Sanskrit processor initialized")
+
+    
+    def _load_config(self, config_path: Path) -> dict:
+        """Load configuration with fuzzy matching defaults."""
+        try:
+            if config_path.exists():
+                with open(config_path, 'r', encoding='utf-8') as f:
+                    config = yaml.safe_load(f)
+            else:
+                config = {}
+            
+            # Set fuzzy matching defaults
+            if 'processing' not in config:
+                config['processing'] = {}
+            if 'fuzzy_matching' not in config['processing']:
+                config['processing']['fuzzy_matching'] = {
+                    'enabled': True,
+                    'threshold': 0.7,
+                    'log_matches': False
+                }
+            
+            return config
+        except Exception as e:
+            logger.warning(f"Failed to load config, using defaults: {e}")
+            return {
+                'processing': {
+                    'fuzzy_matching': {
+                        'enabled': True,
+                        'threshold': 0.7,
+                        'log_matches': False
+                    }
+                }
+            }
     
     def process_text(self, text: str) -> tuple[str, int]:
         """Process a single text segment. Returns (processed_text, corrections_made)."""
@@ -184,15 +220,22 @@ class SanskritProcessor:
         return text.strip()
     
     def _apply_lexicon_corrections(self, text: str) -> tuple[str, int]:
-        """Apply corrections from lexicon files."""
+        """Apply corrections from lexicon files with fuzzy matching fallback."""
         corrections = 0
         words = text.split()
         corrected_words = []
+        
+        # Get fuzzy matching config
+        fuzzy_config = self.config.get('processing', {}).get('fuzzy_matching', {})
+        fuzzy_enabled = fuzzy_config.get('enabled', True)
+        fuzzy_threshold = fuzzy_config.get('threshold', 0.8)
+        log_fuzzy = fuzzy_config.get('log_matches', False)
         
         for word in words:
             # Clean word for lookup (remove punctuation)
             clean_word = re.sub(r'[^\w\s]', '', word.lower())
             
+            # Try exact match first (existing logic)
             if clean_word in self.lexicons.corrections:
                 entry = self.lexicons.corrections[clean_word]
                 corrected = entry['original_term']
@@ -203,7 +246,25 @@ class SanskritProcessor:
                     
                 corrected_words.append(corrected)
                 corrections += 1
-                logger.debug(f"Lexicon correction: {word} -> {corrected}")
+                logger.debug(f"Exact correction: {word} -> {corrected}")
+                
+            # Try fuzzy match if enabled and no exact match
+            elif fuzzy_enabled and clean_word:
+                fuzzy_match = self._find_fuzzy_match(clean_word, fuzzy_threshold)
+                if fuzzy_match:
+                    # Preserve capitalization pattern
+                    if word[0].isupper():
+                        fuzzy_match = fuzzy_match.capitalize()
+                        
+                    corrected_words.append(fuzzy_match)
+                    corrections += 1
+                    
+                    if log_fuzzy:
+                        logger.info(f"Fuzzy correction: {word} -> {fuzzy_match}")
+                    else:
+                        logger.debug(f"Fuzzy correction: {word} -> {fuzzy_match}")
+                else:
+                    corrected_words.append(word)
             else:
                 corrected_words.append(word)
         
@@ -228,6 +289,90 @@ class SanskritProcessor:
                 corrected_words.append(word)
         
         return ' '.join(corrected_words), corrections
+
+    def _calculate_similarity(self, str1: str, str2: str) -> float:
+        """
+        Calculate character-based similarity ratio without external dependencies.
+        Uses optimized character matching for ASR-style errors.
+        """
+        if not str1 or not str2:
+            return 0.0
+        
+        # Normalize strings (lowercase, strip punctuation)
+        s1 = re.sub(r'[^\w]', '', str1.lower())
+        s2 = re.sub(r'[^\w]', '', str2.lower())
+        
+        if not s1 or not s2:
+            return 0.0
+            
+        if s1 == s2:
+            return 1.0
+        
+        # Quick length check - very different lengths = low similarity
+        len_diff = abs(len(s1) - len(s2))
+        max_len = max(len(s1), len(s2))
+        min_len = min(len(s1), len(s2))
+        
+        if len_diff / max_len > 0.5:  # More than 50% length difference
+            return 0.0
+        
+        # Character-based similarity using multiple approaches
+        # 1. Position-based matching (good for simple substitutions)
+        position_matches = sum(1 for a, b in zip(s1, s2) if a == b)
+        position_similarity = position_matches / max_len
+        
+        # 2. Character set intersection (good for reordering/missing chars)
+        set1, set2 = set(s1), set(s2)
+        common_chars = len(set1 & set2)
+        total_unique = len(set1 | set2)
+        set_similarity = common_chars / total_unique if total_unique > 0 else 0.0
+        
+        # 3. Length penalty
+        length_similarity = 1.0 - (len_diff / max_len)
+        
+        # 4. Sequential character matching (handles insertions/deletions better)
+        seq_matches = 0
+        i = j = 0
+        while i < len(s1) and j < len(s2):
+            if s1[i] == s2[j]:
+                seq_matches += 1
+                i += 1
+                j += 1
+            elif len(s1) > len(s2):
+                i += 1  # Skip character in longer string
+            else:
+                j += 1  # Skip character in longer string
+        
+        sequential_similarity = seq_matches / max_len
+        
+        # Combine similarities with weights optimized for ASR errors
+        final_similarity = (
+            position_similarity * 0.3 +      # Position matching
+            set_similarity * 0.25 +          # Character overlap
+            length_similarity * 0.2 +        # Length similarity
+            sequential_similarity * 0.25     # Sequential matching
+        )
+        
+        return min(1.0, final_similarity)
+
+    def _find_fuzzy_match(self, word: str, threshold: float = 0.8) -> Optional[str]:
+        """
+        Find the best fuzzy match for a word in the lexicon.
+        Returns the corrected term if similarity > threshold, None otherwise.
+        """
+        if not word or not self.lexicons.corrections:
+            return None
+            
+        best_match = None
+        best_similarity = 0.0
+        
+        for lexicon_term, entry in self.lexicons.corrections.items():
+            similarity = self._calculate_similarity(word, lexicon_term)
+            if similarity > threshold and similarity > best_similarity:
+                best_similarity = similarity
+                best_match = entry['original_term']
+                
+        return best_match
     
     def process_srt_file(self, input_path: Path, output_path: Path) -> ProcessingResult:
         """Process an SRT file with Sanskrit corrections."""
