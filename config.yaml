@@ -36,6 +36,15 @@ circuit_breaker:
   failure_threshold: 5
   recovery_timeout: 60
 
+# Named Entity Recognition settings
+ner:
+  fallback:
+    enabled: true
+    entities_file: "data/entities.yaml"
+    min_confidence: 0.7
+    enable_fuzzy_matching: false
+    log_fallback_usage: true
+
 # Punctuation enhancement settings
 punctuation:
   enabled: true

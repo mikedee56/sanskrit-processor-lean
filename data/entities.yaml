@@ -1,0 +1,149 @@
+# Named Entity Recognition Database for Sanskrit/Hindu context processing
+# Used by Simple NER fallback system when MCP services are unavailable
+
+entities:
+  deities:
+    confidence: 0.9
+    entities:
+      - name: "Krishna"
+        variations: ["krishna", "krsna", "kṛṣṇa", "krisna", "krishn"]
+        category: "deity"
+      - name: "Shiva"  
+        variations: ["shiva", "siva", "śiva", "shiv", "mahadev"]
+        category: "deity"
+      - name: "Vishnu"
+        variations: ["vishnu", "viṣṇu", "visnu", "narayana"]
+        category: "deity"
+      - name: "Rama"
+        variations: ["rama", "rāma", "ram", "ramchandra", "raghupati"]
+        category: "deity"
+      - name: "Hanuman"
+        variations: ["hanuman", "hanumān", "bajrangbali", "maruti"]
+        category: "deity"
+      - name: "Ganesha"
+        variations: ["ganesha", "gaṇeśa", "ganesh", "vinayaka", "ganapati"]
+        category: "deity"
+      - name: "Durga"
+        variations: ["durga", "durgā", "devi", "mata", "shakti"]
+        category: "deity"
+      - name: "Lakshmi"
+        variations: ["lakshmi", "lakṣmī", "laxmi", "shri"]
+        category: "deity"
+      - name: "Saraswati"
+        variations: ["saraswati", "sarasvatī", "sarasvati", "veena devi"]
+        category: "deity"
+
+  scriptures:
+    confidence: 0.95
+    entities:
+      - name: "Bhagavad Gita"
+        variations: ["bhagavad gita", "bhagvad geeta", "gita", "geeta", "bhagavadgita"]
+        category: "scripture"
+      - name: "Upanishads"
+        variations: ["upanishads", "upaniṣads", "upanishad", "vedanta"]
+        category: "scripture"
+      - name: "Vedas"
+        variations: ["vedas", "veda", "rig veda", "sama veda", "yajur veda", "atharva veda"]
+        category: "scripture"
+      - name: "Ramayana"
+        variations: ["ramayana", "rāmāyaṇa", "ramayan"]
+        category: "scripture"
+      - name: "Mahabharata"
+        variations: ["mahabharata", "mahābhārata", "mahabharat"]
+        category: "scripture"
+      - name: "Puranas"
+        variations: ["puranas", "purāṇas", "purana", "bhagavata purana", "vishnu purana"]
+        category: "scripture"
+      - name: "Tantras"
+        variations: ["tantras", "tantra", "agamas"]
+        category: "scripture"
+
+  concepts:
+    confidence: 0.85
+    entities:
+      - name: "dharma"
+        variations: ["dharma", "dharma", "righteous duty", "righteousness"]
+        category: "concept"
+      - name: "karma"
+        variations: ["karma", "karman", "action", "deed"]
+        category: "concept"
+      - name: "yoga"
+        variations: ["yoga", "yog", "union", "discipline"]
+        category: "concept"
+      - name: "moksha"
+        variations: ["moksha", "mokṣa", "liberation", "mukti"]
+        category: "concept"
+      - name: "samsara"
+        variations: ["samsara", "saṃsāra", "cycle of rebirth", "worldly existence"]
+        category: "concept"
+      - name: "ahimsa"
+        variations: ["ahimsa", "ahiṃsā", "non-violence", "non-harming"]
+        category: "concept"
+      - name: "bhakti"
+        variations: ["bhakti", "devotion", "love", "surrender"]
+        category: "concept"
+      - name: "jnana"
+        variations: ["jnana", "jñāna", "knowledge", "wisdom", "gyan"]
+        category: "concept"
+      - name: "maya"
+        variations: ["maya", "māyā", "illusion", "cosmic illusion"]
+        category: "concept"
+      - name: "atman"
+        variations: ["atman", "ātman", "self", "soul", "inner self"]
+        category: "concept"
+
+  places:
+    confidence: 0.8
+    entities:
+      - name: "Vrindavan"
+        variations: ["vrindavan", "vṛndāvana", "brindavan", "vrindavan dham"]
+        category: "place"
+      - name: "Ayodhya"
+        variations: ["ayodhya", "ayodhyā", "awadh"]
+        category: "place"
+      - name: "Kashi"
+        variations: ["kashi", "kāśī", "varanasi", "benares", "banaras"]
+        category: "place"
+      - name: "Haridwar"
+        variations: ["haridwar", "haridvāra", "hardwar"]
+        category: "place"
+      - name: "Rishikesh"
+        variations: ["rishikesh", "ṛṣīkeśa", "hrishikesh"]
+        category: "place"
+      - name: "Mathura"
+        variations: ["mathura", "mathurā", "muttra"]
+        category: "place"
+      - name: "Dwarka"
+        variations: ["dwarka", "dvārakā", "dwaraka"]
+        category: "place"
+      - name: "Kurukshetra"
+        variations: ["kurukshetra", "kurukṣetra", "kurukshetram"]
+        category: "place"
+
+  people:
+    confidence: 0.75
+    entities:
+      - name: "Arjuna"
+        variations: ["arjuna", "arjun", "pārtha", "gudakesha"]
+        category: "person"
+      - name: "Yudhishthira"
+        variations: ["yudhishthira", "yudhiṣṭhira", "dharmaraja", "yudhisthir"]
+        category: "person"
+      - name: "Sita"
+        variations: ["sita", "sītā", "janaki", "vaidehi"]
+        category: "person"
+      - name: "Draupadi"
+        variations: ["draupadi", "draupadī", "panchali", "krishnaa"]
+        category: "person"
+      - name: "Bhishma"
+        variations: ["bhishma", "bhīṣma", "gangaputra"]
+        category: "person"
+      - name: "Dronacharya"
+        variations: ["dronacharya", "droṇācārya", "drona", "guru drona"]
+        category: "person"
+      - name: "Karna"
+        variations: ["karna", "karṇa", "radheya", "suryaputra"]
+        category: "person"
+      - name: "Ravana"
+        variations: ["ravana", "rāvaṇa", "dashanan", "lankesh"]
+        category: "person"

@@ -12,6 +12,7 @@ from typing import Optional, Dict, Any
 from sanskrit_processor_v2 import SanskritProcessor, ProcessingResult, SRTSegment
 from services.mcp_client import create_mcp_client, MCPClient
 from services.api_client import create_api_client, ExternalAPIClient
+from services.simple_ner import SimpleNER
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +30,7 @@ class EnhancedSanskritProcessor(SanskritProcessor):
         # Initialize external services
         self.mcp_client: Optional[MCPClient] = None
         self.api_client: Optional[ExternalAPIClient] = None
+        self.simple_ner: Optional[SimpleNER] = None
         
         if self.config.get('mcp', {}).get('enabled', False):
             try:
@@ -43,6 +45,15 @@ class EnhancedSanskritProcessor(SanskritProcessor):
                 logger.info("External API client initialized")
             except Exception as e:
                 logger.warning(f"API client initialization failed: {e}")
+        
+        # Initialize Simple NER fallback
+        if self.config.get('ner', {}).get('fallback', {}).get('enabled', True):
+            try:
+                entities_file = self.config.get('ner', {}).get('fallback', {}).get('entities_file', 'data/entities.yaml')
+                self.simple_ner = SimpleNER(entities_file)
+                logger.info("Simple NER fallback initialized")
+            except Exception as e:
+                logger.warning(f"Simple NER initialization failed: {e}")
         
         logger.info("Enhanced Sanskrit processor initialized")
     
@@ -60,6 +71,41 @@ class EnhancedSanskritProcessor(SanskritProcessor):
         except Exception as e:
             logger.error(f"Failed to load config: {e}")
             return {}
+    
+    def _get_ner_client(self):
+        """Get NER client with automatic fallback logic."""
+        # Try MCP first if available and connected
+        if (self.mcp_client and 
+            self.mcp_client.connected and 
+            self.config.get('processing', {}).get('enable_semantic_analysis', True)):
+            return self.mcp_client
+        
+        # Fallback to Simple NER
+        if self.simple_ner:
+            if self.config.get('ner', {}).get('fallback', {}).get('log_fallback_usage', True):
+                logger.info("Using Simple NER fallback (MCP unavailable)")
+            return self.simple_ner
+        
+        return None
+    
+    def extract_entities(self, text: str) -> list:
+        """Extract named entities with automatic fallback."""
+        ner_client = self._get_ner_client()
+        
+        if not ner_client:
+            return []
+        
+        try:
+            if hasattr(ner_client, 'extract_entities'):
+                # Simple NER
+                return ner_client.extract_entities(text)
+            else:
+                # MCP client - would need specific method call
+                # This is a placeholder for MCP NER integration
+                return []
+        except Exception as e:
+            logger.debug(f"Entity extraction failed: {e}")
+            return []
     
     def process_text(self, text: str, context: Dict = None) -> tuple[str, int]:
         """Enhanced text processing with external services."""
@@ -190,6 +236,17 @@ class EnhancedSanskritProcessor(SanskritProcessor):
             status["external_apis"] = self.api_client.get_service_status()
         else:
             status["external_apis"] = "disabled"
+        
+        if self.simple_ner:
+            ner_stats = self.simple_ner.get_stats()
+            status["simple_ner"] = {
+                "enabled": True,
+                "entities_loaded": ner_stats['total_entities'],
+                "categories": list(ner_stats['category_breakdown'].keys()),
+                "fallback_active": not (self.mcp_client and self.mcp_client.connected)
+            }
+        else:
+            status["simple_ner"] = "disabled"
         
         return status
     
