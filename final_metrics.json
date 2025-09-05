@@ -1,0 +1,22 @@
+{
+  "segments_processed": 3,
+  "corrections_made": 6,
+  "processing_time": 0.019548416137695312,
+  "quality_score": 98.43749999999999,
+  "corrections_by_type": {
+    "fuzzy": 1,
+    "lexicon": 2,
+    "capitalization": 3
+  },
+  "processing_phases": {
+    "parse": 0.013976812362670898,
+    "process": 0.0018684864044189453,
+    "write": 0.0036439895629882812
+  },
+  "memory_usage": {
+    "peak": 17.34375,
+    "average": 17.34375
+  },
+  "avg_confidence": 0.9479166666666666,
+  "errors": []
+}

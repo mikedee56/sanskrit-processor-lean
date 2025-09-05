@@ -474,106 +474,26 @@ class SanskritProcessor:
         return text.strip()
 
     def _enhance_punctuation(self, text: str) -> str:
-        """Enhanced punctuation using rule-based patterns with metrics."""
-        # Skip if Sanskrit context detected
+        """Simplified punctuation enhancement for lean architecture."""
         if self._is_sanskrit_context(text):
             return text
-            
-        mode = self.config.get('punctuation', {}).get('mode', 'balanced')
-        punctuation_config = self.config.get('punctuation', {})
-        changes_made = 0
         
-        # Define base punctuation patterns
-        ending_phrases = [
-            "thank you very much", "thank you", "namaste", "om shanti", 
-            "hari om", "may all beings be happy", "may you be blessed",
-            "peace be with you", "god bless"
-        ]
+        # Basic punctuation fixes only
+        endings = ["thank you", "namaste", "om shanti"]
+        for phrase in endings:
+            if text.lower().rstrip().endswith(phrase.lower()):
+                if not text.rstrip().endswith('.'):
+                    text = text.rstrip() + '.'
+                break
         
-        # Add custom ending phrases from configuration
-        custom_endings = punctuation_config.get('custom_endings', [])
-        if custom_endings:
-            ending_phrases.extend(custom_endings)
+        # Basic question detection
+        if any(text.lower().strip().startswith(q) for q in ['what', 'how', 'why', 'when']):
+            if not text.rstrip().endswith('?'):
+                text = text.rstrip() + '?'
         
-        transition_phrases = [
-            "however", "therefore", "thus", "nevertheless", 
-            "furthermore", "moreover", "in addition"
-        ]
-        
-        # Conservative mode uses fewer patterns
-        if mode == 'conservative':
-            ending_phrases = ending_phrases[:4]
-            transition_phrases = transition_phrases[:3]
-        
-        original_text = text
-        
-        # Process ending phrases - only at end of text
-        for phrase in ending_phrases:
-            lower_text = text.lower().rstrip()
-            lower_phrase = phrase.lower()
-            
-            # Check if text ends with this phrase (no period after)
-            if lower_text.endswith(lower_phrase) and not lower_text.endswith(lower_phrase + '.'):
-                text = text.rstrip() + '.'
-                changes_made += 1
-                break  # Only add one period
-        
-        # Add commas before transitions (balanced/aggressive modes)
-        if mode in ['balanced', 'aggressive']:
-            for transition in transition_phrases:
-                # Add comma if transition found but not at start or already with comma
-                pattern = rf'(?<!^)\s+{re.escape(transition)}\b'
-                if re.search(pattern, text, re.IGNORECASE) and f', {transition.lower()}' not in text.lower():
-                    new_text = re.sub(pattern, f', {transition}', text, flags=re.IGNORECASE)
-                    if new_text != text:
-                        text = new_text
-                        changes_made += 1
-        
-        # Capitalize first letter after periods
-        text = re.sub(r'\.(\s+)([a-z])', 
-                      lambda m: f'.{m.group(1)}{m.group(2).upper()}', text)
-        
-        # Handle common abbreviations - don't capitalize after them
-        abbreviations = ['Dr', 'Sri', 'Swami', 'Mt', 'St']
-        for abbr in abbreviations:
-            # Fix overcapitalization after abbreviations
-            pattern = rf'{re.escape(abbr)}\.(\s+)([A-Z])'
-            text = re.sub(pattern, 
-                         lambda m: f'{abbr}.{m.group(1)}{m.group(2).lower()}', text)
-        
-        # Enhanced question detection (both aggressive and balanced modes)
-        if mode in ['balanced', 'aggressive']:
-            question_starters = ['what', 'where', 'when', 'why', 'how', 'who', 'which', 'can', 'could', 'would', 'should']
-            for starter in question_starters:
-                # Match questions at start of text or after punctuation
-                pattern = rf'(^|[.!?]\s+){re.escape(starter)}\s+[^.?!]*[^.?!]$'
-                if re.search(pattern, text, re.IGNORECASE):
-                    if not text.rstrip().endswith('?'):
-                        text = text.rstrip() + '?'
-                        changes_made += 1
-                        break
-        
-        # Handle exclamations in aggressive mode
-        if mode == 'aggressive':
-            exclamation_starters = ['wow', 'amazing', 'wonderful', 'excellent', 'fantastic']
-            for starter in exclamation_starters:
-                pattern = rf'^{re.escape(starter)}\b.*[^!.]$'
-                if re.search(pattern, text, re.IGNORECASE):
-                    text = text.rstrip() + '!'
-                    changes_made += 1
-                    break
-        
-        # Clean spacing around punctuation
-        text = re.sub(r'\s+([.,:;!?])', r'\1', text)  # Remove space before
-        text = re.sub(r'([.!?])([A-Z])', r'\1 \2', text)  # Add space after
-        
-        # Log performance metrics if enabled and metrics collector available
-        if punctuation_config.get('log_changes', False) and hasattr(self, 'metrics_collector') and self.metrics_collector:
-            if changes_made > 0:
-                self.metrics_collector.record_processing_detail(
-                    'punctuation_enhancement', 
-                    f"{changes_made} punctuation changes applied"
-                )
+        # Clean spacing
+        text = re.sub(r'\s+([.,:;!?])', r'\1', text)
+        text = re.sub(r'([.!?])([A-Z])', r'\1 \2', text)
         
         return text
 
@@ -609,7 +529,13 @@ class SanskritProcessor:
             # Try exact match first
             if clean_word in self.lexicons.corrections:
                 entry = self.lexicons.corrections[clean_word]
-                corrected = entry['original_term']
+                
+                # Choose output format based on configuration
+                use_diacritics = self.config.get('processing', {}).get('use_iast_diacritics', False)
+                if use_diacritics and 'transliteration' in entry:
+                    corrected = entry['transliteration']
+                else:
+                    corrected = entry['original_term']
                 
                 # Preserve capitalization pattern
                 if word[0].isupper():
@@ -681,69 +607,17 @@ class SanskritProcessor:
         return ' '.join(corrected_words), corrections
 
     def _calculate_similarity(self, str1: str, str2: str) -> float:
-        """
-        Calculate character-based similarity ratio without external dependencies.
-        Uses optimized character matching for ASR-style errors.
-        """
+        """Simple character similarity for lean architecture."""
         if not str1 or not str2:
             return 0.0
         
-        # Normalize strings (lowercase, strip punctuation)
-        s1 = re.sub(r'[^\w]', '', str1.lower())
-        s2 = re.sub(r'[^\w]', '', str2.lower())
-        
-        if not s1 or not s2:
-            return 0.0
-            
+        s1, s2 = str1.lower().strip(), str2.lower().strip()
         if s1 == s2:
             return 1.0
         
-        # Quick length check - very different lengths = low similarity
-        len_diff = abs(len(s1) - len(s2))
-        max_len = max(len(s1), len(s2))
-        min_len = min(len(s1), len(s2))
-        
-        if len_diff / max_len > 0.5:  # More than 50% length difference
-            return 0.0
-        
-        # Character-based similarity using multiple approaches
-        # 1. Position-based matching (good for simple substitutions)
-        position_matches = sum(1 for a, b in zip(s1, s2) if a == b)
-        position_similarity = position_matches / max_len
-        
-        # 2. Character set intersection (good for reordering/missing chars)
-        set1, set2 = set(s1), set(s2)
-        common_chars = len(set1 & set2)
-        total_unique = len(set1 | set2)
-        set_similarity = common_chars / total_unique if total_unique > 0 else 0.0
-        
-        # 3. Length penalty
-        length_similarity = 1.0 - (len_diff / max_len)
-        
-        # 4. Sequential character matching (handles insertions/deletions better)
-        seq_matches = 0
-        i = j = 0
-        while i < len(s1) and j < len(s2):
-            if s1[i] == s2[j]:
-                seq_matches += 1
-                i += 1
-                j += 1
-            elif len(s1) > len(s2):
-                i += 1  # Skip character in longer string
-            else:
-                j += 1  # Skip character in longer string
-        
-        sequential_similarity = seq_matches / max_len
-        
-        # Combine similarities with weights optimized for ASR errors
-        final_similarity = (
-            position_similarity * 0.3 +      # Position matching
-            set_similarity * 0.25 +          # Character overlap
-            length_similarity * 0.2 +        # Length similarity
-            sequential_similarity * 0.25     # Sequential matching
-        )
-        
-        return min(1.0, final_similarity)
+        # Simple character overlap ratio
+        common = sum(1 for a, b in zip(s1, s2) if a == b)
+        return common / max(len(s1), len(s2))
 
     def _find_fuzzy_match(self, word: str, threshold: float = 0.8) -> Optional[str]:
         """

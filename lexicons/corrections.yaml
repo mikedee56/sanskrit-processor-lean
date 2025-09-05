@@ -1,49 +1,1247 @@
-# Sanskrit/Hindi Corrections Lexicon - Compatible format
 entries:
-  - original_term: "Bhagavad Gita"
-    variations: ["bhagavad gita", "bhagvad geeta", "bhagwad gita", "bhagavat gita"]
-    transliteration: "Bhagavad Gītā"
-    is_proper_noun: true
-    category: "scripture"
-    confidence: 1.0
-    source_authority: "IAST"
-
-  - original_term: "dharma"
-    variations: ["dhrma", "dharama", "darma"]
-    transliteration: "dharma"
-    is_proper_noun: false
-    category: "concept"
-    confidence: 1.0
-    source_authority: "IAST"
-
-  - original_term: "yoga"
-    variations: ["yog", "yogaa", "youga"]
-    transliteration: "yoga"
-    is_proper_noun: false
-    category: "practice"
-    confidence: 1.0
-    source_authority: "IAST"
-
-  - original_term: "karma"
-    variations: ["karm", "karmaa", "carma"]
-    transliteration: "karma"
-    is_proper_noun: false
-    category: "concept"
-    confidence: 1.0
-    source_authority: "IAST"
-
-  - original_term: "moksha"
-    variations: ["moksh", "mokshaa", "moksa"]
-    transliteration: "mokṣa"
-    is_proper_noun: false
-    category: "concept"
-    confidence: 1.0
-    source_authority: "IAST"
-
-  - original_term: "samsara"
-    variations: ["samsaar", "sansara", "samsaara"]
-    transliteration: "saṃsāra"
-    is_proper_noun: false
-    category: "concept"
-    confidence: 1.0
-    source_authority: "IAST"
+- original_term: Bhagavad Gita
+  variations:
+  - bhagavad gita
+  - bhagvad geeta
+  - bhagwad gita
+  - bhagavat gita
+  transliteration: Bhagavad Gītā
+  is_proper_noun: true
+  category: scripture
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: beginner
+  meaning: Song of God - sacred Hindu text
+- original_term: dharma
+  variations:
+  - dhrma
+  - dharama
+  - darma
+  transliteration: dharma
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: beginner
+  meaning: righteous duty, natural law
+- original_term: yoga
+  variations:
+  - yog
+  - yogaa
+  - youga
+  transliteration: yoga
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: beginner
+  meaning: union, spiritual discipline
+- original_term: karma
+  variations:
+  - karm
+  - karmaa
+  - carma
+  transliteration: karma
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: beginner
+  meaning: action, law of cause and effect
+- original_term: moksha
+  variations:
+  - moksh
+  - mokshaa
+  - moksa
+  transliteration: mokṣa
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: intermediate
+  meaning: liberation, spiritual release
+- original_term: samsara
+  variations:
+  - samsaar
+  - sansara
+  - samsaara
+  transliteration: saṃsāra
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: intermediate
+  meaning: cycle of birth, death and rebirth
+- original_term: advaita
+  variations:
+  - adwita
+  - advait
+  - advaitic
+  - non-dualism
+  transliteration: advaita
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: non-dualism, unity of all existence
+- original_term: dvaita
+  variations:
+  - dwita
+  - dvait
+  - dualism
+  transliteration: dvaita
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+- original_term: vishistadvaita
+  variations:
+  - vishishtadvaita
+  - qualified non-dualism
+  - vishishta advaita
+  transliteration: viśiṣṭādvaita
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+- original_term: brahman
+  variations:
+  - brahmn
+  - brahma
+  - brahmaan
+  transliteration: brahman
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: advanced
+  meaning: ultimate reality, universal consciousness
+- original_term: atman
+  variations:
+  - aatman
+  - atmaa
+  - atma
+  transliteration: ātman
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: advanced
+  meaning: individual soul, true self
+- original_term: maya
+  variations:
+  - maaya
+  - mayaa
+  - maia
+  transliteration: māyā
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: IAST
+- original_term: jiva
+  variations:
+  - jeeva
+  - jivaa
+  - jiiva
+  transliteration: jīva
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: IAST
+- original_term: pranayama
+  variations:
+  - pranayam
+  - breath control
+  - breathing
+  - praanayama
+  transliteration: prāṇāyāma
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: intermediate
+  meaning: breath control, yogic breathing technique
+- original_term: asana
+  variations:
+  - asan
+  - posture
+  - yoga pose
+  - aasana
+  transliteration: āsana
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: beginner
+  meaning: physical posture, yoga pose
+- original_term: dhyana
+  variations:
+  - dhyan
+  - meditation
+  - contemplation
+  - dhyaan
+  transliteration: dhyāna
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: intermediate
+  meaning: meditation, sustained awareness
+- original_term: dharana
+  variations:
+  - dharanaa
+  - concentration
+  - dhaarana
+  transliteration: dhāraṇā
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: IAST
+- original_term: samadhi
+  variations:
+  - samaadhi
+  - absorption
+  - samadhii
+  transliteration: samādhi
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: IAST
+- original_term: yama
+  variations:
+  - yamaa
+  - restraints
+  - ethical guidelines
+  transliteration: yama
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: IAST
+- original_term: niyama
+  variations:
+  - niyamaa
+  - observances
+  - disciplines
+  transliteration: niyama
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: IAST
+- original_term: pratyahara
+  variations:
+  - pratyaahara
+  - withdrawal
+  - sense withdrawal
+  transliteration: pratyāhāra
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: IAST
+- original_term: sadhana
+  variations:
+  - saadhana
+  - spiritual practice
+  - practice
+  transliteration: sādhana
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: IAST
+- original_term: tapas
+  variations:
+  - tapasya
+  - austerity
+  - penance
+  - tapa
+  transliteration: tapas
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: IAST
+- original_term: mantra
+  variations:
+  - mantram
+  - sacred sound
+  - chant
+  - mantraa
+  transliteration: mantra
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: IAST
+- original_term: puja
+  variations:
+  - pooja
+  - worship
+  - ritual
+  - pujaa
+  transliteration: pūjā
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: beginner
+  meaning: worship ritual, devotional ceremony
+- original_term: aarti
+  variations:
+  - arti
+  - aarati
+  - lamp ceremony
+  - aartii
+  transliteration: āratī
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: IAST
+- original_term: sankirtana
+  variations:
+  - sankirtan
+  - group chanting
+  - congregational singing
+  - sankiirtana
+  transliteration: saṅkīrtana
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: IAST
+- original_term: bhajan
+  variations:
+  - bhajans
+  - devotional song
+  - bhajana
+  transliteration: bhajana
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: IAST
+- original_term: yajna
+  variations:
+  - yagna
+  - fire sacrifice
+  - homa
+  - yajnaa
+  transliteration: yajña
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: IAST
+- original_term: satsang
+  variations:
+  - satsanga
+  - spiritual gathering
+  - holy company
+  - satsanga
+  transliteration: satsaṅga
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: IAST
+- original_term: bhakti
+  variations:
+  - bhaktii
+  - devotion
+  - love
+  - bhakthi
+  transliteration: bhakti
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: beginner
+  meaning: devotion, loving surrender to divine
+- original_term: jnana
+  variations:
+  - gyaan
+  - gnana
+  - knowledge
+  - jnaana
+  transliteration: jñāna
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: IAST
+- original_term: vairagya
+  variations:
+  - vairaagya
+  - detachment
+  - dispassion
+  - vairaaggya
+  transliteration: vairāgya
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: IAST
+- original_term: kirtana
+  variations:
+  - kirtan
+  - chanting
+  - kirtanaa
+  - keertana
+  transliteration: kīrtana
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: IAST
+- original_term: seva
+  variations:
+  - sewa
+  - service
+  - selfless service
+  - sevaa
+  transliteration: sevā
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: IAST
+- original_term: abhyasa
+  variations:
+  - abhyaas
+  - practice
+  - abhyassa
+  transliteration: abhyāsa
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: persistent practice, repeated effort
+- original_term: vritti
+  variations:
+  - vriti
+  - mental fluctuation
+  - thought wave
+  transliteration: vṛtti
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: mental modifications, thought patterns
+- original_term: nirodha
+  variations:
+  - nirodh
+  - cessation
+  - restraint
+  transliteration: nirodha
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: cessation, restraint of mental modifications
+- original_term: samskara
+  variations:
+  - sanskaar
+  - mental impression
+  - latent tendency
+  transliteration: saṃskāra
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: mental impressions, latent tendencies
+- original_term: klesa
+  variations:
+  - klesha
+  - affliction
+  - mental affliction
+  transliteration: kleśa
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: mental afflictions, sources of suffering
+- original_term: avidya
+  variations:
+  - avidyaa
+  - ignorance
+  - spiritual ignorance
+  transliteration: avidyā
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: ignorance, spiritual unknowing
+- original_term: asmita
+  variations:
+  - asmitaa
+  - ego
+  - i-am-ness
+  transliteration: asmitā
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: egoism, sense of I-am-ness
+- original_term: raga
+  variations:
+  - raag
+  - attachment
+  - desire
+  transliteration: rāga
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: attachment, desire for pleasure
+- original_term: dvesha
+  variations:
+  - dvesh
+  - aversion
+  - hatred
+  transliteration: dveṣa
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: aversion, hatred, repulsion
+- original_term: mithya
+  variations:
+  - mithyaa
+  - apparent reality
+  - illusory
+  transliteration: mithyā
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: apparent reality, neither real nor unreal
+- original_term: satya
+  variations:
+  - satyaa
+  - truth
+  - reality
+  transliteration: satya
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: truth, ultimate reality
+- original_term: sakshi
+  variations:
+  - saakshi
+  - witness
+  - observer
+  transliteration: sākṣī
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: witness consciousness, silent observer
+- original_term: upadi
+  variations:
+  - upadhi
+  - limiting adjunct
+  - condition
+  transliteration: upādhi
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: limiting condition, adjunct
+- original_term: adhyasa
+  variations:
+  - adhyaas
+  - superimposition
+  - false attribution
+  transliteration: adhyāsa
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: superimposition, false attribution
+- original_term: prema
+  variations:
+  - prem
+  - divine love
+  - pure love
+  transliteration: prema
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: divine love, pure spiritual love
+- original_term: shraddha
+  variations:
+  - shraddhaa
+  - faith
+  - devotional faith
+  transliteration: śraddhā
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: faith, trust, devotional confidence
+- original_term: surrender
+  variations:
+  - saranagati
+  - complete surrender
+  - giving up
+  transliteration: śaraṇāgati
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: complete surrender to divine will
+- original_term: awadhi
+  variations:
+  - avadhi
+  - awadhee
+  - regional language
+  transliteration: avadhī
+  is_proper_noun: false
+  category: language
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: regional language of Awadh, used by Tulsidas
+- original_term: doha
+  variations:
+  - dohe
+  - couplet
+  - rhyming couplet
+  transliteration: dohā
+  is_proper_noun: false
+  category: literature
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: rhyming couplet, poetic form
+- original_term: chaupai
+  variations:
+  - caupai
+  - choupai
+  - quatrain
+  transliteration: caupāī
+  is_proper_noun: false
+  category: literature
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: four-line verse, poetic meter
+- original_term: katha
+  variations:
+  - kathaa
+  - story
+  - narrative
+  transliteration: kathā
+  is_proper_noun: false
+  category: literature
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: story, narrative, sacred tale
+- original_term: kirtan
+  variations:
+  - kirtana
+  - group singing
+  - chanting
+  transliteration: kīrtana
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: devotional group singing, chanting
+- original_term: raghupati
+  variations:
+  - raghu pati
+  - lord of raghu dynasty
+  transliteration: raghupati
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: lord of Raghu dynasty, epithet for Rama
+- original_term: kosala
+  variations:
+  - kosalaa
+  - kosala kingdom
+  - ayodhya kingdom
+  transliteration: kośala
+  is_proper_noun: false
+  category: place
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: ancient kingdom, Rama's birthplace
+- original_term: dandaka
+  variations:
+  - dandakaranya
+  - dandaka forest
+  - exile forest
+  transliteration: daṇḍakāraṇya
+  is_proper_noun: false
+  category: place
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: forest where Rama spent his exile
+- original_term: vasistha
+  variations:
+  - vasishtha
+  - sage vasistha
+  - guru vasistha
+  transliteration: vasiṣṭha
+  is_proper_noun: false
+  category: sage
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: great sage, teacher of Rama in Yoga Vasistha
+- original_term: prakarana
+  variations:
+  - prakaranam
+  - section
+  - chapter
+  transliteration: prakaraṇa
+  is_proper_noun: false
+  category: literature
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: section or chapter, as in Yoga Vasistha
+- original_term: mumukshu
+  variations:
+  - mumukshuu
+  - seeker
+  - spiritual aspirant
+  transliteration: mumukṣu
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: seeker of liberation, spiritual aspirant
+- original_term: viveka
+  variations:
+  - vivekaa
+  - discrimination
+  - discernment
+  transliteration: viveka
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: discrimination between real and unreal
+- original_term: jagat
+  variations:
+  - jagataa
+  - world
+  - universe
+  transliteration: jagat
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: world, universe, phenomenal reality
+- original_term: sphurana
+  variations:
+  - sphuranam
+  - vibration
+  - pulsation
+  transliteration: sphuraṇa
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: vibration, pulsation of consciousness
+- original_term: samskaras
+  variations:
+  - sanskaar
+  - impressions
+  - mental tendencies
+  transliteration: saṃskāra
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: mental impressions, latent tendencies
+- original_term: drishya
+  variations:
+  - drishyaa
+  - seen
+  - object
+  transliteration: dṛśya
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: the seen, object of perception
+- original_term: drashta
+  variations:
+  - drashtaa
+  - seer
+  - witness
+  transliteration: draṣṭā
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: the seer, witness consciousness
+- original_term: kaivalya
+  variations:
+  - kaivalyaa
+  - isolation
+  - pure consciousness
+  transliteration: kaivalya
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: isolation, state of pure consciousness
+- original_term: nirvikalpa
+  variations:
+  - nirvikalpaa
+  - without thought
+  - thoughtless
+  transliteration: nirvikalpa
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: without mental modifications, thoughtless state
+- original_term: darshan
+  variations:
+  - darshan
+  - vision
+  - spiritual sight
+  transliteration: darśana
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: vision, spiritual sight, philosophy
+- original_term: prasad
+  variations:
+  - prasaad
+  - blessed food
+  - sacred offering
+  transliteration: prasāda
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: blessed food, divine grace
+- original_term: upadesha
+  variations:
+  - upadesh
+  - teaching
+  - spiritual instruction
+  transliteration: upadeśa
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: spiritual teaching, instruction
+- original_term: sadhaka
+  variations:
+  - saadhaka
+  - spiritual practitioner
+  - seeker
+  transliteration: sādhaka
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: spiritual practitioner, seeker
+- original_term: soratha
+  variations:
+  - sorattha
+  - short meter
+  - verse form
+  transliteration: soraṭhā
+  is_proper_noun: false
+  category: literature
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: short verse meter used in Ramcharitmanas
+- original_term: chhand
+  variations:
+  - chhanda
+  - meter
+  - prosody
+  transliteration: chandas
+  is_proper_noun: false
+  category: literature
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: poetic meter, verse structure
+- original_term: mangalacharan
+  variations:
+  - mangal charan
+  - invocation
+  - auspicious beginning
+  transliteration: maṅgalācaraṇa
+  is_proper_noun: false
+  category: literature
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: auspicious invocation, opening verses
+- original_term: ramrajya
+  variations:
+  - ram rajya
+  - rama kingdom
+  - ideal state
+  transliteration: rāmarājya
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: ideal kingdom of Rama, perfect governance
+- original_term: ramnam
+  variations:
+  - ram nam
+  - rama nama
+  - divine name
+  transliteration: rāmanāma
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: name of Rama, divine name chanting
+- original_term: ramkatha
+  variations:
+  - ram katha
+  - rama story
+  - ramayana story
+  transliteration: rāmakathā
+  is_proper_noun: false
+  category: literature
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: story of Rama, Ramayana narrative
+- original_term: charitra
+  variations:
+  - charitar
+  - character
+  - deeds
+  transliteration: caritra
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: character, noble deeds, conduct
+- original_term: leela
+  variations:
+  - lila
+  - divine play
+  - cosmic play
+  transliteration: līlā
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: divine play, cosmic drama
+- original_term: avatara
+  variations:
+  - avatar
+  - incarnation
+  - divine descent
+  transliteration: avatāra
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: divine incarnation, descent of God
+- original_term: maryada
+  variations:
+  - maryaada
+  - righteousness
+  - proper conduct
+  transliteration: maryādā
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: righteous conduct, proper behavior
+- original_term: vanvas
+  variations:
+  - vanvaas
+  - forest exile
+  - exile
+  transliteration: vanavāsa
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: forest exile, period of banishment
+- original_term: rajdharma
+  variations:
+  - raj dharma
+  - royal duty
+  - kingly duties
+  transliteration: rājadharma
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: royal duties, responsibilities of a king
+- original_term: putradharma
+  variations:
+  - putra dharma
+  - son duty
+  - filial duty
+  transliteration: putradharma
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: duties of a son, filial obligations
+- original_term: chittavritti
+  variations:
+  - chitta vritti
+  - mind modifications
+  - mental fluctuations
+  transliteration: cittavṛtti
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: modifications of consciousness, mental fluctuations
+- original_term: turiya
+  variations:
+  - turiyaa
+  - fourth state
+  - pure consciousness
+  transliteration: turīya
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: fourth state of consciousness beyond waking, dream, sleep
+- original_term: sthitaprajna
+  variations:
+  - sthita prajna
+  - steady wisdom
+  - stable intellect
+  transliteration: sthitaprajña
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: one with steady wisdom, stable consciousness
+- original_term: jivanmukta
+  variations:
+  - jivan mukta
+  - liberated while living
+  - living free
+  transliteration: jīvanmukta
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: liberated while living, free even in body
+- original_term: videhamukta
+  variations:
+  - videha mukta
+  - liberated without body
+  - bodiless liberation
+  transliteration: videhamukta
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: liberation after leaving the body
+- original_term: purnata
+  variations:
+  - purnataa
+  - completeness
+  - fullness
+  transliteration: pūrṇatā
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: completeness, fullness of being
+- original_term: shantata
+  variations:
+  - shantataa
+  - peace
+  - tranquility
+  transliteration: śāntatā
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: state of peace, tranquility
+- original_term: swarupa
+  variations:
+  - svaroopa
+  - true nature
+  - own form
+  transliteration: svarūpa
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: true nature, essential form
+- original_term: aparoksha
+  variations:
+  - aparokshaa
+  - direct experience
+  - immediate knowledge
+  transliteration: aparokṣa
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: direct experience, immediate knowledge
+- original_term: paroksha
+  variations:
+  - parokshaa
+  - indirect knowledge
+  - mediated experience
+  transliteration: parokṣa
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: indirect knowledge, mediated through concepts
+- original_term: vyavaharika
+  variations:
+  - vyavahaarika
+  - practical reality
+  - relative existence
+  transliteration: vyāvahārika
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: practical level of reality, relative existence
+- original_term: paramarthika
+  variations:
+  - paramaarthika
+  - absolute reality
+  - ultimate truth
+  transliteration: pāramārthika
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: absolute level of reality, ultimate truth
+- original_term: pratibhasika
+  variations:
+  - pratibhaasika
+  - apparent reality
+  - illusory appearance
+  transliteration: prātibhāsika
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: apparent reality, illusory level of existence
+- original_term: upasama
+  variations:
+  - upasham
+  - cessation
+  - tranquility
+  transliteration: upaśama
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: cessation of mental modifications, peace
+- original_term: manonasha
+  variations:
+  - mano nasha
+  - destruction of mind
+  - mind dissolution
+  transliteration: manonāśa
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: dissolution of mind, transcendence of thinking
+- original_term: vasanakshaya
+  variations:
+  - vasana kshaya
+  - destruction of tendencies
+  - habit dissolution
+  transliteration: vāsanākṣaya
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: destruction of mental tendencies and habits
+- original_term: tattva
+  variations:
+  - tatvaa
+  - principle
+  - reality
+  transliteration: tattva
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: principle, essential nature, reality
+- original_term: upadhi
+  variations:
+  - upadhii
+  - limiting condition
+  - adjunct
+  transliteration: upādhi
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: limiting condition, conditioning factor

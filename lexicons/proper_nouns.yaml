@@ -1,23 +1,896 @@
-# Proper Nouns Lexicon - Compatible format
 entries:
-  - term: "Krishna"
-    variations: ["krishna", "krsna", "krishn", "krishnaa"]
-    category: "deity"
-  - term: "Arjuna" 
-    variations: ["arjuna", "arjun", "arjuuna"]
-    category: "character"
-  - term: "Vishnu"
-    variations: ["vishnu", "visnu", "vishnuu"]
-    category: "deity"
-  - term: "Shiva"
-    variations: ["shiva", "siva", "shiv", "shiiva"]
-    category: "deity"
-  - term: "Vedanta"
-    variations: ["vedanta", "vedant", "vedaanta"]
-    category: "philosophy"
-  - term: "Upanishads"
-    variations: ["upanishads", "upanisads", "upanishad"]
-    category: "scripture"
-  - term: "Vedas"
-    variations: ["vedas", "veds", "vedaas"]
-    category: "scripture"
+- term: Krishna
+  variations:
+  - krishna
+  - krsna
+  - krishn
+  - krishnaa
+  category: deity
+  confidence: 1.0
+- term: Arjuna
+  variations:
+  - arjuna
+  - arjun
+  - arjuuna
+  category: character
+  confidence: 1.0
+- term: Vishnu
+  variations:
+  - vishnu
+  - visnu
+  - vishnuu
+  category: deity
+  confidence: 1.0
+- term: Shiva
+  variations:
+  - shiva
+  - siva
+  - shiv
+  - shiiva
+  category: deity
+  confidence: 1.0
+- term: Vedanta
+  variations:
+  - vedanta
+  - vedant
+  - vedaanta
+  category: philosophy
+  confidence: 1.0
+- term: Upanishads
+  variations:
+  - upanishads
+  - upanisads
+  - upanishad
+  category: scripture
+- term: Vedas
+  variations:
+  - vedas
+  - veds
+  - vedaas
+  category: scripture
+- term: Ganesha
+  variations:
+  - ganesh
+  - ganapati
+  - vinayaka
+  - ganeshaa
+  category: deity
+  confidence: 1.0
+- term: Durga
+  variations:
+  - durga
+  - devi
+  - divine mother
+  - durgaa
+  category: deity
+- term: Hanuman
+  variations:
+  - hanuman
+  - maruti
+  - anjaneya
+  - hanumanji
+  category: deity
+- term: Rama
+  variations:
+  - ram
+  - ramaa
+  - ramachandra
+  - ramji
+  category: deity
+- term: Lakshmi
+  variations:
+  - laxmi
+  - lakshmi
+  - shri
+  - mahalakshmi
+  category: deity
+- term: Saraswati
+  variations:
+  - saraswati
+  - sarasvati
+  - veena devi
+  - sharada
+  category: deity
+- term: Radha
+  variations:
+  - radha
+  - radhika
+  - radhaa
+  - radharani
+  category: deity
+- term: Vyasa
+  variations:
+  - vyas
+  - krishna dwaipayana
+  - ved vyasa
+  - vyaasa
+  category: sage
+- term: Valmiki
+  variations:
+  - valmiki
+  - maharishi valmiki
+  - adi kavi
+  - valmikii
+  category: sage
+- term: Adi Shankara
+  variations:
+  - adi shankara
+  - shankaracharya
+  - shankara
+  - adi shankar
+  category: acharya
+  confidence: 1.0
+- term: Patanjali
+  variations:
+  - patanjali
+  - maharishi patanjali
+  - patanjalee
+  - sage patanjali
+  category: sage
+- term: Narada
+  variations:
+  - narada
+  - devarishi narada
+  - narad
+  - naradaa
+  category: sage
+- term: Vasishtha
+  variations:
+  - vasishtha
+  - vashishtha
+  - brahmarishi vasishtha
+  - vasishta
+  category: sage
+- term: Vrindavan
+  variations:
+  - vrindavan
+  - vrindavana
+  - brindavan
+  - vrindaavan
+  category: place
+  confidence: 1.0
+- term: Haridwar
+  variations:
+  - haridwar
+  - hardwar
+  - gateway to god
+  - hari dwar
+  category: place
+- term: Rishikesh
+  variations:
+  - rishikesh
+  - hrishikesh
+  - yoga capital
+  - rishikeshh
+  category: place
+- term: Varanasi
+  variations:
+  - varanasi
+  - benaras
+  - kashi
+  - varaanasi
+  category: place
+- term: Mathura
+  variations:
+  - mathura
+  - mathuraa
+  - krishna birthplace
+  - mathurapuri
+  category: place
+- term: Ayodhya
+  variations:
+  - ayodhya
+  - ayodhyaa
+  - rama birthplace
+  - awadh
+  category: place
+- term: Dwaraka
+  variations:
+  - dwarka
+  - dvaraka
+  - krishna kingdom
+  - dwarikaa
+  category: place
+- term: Janmashtami
+  variations:
+  - janmashtami
+  - krishna jayanti
+  - gokulashtami
+  - janmashtamii
+  category: festival
+- term: Diwali
+  variations:
+  - diwali
+  - deepavali
+  - festival of lights
+  - deepawali
+  category: festival
+- term: Holi
+  variations:
+  - holi
+  - festival of colors
+  - holii
+  - phagwah
+  category: festival
+- term: Navaratri
+  variations:
+  - navratri
+  - nine nights
+  - nava ratri
+  - navaraatri
+  category: festival
+- term: Kumbh Mela
+  variations:
+  - kumbh mela
+  - kumbha mela
+  - great gathering
+  - kumbh melaa
+  category: festival
+- term: Acharya
+  variations:
+  - acharya
+  - acharyaa
+  - teacher
+  - spiritual teacher
+  category: title
+- term: Guru
+  variations:
+  - guru
+  - spiritual guide
+  - guruu
+  - guruji
+  category: title
+- term: Swami
+  variations:
+  - swami
+  - swamiji
+  - renunciate
+  - swaami
+  category: title
+- term: Maharishi
+  variations:
+  - maharishi
+  - great sage
+  - maharshi
+  - mahaarishii
+  category: title
+- term: Pandit
+  variations:
+  - pandit
+  - pandita
+  - scholar
+  - panditji
+  category: title
+- term: Kali
+  variations:
+  - kali
+  - kalika
+  - divine mother kali
+  category: deity
+  confidence: 1.0
+- term: Parvati
+  variations:
+  - parvati
+  - paarvaati
+  - divine mother parvati
+  category: deity
+  confidence: 1.0
+- term: Indra
+  variations:
+  - indra
+  - king of gods
+  - lord indra
+  category: deity
+  confidence: 1.0
+- term: Tulsidas
+  variations:
+  - tulsi das
+  - goswami tulsidas
+  - saint tulsidas
+  category: sage
+  confidence: 1.0
+- term: Ramcharitmanas
+  variations:
+  - ramcharitamanas
+  - ram charit manas
+  - tulsi ramayana
+  category: scripture
+  confidence: 1.0
+- term: Chitrakoot
+  variations:
+  - chitrakut
+  - chitrakoot
+  - ram exile place
+  category: place
+  confidence: 1.0
+- term: Panchavati
+  variations:
+  - panchvati
+  - panch vati
+  - five trees
+  category: place
+  confidence: 1.0
+- term: Lanka
+  variations:
+  - lankapuri
+  - ravana kingdom
+  - golden lanka
+  category: place
+  confidence: 1.0
+- term: Kaikeyi
+  variations:
+  - kaikeyee
+  - kaikayi
+  - rama stepmother
+  category: character
+  confidence: 1.0
+- term: Bharata
+  variations:
+  - bharat
+  - bharataa
+  - rama brother
+  category: character
+  confidence: 1.0
+- term: Lakshmana
+  variations:
+  - lakshman
+  - laxman
+  - rama brother
+  category: character
+  confidence: 1.0
+- term: Ravana
+  variations:
+  - raavan
+  - lankapati
+  - ten headed
+  category: character
+  confidence: 1.0
+- term: Yoga Vasistha
+  variations:
+  - yogavasistha
+  - vasistha ramayana
+  - maha ramayana
+  category: scripture
+  confidence: 1.0
+- term: Bharadvaja
+  variations:
+  - bharadwaj
+  - bharadvaja rishi
+  - sage bharadvaja
+  category: sage
+  confidence: 1.0
+- term: Vidura
+  variations:
+  - viduraa
+  - mahatma vidura
+  - wise vidura
+  category: character
+  confidence: 1.0
+- term: Chudala
+  variations:
+  - chudalaa
+  - queen chudala
+  - wise queen
+  category: character
+  confidence: 1.0
+- term: Sikhidhvaja
+  variations:
+  - sikhidhvajaa
+  - king sikhidhvaja
+  - seeker king
+  category: character
+  confidence: 1.0
+- term: Lila
+  variations:
+  - leela
+  - divine play
+  - cosmic play
+  category: concept
+  confidence: 1.0
+- term: Mahatma
+  variations:
+  - mahatmaa
+  - great soul
+  - saint
+  category: title
+  confidence: 1.0
+- term: Rishi
+  variations:
+  - rishii
+  - sage
+  - seer
+  category: title
+  confidence: 1.0
+- term: Muni
+  variations:
+  - munii
+  - silent sage
+  - contemplative
+  category: title
+  confidence: 1.0
+- term: Dasharatha
+  variations:
+  - dasharath
+  - dasha ratha
+  - ten chariot king
+  - rama father
+  category: character
+  confidence: 1.0
+- term: Kaushalya
+  variations:
+  - kausalya
+  - kaushalyaa
+  - rama mother
+  - queen kaushalya
+  category: character
+  confidence: 1.0
+- term: Sumitra
+  variations:
+  - sumitraa
+  - good friend queen
+  - third queen
+  category: character
+  confidence: 1.0
+- term: Shatrughna
+  variations:
+  - shatrughan
+  - enemy destroyer
+  - fourth brother
+  category: character
+  confidence: 1.0
+- term: Urmila
+  variations:
+  - urmilaa
+  - lakshmana wife
+  - sita sister
+  category: character
+  confidence: 1.0
+- term: Mandavi
+  variations:
+  - mandavee
+  - bharata wife
+  - janaka daughter
+  category: character
+  confidence: 1.0
+- term: Shrutikirti
+  variations:
+  - shruti kirti
+  - shatrughna wife
+  - fame of vedas
+  category: character
+  confidence: 1.0
+- term: Janaka
+  variations:
+  - janakaa
+  - videha king
+  - sita father
+  - mithila king
+  category: character
+  confidence: 1.0
+- term: Sunaina
+  variations:
+  - sunainaa
+  - beautiful eyes
+  - sita mother
+  - janaka queen
+  category: character
+  confidence: 1.0
+- term: Vishwamitra
+  variations:
+  - vishwamitra
+  - vishvamitra
+  - friend of world
+  - sage vishwamitra
+  category: sage
+  confidence: 1.0
+- term: Manthara
+  variations:
+  - mantharaa
+  - hunchbacked maid
+  - kaikeyi maid
+  category: character
+  confidence: 1.0
+- term: Sumantra
+  variations:
+  - sumantraa
+  - good counselor
+  - royal minister
+  category: character
+  confidence: 1.0
+- term: Guha
+  variations:
+  - guhaa
+  - tribal chief
+  - nishadraj
+  - rama friend
+  category: character
+  confidence: 1.0
+- term: Atri
+  variations:
+  - atree
+  - sage atri
+  - rishi atri
+  category: sage
+  confidence: 1.0
+- term: Anasuya
+  variations:
+  - anasuyaa
+  - without jealousy
+  - atri wife
+  - sage anasuya
+  category: sage
+  confidence: 1.0
+- term: Shabari
+  variations:
+  - shabaree
+  - tribal woman
+  - devoted shabari
+  - berries shabari
+  category: character
+  confidence: 1.0
+- term: Jatayu
+  variations:
+  - jataayu
+  - vulture king
+  - bird jatayu
+  - noble vulture
+  category: character
+  confidence: 1.0
+- term: Sampati
+  variations:
+  - sampatee
+  - jatayu brother
+  - eagle sampati
+  category: character
+  confidence: 1.0
+- term: Surpanakha
+  variations:
+  - shurpanakha
+  - sharp nails
+  - ravana sister
+  category: character
+  confidence: 1.0
+- term: Khara
+  variations:
+  - kharaa
+  - demon khara
+  - surpanakha brother
+  category: character
+  confidence: 1.0
+- term: Dushana
+  variations:
+  - dushanaa
+  - demon dushana
+  - khara associate
+  category: character
+  confidence: 1.0
+- term: Trishira
+  variations:
+  - trishiraa
+  - three headed
+  - demon general
+  category: character
+  confidence: 1.0
+- term: Maricha
+  variations:
+  - mareechi
+  - golden deer
+  - demon maricha
+  category: character
+  confidence: 1.0
+- term: Subahu
+  variations:
+  - subahuu
+  - demon subahu
+  - yagna disturber
+  category: character
+  confidence: 1.0
+- term: Tataka
+  variations:
+  - taataka
+  - demoness tataka
+  - forest demoness
+  category: character
+  confidence: 1.0
+- term: Kumbhakarna
+  variations:
+  - kumbhakaran
+  - pot eared
+  - ravana brother
+  - sleeping giant
+  category: character
+  confidence: 1.0
+- term: Vibhishana
+  variations:
+  - vibhishan
+  - ravana brother
+  - righteous demon
+  - lanka king
+  category: character
+  confidence: 1.0
+- term: Meghnad
+  variations:
+  - meghnath
+  - indrajit
+  - cloud roar
+  - ravana son
+  category: character
+  confidence: 1.0
+- term: Mandodari
+  variations:
+  - mandodaree
+  - beautiful belly
+  - ravana wife
+  category: character
+  confidence: 1.0
+- term: Sugriva
+  variations:
+  - sugreev
+  - beautiful neck
+  - monkey king
+  - vali brother
+  category: character
+  confidence: 1.0
+- term: Vali
+  variations:
+  - baali
+  - vaali
+  - monkey king
+  - sugriva brother
+  category: character
+  confidence: 1.0
+- term: Tara
+  variations:
+  - taraa
+  - star
+  - sugriva wife
+  - vali wife
+  category: character
+  confidence: 1.0
+- term: Angada
+  variations:
+  - angadaa
+  - armlet
+  - vali son
+  - monkey prince
+  category: character
+  confidence: 1.0
+- term: Jambavan
+  variations:
+  - jambvant
+  - bear king
+  - old bear
+  - wise jambavan
+  category: character
+  confidence: 1.0
+- term: Nala
+  variations:
+  - nalaa
+  - architect monkey
+  - bridge builder
+  category: character
+  confidence: 1.0
+- term: Nila
+  variations:
+  - nilaa
+  - blue monkey
+  - monkey warrior
+  category: character
+  confidence: 1.0
+- term: Mithila
+  variations:
+  - mithilaa
+  - janaka kingdom
+  - sita birthplace
+  - videha
+  category: place
+  confidence: 1.0
+- term: Kishkindha
+  variations:
+  - kishkindhaa
+  - monkey kingdom
+  - sugriva capital
+  category: place
+  confidence: 1.0
+- term: Ashokvatika
+  variations:
+  - ashok vatika
+  - ashoka garden
+  - sita prison
+  - lanka garden
+  category: place
+  confidence: 1.0
+- term: Rishyamukh
+  variations:
+  - rishyamook
+  - rishya mukh
+  - sugriva mountain
+  - exile mountain
+  category: place
+  confidence: 1.0
+- term: Pampa
+  variations:
+  - pampaa
+  - pampa sarovar
+  - sacred lake
+  - hanuman lake
+  category: place
+  confidence: 1.0
+- term: Setubandh
+  variations:
+  - setu bandh
+  - bridge construction
+  - rama bridge
+  - adams bridge
+  category: place
+  confidence: 1.0
+- term: Pushpaka
+  variations:
+  - pushpak
+  - flying chariot
+  - ravana vimana
+  - celestial vehicle
+  category: concept
+  confidence: 1.0
+- term: Shukadeva
+  variations:
+  - shuka deva
+  - shukdev
+  - parrot sage
+  - vyasa son
+  category: sage
+  confidence: 1.0
+- term: Janaka Videha
+  variations:
+  - king janaka
+  - videha janaka
+  - philosopher king
+  category: character
+  confidence: 1.0
+- term: Ashtavakra
+  variations:
+  - ashta vakra
+  - eight curved
+  - sage ashtavakra
+  category: sage
+  confidence: 1.0
+- term: Kacha
+  variations:
+  - kachaa
+  - disciple kacha
+  - brahaspati son
+  category: character
+  confidence: 1.0
+- term: Shukracharya
+  variations:
+  - shukra acharya
+  - guru shukra
+  - demon guru
+  category: sage
+  confidence: 1.0
+- term: Gadhi
+  variations:
+  - gadhee
+  - king gadhi
+  - vishwamitra father
+  category: character
+  confidence: 1.0
+- term: Lavana
+  variations:
+  - lavanaa
+  - king lavana
+  - salt king
+  category: character
+  confidence: 1.0
+- term: Padma
+  variations:
+  - padmaa
+  - lotus
+  - divine lotus
+  category: character
+  confidence: 1.0
+- term: Brahma
+  variations:
+  - brahmaa
+  - creator god
+  - four faced
+  category: deity
+  confidence: 1.0
+- term: Dattareya
+  variations:
+  - datta treya
+  - three master guru
+  - avadhuta
+  category: sage
+  confidence: 1.0
+- term: Parashurama
+  variations:
+  - parashu rama
+  - axe rama
+  - vishnu avatar
+  category: character
+  confidence: 1.0
+- term: Prahlada
+  variations:
+  - prahlaad
+  - vishnu devotee
+  - demon devotee
+  category: character
+  confidence: 1.0
+- term: Hiranyakashipu
+  variations:
+  - hiranya kashipu
+  - golden bed
+  - demon king
+  category: character
+  confidence: 1.0
+- term: Narasimha
+  variations:
+  - nara simha
+  - man lion
+  - vishnu avatar
+  category: deity
+  confidence: 1.0
+- term: Bhishma
+  variations:
+  - bheeshma
+  - terrible vow
+  - mahabharata grandfather
+  category: character
+  confidence: 1.0
+- term: Uddyalaka
+  variations:
+  - uddaalaka
+  - sage uddyalaka
+  - svetaketu father
+  category: sage
+  confidence: 1.0
+- term: Svetaketu
+  variations:
+  - shvetaketu
+  - white banner
+  - uddyalaka son
+  category: character
+  confidence: 1.0
+- term: Kasyapa
+  variations:
+  - kashyapa
+  - sage kashyap
+  - prajapati
+  category: sage
+  confidence: 1.0
+- term: Marichi
+  variations:
+  - mareechi
+  - ray of light
+  - brahma son
+  category: sage
+  confidence: 1.0
+- term: Buddhi
+  variations:
+  - buddhee
+  - intellect
+  - discriminating wisdom
+  category: concept
+  confidence: 1.0
+- term: Manas
+  variations:
+  - manass
+  - mind
+  - thinking principle
+  category: concept
+  confidence: 1.0
+- term: Ahamkara
+  variations:
+  - aham kara
+  - ego maker
+  - i sense
+  category: concept
+  confidence: 1.0
+- term: Chitta
+  variations:
+  - chittaa
+  - consciousness
+  - awareness
+  category: concept
+  confidence: 1.0

@@ -1,0 +1,6450 @@
+entries:
+- original_term: vata
+  variations:
+  - vaata
+  - wind dosha
+  - air element
+  transliteration: vāta
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: dosha governing movement
+- original_term: pitta
+  variations:
+  - pittaa
+  - fire dosha
+  - bile
+  transliteration: pitta
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: dosha governing metabolism
+- original_term: kapha
+  variations:
+  - kaphaa
+  - earth dosha
+  - phlegm
+  transliteration: kapha
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: dosha governing structure
+- original_term: ojas
+  variations:
+  - ojass
+  - vital essence
+  - immunity
+  transliteration: ojas
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: vital essence, immunity
+- original_term: tejas
+  variations:
+  - tejass
+  - digestive fire
+  - radiance
+  transliteration: tejas
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: digestive fire, mental clarity
+- original_term: prana
+  variations:
+  - praana
+  - life force
+  - vital air
+  transliteration: prāṇa
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: life force, vital energy
+- original_term: agni
+  variations:
+  - agnii
+  - digestive fire
+  - metabolic fire
+  transliteration: agni
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: digestive fire
+- original_term: ama
+  variations:
+  - amaa
+  - toxins
+  - undigested matter
+  transliteration: āma
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: toxins, undigested food
+- original_term: rasa
+  variations:
+  - rasaa
+  - taste
+  - essence
+  transliteration: rasa
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: taste, essence, plasma
+- original_term: rakta
+  variations:
+  - raktaa
+  - blood
+  - red
+  transliteration: rakta
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: blood tissue
+- original_term: mamsa
+  variations:
+  - mamsaa
+  - muscle
+  - flesh
+  transliteration: māṃsa
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: muscle tissue
+- original_term: meda
+  variations:
+  - medaa
+  - fat
+  - adipose
+  transliteration: medas
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: fat tissue
+- original_term: asthi
+  variations:
+  - asthii
+  - bone
+  - skeletal
+  transliteration: asthi
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: bone tissue
+- original_term: majja
+  variations:
+  - majjaa
+  - marrow
+  - nerve
+  transliteration: majjā
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: marrow, nervous tissue
+- original_term: shukra
+  variations:
+  - shukraa
+  - reproductive
+  - semen
+  transliteration: śukra
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: reproductive tissue
+- original_term: rashi
+  variations:
+  - raashi
+  - zodiac sign
+  - constellation
+  transliteration: rāśi
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: zodiac sign
+- original_term: nakshatra
+  variations:
+  - nakshatraa
+  - constellation
+  - star
+  transliteration: nakṣatra
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: lunar mansion
+- original_term: graha
+  variations:
+  - grahaa
+  - planet
+  - celestial body
+  transliteration: graha
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: planet, celestial influencer
+- original_term: bhava
+  variations:
+  - bhaava
+  - house
+  - mansion
+  transliteration: bhāva
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: astrological house
+- original_term: dasha
+  variations:
+  - dashaa
+  - planetary period
+  - time period
+  transliteration: daśā
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: planetary period
+- original_term: antardasha
+  variations:
+  - antardashaaa
+  - sub-period
+  - minor period
+  transliteration: antardaśā
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: sub-planetary period
+- original_term: lagna
+  variations:
+  - lagnaa
+  - ascendant
+  - rising sign
+  transliteration: lagna
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: ascendant
+- original_term: surya
+  variations:
+  - suryaa
+  - sun
+  - solar
+  transliteration: sūrya
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: sun
+- original_term: chandra
+  variations:
+  - chandraa
+  - moon
+  - lunar
+  transliteration: candra
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: moon
+- original_term: mangal
+  variations:
+  - mangalaa
+  - mars
+  - tuesday
+  transliteration: maṅgala
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: mars
+- original_term: budha
+  variations:
+  - budhaa
+  - mercury
+  - wednesday
+  transliteration: budha
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: mercury
+- original_term: guru
+  variations:
+  - guruu
+  - jupiter
+  - teacher
+  transliteration: guru
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: jupiter
+- original_term: shukra
+  variations:
+  - shukraa
+  - venus
+  - friday
+  transliteration: śukra
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: venus
+- original_term: shani
+  variations:
+  - shanii
+  - saturn
+  - saturday
+  transliteration: śani
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: saturn
+- original_term: rahu
+  variations:
+  - rahuu
+  - north node
+  - dragon head
+  transliteration: rāhu
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: north lunar node
+- original_term: ketu
+  variations:
+  - ketuu
+  - south node
+  - dragon tail
+  transliteration: ketu
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: south lunar node
+- original_term: raga
+  variations:
+  - raag
+  - raaga
+  - melody
+  transliteration: rāga
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: musical scale, melody
+- original_term: tala
+  variations:
+  - taal
+  - taala
+  - rhythm
+  transliteration: tāla
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: rhythmic cycle
+- original_term: swara
+  variations:
+  - swar
+  - swaraa
+  - note
+  transliteration: svara
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: musical note
+- original_term: alapa
+  variations:
+  - aalap
+  - aalapa
+  - improvisation
+  transliteration: ālāpa
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: melodic improvisation
+- original_term: tana
+  variations:
+  - tanaa
+  - fast passages
+  - runs
+  transliteration: tāna
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: fast melodic runs
+- original_term: jhala
+  variations:
+  - jhalaa
+  - rapid strumming
+  - climax
+  transliteration: jhālā
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: rapid rhythmic section
+- original_term: melakartha
+  variations:
+  - melakarthaa
+  - parent scale
+  - main raga
+  transliteration: mēḷakartā
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: parent raga system
+- original_term: janya
+  variations:
+  - janyaa
+  - derived raga
+  - child scale
+  transliteration: janya
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: derived raga
+- original_term: aroha
+  variations:
+  - arohaa
+  - ascending scale
+  - going up
+  transliteration: ārōha
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: ascending scale
+- original_term: avaroha
+  variations:
+  - avarohaa
+  - descending scale
+  - going down
+  transliteration: avarōha
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: descending scale
+- original_term: mandir
+  variations:
+  - mandiraa
+  - temple
+  - shrine
+  transliteration: mandira
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: temple
+- original_term: shikhara
+  variations:
+  - shikharaa
+  - temple spire
+  - peak
+  transliteration: śikhara
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: temple spire
+- original_term: garbhagriha
+  variations:
+  - garbhagrihaaa
+  - sanctum
+  - womb chamber
+  transliteration: garbhagr̥ha
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: inner sanctum
+- original_term: mandapa
+  variations:
+  - mandapaa
+  - pillared hall
+  - pavilion
+  transliteration: maṇḍapa
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: pillared hall
+- original_term: pradakshina
+  variations:
+  - pradakshinaa
+  - circumambulation
+  - ritual walk
+  transliteration: pradakṣiṇā
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: circumambulation
+- original_term: dvara
+  variations:
+  - dvaraa
+  - gateway
+  - door
+  transliteration: dvāra
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: gateway
+- original_term: stupa
+  variations:
+  - stupaa
+  - dome
+  - burial mound
+  transliteration: stūpa
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: Buddhist monument
+- original_term: vimana
+  variations:
+  - vimanaa
+  - temple tower
+  - celestial palace
+  transliteration: vimāna
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: temple tower
+- original_term: gopuram
+  variations:
+  - gopuramaa
+  - entrance tower
+  - gateway tower
+  transliteration: gōpuram
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: temple entrance tower
+- original_term: yajnashala
+  variations:
+  - yajnashalaaa
+  - sacrifice hall
+  - fire altar
+  transliteration: yajñaśālā
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: sacrificial hall
+- original_term: sevāa
+  variations:
+  - sevāaa
+  - sevāa
+  - sevāa
+  - sevāa
+  transliteration: sevāa
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 0 for performance testing
+- original_term: asin
+  variations:
+  - aasin
+  - asiin
+  - asin
+  - asin
+  transliteration: asin
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 1 for performance testing
+- original_term: bhumat
+  variations:
+  - bhumaat
+  - bhumat
+  - bhuumat
+  - bumat
+  transliteration: bhumat
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 2 for performance testing
+- original_term: ishda
+  variations:
+  - ishdaa
+  - iishda
+  - ishda
+  - isda
+  transliteration: ishda
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 3 for performance testing
+- original_term: sruna
+  variations:
+  - srunaa
+  - sruna
+  - sruuna
+  - sruna
+  transliteration: śruna
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 4 for performance testing
+- original_term: vrtin
+  variations:
+  - vrtin
+  - vrtiin
+  - vrtin
+  - vrtin
+  transliteration: vrtin
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 5 for performance testing
+- original_term: vahika
+  variations:
+  - vaahikaa
+  - vahiika
+  - vahika
+  - vaika
+  transliteration: vahika
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 6 for performance testing
+- original_term: bhuti
+  variations:
+  - bhuti
+  - bhutii
+  - bhuuti
+  - buti
+  transliteration: bhuti
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 7 for performance testing
+- original_term: cinta
+  variations:
+  - cintaa
+  - ciinta
+  - cinta
+  - cinta
+  transliteration: cinta
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 8 for performance testing
+- original_term: jñaant
+  variations:
+  - jñaaaant
+  - jñaant
+  - jñaant
+  - jñaant
+  transliteration: jñaant
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 9 for performance testing
+- original_term: labhant
+  variations:
+  - laabhaant
+  - labhant
+  - labhant
+  - labant
+  transliteration: labhant
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 10 for performance testing
+- original_term: niiu
+  variations:
+  - niiu
+  - niiiiu
+  - niiuu
+  - niiu
+  transliteration: niiu
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 11 for performance testing
+- original_term: yutā
+  variations:
+  - yutā
+  - yutā
+  - yuutā
+  - yutā
+  transliteration: yutā
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 12 for performance testing
+- original_term: yutva
+  variations:
+  - yutvaa
+  - yutva
+  - yuutva
+  - yutva
+  transliteration: yutva
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 13 for performance testing
+- original_term: vrtika
+  variations:
+  - vrtikaa
+  - vrtiika
+  - vrtika
+  - vrtika
+  transliteration: vrtika
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 14 for performance testing
+- original_term: grahana
+  variations:
+  - graahaanaa
+  - grahana
+  - grahana
+  - graana
+  transliteration: grahana
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 15 for performance testing
+- original_term: krin
+  variations:
+  - krin
+  - kriin
+  - krin
+  - krin
+  transliteration: kr̥in
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 16 for performance testing
+- original_term: grahtra
+  variations:
+  - graahtraa
+  - grahtra
+  - grahtra
+  - gratra
+  transliteration: grahtra
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 17 for performance testing
+- original_term: asanā
+  variations:
+  - aasaanā
+  - asanā
+  - asanā
+  - asanā
+  transliteration: asanā
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 18 for performance testing
+- original_term: dhyātha
+  variations:
+  - dhyāthaa
+  - dhyātha
+  - dhyātha
+  - dyāta
+  transliteration: dhyātha
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 19 for performance testing
+- original_term: bhajant
+  variations:
+  - bhaajaant
+  - bhajant
+  - bhajant
+  - bajant
+  transliteration: bhajant
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 20 for performance testing
+- original_term: sevāi
+  variations:
+  - sevāi
+  - sevāii
+  - sevāi
+  - sevāi
+  transliteration: sevāi
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 21 for performance testing
+- original_term: smrtva
+  variations:
+  - smrtvaa
+  - smrtva
+  - smrtva
+  - smrtva
+  transliteration: smrtva
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 22 for performance testing
+- original_term: sevāant
+  variations:
+  - sevāaant
+  - sevāant
+  - sevāant
+  - sevāant
+  transliteration: sevāant
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 23 for performance testing
+- original_term: jiti
+  variations:
+  - jiti
+  - jiitii
+  - jiti
+  - jiti
+  transliteration: jiti
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 24 for performance testing
+- original_term: dhyāu
+  variations:
+  - dhyāu
+  - dhyāu
+  - dhyāuu
+  - dyāu
+  transliteration: dhyāu
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 25 for performance testing
+- original_term: dhyāism
+  variations:
+  - dhyāism
+  - dhyāiism
+  - dhyāism
+  - dyāism
+  transliteration: dhyāism
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 26 for performance testing
+- original_term: dhaika
+  variations:
+  - dhaaikaa
+  - dhaiika
+  - dhaika
+  - daika
+  transliteration: dhaika
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 27 for performance testing
+- original_term: vahmat
+  variations:
+  - vaahmaat
+  - vahmat
+  - vahmat
+  - vamat
+  transliteration: vahmat
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 28 for performance testing
+- original_term: yuism
+  variations:
+  - yuism
+  - yuiism
+  - yuuism
+  - yuism
+  transliteration: yuism
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 29 for performance testing
+- original_term: hana
+  variations:
+  - haanaa
+  - hana
+  - hana
+  - ana
+  transliteration: hana
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 30 for performance testing
+- original_term: sruin
+  variations:
+  - sruin
+  - sruiin
+  - sruuin
+  - sruin
+  transliteration: śruin
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 31 for performance testing
+- original_term: dhama
+  variations:
+  - dhaamaa
+  - dhama
+  - dhama
+  - dama
+  transliteration: dhama
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 32 for performance testing
+- original_term: grahin
+  variations:
+  - graahin
+  - grahiin
+  - grahin
+  - grain
+  transliteration: grahin
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 33 for performance testing
+- original_term: vrta
+  variations:
+  - vrtaa
+  - vrta
+  - vrta
+  - vrta
+  transliteration: vrta
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 34 for performance testing
+- original_term: pūji
+  variations:
+  - pūji
+  - pūjii
+  - pūji
+  - pūji
+  transliteration: pūji
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 35 for performance testing
+- original_term: jñapa
+  variations:
+  - jñaapaa
+  - jñapa
+  - jñapa
+  - jñapa
+  transliteration: jñapa
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 36 for performance testing
+- original_term: smra
+  variations:
+  - smraa
+  - smra
+  - smra
+  - smra
+  transliteration: smra
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 37 for performance testing
+- original_term: krtra
+  variations:
+  - krtraa
+  - krtra
+  - krtra
+  - krtra
+  transliteration: kr̥tra
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 38 for performance testing
+- original_term: hanya
+  variations:
+  - haanyaa
+  - hanya
+  - hanya
+  - anya
+  transliteration: hanya
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 39 for performance testing
+- original_term: dhriant
+  variations:
+  - dhriaant
+  - dhriiant
+  - dhriant
+  - driant
+  transliteration: dhriant
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 40 for performance testing
+- original_term: smrma
+  variations:
+  - smrmaa
+  - smrma
+  - smrma
+  - smrma
+  transliteration: smrma
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 41 for performance testing
+- original_term: hantra
+  variations:
+  - haantraa
+  - hantra
+  - hantra
+  - antra
+  transliteration: hantra
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 42 for performance testing
+- original_term: krmat
+  variations:
+  - krmaat
+  - krmat
+  - krmat
+  - krmat
+  transliteration: kr̥mat
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 43 for performance testing
+- original_term: smrin
+  variations:
+  - smrin
+  - smriin
+  - smrin
+  - smrin
+  transliteration: smrin
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 44 for performance testing
+- original_term: yutha
+  variations:
+  - yuthaa
+  - yutha
+  - yuutha
+  - yuta
+  transliteration: yutha
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 45 for performance testing
+- original_term: dhriant
+  variations:
+  - dhriaant
+  - dhriiant
+  - dhriant
+  - driant
+  transliteration: dhriant
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 46 for performance testing
+- original_term: vidya
+  variations:
+  - vidyaa
+  - viidya
+  - vidya
+  - vidya
+  transliteration: vidya
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 47 for performance testing
+- original_term: bhui
+  variations:
+  - bhui
+  - bhuii
+  - bhuui
+  - bui
+  transliteration: bhui
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 48 for performance testing
+- original_term: ishvat
+  variations:
+  - ishvaat
+  - iishvat
+  - ishvat
+  - isvat
+  transliteration: ishvat
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 49 for performance testing
+- original_term: bhajant
+  variations:
+  - bhaajaant
+  - bhajant
+  - bhajant
+  - bajant
+  transliteration: bhajant
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 50 for performance testing
+- original_term: bhuika
+  variations:
+  - bhuikaa
+  - bhuiika
+  - bhuuika
+  - buika
+  transliteration: bhuika
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 51 for performance testing
+- original_term: vidpa
+  variations:
+  - vidpaa
+  - viidpa
+  - vidpa
+  - vidpa
+  transliteration: vidpa
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 52 for performance testing
+- original_term: dhrina
+  variations:
+  - dhrinaa
+  - dhriina
+  - dhrina
+  - drina
+  transliteration: dhrina
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 53 for performance testing
+- original_term: dhriti
+  variations:
+  - dhriti
+  - dhriitii
+  - dhriti
+  - driti
+  transliteration: dhriti
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 54 for performance testing
+- original_term: niitra
+  variations:
+  - niitraa
+  - niiiitra
+  - niitra
+  - niitra
+  transliteration: niitra
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 55 for performance testing
+- original_term: patna
+  variations:
+  - paatnaa
+  - patna
+  - patna
+  - patna
+  transliteration: patna
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 56 for performance testing
+- original_term: cintna
+  variations:
+  - cintnaa
+  - ciintna
+  - cintna
+  - cintna
+  transliteration: cintna
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 57 for performance testing
+- original_term: sevāin
+  variations:
+  - sevāin
+  - sevāiin
+  - sevāin
+  - sevāin
+  transliteration: sevāin
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 58 for performance testing
+- original_term: yutā
+  variations:
+  - yutā
+  - yutā
+  - yuutā
+  - yutā
+  transliteration: yutā
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 59 for performance testing
+- original_term: yui
+  variations:
+  - yui
+  - yuii
+  - yuui
+  - yui
+  transliteration: yui
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 60 for performance testing
+- original_term: hananā
+  variations:
+  - haanaanā
+  - hananā
+  - hananā
+  - ananā
+  transliteration: hananā
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 61 for performance testing
+- original_term: pūjant
+  variations:
+  - pūjaant
+  - pūjant
+  - pūjant
+  - pūjant
+  transliteration: pūjant
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 62 for performance testing
+- original_term: sevāin
+  variations:
+  - sevāin
+  - sevāiin
+  - sevāin
+  - sevāin
+  transliteration: sevāin
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 63 for performance testing
+- original_term: sthaanā
+  variations:
+  - sthaaaanā
+  - sthaanā
+  - sthaanā
+  - staanā
+  transliteration: sthaanā
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 64 for performance testing
+- original_term: sthau
+  variations:
+  - sthaau
+  - sthau
+  - sthauu
+  - stau
+  transliteration: sthau
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 65 for performance testing
+- original_term: gamka
+  variations:
+  - gaamkaa
+  - gamka
+  - gamka
+  - gamka
+  transliteration: gamka
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 66 for performance testing
+- original_term: niipa
+  variations:
+  - niipaa
+  - niiiipa
+  - niipa
+  - niipa
+  transliteration: niipa
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 67 for performance testing
+- original_term: patda
+  variations:
+  - paatdaa
+  - patda
+  - patda
+  - patda
+  transliteration: patda
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 68 for performance testing
+- original_term: jitra
+  variations:
+  - jitraa
+  - jiitra
+  - jitra
+  - jitra
+  transliteration: jitra
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 69 for performance testing
+- original_term: yuti
+  variations:
+  - yuti
+  - yutii
+  - yuuti
+  - yuti
+  transliteration: yuti
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 70 for performance testing
+- original_term: yuism
+  variations:
+  - yuism
+  - yuiism
+  - yuuism
+  - yuism
+  transliteration: yuism
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 71 for performance testing
+- original_term: labhti
+  variations:
+  - laabhti
+  - labhtii
+  - labhti
+  - labti
+  transliteration: labhti
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 72 for performance testing
+- original_term: cintka
+  variations:
+  - cintkaa
+  - ciintka
+  - cintka
+  - cintka
+  transliteration: cintka
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 73 for performance testing
+- original_term: dhyāya
+  variations:
+  - dhyāyaa
+  - dhyāya
+  - dhyāya
+  - dyāya
+  transliteration: dhyāya
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 74 for performance testing
+- original_term: asti
+  variations:
+  - aasti
+  - astii
+  - asti
+  - asti
+  transliteration: asti
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 75 for performance testing
+- original_term: gamanā
+  variations:
+  - gaamaanā
+  - gamanā
+  - gamanā
+  - gamanā
+  transliteration: gamanā
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 76 for performance testing
+- original_term: asya
+  variations:
+  - aasyaa
+  - asya
+  - asya
+  - asya
+  transliteration: asya
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 77 for performance testing
+- original_term: hantha
+  variations:
+  - haanthaa
+  - hantha
+  - hantha
+  - anta
+  transliteration: hantha
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 78 for performance testing
+- original_term: vidka
+  variations:
+  - vidkaa
+  - viidka
+  - vidka
+  - vidka
+  transliteration: vidka
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 79 for performance testing
+- original_term: vidmat
+  variations:
+  - vidmaat
+  - viidmat
+  - vidmat
+  - vidmat
+  transliteration: vidmat
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 80 for performance testing
+- original_term: labha
+  variations:
+  - laabhaa
+  - labha
+  - labha
+  - laba
+  transliteration: labha
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 81 for performance testing
+- original_term: ranjin
+  variations:
+  - raanjin
+  - ranjiin
+  - ranjin
+  - ranjin
+  transliteration: ranjin
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 82 for performance testing
+- original_term: patika
+  variations:
+  - paatikaa
+  - patiika
+  - patika
+  - patika
+  transliteration: patika
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 83 for performance testing
+- original_term: niika
+  variations:
+  - niikaa
+  - niiiika
+  - niika
+  - niika
+  transliteration: niika
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 84 for performance testing
+- original_term: ishant
+  variations:
+  - ishaant
+  - iishant
+  - ishant
+  - isant
+  transliteration: ishant
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 85 for performance testing
+- original_term: pūjma
+  variations:
+  - pūjmaa
+  - pūjma
+  - pūjma
+  - pūjma
+  transliteration: pūjma
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 86 for performance testing
+- original_term: labhmat
+  variations:
+  - laabhmaat
+  - labhmat
+  - labhmat
+  - labmat
+  transliteration: labhmat
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 87 for performance testing
+- original_term: cintism
+  variations:
+  - cintism
+  - ciintiism
+  - cintism
+  - cintism
+  transliteration: cintism
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 88 for performance testing
+- original_term: labhma
+  variations:
+  - laabhmaa
+  - labhma
+  - labhma
+  - labma
+  transliteration: labhma
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 89 for performance testing
+- original_term: sevātra
+  variations:
+  - sevātraa
+  - sevātra
+  - sevātra
+  - sevātra
+  transliteration: sevātra
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 90 for performance testing
+- original_term: bhua
+  variations:
+  - bhuaa
+  - bhua
+  - bhuua
+  - bua
+  transliteration: bhua
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 91 for performance testing
+- original_term: sthama
+  variations:
+  - sthaamaa
+  - sthama
+  - sthama
+  - stama
+  transliteration: sthama
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 92 for performance testing
+- original_term: pūju
+  variations:
+  - pūju
+  - pūju
+  - pūjuu
+  - pūju
+  transliteration: pūju
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 93 for performance testing
+- original_term: labhmat
+  variations:
+  - laabhmaat
+  - labhmat
+  - labhmat
+  - labmat
+  transliteration: labhmat
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 94 for performance testing
+- original_term: ishtva
+  variations:
+  - ishtvaa
+  - iishtva
+  - ishtva
+  - istva
+  transliteration: ishtva
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 95 for performance testing
+- original_term: pattra
+  variations:
+  - paattraa
+  - pattra
+  - pattra
+  - pattra
+  transliteration: pattra
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 96 for performance testing
+- original_term: astha
+  variations:
+  - aasthaa
+  - astha
+  - astha
+  - asta
+  transliteration: astha
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 97 for performance testing
+- original_term: dhriika
+  variations:
+  - dhriikaa
+  - dhriiiika
+  - dhriika
+  - driika
+  transliteration: dhriika
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 98 for performance testing
+- original_term: pūjanā
+  variations:
+  - pūjaanā
+  - pūjanā
+  - pūjanā
+  - pūjanā
+  transliteration: pūjanā
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 99 for performance testing
+- original_term: bhumat
+  variations:
+  - bhumaat
+  - bhumat
+  - bhuumat
+  - bumat
+  transliteration: bhumat
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 100 for performance testing
+- original_term: yupa101
+  variations:
+  - yupaa101
+  - yupa101
+  - yuupa101
+  - yupa101
+  transliteration: yupa101
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 101 for performance testing
+- original_term: vrtism102
+  variations:
+  - vrtism102
+  - vrtiism102
+  - vrtism102
+  - vrtism102
+  transliteration: vrtism102
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 102 for performance testing
+- original_term: tyajism103
+  variations:
+  - tyaajism103
+  - tyajiism103
+  - tyajism103
+  - tyajism103
+  transliteration: tyajism103
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 103 for performance testing
+- original_term: jitva104
+  variations:
+  - jitvaa104
+  - jiitva104
+  - jitva104
+  - jitva104
+  transliteration: jitva104
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 104 for performance testing
+- original_term: budhtā105
+  variations:
+  - budhtā105
+  - budhtā105
+  - buudhtā105
+  - budtā105
+  transliteration: budhtā105
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 105 for performance testing
+- original_term: labhda106
+  variations:
+  - laabhdaa106
+  - labhda106
+  - labhda106
+  - labda106
+  transliteration: labhda106
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 106 for performance testing
+- original_term: niiin107
+  variations:
+  - niiin107
+  - niiiiiin107
+  - niiin107
+  - niiin107
+  transliteration: niiin107
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 107 for performance testing
+- original_term: hanma108
+  variations:
+  - haanmaa108
+  - hanma108
+  - hanma108
+  - anma108
+  transliteration: hanma108
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 108 for performance testing
+- original_term: vrtana109
+  variations:
+  - vrtaanaa109
+  - vrtana109
+  - vrtana109
+  - vrtana109
+  transliteration: vrtana109
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 109 for performance testing
+- original_term: dhyāana110
+  variations:
+  - dhyāaanaa110
+  - dhyāana110
+  - dhyāana110
+  - dyāana110
+  transliteration: dhyāana110
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 110 for performance testing
+- original_term: bhajvat111
+  variations:
+  - bhaajvaat111
+  - bhajvat111
+  - bhajvat111
+  - bajvat111
+  transliteration: bhajvat111
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 111 for performance testing
+- original_term: bhuma112
+  variations:
+  - bhumaa112
+  - bhuma112
+  - bhuuma112
+  - buma112
+  transliteration: bhuma112
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 112 for performance testing
+- original_term: krda113
+  variations:
+  - krdaa113
+  - krda113
+  - krda113
+  - krda113
+  transliteration: kr̥da113
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 113 for performance testing
+- original_term: sthain114
+  variations:
+  - sthaain114
+  - sthaiin114
+  - sthain114
+  - stain114
+  transliteration: sthain114
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 114 for performance testing
+- original_term: bhuda115
+  variations:
+  - bhudaa115
+  - bhuda115
+  - bhuuda115
+  - buda115
+  transliteration: bhuda115
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 115 for performance testing
+- original_term: vrttva116
+  variations:
+  - vrttvaa116
+  - vrttva116
+  - vrttva116
+  - vrttva116
+  transliteration: vrttva116
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 116 for performance testing
+- original_term: vahi117
+  variations:
+  - vaahi117
+  - vahii117
+  - vahi117
+  - vai117
+  transliteration: vahi117
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 117 for performance testing
+- original_term: pūjya118
+  variations:
+  - pūjyaa118
+  - pūjya118
+  - pūjya118
+  - pūjya118
+  transliteration: pūjya118
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 118 for performance testing
+- original_term: ishtra119
+  variations:
+  - ishtraa119
+  - iishtra119
+  - ishtra119
+  - istra119
+  transliteration: ishtra119
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 119 for performance testing
+- original_term: bhajism120
+  variations:
+  - bhaajism120
+  - bhajiism120
+  - bhajism120
+  - bajism120
+  transliteration: bhajism120
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 120 for performance testing
+- original_term: krtā121
+  variations:
+  - krtā121
+  - krtā121
+  - krtā121
+  - krtā121
+  transliteration: kr̥tā121
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 121 for performance testing
+- original_term: dhrii122
+  variations:
+  - dhrii122
+  - dhriiii122
+  - dhrii122
+  - drii122
+  transliteration: dhrii122
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 122 for performance testing
+- original_term: jika123
+  variations:
+  - jikaa123
+  - jiika123
+  - jika123
+  - jika123
+  transliteration: jika123
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 123 for performance testing
+- original_term: ranjism124
+  variations:
+  - raanjism124
+  - ranjiism124
+  - ranjism124
+  - ranjism124
+  transliteration: ranjism124
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 124 for performance testing
+- original_term: ishtha125
+  variations:
+  - ishthaa125
+  - iishtha125
+  - ishtha125
+  - ista125
+  transliteration: ishtha125
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 125 for performance testing
+- original_term: bhaju126
+  variations:
+  - bhaaju126
+  - bhaju126
+  - bhajuu126
+  - baju126
+  transliteration: bhaju126
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 126 for performance testing
+- original_term: gami127
+  variations:
+  - gaami127
+  - gamii127
+  - gami127
+  - gami127
+  transliteration: gami127
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 127 for performance testing
+- original_term: bhutva128
+  variations:
+  - bhutvaa128
+  - bhutva128
+  - bhuutva128
+  - butva128
+  transliteration: bhutva128
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 128 for performance testing
+- original_term: pūjti129
+  variations:
+  - pūjti129
+  - pūjtii129
+  - pūjti129
+  - pūjti129
+  transliteration: pūjti129
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 129 for performance testing
+- original_term: grahana130
+  variations:
+  - graahaanaa130
+  - grahana130
+  - grahana130
+  - graana130
+  transliteration: grahana130
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 130 for performance testing
+- original_term: tyajtra131
+  variations:
+  - tyaajtraa131
+  - tyajtra131
+  - tyajtra131
+  - tyajtra131
+  transliteration: tyajtra131
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 131 for performance testing
+- original_term: hanma132
+  variations:
+  - haanmaa132
+  - hanma132
+  - hanma132
+  - anma132
+  transliteration: hanma132
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 132 for performance testing
+- original_term: cinta133
+  variations:
+  - cintaa133
+  - ciinta133
+  - cinta133
+  - cinta133
+  transliteration: cinta133
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 133 for performance testing
+- original_term: vahika134
+  variations:
+  - vaahikaa134
+  - vahiika134
+  - vahika134
+  - vaika134
+  transliteration: vahika134
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 134 for performance testing
+- original_term: smrmat135
+  variations:
+  - smrmaat135
+  - smrmat135
+  - smrmat135
+  - smrmat135
+  transliteration: smrmat135
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 135 for performance testing
+- original_term: jñaika136
+  variations:
+  - jñaaikaa136
+  - jñaiika136
+  - jñaika136
+  - jñaika136
+  transliteration: jñaika136
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 136 for performance testing
+- original_term: sruant137
+  variations:
+  - sruaant137
+  - sruant137
+  - sruuant137
+  - sruant137
+  transliteration: śruant137
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 137 for performance testing
+- original_term: yuika138
+  variations:
+  - yuikaa138
+  - yuiika138
+  - yuuika138
+  - yuika138
+  transliteration: yuika138
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 138 for performance testing
+- original_term: vidana139
+  variations:
+  - vidaanaa139
+  - viidana139
+  - vidana139
+  - vidana139
+  transliteration: vidana139
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 139 for performance testing
+- original_term: jiin140
+  variations:
+  - jiin140
+  - jiiiin140
+  - jiin140
+  - jiin140
+  transliteration: jiin140
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 140 for performance testing
+- original_term: grahya141
+  variations:
+  - graahyaa141
+  - grahya141
+  - grahya141
+  - graya141
+  transliteration: grahya141
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 141 for performance testing
+- original_term: sevāti142
+  variations:
+  - sevāti142
+  - sevātii142
+  - sevāti142
+  - sevāti142
+  transliteration: sevāti142
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 142 for performance testing
+- original_term: tyajka143
+  variations:
+  - tyaajkaa143
+  - tyajka143
+  - tyajka143
+  - tyajka143
+  transliteration: tyajka143
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 143 for performance testing
+- original_term: jitva144
+  variations:
+  - jitvaa144
+  - jiitva144
+  - jitva144
+  - jitva144
+  transliteration: jitva144
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 144 for performance testing
+- original_term: dhrima145
+  variations:
+  - dhrimaa145
+  - dhriima145
+  - dhrima145
+  - drima145
+  transliteration: dhrima145
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 145 for performance testing
+- original_term: kri146
+  variations:
+  - kri146
+  - krii146
+  - kri146
+  - kri146
+  transliteration: kr̥i146
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 146 for performance testing
+- original_term: jimat147
+  variations:
+  - jimaat147
+  - jiimat147
+  - jimat147
+  - jimat147
+  transliteration: jimat147
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 147 for performance testing
+- original_term: vidism148
+  variations:
+  - vidism148
+  - viidiism148
+  - vidism148
+  - vidism148
+  transliteration: vidism148
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 148 for performance testing
+- original_term: asna149
+  variations:
+  - aasnaa149
+  - asna149
+  - asna149
+  - asna149
+  transliteration: asna149
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 149 for performance testing
+- original_term: jiti150
+  variations:
+  - jiti150
+  - jiitii150
+  - jiti150
+  - jiti150
+  transliteration: jiti150
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 150 for performance testing
+- original_term: ishika151
+  variations:
+  - ishikaa151
+  - iishiika151
+  - ishika151
+  - isika151
+  transliteration: ishika151
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 151 for performance testing
+- original_term: srutva152
+  variations:
+  - srutvaa152
+  - srutva152
+  - sruutva152
+  - srutva152
+  transliteration: śrutva152
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 152 for performance testing
+- original_term: patpa153
+  variations:
+  - paatpaa153
+  - patpa153
+  - patpa153
+  - patpa153
+  transliteration: patpa153
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 153 for performance testing
+- original_term: sevāma154
+  variations:
+  - sevāmaa154
+  - sevāma154
+  - sevāma154
+  - sevāma154
+  transliteration: sevāma154
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 154 for performance testing
+- original_term: dhriu155
+  variations:
+  - dhriu155
+  - dhriiu155
+  - dhriuu155
+  - driu155
+  transliteration: dhriu155
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 155 for performance testing
+- original_term: gamin156
+  variations:
+  - gaamin156
+  - gamiin156
+  - gamin156
+  - gamin156
+  transliteration: gamin156
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 156 for performance testing
+- original_term: hanma157
+  variations:
+  - haanmaa157
+  - hanma157
+  - hanma157
+  - anma157
+  transliteration: hanma157
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 157 for performance testing
+- original_term: labhtha158
+  variations:
+  - laabhthaa158
+  - labhtha158
+  - labhtha158
+  - labta158
+  transliteration: labhtha158
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 158 for performance testing
+- original_term: cintka159
+  variations:
+  - cintkaa159
+  - ciintka159
+  - cintka159
+  - cintka159
+  transliteration: cintka159
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 159 for performance testing
+- original_term: dhyāma160
+  variations:
+  - dhyāmaa160
+  - dhyāma160
+  - dhyāma160
+  - dyāma160
+  transliteration: dhyāma160
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 160 for performance testing
+- original_term: asu161
+  variations:
+  - aasu161
+  - asu161
+  - asuu161
+  - asu161
+  transliteration: asu161
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 161 for performance testing
+- original_term: labhna162
+  variations:
+  - laabhnaa162
+  - labhna162
+  - labhna162
+  - labna162
+  transliteration: labhna162
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 162 for performance testing
+- original_term: dhyāant163
+  variations:
+  - dhyāaant163
+  - dhyāant163
+  - dhyāant163
+  - dyāant163
+  transliteration: dhyāant163
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 163 for performance testing
+- original_term: krti164
+  variations:
+  - krti164
+  - krtii164
+  - krti164
+  - krti164
+  transliteration: kr̥ti164
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 164 for performance testing
+- original_term: vahtā165
+  variations:
+  - vaahtā165
+  - vahtā165
+  - vahtā165
+  - vatā165
+  transliteration: vahtā165
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 165 for performance testing
+- original_term: vidvat166
+  variations:
+  - vidvaat166
+  - viidvat166
+  - vidvat166
+  - vidvat166
+  transliteration: vidvat166
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 166 for performance testing
+- original_term: gamna167
+  variations:
+  - gaamnaa167
+  - gamna167
+  - gamna167
+  - gamna167
+  transliteration: gamna167
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 167 for performance testing
+- original_term: budhana168
+  variations:
+  - budhaanaa168
+  - budhana168
+  - buudhana168
+  - budana168
+  transliteration: budhana168
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 168 for performance testing
+- original_term: bhutha169
+  variations:
+  - bhuthaa169
+  - bhutha169
+  - bhuutha169
+  - buta169
+  transliteration: bhutha169
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 169 for performance testing
+- original_term: ishtva170
+  variations:
+  - ishtvaa170
+  - iishtva170
+  - ishtva170
+  - istva170
+  transliteration: ishtva170
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 170 for performance testing
+- original_term: gamin171
+  variations:
+  - gaamin171
+  - gamiin171
+  - gamin171
+  - gamin171
+  transliteration: gamin171
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 171 for performance testing
+- original_term: astā172
+  variations:
+  - aastā172
+  - astā172
+  - astā172
+  - astā172
+  transliteration: astā172
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 172 for performance testing
+- original_term: yui173
+  variations:
+  - yui173
+  - yuii173
+  - yuui173
+  - yui173
+  transliteration: yui173
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 173 for performance testing
+- original_term: dhyāya174
+  variations:
+  - dhyāyaa174
+  - dhyāya174
+  - dhyāya174
+  - dyāya174
+  transliteration: dhyāya174
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 174 for performance testing
+- original_term: bhajti175
+  variations:
+  - bhaajti175
+  - bhajtii175
+  - bhajti175
+  - bajti175
+  transliteration: bhajti175
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 175 for performance testing
+- original_term: smrmat176
+  variations:
+  - smrmaat176
+  - smrmat176
+  - smrmat176
+  - smrmat176
+  transliteration: smrmat176
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 176 for performance testing
+- original_term: pati177
+  variations:
+  - paati177
+  - patii177
+  - pati177
+  - pati177
+  transliteration: pati177
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 177 for performance testing
+- original_term: jñain178
+  variations:
+  - jñaain178
+  - jñaiin178
+  - jñain178
+  - jñain178
+  transliteration: jñain178
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 178 for performance testing
+- original_term: dhriant179
+  variations:
+  - dhriaant179
+  - dhriiant179
+  - dhriant179
+  - driant179
+  transliteration: dhriant179
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 179 for performance testing
+- original_term: ranjmat180
+  variations:
+  - raanjmaat180
+  - ranjmat180
+  - ranjmat180
+  - ranjmat180
+  transliteration: ranjmat180
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 180 for performance testing
+- original_term: sevāna181
+  variations:
+  - sevānaa181
+  - sevāna181
+  - sevāna181
+  - sevāna181
+  transliteration: sevāna181
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 181 for performance testing
+- original_term: grahna182
+  variations:
+  - graahnaa182
+  - grahna182
+  - grahna182
+  - grana182
+  transliteration: grahna182
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 182 for performance testing
+- original_term: vrtda183
+  variations:
+  - vrtdaa183
+  - vrtda183
+  - vrtda183
+  - vrtda183
+  transliteration: vrtda183
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 183 for performance testing
+- original_term: cinttva184
+  variations:
+  - cinttvaa184
+  - ciinttva184
+  - cinttva184
+  - cinttva184
+  transliteration: cinttva184
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 184 for performance testing
+- original_term: niitā185
+  variations:
+  - niitā185
+  - niiiitā185
+  - niitā185
+  - niitā185
+  transliteration: niitā185
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 185 for performance testing
+- original_term: tyajant186
+  variations:
+  - tyaajaant186
+  - tyajant186
+  - tyajant186
+  - tyajant186
+  transliteration: tyajant186
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 186 for performance testing
+- original_term: ishana187
+  variations:
+  - ishaanaa187
+  - iishana187
+  - ishana187
+  - isana187
+  transliteration: ishana187
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 187 for performance testing
+- original_term: bhuda188
+  variations:
+  - bhudaa188
+  - bhuda188
+  - bhuuda188
+  - buda188
+  transliteration: bhuda188
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 188 for performance testing
+- original_term: dhavat189
+  variations:
+  - dhaavaat189
+  - dhavat189
+  - dhavat189
+  - davat189
+  transliteration: dhavat189
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 189 for performance testing
+- original_term: ranjin190
+  variations:
+  - raanjin190
+  - ranjiin190
+  - ranjin190
+  - ranjin190
+  transliteration: ranjin190
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 190 for performance testing
+- original_term: sthamat191
+  variations:
+  - sthaamaat191
+  - sthamat191
+  - sthamat191
+  - stamat191
+  transliteration: sthamat191
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 191 for performance testing
+- original_term: smri192
+  variations:
+  - smri192
+  - smrii192
+  - smri192
+  - smri192
+  transliteration: smri192
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 192 for performance testing
+- original_term: smrtva193
+  variations:
+  - smrtvaa193
+  - smrtva193
+  - smrtva193
+  - smrtva193
+  transliteration: smrtva193
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 193 for performance testing
+- original_term: yuika194
+  variations:
+  - yuikaa194
+  - yuiika194
+  - yuuika194
+  - yuika194
+  transliteration: yuika194
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 194 for performance testing
+- original_term: sthain195
+  variations:
+  - sthaain195
+  - sthaiin195
+  - sthain195
+  - stain195
+  transliteration: sthain195
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 195 for performance testing
+- original_term: tyajka196
+  variations:
+  - tyaajkaa196
+  - tyajka196
+  - tyajka196
+  - tyajka196
+  transliteration: tyajka196
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 196 for performance testing
+- original_term: budhpa197
+  variations:
+  - budhpaa197
+  - budhpa197
+  - buudhpa197
+  - budpa197
+  transliteration: budhpa197
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 197 for performance testing
+- original_term: yuna198
+  variations:
+  - yunaa198
+  - yuna198
+  - yuuna198
+  - yuna198
+  transliteration: yuna198
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 198 for performance testing
+- original_term: dhau199
+  variations:
+  - dhaau199
+  - dhau199
+  - dhauu199
+  - dau199
+  transliteration: dhau199
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 199 for performance testing
+- original_term: patin200
+  variations:
+  - paatin200
+  - patiin200
+  - patin200
+  - patin200
+  transliteration: patin200
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 200 for performance testing
+- original_term: isha201
+  variations:
+  - ishaa201
+  - iisha201
+  - isha201
+  - isa201
+  transliteration: isha201
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 201 for performance testing
+- original_term: ishu202
+  variations:
+  - ishu202
+  - iishu202
+  - ishuu202
+  - isu202
+  transliteration: ishu202
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 202 for performance testing
+- original_term: smrna203
+  variations:
+  - smrnaa203
+  - smrna203
+  - smrna203
+  - smrna203
+  transliteration: smrna203
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 203 for performance testing
+- original_term: niiya204
+  variations:
+  - niiyaa204
+  - niiiiya204
+  - niiya204
+  - niiya204
+  transliteration: niiya204
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 204 for performance testing
+- original_term: pūjda205
+  variations:
+  - pūjdaa205
+  - pūjda205
+  - pūjda205
+  - pūjda205
+  transliteration: pūjda205
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 205 for performance testing
+- original_term: jika206
+  variations:
+  - jikaa206
+  - jiika206
+  - jika206
+  - jika206
+  transliteration: jika206
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 206 for performance testing
+- original_term: ishin207
+  variations:
+  - ishin207
+  - iishiin207
+  - ishin207
+  - isin207
+  transliteration: ishin207
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 207 for performance testing
+- original_term: sthamat208
+  variations:
+  - sthaamaat208
+  - sthamat208
+  - sthamat208
+  - stamat208
+  transliteration: sthamat208
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 208 for performance testing
+- original_term: hanin209
+  variations:
+  - haanin209
+  - haniin209
+  - hanin209
+  - anin209
+  transliteration: hanin209
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 209 for performance testing
+- original_term: niiism210
+  variations:
+  - niiism210
+  - niiiiiism210
+  - niiism210
+  - niiism210
+  transliteration: niiism210
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 210 for performance testing
+- original_term: bhutha211
+  variations:
+  - bhuthaa211
+  - bhutha211
+  - bhuutha211
+  - buta211
+  transliteration: bhutha211
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 211 for performance testing
+- original_term: sevāvat212
+  variations:
+  - sevāvaat212
+  - sevāvat212
+  - sevāvat212
+  - sevāvat212
+  transliteration: sevāvat212
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 212 for performance testing
+- original_term: labhika213
+  variations:
+  - laabhikaa213
+  - labhiika213
+  - labhika213
+  - labika213
+  transliteration: labhika213
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 213 for performance testing
+- original_term: grahti214
+  variations:
+  - graahti214
+  - grahtii214
+  - grahti214
+  - grati214
+  transliteration: grahti214
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 214 for performance testing
+- original_term: dhriya215
+  variations:
+  - dhriyaa215
+  - dhriiya215
+  - dhriya215
+  - driya215
+  transliteration: dhriya215
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 215 for performance testing
+- original_term: vidin216
+  variations:
+  - vidin216
+  - viidiin216
+  - vidin216
+  - vidin216
+  transliteration: vidin216
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 216 for performance testing
+- original_term: gamma217
+  variations:
+  - gaammaa217
+  - gamma217
+  - gamma217
+  - gamma217
+  transliteration: gamma217
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 217 for performance testing
+- original_term: smranā218
+  variations:
+  - smraanā218
+  - smranā218
+  - smranā218
+  - smranā218
+  transliteration: smranā218
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 218 for performance testing
+- original_term: vahin219
+  variations:
+  - vaahin219
+  - vahiin219
+  - vahin219
+  - vain219
+  transliteration: vahin219
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 219 for performance testing
+- original_term: dhyātha220
+  variations:
+  - dhyāthaa220
+  - dhyātha220
+  - dhyātha220
+  - dyāta220
+  transliteration: dhyātha220
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 220 for performance testing
+- original_term: labhi221
+  variations:
+  - laabhi221
+  - labhii221
+  - labhi221
+  - labi221
+  transliteration: labhi221
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 221 for performance testing
+- original_term: dhyāin222
+  variations:
+  - dhyāin222
+  - dhyāiin222
+  - dhyāin222
+  - dyāin222
+  transliteration: dhyāin222
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 222 for performance testing
+- original_term: tyajism223
+  variations:
+  - tyaajism223
+  - tyajiism223
+  - tyajism223
+  - tyajism223
+  transliteration: tyajism223
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 223 for performance testing
+- original_term: jida224
+  variations:
+  - jidaa224
+  - jiida224
+  - jida224
+  - jida224
+  transliteration: jida224
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 224 for performance testing
+- original_term: grahda225
+  variations:
+  - graahdaa225
+  - grahda225
+  - grahda225
+  - grada225
+  transliteration: grahda225
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 225 for performance testing
+- original_term: asa226
+  variations:
+  - aasaa226
+  - asa226
+  - asa226
+  - asa226
+  transliteration: asa226
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 226 for performance testing
+- original_term: budhtha227
+  variations:
+  - budhthaa227
+  - budhtha227
+  - buudhtha227
+  - budta227
+  transliteration: budhtha227
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 227 for performance testing
+- original_term: asanā228
+  variations:
+  - aasaanā228
+  - asanā228
+  - asanā228
+  - asanā228
+  transliteration: asanā228
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 228 for performance testing
+- original_term: ranjika229
+  variations:
+  - raanjikaa229
+  - ranjiika229
+  - ranjika229
+  - ranjika229
+  transliteration: ranjika229
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 229 for performance testing
+- original_term: asa230
+  variations:
+  - aasaa230
+  - asa230
+  - asa230
+  - asa230
+  transliteration: asa230
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 230 for performance testing
+- original_term: sevāism231
+  variations:
+  - sevāism231
+  - sevāiism231
+  - sevāism231
+  - sevāism231
+  transliteration: sevāism231
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 231 for performance testing
+- original_term: krika232
+  variations:
+  - krikaa232
+  - kriika232
+  - krika232
+  - krika232
+  transliteration: kr̥ika232
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 232 for performance testing
+- original_term: bhuin233
+  variations:
+  - bhuin233
+  - bhuiin233
+  - bhuuin233
+  - buin233
+  transliteration: bhuin233
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 233 for performance testing
+- original_term: gami234
+  variations:
+  - gaami234
+  - gamii234
+  - gami234
+  - gami234
+  transliteration: gami234
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 234 for performance testing
+- original_term: dhritā235
+  variations:
+  - dhritā235
+  - dhriitā235
+  - dhritā235
+  - dritā235
+  transliteration: dhritā235
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 235 for performance testing
+- original_term: dhatva236
+  variations:
+  - dhaatvaa236
+  - dhatva236
+  - dhatva236
+  - datva236
+  transliteration: dhatva236
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 236 for performance testing
+- original_term: tyaju237
+  variations:
+  - tyaaju237
+  - tyaju237
+  - tyajuu237
+  - tyaju237
+  transliteration: tyaju237
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 237 for performance testing
+- original_term: jñai238
+  variations:
+  - jñaai238
+  - jñaii238
+  - jñai238
+  - jñai238
+  transliteration: jñai238
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 238 for performance testing
+- original_term: krda239
+  variations:
+  - krdaa239
+  - krda239
+  - krda239
+  - krda239
+  transliteration: kr̥da239
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 239 for performance testing
+- original_term: grahtva240
+  variations:
+  - graahtvaa240
+  - grahtva240
+  - grahtva240
+  - gratva240
+  transliteration: grahtva240
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 240 for performance testing
+- original_term: sruka241
+  variations:
+  - srukaa241
+  - sruka241
+  - sruuka241
+  - sruka241
+  transliteration: śruka241
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 241 for performance testing
+- original_term: niiant242
+  variations:
+  - niiaant242
+  - niiiiant242
+  - niiant242
+  - niiant242
+  transliteration: niiant242
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 242 for performance testing
+- original_term: dhriu243
+  variations:
+  - dhriu243
+  - dhriiu243
+  - dhriuu243
+  - driu243
+  transliteration: dhriu243
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 243 for performance testing
+- original_term: vahya244
+  variations:
+  - vaahyaa244
+  - vahya244
+  - vahya244
+  - vaya244
+  transliteration: vahya244
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 244 for performance testing
+- original_term: bhuant245
+  variations:
+  - bhuaant245
+  - bhuant245
+  - bhuuant245
+  - buant245
+  transliteration: bhuant245
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 245 for performance testing
+- original_term: sevāant246
+  variations:
+  - sevāaant246
+  - sevāant246
+  - sevāant246
+  - sevāant246
+  transliteration: sevāant246
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 246 for performance testing
+- original_term: sevāpa247
+  variations:
+  - sevāpaa247
+  - sevāpa247
+  - sevāpa247
+  - sevāpa247
+  transliteration: sevāpa247
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 247 for performance testing
+- original_term: bhaji248
+  variations:
+  - bhaaji248
+  - bhajii248
+  - bhaji248
+  - baji248
+  transliteration: bhaji248
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 248 for performance testing
+- original_term: gamana249
+  variations:
+  - gaamaanaa249
+  - gamana249
+  - gamana249
+  - gamana249
+  transliteration: gamana249
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 249 for performance testing
+- original_term: bhajna250
+  variations:
+  - bhaajnaa250
+  - bhajna250
+  - bhajna250
+  - bajna250
+  transliteration: bhajna250
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 250 for performance testing
+- original_term: yuanā251
+  variations:
+  - yuaanā251
+  - yuanā251
+  - yuuanā251
+  - yuanā251
+  transliteration: yuanā251
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 251 for performance testing
+- original_term: grahpa252
+  variations:
+  - graahpaa252
+  - grahpa252
+  - grahpa252
+  - grapa252
+  transliteration: grahpa252
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 252 for performance testing
+- original_term: ranjna253
+  variations:
+  - raanjnaa253
+  - ranjna253
+  - ranjna253
+  - ranjna253
+  transliteration: ranjna253
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 253 for performance testing
+- original_term: bhajka254
+  variations:
+  - bhaajkaa254
+  - bhajka254
+  - bhajka254
+  - bajka254
+  transliteration: bhajka254
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 254 for performance testing
+- original_term: sruti255
+  variations:
+  - sruti255
+  - srutii255
+  - sruuti255
+  - sruti255
+  transliteration: śruti255
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 255 for performance testing
+- original_term: tyajtha256
+  variations:
+  - tyaajthaa256
+  - tyajtha256
+  - tyajtha256
+  - tyajta256
+  transliteration: tyajtha256
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 256 for performance testing
+- original_term: vrtu257
+  variations:
+  - vrtu257
+  - vrtu257
+  - vrtuu257
+  - vrtu257
+  transliteration: vrtu257
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 257 for performance testing
+- original_term: hanya258
+  variations:
+  - haanyaa258
+  - hanya258
+  - hanya258
+  - anya258
+  transliteration: hanya258
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 258 for performance testing
+- original_term: yuant259
+  variations:
+  - yuaant259
+  - yuant259
+  - yuuant259
+  - yuant259
+  transliteration: yuant259
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 259 for performance testing
+- original_term: ishin260
+  variations:
+  - ishin260
+  - iishiin260
+  - ishin260
+  - isin260
+  transliteration: ishin260
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 260 for performance testing
+- original_term: hanana261
+  variations:
+  - haanaanaa261
+  - hanana261
+  - hanana261
+  - anana261
+  transliteration: hanana261
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 261 for performance testing
+- original_term: dhain262
+  variations:
+  - dhaain262
+  - dhaiin262
+  - dhain262
+  - dain262
+  transliteration: dhain262
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 262 for performance testing
+- original_term: gamanā263
+  variations:
+  - gaamaanā263
+  - gamanā263
+  - gamanā263
+  - gamanā263
+  transliteration: gamanā263
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 263 for performance testing
+- original_term: cinta264
+  variations:
+  - cintaa264
+  - ciinta264
+  - cinta264
+  - cinta264
+  transliteration: cinta264
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 264 for performance testing
+- original_term: gamka265
+  variations:
+  - gaamkaa265
+  - gamka265
+  - gamka265
+  - gamka265
+  transliteration: gamka265
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 265 for performance testing
+- original_term: ranjya266
+  variations:
+  - raanjyaa266
+  - ranjya266
+  - ranjya266
+  - ranjya266
+  transliteration: ranjya266
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 266 for performance testing
+- original_term: ishtra267
+  variations:
+  - ishtraa267
+  - iishtra267
+  - ishtra267
+  - istra267
+  transliteration: ishtra267
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 267 for performance testing
+- original_term: vidmat268
+  variations:
+  - vidmaat268
+  - viidmat268
+  - vidmat268
+  - vidmat268
+  transliteration: vidmat268
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 268 for performance testing
+- original_term: asi269
+  variations:
+  - aasi269
+  - asii269
+  - asi269
+  - asi269
+  transliteration: asi269
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 269 for performance testing
+- original_term: yuana270
+  variations:
+  - yuaanaa270
+  - yuana270
+  - yuuana270
+  - yuana270
+  transliteration: yuana270
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 270 for performance testing
+- original_term: yutra271
+  variations:
+  - yutraa271
+  - yutra271
+  - yuutra271
+  - yutra271
+  transliteration: yutra271
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 271 for performance testing
+- original_term: cintda272
+  variations:
+  - cintdaa272
+  - ciintda272
+  - cintda272
+  - cintda272
+  transliteration: cintda272
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 272 for performance testing
+- original_term: bhui273
+  variations:
+  - bhui273
+  - bhuii273
+  - bhuui273
+  - bui273
+  transliteration: bhui273
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 273 for performance testing
+- original_term: jñaa274
+  variations:
+  - jñaaaa274
+  - jñaa274
+  - jñaa274
+  - jñaa274
+  transliteration: jñaa274
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 274 for performance testing
+- original_term: ranjpa275
+  variations:
+  - raanjpaa275
+  - ranjpa275
+  - ranjpa275
+  - ranjpa275
+  transliteration: ranjpa275
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 275 for performance testing
+- original_term: dhrida276
+  variations:
+  - dhridaa276
+  - dhriida276
+  - dhrida276
+  - drida276
+  transliteration: dhrida276
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 276 for performance testing
+- original_term: jipa277
+  variations:
+  - jipaa277
+  - jiipa277
+  - jipa277
+  - jipa277
+  transliteration: jipa277
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 277 for performance testing
+- original_term: pūji278
+  variations:
+  - pūji278
+  - pūjii278
+  - pūji278
+  - pūji278
+  transliteration: pūji278
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 278 for performance testing
+- original_term: labhya279
+  variations:
+  - laabhyaa279
+  - labhya279
+  - labhya279
+  - labya279
+  transliteration: labhya279
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 279 for performance testing
+- original_term: patma280
+  variations:
+  - paatmaa280
+  - patma280
+  - patma280
+  - patma280
+  transliteration: patma280
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 280 for performance testing
+- original_term: pūjant281
+  variations:
+  - pūjaant281
+  - pūjant281
+  - pūjant281
+  - pūjant281
+  transliteration: pūjant281
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 281 for performance testing
+- original_term: grahda282
+  variations:
+  - graahdaa282
+  - grahda282
+  - grahda282
+  - grada282
+  transliteration: grahda282
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 282 for performance testing
+- original_term: ranjka283
+  variations:
+  - raanjkaa283
+  - ranjka283
+  - ranjka283
+  - ranjka283
+  transliteration: ranjka283
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 283 for performance testing
+- original_term: vrttra284
+  variations:
+  - vrttraa284
+  - vrttra284
+  - vrttra284
+  - vrttra284
+  transliteration: vrttra284
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 284 for performance testing
+- original_term: vidya285
+  variations:
+  - vidyaa285
+  - viidya285
+  - vidya285
+  - vidya285
+  transliteration: vidya285
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 285 for performance testing
+- original_term: tyaju286
+  variations:
+  - tyaaju286
+  - tyaju286
+  - tyajuu286
+  - tyaju286
+  transliteration: tyaju286
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 286 for performance testing
+- original_term: vidtra287
+  variations:
+  - vidtraa287
+  - viidtra287
+  - vidtra287
+  - vidtra287
+  transliteration: vidtra287
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 287 for performance testing
+- original_term: dhyātha288
+  variations:
+  - dhyāthaa288
+  - dhyātha288
+  - dhyātha288
+  - dyāta288
+  transliteration: dhyātha288
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 288 for performance testing
+- original_term: patism289
+  variations:
+  - paatism289
+  - patiism289
+  - patism289
+  - patism289
+  transliteration: patism289
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 289 for performance testing
+- original_term: sruda290
+  variations:
+  - srudaa290
+  - sruda290
+  - sruuda290
+  - sruda290
+  transliteration: śruda290
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 290 for performance testing
+- original_term: bhumat291
+  variations:
+  - bhumaat291
+  - bhumat291
+  - bhuumat291
+  - bumat291
+  transliteration: bhumat291
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 291 for performance testing
+- original_term: dhritā292
+  variations:
+  - dhritā292
+  - dhriitā292
+  - dhritā292
+  - dritā292
+  transliteration: dhritā292
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 292 for performance testing
+- original_term: cintanā293
+  variations:
+  - cintaanā293
+  - ciintanā293
+  - cintanā293
+  - cintanā293
+  transliteration: cintanā293
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 293 for performance testing
+- original_term: vrta294
+  variations:
+  - vrtaa294
+  - vrta294
+  - vrta294
+  - vrta294
+  transliteration: vrta294
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 294 for performance testing
+- original_term: astva295
+  variations:
+  - aastvaa295
+  - astva295
+  - astva295
+  - astva295
+  transliteration: astva295
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 295 for performance testing
+- original_term: smrna296
+  variations:
+  - smrnaa296
+  - smrna296
+  - smrna296
+  - smrna296
+  transliteration: smrna296
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 296 for performance testing
+- original_term: krana297
+  variations:
+  - kraanaa297
+  - krana297
+  - krana297
+  - krana297
+  transliteration: kr̥ana297
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 297 for performance testing
+- original_term: tyajika298
+  variations:
+  - tyaajikaa298
+  - tyajiika298
+  - tyajika298
+  - tyajika298
+  transliteration: tyajika298
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 298 for performance testing
+- original_term: ishda299
+  variations:
+  - ishdaa299
+  - iishda299
+  - ishda299
+  - isda299
+  transliteration: ishda299
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 299 for performance testing
+- original_term: asin300
+  variations:
+  - aasin300
+  - asiin300
+  - asin300
+  - asin300
+  transliteration: asin300
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 300 for performance testing
+- original_term: gamana301
+  variations:
+  - gaamaanaa301
+  - gamana301
+  - gamana301
+  - gamana301
+  transliteration: gamana301
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 301 for performance testing
+- original_term: dhatha302
+  variations:
+  - dhaathaa302
+  - dhatha302
+  - dhatha302
+  - data302
+  transliteration: dhatha302
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 302 for performance testing
+- original_term: tyajda303
+  variations:
+  - tyaajdaa303
+  - tyajda303
+  - tyajda303
+  - tyajda303
+  transliteration: tyajda303
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 303 for performance testing
+- original_term: sthana304
+  variations:
+  - sthaanaa304
+  - sthana304
+  - sthana304
+  - stana304
+  transliteration: sthana304
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 304 for performance testing
+- original_term: hanmat305
+  variations:
+  - haanmaat305
+  - hanmat305
+  - hanmat305
+  - anmat305
+  transliteration: hanmat305
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 305 for performance testing
+- original_term: bhaja306
+  variations:
+  - bhaajaa306
+  - bhaja306
+  - bhaja306
+  - baja306
+  transliteration: bhaja306
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 306 for performance testing
+- original_term: niii307
+  variations:
+  - niii307
+  - niiiiii307
+  - niii307
+  - niii307
+  transliteration: niii307
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 307 for performance testing
+- original_term: vrttra308
+  variations:
+  - vrttraa308
+  - vrttra308
+  - vrttra308
+  - vrttra308
+  transliteration: vrttra308
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 308 for performance testing
+- original_term: dhyāma309
+  variations:
+  - dhyāmaa309
+  - dhyāma309
+  - dhyāma309
+  - dyāma309
+  transliteration: dhyāma309
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 309 for performance testing
+- original_term: gamin310
+  variations:
+  - gaamin310
+  - gamiin310
+  - gamin310
+  - gamin310
+  transliteration: gamin310
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 310 for performance testing
+- original_term: tyaja311
+  variations:
+  - tyaajaa311
+  - tyaja311
+  - tyaja311
+  - tyaja311
+  transliteration: tyaja311
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 311 for performance testing
+- original_term: pattā312
+  variations:
+  - paattā312
+  - pattā312
+  - pattā312
+  - pattā312
+  transliteration: pattā312
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 312 for performance testing
+- original_term: bhuya313
+  variations:
+  - bhuyaa313
+  - bhuya313
+  - bhuuya313
+  - buya313
+  transliteration: bhuya313
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 313 for performance testing
+- original_term: ishtā314
+  variations:
+  - ishtā314
+  - iishtā314
+  - ishtā314
+  - istā314
+  transliteration: ishtā314
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 314 for performance testing
+- original_term: cinttā315
+  variations:
+  - cinttā315
+  - ciinttā315
+  - cinttā315
+  - cinttā315
+  transliteration: cinttā315
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 315 for performance testing
+- original_term: kranā316
+  variations:
+  - kraanā316
+  - kranā316
+  - kranā316
+  - kranā316
+  transliteration: kr̥anā316
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 316 for performance testing
+- original_term: tyajika317
+  variations:
+  - tyaajikaa317
+  - tyajiika317
+  - tyajika317
+  - tyajika317
+  transliteration: tyajika317
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 317 for performance testing
+- original_term: krti318
+  variations:
+  - krti318
+  - krtii318
+  - krti318
+  - krti318
+  transliteration: kr̥ti318
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 318 for performance testing
+- original_term: sthana319
+  variations:
+  - sthaanaa319
+  - sthana319
+  - sthana319
+  - stana319
+  transliteration: sthana319
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 319 for performance testing
+- original_term: dhrina320
+  variations:
+  - dhrinaa320
+  - dhriina320
+  - dhrina320
+  - drina320
+  transliteration: dhrina320
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 320 for performance testing
+- original_term: yuanā321
+  variations:
+  - yuaanā321
+  - yuanā321
+  - yuuanā321
+  - yuanā321
+  transliteration: yuanā321
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 321 for performance testing
+- original_term: ranjika322
+  variations:
+  - raanjikaa322
+  - ranjiika322
+  - ranjika322
+  - ranjika322
+  transliteration: ranjika322
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 322 for performance testing
+- original_term: dhama323
+  variations:
+  - dhaamaa323
+  - dhama323
+  - dhama323
+  - dama323
+  transliteration: dhama323
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 323 for performance testing
+- original_term: asya324
+  variations:
+  - aasyaa324
+  - asya324
+  - asya324
+  - asya324
+  transliteration: asya324
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 324 for performance testing
+- original_term: jiant325
+  variations:
+  - jiaant325
+  - jiiant325
+  - jiant325
+  - jiant325
+  transliteration: jiant325
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 325 for performance testing
+- original_term: hanika326
+  variations:
+  - haanikaa326
+  - haniika326
+  - hanika326
+  - anika326
+  transliteration: hanika326
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 326 for performance testing
+- original_term: jñaant327
+  variations:
+  - jñaaaant327
+  - jñaant327
+  - jñaant327
+  - jñaant327
+  transliteration: jñaant327
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 327 for performance testing
+- original_term: dhaa328
+  variations:
+  - dhaaaa328
+  - dhaa328
+  - dhaa328
+  - daa328
+  transliteration: dhaa328
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 328 for performance testing
+- original_term: vahda329
+  variations:
+  - vaahdaa329
+  - vahda329
+  - vahda329
+  - vada329
+  transliteration: vahda329
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 329 for performance testing
+- original_term: vrtant330
+  variations:
+  - vrtaant330
+  - vrtant330
+  - vrtant330
+  - vrtant330
+  transliteration: vrtant330
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 330 for performance testing
+- original_term: bhua331
+  variations:
+  - bhuaa331
+  - bhua331
+  - bhuua331
+  - bua331
+  transliteration: bhua331
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 331 for performance testing
+- original_term: jiant332
+  variations:
+  - jiaant332
+  - jiiant332
+  - jiant332
+  - jiant332
+  transliteration: jiant332
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 332 for performance testing
+- original_term: dhatha333
+  variations:
+  - dhaathaa333
+  - dhatha333
+  - dhatha333
+  - data333
+  transliteration: dhatha333
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 333 for performance testing
+- original_term: bhajana334
+  variations:
+  - bhaajaanaa334
+  - bhajana334
+  - bhajana334
+  - bajana334
+  transliteration: bhajana334
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 334 for performance testing
+- original_term: dhrida335
+  variations:
+  - dhridaa335
+  - dhriida335
+  - dhrida335
+  - drida335
+  transliteration: dhrida335
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 335 for performance testing
+- original_term: sruant336
+  variations:
+  - sruaant336
+  - sruant336
+  - sruuant336
+  - sruant336
+  transliteration: śruant336
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 336 for performance testing
+- original_term: asanā337
+  variations:
+  - aasaanā337
+  - asanā337
+  - asanā337
+  - asanā337
+  transliteration: asanā337
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 337 for performance testing
+- original_term: krma338
+  variations:
+  - krmaa338
+  - krma338
+  - krma338
+  - krma338
+  transliteration: kr̥ma338
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 338 for performance testing
+- original_term: ishism339
+  variations:
+  - ishism339
+  - iishiism339
+  - ishism339
+  - isism339
+  transliteration: ishism339
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 339 for performance testing
+- original_term: patvat340
+  variations:
+  - paatvaat340
+  - patvat340
+  - patvat340
+  - patvat340
+  transliteration: patvat340
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 340 for performance testing
+- original_term: ishika341
+  variations:
+  - ishikaa341
+  - iishiika341
+  - ishika341
+  - isika341
+  transliteration: ishika341
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 341 for performance testing
+- original_term: labhana342
+  variations:
+  - laabhaanaa342
+  - labhana342
+  - labhana342
+  - labana342
+  transliteration: labhana342
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 342 for performance testing
+- original_term: graha343
+  variations:
+  - graahaa343
+  - graha343
+  - graha343
+  - graa343
+  transliteration: graha343
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 343 for performance testing
+- original_term: hanka344
+  variations:
+  - haankaa344
+  - hanka344
+  - hanka344
+  - anka344
+  transliteration: hanka344
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 344 for performance testing
+- original_term: grahtva345
+  variations:
+  - graahtvaa345
+  - grahtva345
+  - grahtva345
+  - gratva345
+  transliteration: grahtva345
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 345 for performance testing
+- original_term: niiant346
+  variations:
+  - niiaant346
+  - niiiiant346
+  - niiant346
+  - niiant346
+  transliteration: niiant346
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 346 for performance testing
+- original_term: gami347
+  variations:
+  - gaami347
+  - gamii347
+  - gami347
+  - gami347
+  transliteration: gami347
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 347 for performance testing
+- original_term: asna348
+  variations:
+  - aasnaa348
+  - asna348
+  - asna348
+  - asna348
+  transliteration: asna348
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 348 for performance testing
+- original_term: dhatā349
+  variations:
+  - dhaatā349
+  - dhatā349
+  - dhatā349
+  - datā349
+  transliteration: dhatā349
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 349 for performance testing
+- original_term: ishpa350
+  variations:
+  - ishpaa350
+  - iishpa350
+  - ishpa350
+  - ispa350
+  transliteration: ishpa350
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 350 for performance testing
+- original_term: budhtha351
+  variations:
+  - budhthaa351
+  - budhtha351
+  - buudhtha351
+  - budta351
+  transliteration: budhtha351
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 351 for performance testing
+- original_term: sthama352
+  variations:
+  - sthaamaa352
+  - sthama352
+  - sthama352
+  - stama352
+  transliteration: sthama352
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 352 for performance testing
+- original_term: budhant353
+  variations:
+  - budhaant353
+  - budhant353
+  - buudhant353
+  - budant353
+  transliteration: budhant353
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 353 for performance testing
+- original_term: sevāant354
+  variations:
+  - sevāaant354
+  - sevāant354
+  - sevāant354
+  - sevāant354
+  transliteration: sevāant354
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 354 for performance testing
+- original_term: labhmat355
+  variations:
+  - laabhmaat355
+  - labhmat355
+  - labhmat355
+  - labmat355
+  transliteration: labhmat355
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 355 for performance testing
+- original_term: dhriin356
+  variations:
+  - dhriin356
+  - dhriiiin356
+  - dhriin356
+  - driin356
+  transliteration: dhriin356
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 356 for performance testing
+- original_term: sthana357
+  variations:
+  - sthaanaa357
+  - sthana357
+  - sthana357
+  - stana357
+  transliteration: sthana357
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 357 for performance testing
+- original_term: jñaanā358
+  variations:
+  - jñaaaanā358
+  - jñaanā358
+  - jñaanā358
+  - jñaanā358
+  transliteration: jñaanā358
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 358 for performance testing
+- original_term: pūjda359
+  variations:
+  - pūjdaa359
+  - pūjda359
+  - pūjda359
+  - pūjda359
+  transliteration: pūjda359
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 359 for performance testing
+- original_term: vidya360
+  variations:
+  - vidyaa360
+  - viidya360
+  - vidya360
+  - vidya360
+  transliteration: vidya360
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 360 for performance testing
+- original_term: dhavat361
+  variations:
+  - dhaavaat361
+  - dhavat361
+  - dhavat361
+  - davat361
+  transliteration: dhavat361
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 361 for performance testing
+- original_term: niida362
+  variations:
+  - niidaa362
+  - niiiida362
+  - niida362
+  - niida362
+  transliteration: niida362
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 362 for performance testing
+- original_term: handa363
+  variations:
+  - haandaa363
+  - handa363
+  - handa363
+  - anda363
+  transliteration: handa363
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 363 for performance testing
+- original_term: jia364
+  variations:
+  - jiaa364
+  - jiia364
+  - jia364
+  - jia364
+  transliteration: jia364
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 364 for performance testing
+- original_term: jñau365
+  variations:
+  - jñaau365
+  - jñau365
+  - jñauu365
+  - jñau365
+  transliteration: jñau365
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 365 for performance testing
+- original_term: vrttra366
+  variations:
+  - vrttraa366
+  - vrttra366
+  - vrttra366
+  - vrttra366
+  transliteration: vrttra366
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 366 for performance testing
+- original_term: vrta367
+  variations:
+  - vrtaa367
+  - vrta367
+  - vrta367
+  - vrta367
+  transliteration: vrta367
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 367 for performance testing
+- original_term: dhaika368
+  variations:
+  - dhaaikaa368
+  - dhaiika368
+  - dhaika368
+  - daika368
+  transliteration: dhaika368
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 368 for performance testing
+- original_term: patna369
+  variations:
+  - paatnaa369
+  - patna369
+  - patna369
+  - patna369
+  transliteration: patna369
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 369 for performance testing
+- original_term: jñatra370
+  variations:
+  - jñaatraa370
+  - jñatra370
+  - jñatra370
+  - jñatra370
+  transliteration: jñatra370
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 370 for performance testing
+- original_term: patin371
+  variations:
+  - paatin371
+  - patiin371
+  - patin371
+  - patin371
+  transliteration: patin371
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 371 for performance testing
+- original_term: labhant372
+  variations:
+  - laabhaant372
+  - labhant372
+  - labhant372
+  - labant372
+  transliteration: labhant372
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 372 for performance testing
+- original_term: dhrivat373
+  variations:
+  - dhrivaat373
+  - dhriivat373
+  - dhrivat373
+  - drivat373
+  transliteration: dhrivat373
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 373 for performance testing
+- original_term: cinta374
+  variations:
+  - cintaa374
+  - ciinta374
+  - cinta374
+  - cinta374
+  transliteration: cinta374
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 374 for performance testing
+- original_term: dhamat375
+  variations:
+  - dhaamaat375
+  - dhamat375
+  - dhamat375
+  - damat375
+  transliteration: dhamat375
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 375 for performance testing
+- original_term: dhritva376
+  variations:
+  - dhritvaa376
+  - dhriitva376
+  - dhritva376
+  - dritva376
+  transliteration: dhritva376
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 376 for performance testing
+- original_term: grahda377
+  variations:
+  - graahdaa377
+  - grahda377
+  - grahda377
+  - grada377
+  transliteration: grahda377
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 377 for performance testing
+- original_term: jñana378
+  variations:
+  - jñaanaa378
+  - jñana378
+  - jñana378
+  - jñana378
+  transliteration: jñana378
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 378 for performance testing
+- original_term: budhma379
+  variations:
+  - budhmaa379
+  - budhma379
+  - buudhma379
+  - budma379
+  transliteration: budhma379
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 379 for performance testing
+- original_term: cintma380
+  variations:
+  - cintmaa380
+  - ciintma380
+  - cintma380
+  - cintma380
+  transliteration: cintma380
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 380 for performance testing
+- original_term: bhajma381
+  variations:
+  - bhaajmaa381
+  - bhajma381
+  - bhajma381
+  - bajma381
+  transliteration: bhajma381
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 381 for performance testing
+- original_term: cinttā382
+  variations:
+  - cinttā382
+  - ciinttā382
+  - cinttā382
+  - cinttā382
+  transliteration: cinttā382
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 382 for performance testing
+- original_term: vrtka383
+  variations:
+  - vrtkaa383
+  - vrtka383
+  - vrtka383
+  - vrtka383
+  transliteration: vrtka383
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 383 for performance testing
+- original_term: vrtanā384
+  variations:
+  - vrtaanā384
+  - vrtanā384
+  - vrtanā384
+  - vrtanā384
+  transliteration: vrtanā384
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 384 for performance testing
+- original_term: dhyāvat385
+  variations:
+  - dhyāvaat385
+  - dhyāvat385
+  - dhyāvat385
+  - dyāvat385
+  transliteration: dhyāvat385
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 385 for performance testing
+- original_term: srumat386
+  variations:
+  - srumaat386
+  - srumat386
+  - sruumat386
+  - srumat386
+  transliteration: śrumat386
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 386 for performance testing
+- original_term: yuanā387
+  variations:
+  - yuaanā387
+  - yuanā387
+  - yuuanā387
+  - yuanā387
+  transliteration: yuanā387
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 387 for performance testing
+- original_term: vidant388
+  variations:
+  - vidaant388
+  - viidant388
+  - vidant388
+  - vidant388
+  transliteration: vidant388
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 388 for performance testing
+- original_term: sevāmat389
+  variations:
+  - sevāmaat389
+  - sevāmat389
+  - sevāmat389
+  - sevāmat389
+  transliteration: sevāmat389
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 389 for performance testing
+- original_term: ishpa390
+  variations:
+  - ishpaa390
+  - iishpa390
+  - ishpa390
+  - ispa390
+  transliteration: ishpa390
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 390 for performance testing
+- original_term: gamtva391
+  variations:
+  - gaamtvaa391
+  - gamtva391
+  - gamtva391
+  - gamtva391
+  transliteration: gamtva391
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 391 for performance testing
+- original_term: tyajana392
+  variations:
+  - tyaajaanaa392
+  - tyajana392
+  - tyajana392
+  - tyajana392
+  transliteration: tyajana392
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 392 for performance testing
+- original_term: sevāka393
+  variations:
+  - sevākaa393
+  - sevāka393
+  - sevāka393
+  - sevāka393
+  transliteration: sevāka393
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 393 for performance testing
+- original_term: bhajya394
+  variations:
+  - bhaajyaa394
+  - bhajya394
+  - bhajya394
+  - bajya394
+  transliteration: bhajya394
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 394 for performance testing
+- original_term: ranjanā395
+  variations:
+  - raanjaanā395
+  - ranjanā395
+  - ranjanā395
+  - ranjanā395
+  transliteration: ranjanā395
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 395 for performance testing
+- original_term: srupa396
+  variations:
+  - srupaa396
+  - srupa396
+  - sruupa396
+  - srupa396
+  transliteration: śrupa396
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 396 for performance testing
+- original_term: cintmat397
+  variations:
+  - cintmaat397
+  - ciintmat397
+  - cintmat397
+  - cintmat397
+  transliteration: cintmat397
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 397 for performance testing
+- original_term: smrda398
+  variations:
+  - smrdaa398
+  - smrda398
+  - smrda398
+  - smrda398
+  transliteration: smrda398
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 398 for performance testing
+- original_term: dhriika399
+  variations:
+  - dhriikaa399
+  - dhriiiika399
+  - dhriika399
+  - driika399
+  transliteration: dhriika399
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 399 for performance testing
+- original_term: vidu400
+  variations:
+  - vidu400
+  - viidu400
+  - viduu400
+  - vidu400
+  transliteration: vidu400
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 400 for performance testing
+- original_term: sthaanā401
+  variations:
+  - sthaaaanā401
+  - sthaanā401
+  - sthaanā401
+  - staanā401
+  transliteration: sthaanā401
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 401 for performance testing
+- original_term: asin402
+  variations:
+  - aasin402
+  - asiin402
+  - asin402
+  - asin402
+  transliteration: asin402
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 402 for performance testing
+- original_term: cintpa403
+  variations:
+  - cintpaa403
+  - ciintpa403
+  - cintpa403
+  - cintpa403
+  transliteration: cintpa403
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 403 for performance testing
+- original_term: pūjtha404
+  variations:
+  - pūjthaa404
+  - pūjtha404
+  - pūjtha404
+  - pūjta404
+  transliteration: pūjtha404
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 404 for performance testing
+- original_term: dhriin405
+  variations:
+  - dhriin405
+  - dhriiiin405
+  - dhriin405
+  - driin405
+  transliteration: dhriin405
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 405 for performance testing
+- original_term: patin406
+  variations:
+  - paatin406
+  - patiin406
+  - patin406
+  - patin406
+  transliteration: patin406
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 406 for performance testing
+- original_term: smrin407
+  variations:
+  - smrin407
+  - smriin407
+  - smrin407
+  - smrin407
+  transliteration: smrin407
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 407 for performance testing
+- original_term: sevātā408
+  variations:
+  - sevātā408
+  - sevātā408
+  - sevātā408
+  - sevātā408
+  transliteration: sevātā408
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 408 for performance testing
+- original_term: hantā409
+  variations:
+  - haantā409
+  - hantā409
+  - hantā409
+  - antā409
+  transliteration: hantā409
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 409 for performance testing
+- original_term: ranjda410
+  variations:
+  - raanjdaa410
+  - ranjda410
+  - ranjda410
+  - ranjda410
+  transliteration: ranjda410
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 410 for performance testing
+- original_term: sthatra411
+  variations:
+  - sthaatraa411
+  - sthatra411
+  - sthatra411
+  - statra411
+  transliteration: sthatra411
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 411 for performance testing
+- original_term: ranjika412
+  variations:
+  - raanjikaa412
+  - ranjiika412
+  - ranjika412
+  - ranjika412
+  transliteration: ranjika412
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 412 for performance testing
+- original_term: dhada413
+  variations:
+  - dhaadaa413
+  - dhada413
+  - dhada413
+  - dada413
+  transliteration: dhada413
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 413 for performance testing
+- original_term: cinta414
+  variations:
+  - cintaa414
+  - ciinta414
+  - cinta414
+  - cinta414
+  transliteration: cinta414
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 414 for performance testing
+- original_term: hantra415
+  variations:
+  - haantraa415
+  - hantra415
+  - hantra415
+  - antra415
+  transliteration: hantra415
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 415 for performance testing
+- original_term: niima416
+  variations:
+  - niimaa416
+  - niiiima416
+  - niima416
+  - niima416
+  transliteration: niima416
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 416 for performance testing
+- original_term: bhaju417
+  variations:
+  - bhaaju417
+  - bhaju417
+  - bhajuu417
+  - baju417
+  transliteration: bhaju417
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 417 for performance testing
+- original_term: ishtā418
+  variations:
+  - ishtā418
+  - iishtā418
+  - ishtā418
+  - istā418
+  transliteration: ishtā418
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 418 for performance testing
+- original_term: vahma419
+  variations:
+  - vaahmaa419
+  - vahma419
+  - vahma419
+  - vama419
+  transliteration: vahma419
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 419 for performance testing
+- original_term: dhrii420
+  variations:
+  - dhrii420
+  - dhriiii420
+  - dhrii420
+  - drii420
+  transliteration: dhrii420
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 420 for performance testing
+- original_term: sthaa421
+  variations:
+  - sthaaaa421
+  - sthaa421
+  - sthaa421
+  - staa421
+  transliteration: sthaa421
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 421 for performance testing
+- original_term: sevāna422
+  variations:
+  - sevānaa422
+  - sevāna422
+  - sevāna422
+  - sevāna422
+  transliteration: sevāna422
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 422 for performance testing
+- original_term: cintism423
+  variations:
+  - cintism423
+  - ciintiism423
+  - cintism423
+  - cintism423
+  transliteration: cintism423
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 423 for performance testing
+- original_term: vidtha424
+  variations:
+  - vidthaa424
+  - viidtha424
+  - vidtha424
+  - vidta424
+  transliteration: vidtha424
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 424 for performance testing
+- original_term: dhaka425
+  variations:
+  - dhaakaa425
+  - dhaka425
+  - dhaka425
+  - daka425
+  transliteration: dhaka425
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 425 for performance testing
+- original_term: niina426
+  variations:
+  - niinaa426
+  - niiiina426
+  - niina426
+  - niina426
+  transliteration: niina426
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 426 for performance testing
+- original_term: tyaju427
+  variations:
+  - tyaaju427
+  - tyaju427
+  - tyajuu427
+  - tyaju427
+  transliteration: tyaju427
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 427 for performance testing
+- original_term: jiana428
+  variations:
+  - jiaanaa428
+  - jiiana428
+  - jiana428
+  - jiana428
+  transliteration: jiana428
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 428 for performance testing
+- original_term: vrttra429
+  variations:
+  - vrttraa429
+  - vrttra429
+  - vrttra429
+  - vrttra429
+  transliteration: vrttra429
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 429 for performance testing
+- original_term: pattha430
+  variations:
+  - paatthaa430
+  - pattha430
+  - pattha430
+  - patta430
+  transliteration: pattha430
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 430 for performance testing
+- original_term: krma431
+  variations:
+  - krmaa431
+  - krma431
+  - krma431
+  - krma431
+  transliteration: kr̥ma431
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 431 for performance testing
+- original_term: vrtism432
+  variations:
+  - vrtism432
+  - vrtiism432
+  - vrtism432
+  - vrtism432
+  transliteration: vrtism432
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 432 for performance testing
+- original_term: krpa433
+  variations:
+  - krpaa433
+  - krpa433
+  - krpa433
+  - krpa433
+  transliteration: kr̥pa433
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 433 for performance testing
+- original_term: yuya434
+  variations:
+  - yuyaa434
+  - yuya434
+  - yuuya434
+  - yuya434
+  transliteration: yuya434
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 434 for performance testing
+- original_term: yuya435
+  variations:
+  - yuyaa435
+  - yuya435
+  - yuuya435
+  - yuya435
+  transliteration: yuya435
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 435 for performance testing
+- original_term: vaha436
+  variations:
+  - vaahaa436
+  - vaha436
+  - vaha436
+  - vaa436
+  transliteration: vaha436
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 436 for performance testing
+- original_term: vrtu437
+  variations:
+  - vrtu437
+  - vrtu437
+  - vrtuu437
+  - vrtu437
+  transliteration: vrtu437
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 437 for performance testing
+- original_term: jina438
+  variations:
+  - jinaa438
+  - jiina438
+  - jina438
+  - jina438
+  transliteration: jina438
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 438 for performance testing
+- original_term: hanpa439
+  variations:
+  - haanpaa439
+  - hanpa439
+  - hanpa439
+  - anpa439
+  transliteration: hanpa439
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 439 for performance testing
+- original_term: vahpa440
+  variations:
+  - vaahpaa440
+  - vahpa440
+  - vahpa440
+  - vapa440
+  transliteration: vahpa440
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 440 for performance testing
+- original_term: tyajma441
+  variations:
+  - tyaajmaa441
+  - tyajma441
+  - tyajma441
+  - tyajma441
+  transliteration: tyajma441
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 441 for performance testing
+- original_term: sevāana442
+  variations:
+  - sevāaanaa442
+  - sevāana442
+  - sevāana442
+  - sevāana442
+  transliteration: sevāana442
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 442 for performance testing
+- original_term: jia443
+  variations:
+  - jiaa443
+  - jiia443
+  - jia443
+  - jia443
+  transliteration: jia443
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 443 for performance testing
+- original_term: cintu444
+  variations:
+  - cintu444
+  - ciintu444
+  - cintuu444
+  - cintu444
+  transliteration: cintu444
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 444 for performance testing
+- original_term: tyaju445
+  variations:
+  - tyaaju445
+  - tyaju445
+  - tyajuu445
+  - tyaju445
+  transliteration: tyaju445
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: advanced
+  meaning: synthetic term 445 for performance testing
+- original_term: hanana446
+  variations:
+  - haanaanaa446
+  - hanana446
+  - hanana446
+  - anana446
+  transliteration: hanana446
+  is_proper_noun: false
+  category: ritual
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: intermediate
+  meaning: synthetic term 446 for performance testing
+- original_term: yui447
+  variations:
+  - yui447
+  - yuii447
+  - yuui447
+  - yui447
+  transliteration: yui447
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 447 for performance testing
+- original_term: bhajka448
+  variations:
+  - bhaajkaa448
+  - bhajka448
+  - bhajka448
+  - bajka448
+  transliteration: bhajka448
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Synthetic
+  difficulty_level: beginner
+  meaning: synthetic term 448 for performance testing

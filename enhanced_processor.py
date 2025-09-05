@@ -10,9 +10,16 @@ from pathlib import Path
 from typing import Optional, Dict, Any
 
 from sanskrit_processor_v2 import SanskritProcessor, ProcessingResult, SRTSegment
-from services.mcp_client import create_mcp_client, MCPClient
-from services.api_client import create_api_client, ExternalAPIClient
-from services.simple_ner import SimpleNER
+from services.external import SimpleFallbackNER, ExternalClients
+# Optional imports for external services
+try:
+    from services.mcp_client import MCPClient
+except ImportError:
+    MCPClient = None
+try:
+    from services.api_client import ExternalAPIClient  
+except ImportError:
+    ExternalAPIClient = None
 
 logger = logging.getLogger(__name__)
 
@@ -27,33 +34,13 @@ class EnhancedSanskritProcessor(SanskritProcessor):
         # Load configuration
         self.config = self._load_config(config_path)
         
-        # Initialize external services
-        self.mcp_client: Optional[MCPClient] = None
-        self.api_client: Optional[ExternalAPIClient] = None
-        self.simple_ner: Optional[SimpleNER] = None
+        # Initialize consolidated external clients
+        self.external_clients = ExternalClients(self.config)
         
-        if self.config.get('mcp', {}).get('enabled', False):
-            try:
-                self.mcp_client = create_mcp_client(config_path)
-                logger.info("MCP client initialized")
-            except Exception as e:
-                logger.warning(f"MCP client initialization failed: {e}")
-        
-        if self.config.get('external_apis', {}).get('enabled', False):
-            try:
-                self.api_client = create_api_client(config_path)
-                logger.info("External API client initialized")
-            except Exception as e:
-                logger.warning(f"API client initialization failed: {e}")
-        
-        # Initialize Simple NER fallback
-        if self.config.get('ner', {}).get('fallback', {}).get('enabled', True):
-            try:
-                entities_file = self.config.get('ner', {}).get('fallback', {}).get('entities_file', 'data/entities.yaml')
-                self.simple_ner = SimpleNER(entities_file)
-                logger.info("Simple NER fallback initialized")
-            except Exception as e:
-                logger.warning(f"Simple NER initialization failed: {e}")
+        # Initialize simple NER fallback
+        entities_file = Path(self.config.get('ner', {}).get('fallback', {}).get('entities_file', 'data/entities.yaml'))
+        self.simple_ner = SimpleFallbackNER(entities_file if entities_file.exists() else None)
+        logger.info("Enhanced processor initialized")
         
         logger.info("Enhanced Sanskrit processor initialized")
     
@@ -75,15 +62,13 @@ class EnhancedSanskritProcessor(SanskritProcessor):
     def _get_ner_client(self):
         """Get NER client with automatic fallback logic."""
         # Try MCP first if available and connected
-        if (self.mcp_client and 
-            self.mcp_client.connected and 
+        if (self.external_clients.mcp_client and 
             self.config.get('processing', {}).get('enable_semantic_analysis', True)):
-            return self.mcp_client
+            return self.external_clients.mcp_client
         
         # Fallback to Simple NER
         if self.simple_ner:
-            if self.config.get('ner', {}).get('fallback', {}).get('log_fallback_usage', True):
-                logger.info("Using Simple NER fallback (MCP unavailable)")
+            logger.info("Using Simple NER fallback")
             return self.simple_ner
         
         return None
@@ -114,9 +99,9 @@ class EnhancedSanskritProcessor(SanskritProcessor):
         total_corrections = base_corrections
         
         # Apply MCP enhancements if available
-        if self.mcp_client and self.config.get('processing', {}).get('enable_semantic_analysis', True):
+        if self.external_clients.mcp_client and self.config.get('processing', {}).get('enable_semantic_analysis', True):
             try:
-                enhanced_text = self.mcp_client.context_correct(processed_text, 
+                enhanced_text = self.external_clients.mcp_client.context_correct(processed_text, 
                                                               context.get('previous_text') if context else None)
                 if enhanced_text != processed_text:
                     processed_text = enhanced_text
@@ -126,9 +111,9 @@ class EnhancedSanskritProcessor(SanskritProcessor):
                 logger.debug(f"MCP enhancement skipped: {e}")
         
         # Apply scripture lookup if available
-        if self.api_client and self.config.get('processing', {}).get('enable_scripture_lookup', True):
+        if self.external_clients.api_client and self.config.get('processing', {}).get('enable_scripture_lookup', True):
             try:
-                scripture_match = self.api_client.lookup_scripture(processed_text)
+                scripture_match = self.external_clients.api_client.lookup_scripture(processed_text)
                 if scripture_match and scripture_match.confidence > 0.8:
                     # For high-confidence matches, could enhance with citation
                     logger.debug(f"Scripture match found: {scripture_match.verse_reference}")
@@ -216,45 +201,23 @@ class EnhancedSanskritProcessor(SanskritProcessor):
     
     def get_service_status(self) -> Dict[str, Any]:
         """Get status of all integrated services."""
-        status = {
+        return {
             "base_processor": "active",
             "lexicons_loaded": {
                 "corrections": len(self.lexicons.corrections),
                 "proper_nouns": len(self.lexicons.proper_nouns)
-            }
+            },
+            "external_services": {
+                "mcp_client": "available" if self.external_clients.mcp_client else "disabled",
+                "api_client": "available" if self.external_clients.api_client else "disabled"
+            },
+            "simple_ner": "enabled" if self.simple_ner else "disabled"
         }
-        
-        if self.mcp_client:
-            status["mcp_client"] = {
-                "enabled": self.mcp_client.config.enabled,
-                "connected": self.mcp_client.connected
-            }
-        else:
-            status["mcp_client"] = "disabled"
-        
-        if self.api_client:
-            status["external_apis"] = self.api_client.get_service_status()
-        else:
-            status["external_apis"] = "disabled"
-        
-        if self.simple_ner:
-            ner_stats = self.simple_ner.get_stats()
-            status["simple_ner"] = {
-                "enabled": True,
-                "entities_loaded": ner_stats['total_entities'],
-                "categories": list(ner_stats['category_breakdown'].keys()),
-                "fallback_active": not (self.mcp_client and self.mcp_client.connected)
-            }
-        else:
-            status["simple_ner"] = "disabled"
-        
-        return status
     
     def close(self):
         """Clean up external connections."""
-        if self.mcp_client:
-            self.mcp_client.close()
-        
+        if self.external_clients:
+            self.external_clients.close()
         logger.info("Enhanced processor closed")
 
 if __name__ == "__main__":
