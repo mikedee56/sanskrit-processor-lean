@@ -1,0 +1,84 @@
+# Configuration Schema for Sanskrit Processor
+# JSON Schema format in YAML for validation
+# Based on current config.yaml structure with lean architecture principles
+
+$schema: "http://json-schema.org/draft-07/schema#"
+type: object
+title: "Sanskrit Processor Configuration Schema"
+description: "Schema validation for Sanskrit SRT processor configuration files"
+
+properties:
+  processing:
+    type: object
+    title: "Processing Configuration"
+    description: "Core processing behavior settings"
+    properties:
+      use_iast_diacritics:
+        type: boolean
+        default: true
+        description: "Enable IAST transliterations with diacritics in output"
+        
+      preserve_capitalization:
+        type: boolean  
+        default: true
+        description: "Maintain proper noun capitalization from lexicons"
+        
+      fuzzy_matching:
+        type: object
+        title: "Fuzzy Matching Settings"
+        description: "Configuration for fuzzy string matching behavior"
+        properties:
+          enabled:
+            type: boolean
+            default: true
+            description: "Enable fuzzy matching for lexicon lookups"
+            
+          threshold:
+            type: number
+            minimum: 0.0
+            maximum: 1.0
+            default: 0.8
+            description: "Fuzzy matching threshold (0.0 = loose, 1.0 = exact)"
+            
+          log_matches:
+            type: boolean
+            default: false
+            description: "Log fuzzy matches to console for debugging"
+            
+        required: ["enabled"]
+        additionalProperties: false
+        
+    required: ["use_iast_diacritics", "preserve_capitalization", "fuzzy_matching"]
+    additionalProperties: false
+    
+  lexicons:
+    type: object
+    title: "Lexicon Configuration"
+    description: "File paths for lexicon YAML files"
+    properties:
+      corrections_file:
+        type: string
+        default: "corrections.yaml"
+        description: "Path to corrections lexicon file (relative to lexicons directory)"
+        pattern: "^[a-zA-Z0-9_.-]+\\.ya?ml$"
+        
+      proper_nouns_file:
+        type: string
+        default: "proper_nouns.yaml"
+        description: "Path to proper nouns lexicon file (relative to lexicons directory)"
+        pattern: "^[a-zA-Z0-9_.-]+\\.ya?ml$"
+        
+    required: ["corrections_file", "proper_nouns_file"]
+    additionalProperties: false
+
+# Environment-specific overrides are allowed at root level
+# but will inherit base schema validation    
+required: ["processing", "lexicons"]
+additionalProperties: false
+
+# Validation metadata
+metadata:
+  version: "1.0.0"
+  compatible_with: ["config.yaml", "config.*.yaml"]
+  last_updated: "2025-09-05"
+  lean_architecture: true

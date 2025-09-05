@@ -1,0 +1,13 @@
+# Production Environment Configuration  
+# Inherits from config.yaml and overrides specific settings for production
+
+processing:
+  # Production optimizations
+  fuzzy_matching:
+    log_matches: false  # Override: Disable logging for performance
+    threshold: 0.85     # Override: Higher threshold for better precision
+    
+# Production might use optimized lexicon files
+# lexicons:
+#   corrections_file: "corrections.prod.yaml"  # Example: optimized/curated for prod
+#   proper_nouns_file: "proper_nouns.prod.yaml"

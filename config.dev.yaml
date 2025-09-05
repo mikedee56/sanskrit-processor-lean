@@ -1,0 +1,13 @@
+# Development Environment Configuration
+# Inherits from config.yaml and overrides specific settings for development
+
+processing:
+  # Enable verbose logging for debugging in development
+  fuzzy_matching:
+    log_matches: true  # Override: Enable fuzzy match logging for dev debugging
+    threshold: 0.7     # Override: Lower threshold for more matches during testing
+
+# Development could use different lexicon files for testing
+# lexicons:
+#   corrections_file: "corrections.dev.yaml"  # Example override
+#   proper_nouns_file: "proper_nouns.dev.yaml"

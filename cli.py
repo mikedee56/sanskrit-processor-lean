@@ -12,6 +12,7 @@ import json
 
 from enhanced_processor import EnhancedSanskritProcessor
 from sanskrit_processor_v2 import SanskritProcessor
+from services.config_validator import ConfigValidator
 
 def setup_logging(verbose: bool = False):
     """Setup logging configuration."""
@@ -21,6 +22,61 @@ def setup_logging(verbose: bool = False):
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         handlers=[logging.StreamHandler()]
     )
+
+def validate_configuration(config_path: Path):
+    """Validate configuration file and report results."""
+    print(f"🔍 Validating configuration: {config_path}")
+    
+    # Check if config file exists
+    if not config_path.exists():
+        print(f"❌ Configuration file not found: {config_path}")
+        print(f"💡 Create a config.yaml file or specify --config path/to/config.yaml")
+        return 1
+    
+    try:
+        # Initialize validator
+        validator = ConfigValidator()
+        
+        # Load config with environment overrides
+        config = validator.load_environment_config(config_path)
+        
+        # Validate configuration
+        result = validator.validate_config(config)
+        
+        # Report results
+        if result.warnings:
+            print("\n⚠️  Warnings:")
+            for warning in result.warnings:
+                print(f"   - {warning}")
+        
+        if result.errors:
+            print("\n❌ Errors:")
+            for error in result.errors:
+                print(f"   - {error}")
+            print(f"\n💡 Please fix the errors above and validate again")
+            return 1
+        else:
+            print("\n✅ Configuration is valid!")
+            
+        # Show validation metrics
+        if result.metrics:
+            print(f"\n📊 Validation Metrics:")
+            print(f"   • Validation time: {result.metrics['validation_time_ms']}ms")
+            print(f"   • Properties validated: {result.metrics['properties_validated']}")
+            print(f"   • Schema compliance: {'✅' if result.metrics['schema_compliance'] else '❌'}")
+            if result.metrics['environment_overrides_applied']:
+                print(f"   • Environment overrides: ✅ Applied")
+        
+        # Show effective configuration
+        print("\n📋 Effective Configuration:")
+        import yaml
+        print(yaml.dump(result.effective_config, default_flow_style=False, indent=2))
+        
+        return 0
+        
+    except Exception as e:
+        print(f"❌ Validation failed: {e}")
+        return 1
 
 def main():
     """Enhanced CLI entry point with batch processing."""
@@ -38,7 +94,7 @@ Examples:
     )
     
     parser.add_argument('command', nargs='?', default=None, help='Command: batch or single file processing')
-    parser.add_argument('input', type=Path, help='Input SRT file or directory (for batch)')
+    parser.add_argument('input', type=Path, nargs='?', help='Input SRT file or directory (for batch)')
     parser.add_argument('output', type=Path, nargs='?', help='Output SRT file or directory (for batch)')
     parser.add_argument('--config', type=Path, default=Path('config.yaml'),
                         help='Configuration file (default: config.yaml)')
@@ -56,8 +112,14 @@ Examples:
                         help='File pattern for batch processing (default: *.srt)')
     parser.add_argument('--simple', action='store_true',
                         help='Use simple processor (lexicons only, no external services)')
+    parser.add_argument('--validate-config', action='store_true',
+                        help='Validate configuration file and exit')
     
     args = parser.parse_args()
+    
+    # Handle config validation if requested
+    if args.validate_config:
+        return validate_configuration(args.config)
     
     # Handle command parsing - if first arg looks like 'batch', it's batch mode
     if args.command == 'batch':
@@ -121,23 +183,27 @@ def process_single(args):
             sys.exit(1)
         
         # Show service status
-        status = processor.get_service_status()
-        logger.info("=== SERVICE STATUS ===")
-        logger.info(f"Base processor: {status['base_processor']}")
-        logger.info(f"Lexicons loaded: {status['lexicons_loaded']}")
-        
-        if isinstance(status.get('mcp_client'), dict):
-            mcp_status = status['mcp_client']
-            logger.info(f"MCP client: enabled={mcp_status['enabled']}, connected={mcp_status['connected']}")
+        if hasattr(processor, 'get_service_status'):
+            status = processor.get_service_status()
+            logger.info("=== SERVICE STATUS ===")
+            logger.info(f"Base processor: {status['base_processor']}")
+            logger.info(f"Lexicons loaded: {status['lexicons_loaded']}")
+            
+            if isinstance(status.get('mcp_client'), dict):
+                mcp_status = status['mcp_client']
+                logger.info(f"MCP client: enabled={mcp_status['enabled']}, connected={mcp_status['connected']}")
+            else:
+                logger.info(f"MCP client: {status.get('mcp_client', 'unknown')}")
+            
+            if isinstance(status.get('external_apis'), dict):
+                api_status = status['external_apis']
+                active_apis = sum(1 for svc in api_status.values() if svc['can_call'])
+                logger.info(f"External APIs: {active_apis}/{len(api_status)} services available")
+            else:
+                logger.info(f"External APIs: {status.get('external_apis', 'unknown')}")
         else:
-            logger.info(f"MCP client: {status.get('mcp_client', 'unknown')}")
-        
-        if isinstance(status.get('external_apis'), dict):
-            api_status = status['external_apis']
-            active_apis = sum(1 for svc in api_status.values() if svc['can_call'])
-            logger.info(f"External APIs: {active_apis}/{len(api_status)} services available")
-        else:
-            logger.info(f"External APIs: {status.get('external_apis', 'unknown')}")
+            logger.info("=== SERVICE STATUS ===")
+            logger.info("Simple processor mode - no external services")
         
         # Process file
         logger.info(f"Processing: {args.input} -> {args.output}")
@@ -167,7 +233,8 @@ def process_single(args):
                 print(f"\n📊 Metrics exported to: {args.export_metrics}")
         
         # Clean up
-        processor.close()
+        if hasattr(processor, 'close'):
+            processor.close()
             
     except KeyboardInterrupt:
         logger.info("Processing interrupted by user")
