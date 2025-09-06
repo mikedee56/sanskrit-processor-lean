@@ -5,6 +5,7 @@ processing:
   # Output configuration
   use_iast_diacritics: true  # Use IAST transliterations with diacritics
   preserve_capitalization: true  # Maintain proper noun capitalization
+  use_consolidated_services: false  # Safe default during transition
   
   # Fuzzy matching
   fuzzy_matching:
@@ -16,3 +17,16 @@ processing:
 lexicons:
   corrections_file: "corrections.yaml"
   proper_nouns_file: "proper_nouns.yaml"
+
+# Service Layer Configuration
+services:
+  consolidated:
+    mcp:
+      enabled: true
+      server_url: "ws://localhost:8080"
+      timeout: 30
+      max_retries: 3
+    api:
+      enabled: true
+      timeout: 10
+      max_retries: 2

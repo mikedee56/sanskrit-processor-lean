@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Optional, Dict, Any
 
 from sanskrit_processor_v2 import SanskritProcessor, ProcessingResult, SRTSegment
-from services.external import SimpleFallbackNER, ExternalClients
+from services.external import SimpleFallbackNER, ExternalClients, ExternalServiceManager
 # Optional imports for external services
 try:
     from services.mcp_client import MCPClient
@@ -34,8 +34,17 @@ class EnhancedSanskritProcessor(SanskritProcessor):
         # Load configuration
         self.config = self._load_config(config_path)
         
-        # Initialize consolidated external clients
-        self.external_clients = ExternalClients(self.config)
+        # Initialize external services (consolidated or legacy based on feature flag)
+        if self.config.get('processing', {}).get('use_consolidated_services', False):
+            # New consolidated approach
+            self.external_services = ExternalServiceManager(self.config)
+            self.external_clients = None  # Legacy not used
+            logger.info("Using consolidated external services")
+        else:
+            # Legacy approach (during transition)
+            self.external_clients = ExternalClients(self.config)
+            self.external_services = None  # Consolidated not used
+            logger.info("Using legacy external clients")
         
         # Initialize simple NER fallback
         entities_file = Path(self.config.get('ner', {}).get('fallback', {}).get('entities_file', 'data/entities.yaml'))
@@ -61,10 +70,16 @@ class EnhancedSanskritProcessor(SanskritProcessor):
     
     def _get_ner_client(self):
         """Get NER client with automatic fallback logic."""
-        # Try MCP first if available and connected
-        if (self.external_clients.mcp_client and 
-            self.config.get('processing', {}).get('enable_semantic_analysis', True)):
-            return self.external_clients.mcp_client
+        # Check if using consolidated services
+        if self.external_services:
+            # Consolidated approach - check if MCP is available
+            if self.config.get('processing', {}).get('enable_semantic_analysis', True):
+                return self.external_services  # Will handle MCP internally
+        else:
+            # Legacy approach
+            if (self.external_clients and self.external_clients.mcp_client and 
+                self.config.get('processing', {}).get('enable_semantic_analysis', True)):
+                return self.external_clients.mcp_client
         
         # Fallback to Simple NER
         if self.simple_ner:
@@ -99,11 +114,18 @@ class EnhancedSanskritProcessor(SanskritProcessor):
         total_corrections = base_corrections
         
         # Apply MCP enhancements if available
-        if self.external_clients.mcp_client and self.config.get('processing', {}).get('enable_semantic_analysis', True):
+        if self.config.get('processing', {}).get('enable_semantic_analysis', True):
             try:
-                enhanced_text = self.external_clients.mcp_client.context_correct(processed_text, 
-                                                              context.get('previous_text') if context else None)
-                if enhanced_text != processed_text:
+                enhanced_text = None
+                if self.external_services:
+                    # Consolidated approach
+                    enhanced_text = self.external_services.mcp_enhance_segment(processed_text)
+                elif self.external_clients and self.external_clients.mcp_client:
+                    # Legacy approach
+                    enhanced_text = self.external_clients.mcp_client.context_correct(processed_text, 
+                                                                  context.get('previous_text') if context else None)
+                
+                if enhanced_text and enhanced_text != processed_text:
                     processed_text = enhanced_text
                     total_corrections += 1
                     logger.debug("Applied MCP context correction")
@@ -111,12 +133,18 @@ class EnhancedSanskritProcessor(SanskritProcessor):
                 logger.debug(f"MCP enhancement skipped: {e}")
         
         # Apply scripture lookup if available
-        if self.external_clients.api_client and self.config.get('processing', {}).get('enable_scripture_lookup', True):
+        if self.config.get('processing', {}).get('enable_scripture_lookup', True):
             try:
-                scripture_match = self.external_clients.api_client.lookup_scripture(processed_text)
-                if scripture_match and scripture_match.confidence > 0.8:
-                    # For high-confidence matches, could enhance with citation
-                    logger.debug(f"Scripture match found: {scripture_match.verse_reference}")
+                scripture_match = None
+                if self.external_services:
+                    # Consolidated approach
+                    scripture_match = self.external_services.api_lookup_scripture(processed_text)
+                elif self.external_clients and self.external_clients.api_client:
+                    # Legacy approach
+                    scripture_match = self.external_clients.api_client.lookup_scripture(processed_text)
+                
+                if scripture_match and (isinstance(scripture_match, dict) and scripture_match.get('results')):
+                    logger.debug(f"Scripture match found: {len(scripture_match.get('results', []))} results")
                     # Note: In a full implementation, might add footnote or enhance text
             except Exception as e:
                 logger.debug(f"Scripture lookup skipped: {e}")
@@ -201,22 +229,34 @@ class EnhancedSanskritProcessor(SanskritProcessor):
     
     def get_service_status(self) -> Dict[str, Any]:
         """Get status of all integrated services."""
+        external_status = {}
+        
+        if self.external_services:
+            # Consolidated services status
+            external_status = self.external_services.get_service_status()
+        elif self.external_clients:
+            # Legacy services status
+            external_status = {
+                "mode": "legacy",
+                "mcp_client": "available" if self.external_clients.mcp_client else "disabled",
+                "api_client": "available" if self.external_clients.api_client else "disabled"
+            }
+        
         return {
             "base_processor": "active",
             "lexicons_loaded": {
                 "corrections": len(self.lexicons.corrections),
                 "proper_nouns": len(self.lexicons.proper_nouns)
             },
-            "external_services": {
-                "mcp_client": "available" if self.external_clients.mcp_client else "disabled",
-                "api_client": "available" if self.external_clients.api_client else "disabled"
-            },
+            "external_services": external_status,
             "simple_ner": "enabled" if self.simple_ner else "disabled"
         }
     
     def close(self):
         """Clean up external connections."""
-        if self.external_clients:
+        if self.external_services:
+            self.external_services.close()
+        elif self.external_clients:
             self.external_clients.close()
         logger.info("Enhanced processor closed")
 
