@@ -30,3 +30,16 @@ services:
       enabled: true
       timeout: 10
       max_retries: 2
+
+# Performance Monitoring Configuration
+performance:
+  profiling:
+    enabled: false  # Default disabled for zero impact
+    detail_level: "basic"  # basic, detailed, full
+    memory_sampling_interval: 0.1  # seconds
+    cache_reports: true  # Cache for historical comparison
+    
+  monitoring:
+    track_segment_rate: true
+    track_memory_usage: true
+    track_service_response_times: true

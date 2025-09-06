@@ -14,6 +14,7 @@ from enhanced_processor import EnhancedSanskritProcessor
 from sanskrit_processor_v2 import SanskritProcessor
 from services.config_validator import ConfigValidator
 from exceptions import SanskritProcessorError, FileError, ConfigurationError, ProcessingError, get_exit_code
+from utils.performance_profiler import PerformanceProfiler
 
 def setup_logging(verbose: bool = False):
     """Setup logging configuration."""
@@ -90,6 +91,7 @@ Examples:
   python cli.py input.srt output.srt --config custom_config.yaml --verbose
   python cli.py input.srt output.srt --status-only
   python cli.py input.srt output.srt --metrics --export-metrics metrics.json
+  python cli.py input.srt output.srt --profile --profile-detail detailed
   python cli.py batch input_dir/ output_dir/ --pattern "*.srt"
         """
     )
@@ -115,6 +117,10 @@ Examples:
                         help='Use simple processor (lexicons only, no external services)')
     parser.add_argument('--validate-config', action='store_true',
                         help='Validate configuration file and exit')
+    parser.add_argument('--profile', action='store_true',
+                        help='Enable performance profiling')
+    parser.add_argument('--profile-detail', choices=['basic', 'detailed', 'full'],
+                        default='basic', help='Profiling detail level')
     
     args = parser.parse_args()
     
@@ -143,17 +149,24 @@ def process_single(args):
     setup_logging(args.verbose)
     logger = logging.getLogger(__name__)
     
+    # Initialize profiler
+    profiler = PerformanceProfiler(
+        enabled=args.profile,
+        detail_level=args.profile_detail
+    )
+    
     try:
-        # Initialize processor based on mode
-        if args.simple:
-            logger.info("Initializing Simple Sanskrit processor...")
-            processor = SanskritProcessor(args.lexicons)
-        else:
-            logger.info("Initializing Enhanced Sanskrit processor...")
-            processor = EnhancedSanskritProcessor(
-                lexicon_dir=args.lexicons,
-                config_path=args.config
-            )
+        with profiler.profile_stage("initialization"):
+            # Initialize processor based on mode
+            if args.simple:
+                logger.info("Initializing Simple Sanskrit processor...")
+                processor = SanskritProcessor(args.lexicons)
+            else:
+                logger.info("Initializing Enhanced Sanskrit processor...")
+                processor = EnhancedSanskritProcessor(
+                    lexicon_dir=args.lexicons,
+                    config_path=args.config
+                )
         
         # Show status if requested (enhanced mode only)
         if args.status_only:
@@ -174,96 +187,120 @@ def process_single(args):
             print("💡 Usage: python cli.py input.srt output.srt")
             return 1
         
-        if not args.input.exists():
-            from exceptions import FileError, get_exit_code
-            error = FileError(
-                f"Input file not found: {args.input}",
-                file_path=str(args.input),
-                file_operation="read"
-            )
-            print(f"❌ {error.get_formatted_message()}")
-            return get_exit_code(error)
-        
-        if not args.lexicons.exists():
-            from exceptions import FileError, get_exit_code
-            error = FileError(
-                f"Lexicons directory not found: {args.lexicons}",
-                file_path=str(args.lexicons),
-                file_operation="read",
-                suggestions=[
-                    "Ensure lexicons directory exists in project root",
-                    "Use --lexicons flag to specify different path"
-                ]
-            )
-            print(f"❌ {error.get_formatted_message()}")
-            return get_exit_code(error)
-        
-        if args.input.resolve() == args.output.resolve():
-            from exceptions import FileError, get_exit_code
-            error = FileError(
-                "Input and output files cannot be the same",
-                file_path=str(args.input),
-                suggestions=["Use different output filename or path"]
-            )
-            print(f"❌ {error.get_formatted_message()}")
-            return get_exit_code(error)
-        
-        # Show service status
-        if hasattr(processor, 'get_service_status'):
-            status = processor.get_service_status()
-            logger.info("=== SERVICE STATUS ===")
-            logger.info(f"Base processor: {status['base_processor']}")
-            logger.info(f"Lexicons loaded: {status['lexicons_loaded']}")
+        with profiler.profile_stage("validation"):
+            if not args.input.exists():
+                from exceptions import FileError, get_exit_code
+                error = FileError(
+                    f"Input file not found: {args.input}",
+                    file_path=str(args.input),
+                    file_operation="read"
+                )
+                print(f"❌ {error.get_formatted_message()}")
+                return get_exit_code(error)
             
-            if isinstance(status.get('mcp_client'), dict):
-                mcp_status = status['mcp_client']
-                logger.info(f"MCP client: enabled={mcp_status['enabled']}, connected={mcp_status['connected']}")
-            else:
-                logger.info(f"MCP client: {status.get('mcp_client', 'unknown')}")
+            if not args.lexicons.exists():
+                from exceptions import FileError, get_exit_code
+                error = FileError(
+                    f"Lexicons directory not found: {args.lexicons}",
+                    file_path=str(args.lexicons),
+                    file_operation="read",
+                    suggestions=[
+                        "Ensure lexicons directory exists in project root",
+                        "Use --lexicons flag to specify different path"
+                    ]
+                )
+                print(f"❌ {error.get_formatted_message()}")
+                return get_exit_code(error)
             
-            if isinstance(status.get('external_apis'), dict):
-                api_status = status['external_apis']
-                active_apis = sum(1 for svc in api_status.values() if svc['can_call'])
-                logger.info(f"External APIs: {active_apis}/{len(api_status)} services available")
+            if args.input.resolve() == args.output.resolve():
+                from exceptions import FileError, get_exit_code
+                error = FileError(
+                    "Input and output files cannot be the same",
+                    file_path=str(args.input),
+                    suggestions=["Use different output filename or path"]
+                )
+                print(f"❌ {error.get_formatted_message()}")
+                return get_exit_code(error)
+        
+        with profiler.profile_stage("status_check"):
+            # Show service status
+            if hasattr(processor, 'get_service_status'):
+                status = processor.get_service_status()
+                logger.info("=== SERVICE STATUS ===")
+                logger.info(f"Base processor: {status['base_processor']}")
+                logger.info(f"Lexicons loaded: {status['lexicons_loaded']}")
+                
+                if isinstance(status.get('mcp_client'), dict):
+                    mcp_status = status['mcp_client']
+                    logger.info(f"MCP client: enabled={mcp_status['enabled']}, connected={mcp_status['connected']}")
+                else:
+                    logger.info(f"MCP client: {status.get('mcp_client', 'unknown')}")
+                
+                if isinstance(status.get('external_apis'), dict):
+                    api_status = status['external_apis']
+                    active_apis = sum(1 for svc in api_status.values() if svc['can_call'])
+                    logger.info(f"External APIs: {active_apis}/{len(api_status)} services available")
+                else:
+                    logger.info(f"External APIs: {status.get('external_apis', 'unknown')}")
             else:
-                logger.info(f"External APIs: {status.get('external_apis', 'unknown')}")
-        else:
-            logger.info("=== SERVICE STATUS ===")
-            logger.info("Simple processor mode - no external services")
+                logger.info("=== SERVICE STATUS ===")
+                logger.info("Simple processor mode - no external services")
         
         # Process file
         logger.info(f"Processing: {args.input} -> {args.output}")
-        result = processor.process_srt_file(args.input, args.output)
+        with profiler.profile_stage("processing"):
+            result = processor.process_srt_file(args.input, args.output)
         
-        # Import reporter after processing
-        from sanskrit_processor_v2 import ProcessingReporter
-        
-        # Report results
-        if result.errors:
-            print("⚠️  Processing completed with warnings:")
-            for error in result.errors:
-                print(f"   • {error}")
-            print("")  # Extra line for readability
+        with profiler.profile_stage("reporting"):
+            # Import reporter after processing
+            from sanskrit_processor_v2 import ProcessingReporter
             
-            # Still show success report if segments were processed
-            if result.segments_processed > 0:
+            # Report results
+            if result.errors:
+                print("⚠️  Processing completed with warnings:")
+                for error in result.errors:
+                    print(f"   • {error}")
+                print("")  # Extra line for readability
+                
+                # Still show success report if segments were processed
+                if result.segments_processed > 0:
+                    report = ProcessingReporter.generate_summary(result, verbose=args.verbose)
+                    print(report)
+                else:
+                    print("❌ No segments were successfully processed")
+                    return 3  # Processing error
+            else:
+                # Use the new reporter for enhanced output
                 report = ProcessingReporter.generate_summary(result, verbose=args.verbose)
                 print(report)
-            else:
-                print("❌ No segments were successfully processed")
-                return 3  # Processing error
-        else:
-            # Use the new reporter for enhanced output
-            report = ProcessingReporter.generate_summary(result, verbose=args.verbose)
-            print(report)
+                
+            # Export metrics if requested
+            if args.export_metrics:
+                import json
+                metrics_data = ProcessingReporter.export_json(result)
+                with open(args.export_metrics, 'w') as f:
+                    json.dump(metrics_data, f, indent=2)
+                print(f"\n📊 Metrics exported to: {args.export_metrics}")
+        
+        # Generate and display performance report if profiling enabled
+        if args.profile:
+            perf_report = profiler.generate_report()
+            print("\n" + "="*50)
+            print("PERFORMANCE REPORT")
+            print("="*50)
+            print(f"Total Duration: {perf_report['total_duration']:.2f}s")
+            print(f"Peak Memory: {perf_report['peak_memory_mb']:.1f}MB")
             
-        # Export metrics if requested
-        if args.export_metrics:
-            import json
-            metrics_data = ProcessingReporter.export_json(result)
-            with open(args.export_metrics, 'w') as f:
-                json.dump(metrics_data, f, indent=2)
-            print(f"\n📊 Metrics exported to: {args.export_metrics}")
+            if perf_report.get('stage_timings'):
+                print("\nStage Breakdown:")
+                for stage, timing in perf_report['stage_timings'].items():
+                    percentage = (timing['duration'] / perf_report['total_duration']) * 100
+                    print(f"  {stage}: {timing['duration']:.2f}s ({percentage:.1f}%)")
+            
+            if perf_report.get('recommendations'):
+                print("\nOptimization Recommendations:")
+                for rec in perf_report['recommendations']:
+                    print(f"  • {rec}")
         
         # Clean up
         if hasattr(processor, 'close'):
@@ -302,65 +339,95 @@ def process_batch(args):
     setup_logging(args.verbose)
     logger = logging.getLogger(__name__)
     
-    # Discover files
-    input_dir = args.input
-    if not input_dir.is_dir():
-        logger.error(f"Input must be directory for batch processing: {input_dir}")
-        sys.exit(1)
-        
-    pattern = str(input_dir / args.pattern)
-    files = [Path(f) for f in glob.glob(pattern)]
-    if not files:
-        logger.error(f"No files found matching: {pattern}")
-        sys.exit(1)
+    # Initialize profiler
+    profiler = PerformanceProfiler(
+        enabled=args.profile,
+        detail_level=args.profile_detail
+    )
     
-    # Create output directory
-    args.output.mkdir(parents=True, exist_ok=True)
-    
-    # Initialize processor once
-    processor = EnhancedSanskritProcessor(args.lexicons, args.config)
-    
-    # Process files with simple progress
-    results = []
-    errors = []
-    start_time = time.time()
-    
-    print(f"🔄 Processing {len(files)} files...")
-    
-    for i, file_path in enumerate(files, 1):
-        try:
-            output_path = args.output / file_path.name
-            print(f"[{i}/{len(files)}] {file_path.name}", end=" ... ")
+    with profiler.profile_stage("batch_initialization"):
+        # Discover files
+        input_dir = args.input
+        if not input_dir.is_dir():
+            logger.error(f"Input must be directory for batch processing: {input_dir}")
+            sys.exit(1)
             
-            result = processor.process_srt_file(file_path, output_path)
-            if result.errors:
-                errors.extend(result.errors)
-                print("❌")
-            else:
-                results.append(result)
-                print("✅")
+        pattern = str(input_dir / args.pattern)
+        files = [Path(f) for f in glob.glob(pattern)]
+        if not files:
+            logger.error(f"No files found matching: {pattern}")
+            sys.exit(1)
+        
+        # Create output directory
+        args.output.mkdir(parents=True, exist_ok=True)
+        
+        # Initialize processor once
+        processor = EnhancedSanskritProcessor(args.lexicons, args.config)
+    
+    with profiler.profile_stage("batch_processing"):
+        # Process files with simple progress
+        results = []
+        errors = []
+        start_time = time.time()
+        
+        print(f"🔄 Processing {len(files)} files...")
+        
+        for i, file_path in enumerate(files, 1):
+            try:
+                output_path = args.output / file_path.name
+                print(f"[{i}/{len(files)}] {file_path.name}", end=" ... ")
                 
-        except Exception as e:
-            errors.append(f"{file_path.name}: {e}")
-            print("❌")
+                result = processor.process_srt_file(file_path, output_path)
+                if result.errors:
+                    errors.extend(result.errors)
+                    print("❌")
+                else:
+                    results.append(result)
+                    print("✅")
+                    
+            except Exception as e:
+                errors.append(f"{file_path.name}: {e}")
+                print("❌")
     
-    processor.close()
+    with profiler.profile_stage("batch_cleanup"):
+        processor.close()
+        
+        # Simple summary report
+        duration = time.time() - start_time
+        total_corrections = sum(r.corrections_made for r in results)
+        
+        print(f"\n📊 Batch Complete:")
+        print(f"   Files: {len(results)} success, {len(errors)} errors")
+        print(f"   Time: {duration:.1f}s ({len(files)/duration:.1f} files/min)")
+        print(f"   Total corrections: {total_corrections}")
+        
+        if errors:
+            print(f"\n❌ Errors:")
+            for error in errors[:5]:  # Limit error output
+                print(f"   - {error}")
+            if len(errors) > 5:
+                print(f"   ... and {len(errors)-5} more")
     
-    # Simple summary report
-    duration = time.time() - start_time
-    total_corrections = sum(r.corrections_made for r in results)
-    
-    print(f"\n📊 Batch Complete:")
-    print(f"   Files: {len(results)} success, {len(errors)} errors")
-    print(f"   Time: {duration:.1f}s ({len(files)/duration:.1f} files/min)")
-    print(f"   Total corrections: {total_corrections}")
-    
-    if errors:
-        print(f"\n❌ Errors:")
-        for error in errors[:5]:  # Limit error output
-            print(f"   - {error}")
-        if len(errors) > 5:
-            print(f"   ... and {len(errors)-5} more")
+    # Generate and display performance report if profiling enabled
+    if args.profile:
+        perf_report = profiler.generate_report()
+        print("\n" + "="*50)
+        print("BATCH PERFORMANCE REPORT")
+        print("="*50)
+        print(f"Total Duration: {perf_report['total_duration']:.2f}s")
+        print(f"Peak Memory: {perf_report['peak_memory_mb']:.1f}MB")
+        print(f"Processing Rate: {len(results)/perf_report['total_duration']:.1f} files/second")
+        
+        if perf_report.get('stage_timings'):
+            print("\nStage Breakdown:")
+            for stage, timing in perf_report['stage_timings'].items():
+                percentage = (timing['duration'] / perf_report['total_duration']) * 100
+                print(f"  {stage}: {timing['duration']:.2f}s ({percentage:.1f}%)")
+        
+        if perf_report.get('recommendations'):
+            print("\nOptimization Recommendations:")
+            for rec in perf_report['recommendations']:
+                print(f"  • {rec}")
 
 if __name__ == "__main__":
     sys.exit(main())
