@@ -154,6 +154,13 @@ class SanskritProcessor:
         self.collect_metrics = collect_metrics
         self.metrics_collector = MetricsCollector() if collect_metrics else None
         
+        # Initialize plugin system (lean implementation)
+        from utils.plugin_manager import PluginManager
+        self.plugin_manager = PluginManager()
+        if self.config.get('plugins', {}).get('enabled', False):
+            self.plugin_manager.enable()
+            self._load_plugins()
+        
         # Basic text normalization patterns
         self.filler_words = ['um', 'uh', 'er', 'ah', 'like', 'you know']
         self.number_words = {
@@ -231,6 +238,27 @@ class SanskritProcessor:
             
         return config
     
+    def _load_plugins(self):
+        """Load plugins from configuration (lean implementation)."""
+        try:
+            import importlib
+            plugin_config = self.config.get('plugins', {})
+            enabled_plugins = plugin_config.get('enabled_plugins', [])
+            
+            for plugin_name in enabled_plugins:
+                try:
+                    module = importlib.import_module(f'plugins.{plugin_name}')
+                    # Look for plugin function (convention: plugin_name + '_plugin')
+                    plugin_func_name = f'{plugin_name}_plugin'
+                    if hasattr(module, plugin_func_name):
+                        plugin_func = getattr(module, plugin_func_name)
+                        self.plugin_manager.register(plugin_name, plugin_func)
+                        logger.info(f"Loaded plugin: {plugin_name}")
+                except Exception as e:
+                    logger.warning(f"Failed to load plugin {plugin_name}: {e}")
+        except Exception as e:
+            logger.warning(f"Plugin loading failed: {e}")
+    
     def process_text(self, text: str) -> tuple[str, int]:
         """Process a single text segment. Returns (processed_text, corrections_made)."""
         original_text = text
@@ -249,6 +277,9 @@ class SanskritProcessor:
         
         # 4. Clean up extra whitespace
         text = re.sub(r'\s+', ' ', text).strip()
+        
+        # 5. Apply plugins (lean implementation)
+        text = self.plugin_manager.execute_all(text)
         
         if text != original_text:
             logger.debug(f"Processed: '{original_text[:50]}...' -> '{text[:50]}...' ({corrections} corrections)")

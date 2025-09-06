@@ -43,3 +43,18 @@ performance:
     track_segment_rate: true
     track_memory_usage: true
     track_service_response_times: true
+
+# Plugin System Configuration (Lean Implementation)
+plugins:
+  enabled: false  # Master plugin enable/disable (default: disabled)
+  auto_discover: false  # Simple manual configuration only
+  
+  # Enabled plugins list (plugins must exist in plugins/ directory)
+  enabled_plugins: []
+    # - custom_corrections  # Enable this to use custom corrections plugin
+    # - template_plugin     # Example template plugin
+  
+  # Plugin-specific configuration (optional)
+  custom_corrections:
+    # Plugin-specific settings can go here
+    strict_mode: false
