@@ -11,270 +11,25 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Optional, Any
 import logging
 
+# Import utilities for lean architecture
+from utils.srt_parser import SRTParser, SRTSegment
+from utils.metrics_collector import MetricsCollector, CorrectionDetail
+from utils.processing_reporter import ProcessingReporter, ProcessingResult, DetailedProcessingResult
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-@dataclass
-class SRTSegment:
-    """Simple SRT segment representation."""
-    index: int
-    start_time: str
-    end_time: str
-    text: str
+# SRTSegment now imported from utils.srt_parser
 
-@dataclass
-class ProcessingResult:
-    """Results from processing operation."""
-    segments_processed: int
-    corrections_made: int
-    processing_time: float
-    errors: List[str]
+# ProcessingResult now imported from utils.processing_reporter
 
-@dataclass(frozen=True)
-class CorrectionDetail:
-    """Immutable details of a single correction operation with comprehensive validation.
-    
-    This class provides a thread-safe, immutable record of correction operations
-    with built-in validation and performance optimization for metrics collection.
-    
-    Args:
-        type: Type of correction ('lexicon', 'capitalization', 'fuzzy', 'punctuation')
-        original: Original text before correction
-        corrected: Text after correction is applied
-        confidence: Confidence score (0.0-1.0) indicating correction reliability  
-        processing_time: Time taken to perform correction (seconds, non-negative)
-    """
-    type: str  # 'lexicon', 'capitalization', 'fuzzy', 'punctuation'
-    original: str
-    corrected: str
-    confidence: float
-    processing_time: float
-    
-    def __post_init__(self):
-        """Validate correction detail fields for data integrity."""
-        if not isinstance(self.confidence, (int, float)) or not 0.0 <= self.confidence <= 1.0:
-            object.__setattr__(self, 'confidence', max(0.0, min(1.0, float(self.confidence))))
-        if not isinstance(self.processing_time, (int, float)) or self.processing_time < 0:
-            object.__setattr__(self, 'processing_time', max(0.0, float(self.processing_time)))
+# CorrectionDetail now imported from utils.metrics_collector
 
-@dataclass
-class DetailedProcessingResult(ProcessingResult):
-    """Extended processing result with detailed metrics and performance data.
-    
-    This class extends the base ProcessingResult with comprehensive metrics
-    collection, maintaining full backward compatibility while providing
-    detailed insights into processing performance, correction quality,
-    and resource utilization.
-    """
-    corrections_by_type: Dict[str, int] = field(default_factory=dict)
-    correction_details: List[CorrectionDetail] = field(default_factory=list)
-    confidence_scores: List[float] = field(default_factory=list)
-    processing_phases: Dict[str, float] = field(default_factory=dict)  # parse, process, write times
-    quality_score: float = 0.0
-    memory_usage: Dict[str, float] = field(default_factory=dict)  # peak, average
+# DetailedProcessingResult now imported from utils.processing_reporter
 
-class MetricsCollector:
-    """Robust metrics collection for processing operations with comprehensive error handling.
-    
-    This class provides thread-safe metrics collection with proper error handling,
-    optimized performance, and detailed tracking of correction operations.
-    """
-    
-    def __init__(self):
-        self.corrections_by_type: Dict[str, int] = {}
-        self.correction_details: List[CorrectionDetail] = []
-        self.confidence_scores: List[float] = []
-        self.start_times: Dict[str, float] = {}
-    
-    def start_correction(self, correction_type: str, original: str) -> None:
-        """Start timing a correction operation with error handling."""
-        try:
-            import time
-            # Use unique key to handle duplicate words in same text
-            key = f"{correction_type}:{original}:{len(self.correction_details)}"
-            self.start_times[key] = time.time()
-        except Exception as e:
-            logger.warning(f"Failed to start correction timing: {e}")
-    
-    def end_correction(self, correction_type: str, original: str, corrected: str, confidence: float) -> None:
-        """Record completed correction with timing and validation."""
-        try:
-            import time
-            
-            # Validate inputs
-            if not isinstance(confidence, (int, float)) or not 0.0 <= confidence <= 1.0:
-                logger.warning(f"Invalid confidence score {confidence}, defaulting to 1.0")
-                confidence = 1.0
-            
-            # Calculate processing time
-            key = f"{correction_type}:{original}:{len(self.correction_details)}"
-            processing_time = time.time() - self.start_times.pop(key, time.time())
-            
-            # Update counters safely
-            self.corrections_by_type[correction_type] = self.corrections_by_type.get(correction_type, 0) + 1
-            
-            # Record detail with validation
-            detail = CorrectionDetail(
-                type=correction_type,
-                original=original,
-                corrected=corrected,
-                confidence=float(confidence),
-                processing_time=max(0.0, processing_time)  # Ensure non-negative
-            )
-            self.correction_details.append(detail)
-            self.confidence_scores.append(float(confidence))
-            
-        except Exception as e:
-            logger.warning(f"Failed to record correction metrics: {e}")
-    
-    def calculate_quality_score(self, total_segments: int, error_count: int) -> float:
-        """Calculate overall quality score (0-100) with robust error handling."""
-        try:
-            if total_segments <= 0:
-                return 0.0
-            
-            total_corrections = len(self.correction_details)
-            if total_corrections == 0:
-                return 100.0 if error_count == 0 else max(0.0, 100.0 - (error_count / total_segments) * 50)
-            
-            # Success rate (40%) - we only record successful corrections
-            success_rate = 1.0
-            
-            # Average confidence (30%)
-            avg_confidence = sum(self.confidence_scores) / len(self.confidence_scores) if self.confidence_scores else 1.0
-            
-            # Error penalty (20%)
-            error_penalty = max(0.0, 1.0 - (error_count / total_segments))
-            
-            # Coverage (10%) - proportion of segments that had corrections
-            coverage = min(1.0, total_corrections / total_segments)
-            
-            # Weighted score calculation
-            score = (success_rate * 0.4 + avg_confidence * 0.3 + error_penalty * 0.2 + coverage * 0.1) * 100
-            return max(0.0, min(100.0, score))
-            
-        except Exception as e:
-            logger.error(f"Failed to calculate quality score: {e}")
-            return 0.0
+# MetricsCollector now imported from utils.metrics_collector
 
-class ProcessingReporter:
-    """Comprehensive reporting for processing metrics with enhanced formatting and validation.
-    
-    This class provides robust report generation with error handling, formatting validation,
-    and optimized performance for both human-readable and machine-readable outputs.
-    """
-    
-    @staticmethod
-    def generate_summary(result: ProcessingResult, verbose: bool = False) -> str:
-        """Generate human-readable processing summary with comprehensive error handling."""
-        try:
-            if isinstance(result, DetailedProcessingResult):
-                return ProcessingReporter._generate_detailed_summary(result, verbose)
-            else:
-                return ProcessingReporter._generate_basic_summary(result)
-        except Exception as e:
-            logger.error(f"Failed to generate summary: {e}")
-            return f"❌ Error generating report: {e}"
-    
-    @staticmethod
-    def _generate_basic_summary(result: ProcessingResult) -> str:
-        """Generate basic summary for simple ProcessingResult with validation."""
-        try:
-            segments_per_sec = result.segments_processed / result.processing_time if result.processing_time > 0 else 0
-            correction_rate = (result.corrections_made / result.segments_processed * 100) if result.segments_processed > 0 else 0
-            
-            error_section = f"\n   • Errors: {len(result.errors)}" if result.errors else ""
-            
-            return f"""✅ Processing Complete!
-
-📊 Results Summary:
-   • Segments processed: {result.segments_processed:,}
-   • Corrections made: {result.corrections_made:,} ({correction_rate:.1f}% of segments)
-   • Processing time: {result.processing_time:.1f}s ({segments_per_sec:,.0f} segments/sec){error_section}"""
-        except Exception as e:
-            logger.error(f"Failed to generate basic summary: {e}")
-            return f"❌ Error in basic report generation: {e}"
-    
-    @staticmethod
-    def _generate_detailed_summary(result: DetailedProcessingResult, verbose: bool) -> str:
-        """Generate detailed summary for DetailedProcessingResult with comprehensive validation."""
-        try:
-            segments_per_sec = result.segments_processed / result.processing_time if result.processing_time > 0 else 0
-            correction_rate = (result.corrections_made / result.segments_processed * 100) if result.segments_processed > 0 else 0
-            avg_confidence = sum(result.confidence_scores) / len(result.confidence_scores) if result.confidence_scores else 0
-            
-            # Confidence level assessment
-            confidence_level = "High" if avg_confidence > 0.8 else "Medium" if avg_confidence > 0.6 else "Low"
-            
-            summary = f"""✅ Processing Complete!
-
-📊 Results Summary:
-   • Segments processed: {result.segments_processed:,}
-   • Corrections made: {result.corrections_made:,} ({correction_rate:.1f}% of segments)
-   • Processing time: {result.processing_time:.1f}s ({segments_per_sec:,.0f} segments/sec)
-   • Quality score: {result.quality_score:.0f}/100
-
-🔧 Correction Breakdown:"""
-            
-            # Add correction breakdown with validation
-            total_corrections = sum(result.corrections_by_type.values())
-            if total_corrections > 0:
-                for correction_type, count in sorted(result.corrections_by_type.items()):
-                    percentage = (count / total_corrections * 100) if total_corrections > 0 else 0
-                    summary += f"\n   • {correction_type.title()} corrections: {count:,} ({percentage:.0f}%)"
-            else:
-                summary += "\n   • No corrections applied"
-            
-            summary += f"\n\n💡 Average confidence: {avg_confidence:.2f} ({confidence_level})"
-            
-            # Add verbose details if requested
-            if verbose:
-                summary += "\n\n📈 Detailed Performance:"
-                if result.processing_phases:
-                    for phase, time_taken in result.processing_phases.items():
-                        summary += f"\n   • {phase.title()} phase: {time_taken:.2f}s"
-                
-                if result.memory_usage:
-                    summary += "\n\n🧠 Memory Usage:"
-                    peak_memory = result.memory_usage.get('peak', 0)
-                    avg_memory = result.memory_usage.get('average', 0)
-                    summary += f"\n   • Peak memory: {peak_memory:.1f} MB"
-                    summary += f"\n   • Average memory: {avg_memory:.1f} MB"
-            
-            return summary
-            
-        except Exception as e:
-            logger.error(f"Failed to generate detailed summary: {e}")
-            return f"❌ Error in detailed report generation: {e}"
-    
-    @staticmethod
-    def export_json(result: ProcessingResult) -> Dict[str, Any]:
-        """Export metrics in JSON format with comprehensive validation."""
-        try:
-            base_data = {
-                'segments_processed': result.segments_processed,
-                'corrections_made': result.corrections_made,
-                'processing_time': round(result.processing_time, 3),
-                'errors': result.errors,
-                'timestamp': __import__('datetime').datetime.now().isoformat()
-            }
-            
-            if isinstance(result, DetailedProcessingResult):
-                base_data.update({
-                    'quality_score': round(result.quality_score, 1),
-                    'corrections_by_type': result.corrections_by_type,
-                    'processing_phases': {k: round(v, 3) for k, v in result.processing_phases.items()},
-                    'memory_usage': {k: round(v, 2) for k, v in result.memory_usage.items()},
-                    'avg_confidence': round(sum(result.confidence_scores) / len(result.confidence_scores), 3) if result.confidence_scores else 0,
-                    'correction_count': len(result.correction_details),
-                    'processing_rate': round(result.segments_processed / result.processing_time, 1) if result.processing_time > 0 else 0
-                })
-            
-            return base_data
-            
-        except Exception as e:
-            logger.error(f"Failed to export JSON: {e}")
-            return {'error': f'Failed to export metrics: {e}'}
+# ProcessingReporter now imported from utils.processing_reporter
 
 class LexiconLoader:
     """Simple lexicon loader for YAML files."""
@@ -320,56 +75,7 @@ class LexiconLoader:
             logger.error(f"Failed to load lexicons: {e}")
             raise
 
-class SRTParser:
-    """Simple SRT file parser."""
-    
-    @staticmethod
-    def parse(content: str) -> List[SRTSegment]:
-        """Parse SRT content into segments."""
-        segments = []
-        blocks = content.strip().split('\n\n')
-        
-        for block in blocks:
-            lines = block.strip().split('\n')
-            if len(lines) < 3:
-                continue
-                
-            try:
-                index = int(lines[0])
-                timestamp = lines[1]
-                text = '\n'.join(lines[2:])
-                
-                # Parse timestamp
-                if ' --> ' not in timestamp:
-                    continue
-                    
-                start_time, end_time = timestamp.split(' --> ')
-                
-                segments.append(SRTSegment(
-                    index=index,
-                    start_time=start_time.strip(),
-                    end_time=end_time.strip(),
-                    text=text.strip()
-                ))
-                
-            except (ValueError, IndexError) as e:
-                logger.warning(f"Skipped malformed segment: {e}")
-                continue
-                
-        return segments
-    
-    @staticmethod
-    def to_srt(segments: List[SRTSegment]) -> str:
-        """Convert segments back to SRT format."""
-        srt_content = []
-        
-        for segment in segments:
-            srt_content.append(f"{segment.index}")
-            srt_content.append(f"{segment.start_time} --> {segment.end_time}")
-            srt_content.append(segment.text)
-            srt_content.append("")  # Empty line between segments
-            
-        return '\n'.join(srt_content)
+# SRTParser now imported from utils.srt_parser
 
 class SanskritProcessor:
     """Lean Sanskrit text processor focused on core functionality."""
@@ -742,6 +448,13 @@ class SanskritProcessor:
                 processing_time=time.time() - start_time,
                 errors=[str(e)]
             )
+
+# Backward compatibility exports - maintain existing import paths
+# These allow existing code to continue importing from sanskrit_processor_v2
+__all__ = [
+    'SRTSegment', 'ProcessingResult', 'DetailedProcessingResult', 'CorrectionDetail',
+    'MetricsCollector', 'ProcessingReporter', 'LexiconLoader', 'SRTParser', 'SanskritProcessor'
+]
 
 if __name__ == "__main__":
     # Simple test
