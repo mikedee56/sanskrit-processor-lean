@@ -154,6 +154,11 @@ class SanskritProcessor:
         # Initialize smart caching
         self.lexicon_cache = LexiconCache(self.config)
         
+        # Initialize compound matcher (Story 6.1)
+        from utils.compound_matcher import CompoundTermMatcher
+        compounds_path = self.lexicon_dir / "compounds.yaml"
+        self.compound_matcher = CompoundTermMatcher(compounds_path) if compounds_path.exists() else None
+        
         # Metrics collection
         self.collect_metrics = collect_metrics
         self.metrics_collector = MetricsCollector() if collect_metrics else None
@@ -359,8 +364,17 @@ class SanskritProcessor:
                   for pattern in sanskrit_indicators)
     
     def _apply_lexicon_corrections(self, text: str) -> tuple[str, int]:
-        """Apply corrections from lexicon files with fuzzy matching fallback."""
+        """Apply corrections from lexicon files with compound matching and fuzzy matching fallback."""
         corrections = 0
+        
+        # 1. First pass: Compound term recognition (Story 6.1)
+        if self.compound_matcher:
+            text, compound_matches = self.compound_matcher.process_text(text)
+            corrections += len(compound_matches)
+            if compound_matches:
+                logger.debug(f"Compound corrections: {len(compound_matches)}")
+        
+        # 2. Second pass: Individual word corrections (existing logic)
         words = text.split()
         corrected_words = []
         

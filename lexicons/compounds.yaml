@@ -1,0 +1,262 @@
+# Compound Terms Database for Sanskrit Processor
+# Story 6.1: Compound Term Recognition System
+# 
+# Structure: Each compound term has a canonical form, variations, type, and context clues
+# Performance optimized: 30 most common terms for initial implementation
+
+compound_terms:
+  # Scriptural Titles
+  - phrase: "Śrīmad Bhagavad Gītā"
+    variations: 
+      - "srimad bhagavad gita"
+      - "shrimad bhagavad geeta"  
+      - "shreemad bhagwad gita"
+      - "srimad bhagwad gita"
+    type: "scriptural_title"
+    context_clues: ["chapter", "verse", "adhyaya", "sloka", "srimad", "shreemad", "shrimad"]
+    
+  - phrase: "Bhagavad Gītā"
+    variations:
+      - "bhagavad gita" 
+      - "bhagwad gita"
+      - "bhagavad geeta"
+    type: "scriptural_title" 
+    context_clues: ["chapter", "verse", "adhyaya", "sloka", "the"]
+    
+  - phrase: "Yoga Vāsiṣṭha"
+    variations:
+      - "yoga vasishtha"
+      - "yoga vashishtha"
+      - "yoga vashistha"
+    type: "scriptural_title"
+    context_clues: ["chapter", "story", "prakarana", "the"]
+    
+  - phrase: "Viveka Cūḍāmaṇi"
+    variations:
+      - "viveka chudamani"
+      - "vivekachudamani"
+      - "viveka cudamani"
+    type: "scriptural_title"
+    context_clues: ["verse", "sloka", "the"]
+
+  - phrase: "Upadeśa Sāra"
+    variations:
+      - "upadesa sara"
+      - "upadesasara"
+    type: "scriptural_title"
+    context_clues: ["verse", "the"]
+
+  - phrase: "Brahma Sūtra"
+    variations:
+      - "brahma sutra"
+      - "brahmasutra"
+      - "brahma sutras"
+    type: "scriptural_title"
+    context_clues: ["chapter", "adhyaya", "pada", "the"]
+
+  # Philosophical Systems
+  - phrase: "Advaita Vedānta"
+    variations:
+      - "advaita vedanta"
+      - "advait vedant"
+      - "non-dual vedanta"
+    type: "philosophical_system"
+    context_clues: ["philosophy", "school", "tradition", "system"]
+    
+  - phrase: "Sāṅkhya Yoga"
+    variations:
+      - "sankhya yoga"
+      - "samkhya yoga"
+    type: "philosophical_system"
+    context_clues: ["philosophy", "system", "path", "yoga"]
+    
+  - phrase: "Karma Yoga"
+    variations:
+      - "karma yoga"
+      - "karmayoga"
+    type: "philosophical_system"
+    context_clues: ["path", "yoga", "practice"]
+
+  - phrase: "Bhakti Yoga"
+    variations:
+      - "bhakti yoga"
+      - "bhaktiyoga"
+    type: "philosophical_system"  
+    context_clues: ["path", "yoga", "devotion", "practice"]
+
+  - phrase: "Rāja Yoga"
+    variations:
+      - "raja yoga"
+      - "rajayoga"
+    type: "philosophical_system"
+    context_clues: ["path", "yoga", "meditation", "practice"]
+
+  # Divine Names
+  - phrase: "Śrī Kṛṣṇa"
+    variations:
+      - "sri krishna"
+      - "shri krishna"
+      - "krishna"
+    type: "divine_name"
+    context_clues: ["lord", "bhagavan", "god"]
+    
+  - phrase: "Bhagavān Rāma"
+    variations:
+      - "bhagavan rama"
+      - "bhagwan ram"
+      - "rama"
+    type: "divine_name"
+    context_clues: ["lord", "bhagavan", "prince"]
+    
+  - phrase: "Śiva Śaṅkara"
+    variations:
+      - "shiva shankara"
+      - "siva sankara"
+      - "shiva sankara"
+    type: "divine_name"
+    context_clues: ["lord", "mahadeva"]
+
+  # Teacher Names  
+  - phrase: "Ādi Śaṅkara"
+    variations:
+      - "adi shankara"
+      - "adi sankara"
+      - "shankaracharya"
+    type: "teacher_name"
+    context_clues: ["acharya", "guru", "master", "teacher"]
+    
+  - phrase: "Rāmana Maharṣi"
+    variations:
+      - "ramana maharshi"
+      - "ramana maharsi"
+      - "bhagavan ramana"
+    type: "teacher_name"
+    context_clues: ["maharshi", "bhagavan", "guru", "sage"]
+    
+  - phrase: "Swami Chinmayananda"
+    variations:
+      - "swami chinmayananda"
+      - "chinmayananda"
+    type: "teacher_name"
+    context_clues: ["swami", "gurudev", "guru"]
+
+  # Sacred Locations
+  - phrase: "Vṛndāvan"
+    variations:
+      - "vrindavan"
+      - "brindavan" 
+      - "vrndavan"
+    type: "sacred_place"
+    context_clues: ["place", "holy", "sacred", "dham"]
+    
+  - phrase: "Ṛṣikeś"
+    variations:
+      - "rishikesh"
+      - "rsikesh"
+    type: "sacred_place"
+    context_clues: ["place", "holy", "ashram", "ganga"]
+
+  # Sanskrit Terms (Compound)
+  - phrase: "Sat Cit Ānanda"
+    variations:
+      - "sat chit ananda"
+      - "satchitananda"
+      - "sat-chit-ananda"
+    type: "sanskrit_concept"
+    context_clues: ["nature", "brahman", "absolute"]
+    
+  - phrase: "Jīva Mukti"
+    variations:
+      - "jivanmukti"
+      - "jivan mukti"
+    type: "sanskrit_concept" 
+    context_clues: ["liberation", "moksha", "enlightenment"]
+
+  - phrase: "Sādhanā Catuṣṭaya"
+    variations:
+      - "sadhana chatushtaya"
+      - "sadhana catustaya"
+    type: "sanskrit_concept"
+    context_clues: ["qualifications", "prerequisites", "practice"]
+
+  # Textual References
+  - phrase: "Muṇḍaka Upaniṣad"
+    variations:
+      - "mundaka upanishad"
+      - "mundakopanishad"
+    type: "scriptural_title"
+    context_clues: ["upanishad", "mantra", "chapter"]
+    
+  - phrase: "Kaṭha Upaniṣad"
+    variations:
+      - "katha upanishad"
+      - "kathopanishad"
+    type: "scriptural_title"
+    context_clues: ["upanishad", "mantra", "chapter"]
+
+  - phrase: "Īśā Upaniṣad"
+    variations:
+      - "isha upanishad"
+      - "ishavasya upanishad"
+    type: "scriptural_title"
+    context_clues: ["upanishad", "mantra"]
+
+  # Festival/Celebration Names
+  - phrase: "Janmāṣṭamī"
+    variations:
+      - "janmashtami"
+      - "krishna janmashtami"
+    type: "festival_name"
+    context_clues: ["festival", "celebration", "krishna"]
+
+  - phrase: "Guru Pūrṇimā"
+    variations:
+      - "guru purnima"
+      - "vyasa purnima"
+    type: "festival_name"
+    context_clues: ["festival", "celebration", "guru", "full moon"]
+
+  # Common Compound Prefixes
+  - phrase: "Śrīmad"
+    variations:
+      - "srimad"
+      - "shrimad" 
+      - "shreemad"
+    type: "honorific_prefix"
+    context_clues: ["bhagavatam", "bhagavad", "title"]
+
+# Context Classification Rules
+context_rules:
+  title_indicators:
+    - "the"
+    - "chapter" 
+    - "verse"
+    - "adhyaya"
+    - "sloka"
+    - "says"
+    - "states"
+    - "teaches"
+    
+  casual_indicators:
+    - "a"
+    - "some"
+    - "read"
+    - "study"
+    - "practice"
+    - "about"
+    
+  sentence_start_patterns:
+    - "^[A-Z]"  # Starts with capital letter
+    
+  citation_indicators:
+    - r"\d+\.\d+"  # Chapter.verse pattern
+    - "verse"
+    - "chapter"
+    - "sloka"
+    - "mantra"
+
+# Performance Configuration
+performance:
+  max_phrase_length: 5  # Maximum words in a compound phrase
+  fuzzy_threshold: 0.8  # Minimum similarity for fuzzy matching
+  cache_enabled: true   # Enable compound matching cache
