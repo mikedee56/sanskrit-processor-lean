@@ -54,18 +54,42 @@ class EnhancedSanskritProcessor(SanskritProcessor):
         logger.info("Enhanced Sanskrit processor initialized")
     
     def _load_config(self, config_path: Path) -> Dict[str, Any]:
-        """Load configuration from YAML file."""
-        if not config_path or not config_path.exists():
-            logger.info("Using default configuration")
-            return {}
+        """Load configuration using advanced ConfigManager with environment support."""
+        # Import ConfigManager here to avoid circular imports
+        from utils.config_manager import ConfigManager
         
         try:
-            with open(config_path, 'r', encoding='utf-8') as f:
-                config = yaml.safe_load(f)
-                logger.info(f"Configuration loaded from {config_path}")
-                return config
+            # Try advanced configuration management first
+            config_manager = ConfigManager()
+            config = config_manager.load_config()
+            logger.info(f"Advanced configuration loaded for environment: {config_manager.environment}")
+            return config
+        except FileNotFoundError:
+            # Fallback to legacy single config file loading
+            if config_path and config_path.exists():
+                try:
+                    with open(config_path, 'r', encoding='utf-8') as f:
+                        config = yaml.safe_load(f)
+                        logger.info(f"Legacy configuration loaded from {config_path}")
+                        return config
+                except Exception as e:
+                    logger.error(f"Failed to load legacy config: {e}")
+            
+            logger.info("Using default configuration")
+            return {}
         except Exception as e:
-            logger.error(f"Failed to load config: {e}")
+            # Log the error but don't fail completely - fallback to legacy loading
+            logger.warning(f"Advanced configuration loading failed, using fallback: {e}")
+            
+            if config_path and config_path.exists():
+                try:
+                    with open(config_path, 'r', encoding='utf-8') as f:
+                        config = yaml.safe_load(f)
+                        logger.info(f"Fallback configuration loaded from {config_path}")
+                        return config
+                except Exception as fallback_error:
+                    logger.error(f"Fallback config loading also failed: {fallback_error}")
+            
             return {}
     
     def _get_ner_client(self):

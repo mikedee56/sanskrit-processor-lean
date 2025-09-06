@@ -1,0 +1,35 @@
+# config/config.prod.yaml
+# Production environment overrides
+
+processing:
+  fuzzy_matching:
+    log_matches: false  # Override: Disable logging for performance
+    threshold: 0.85     # Override: Higher threshold for better precision
+
+services:
+  consolidated:
+    mcp:
+      enabled: true
+      timeout: 15  # Stricter timeout for production
+    api:
+      enabled: true
+      timeout: 5
+
+logging:
+  level: "WARNING"
+  json_output: true  # Structured logging for production
+  include_context: false
+
+environment:
+  name: "production"
+  debug: false
+  performance_monitoring: false
+
+# Production security settings
+security:
+  strict_validation: true
+  disable_debug_endpoints: true
+
+# Minimal plugins for production
+plugins:
+  enabled: false  # Disabled by default in production

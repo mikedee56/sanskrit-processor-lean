@@ -174,44 +174,56 @@ class SanskritProcessor:
 
     
     def _load_config(self, config_path: Path) -> dict:
-        """Load configuration with fuzzy matching defaults."""
+        """Load configuration using advanced ConfigManager with environment support and fallback."""
         config = {}
         
         try:
-            if config_path.exists():
-                with open(config_path, 'r', encoding='utf-8') as f:
-                    config = yaml.safe_load(f)
-                logger.info(f"Configuration loaded from {config_path}")
-            else:
-                logger.info("Config file not found, using defaults")
-                
-        except yaml.YAMLError as e:
-            raise ConfigurationError(
-                f"Invalid YAML syntax in configuration file: {e}",
-                config_file=str(config_path),
-                suggestions=[
-                    "Check YAML syntax with a validator",
-                    "Ensure proper indentation and quotes",
-                    "Compare with config.yaml template"
-                ]
-            )
-        except FileNotFoundError:
-            # File not found is OK - we'll use defaults
-            logger.info("Config file not found, using defaults")
-        except PermissionError as e:
-            raise ConfigurationError(
-                f"Permission denied reading config file: {e}",
-                config_file=str(config_path),
-                suggestions=[
-                    "Check file permissions on config file",
-                    "Run with appropriate user permissions"
-                ]
-            )
-        except Exception as e:
-            logger.warning(f"Failed to load config, using defaults: {e}")
-            # Continue with defaults rather than failing completely
+            # Try advanced configuration management first
+            from utils.config_manager import ConfigManager
+            config_manager = ConfigManager()
+            config = config_manager.load_config()
+            logger.info(f"Advanced configuration loaded for environment: {config_manager.environment}")
             
-        # Set fuzzy matching defaults
+        except (FileNotFoundError, ImportError) as e:
+            # Fallback to legacy single config file loading
+            logger.debug(f"Advanced config loading failed ({e}), trying legacy loading")
+            
+            try:
+                if config_path.exists():
+                    with open(config_path, 'r', encoding='utf-8') as f:
+                        config = yaml.safe_load(f)
+                    logger.info(f"Legacy configuration loaded from {config_path}")
+                else:
+                    logger.info("Config file not found, using defaults")
+                    
+            except yaml.YAMLError as e:
+                raise ConfigurationError(
+                    f"Invalid YAML syntax in configuration file: {e}",
+                    config_file=str(config_path),
+                    suggestions=[
+                        "Check YAML syntax with a validator",
+                        "Ensure proper indentation and quotes",
+                        "Compare with config.yaml template"
+                    ]
+                )
+            except PermissionError as e:
+                raise ConfigurationError(
+                    f"Permission denied reading config file: {e}",
+                    config_file=str(config_path),
+                    suggestions=[
+                        "Check file permissions on config file",
+                        "Run with appropriate user permissions"
+                    ]
+                )
+            except Exception as e:
+                logger.warning(f"Failed to load config, using defaults: {e}")
+                # Continue with defaults rather than failing completely
+                
+        except Exception as e:
+            # Log the error but don't fail completely
+            logger.warning(f"Configuration loading error: {e}")
+            
+        # Set fuzzy matching defaults if not present
         if 'processing' not in config:
             config['processing'] = {}
         if 'fuzzy_matching' not in config['processing']:
@@ -227,7 +239,7 @@ class SanskritProcessor:
         if not isinstance(threshold, (int, float)) or not (0.0 <= threshold <= 1.0):
             raise ConfigurationError(
                 f"Invalid fuzzy matching threshold: {threshold}",
-                config_file=str(config_path),
+                config_file=str(config_path) if config_path else "unknown",
                 config_section="processing.fuzzy_matching",
                 suggestions=[
                     "Set threshold to value between 0.0 and 1.0",

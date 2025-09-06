@@ -1,0 +1,33 @@
+# config/config.dev.yaml
+# Development environment overrides
+
+processing:
+  # Enable verbose logging for debugging in development
+  fuzzy_matching:
+    log_matches: true  # Override: Enable fuzzy match logging for dev debugging
+    threshold: 0.7     # Override: Lower threshold for more matches during testing
+
+services:
+  consolidated:
+    mcp:
+      enabled: true
+      timeout: 60  # Longer timeout for debugging
+    api:
+      enabled: true
+      timeout: 30
+
+logging:
+  level: "DEBUG"
+  include_context: true
+
+environment:
+  name: "development"
+  debug: true
+  performance_monitoring: true
+
+# Development-specific plugins
+plugins:
+  enabled: true
+  enabled_plugins:
+    - performance_monitor
+    - debug_helper

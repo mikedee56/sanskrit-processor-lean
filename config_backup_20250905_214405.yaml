@@ -1,0 +1,60 @@
+# Sanskrit Processor Configuration
+# Enable IAST diacritics for proper Sanskrit representation
+
+processing:
+  # Output configuration
+  use_iast_diacritics: true  # Use IAST transliterations with diacritics
+  preserve_capitalization: true  # Maintain proper noun capitalization
+  use_consolidated_services: false  # Safe default during transition
+  
+  # Fuzzy matching
+  fuzzy_matching:
+    enabled: true
+    threshold: 0.8
+    log_matches: false
+
+# Lexicon settings  
+lexicons:
+  corrections_file: "corrections.yaml"
+  proper_nouns_file: "proper_nouns.yaml"
+
+# Service Layer Configuration
+services:
+  consolidated:
+    mcp:
+      enabled: true
+      server_url: "ws://localhost:8080"
+      timeout: 30
+      max_retries: 3
+    api:
+      enabled: true
+      timeout: 10
+      max_retries: 2
+
+# Performance Monitoring Configuration
+performance:
+  profiling:
+    enabled: false  # Default disabled for zero impact
+    detail_level: "basic"  # basic, detailed, full
+    memory_sampling_interval: 0.1  # seconds
+    cache_reports: true  # Cache for historical comparison
+    
+  monitoring:
+    track_segment_rate: true
+    track_memory_usage: true
+    track_service_response_times: true
+
+# Plugin System Configuration (Lean Implementation)
+plugins:
+  enabled: false  # Master plugin enable/disable (default: disabled)
+  auto_discover: false  # Simple manual configuration only
+  
+  # Enabled plugins list (plugins must exist in plugins/ directory)
+  enabled_plugins: []
+    # - custom_corrections  # Enable this to use custom corrections plugin
+    # - template_plugin     # Example template plugin
+  
+  # Plugin-specific configuration (optional)
+  custom_corrections:
+    # Plugin-specific settings can go here
+    strict_mode: false

@@ -1,0 +1,32 @@
+# config/config.staging.yaml
+# Staging environment overrides
+
+processing:
+  fuzzy_matching:
+    log_matches: false  # Override: Disable logging for performance
+    threshold: 0.82     # Override: Slightly higher threshold for staging
+
+services:
+  consolidated:
+    mcp:
+      enabled: true
+      timeout: 20  # Moderate timeout for staging
+    api:
+      enabled: true
+      timeout: 15
+
+logging:
+  level: "INFO"
+  json_output: true  # Structured logging for staging
+  include_context: true
+
+environment:
+  name: "staging"
+  debug: false
+  performance_monitoring: true
+
+# Staging plugins for testing
+plugins:
+  enabled: true
+  enabled_plugins:
+    - performance_monitor

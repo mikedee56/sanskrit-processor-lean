@@ -5,6 +5,7 @@ Usage: python cli.py input.srt output.srt [--simple] [batch input_dir output_dir
 """
 
 import sys
+import os
 import argparse
 from pathlib import Path
 import logging
@@ -26,8 +27,96 @@ def setup_logging(verbose: bool = False):
     )
 
 def validate_configuration(config_path: Path):
-    """Validate configuration file and report results."""
-    print(f"🔍 Validating configuration: {config_path}")
+    """Validate configuration file using advanced ConfigManager."""
+    print(f"🔍 Validating configuration with advanced config management")
+    
+    try:
+        # Use advanced ConfigManager for validation
+        from utils.config_manager import ConfigManager
+        
+        # Initialize ConfigManager
+        config_manager = ConfigManager()
+        
+        # Get validation report
+        validation_report = config_manager.validate_config()
+        
+        # Report environment information
+        print(f"🌍 Environment: {validation_report['environment']}")
+        
+        if validation_report['valid']:
+            print("✅ Configuration is valid!")
+            
+            # Show configuration files used
+            print(f"\n📋 Configuration Sources:")
+            for config_file in validation_report['config_files_used']:
+                print(f"   • {config_file}")
+            
+            # Show environment variables used
+            if validation_report['env_vars_substituted']:
+                print(f"\n🔧 Environment Variables:")
+                for env_var in validation_report['env_vars_substituted']:
+                    value = "***" if 'KEY' in env_var or 'PASS' in env_var else os.environ.get(env_var, 'NOT_SET')
+                    print(f"   • {env_var} = {value}")
+            else:
+                print(f"\n🔧 No environment variables used in configuration")
+            
+            # Load and display effective configuration summary
+            try:
+                effective_config = config_manager.load_config()
+                print(f"\n📊 Configuration Summary:")
+                
+                # Processing settings
+                if 'processing' in effective_config:
+                    proc_config = effective_config['processing']
+                    print(f"   • IAST Diacritics: {'✅' if proc_config.get('use_iast_diacritics') else '❌'}")
+                    if 'fuzzy_matching' in proc_config:
+                        fuzzy = proc_config['fuzzy_matching']
+                        print(f"   • Fuzzy Matching: {'✅' if fuzzy.get('enabled') else '❌'} (threshold: {fuzzy.get('threshold', 'N/A')})")
+                
+                # Services
+                if 'services' in effective_config:
+                    services = effective_config['services']
+                    for service_type, service_config in services.items():
+                        if isinstance(service_config, dict):
+                            for service_name, config in service_config.items():
+                                if isinstance(config, dict):
+                                    enabled = config.get('enabled', False)
+                                    print(f"   • {service_type.title()}/{service_name.upper()}: {'✅' if enabled else '❌'}")
+                
+                # Plugins
+                if 'plugins' in effective_config:
+                    plugins = effective_config['plugins']
+                    enabled = plugins.get('enabled', False)
+                    plugin_list = plugins.get('enabled_plugins', [])
+                    print(f"   • Plugins: {'✅' if enabled else '❌'} ({len(plugin_list)} enabled)")
+                    
+            except Exception as e:
+                print(f"   ⚠️  Could not load effective configuration: {e}")
+                
+            return 0
+            
+        else:
+            print("❌ Configuration validation failed!")
+            print(f"   Error: {validation_report['error']}")
+            print(f"\n💡 Try:")
+            print(f"   • Check that base configuration exists in config/")
+            print(f"   • Set required environment variables")
+            print(f"   • Use migration tool: python3 tools/migrate_config.py config.yaml config/")
+            return 1
+            
+    except ImportError:
+        # Fallback to legacy validation if ConfigManager not available
+        print("⚠️  Advanced config manager not available, using legacy validation")
+        return validate_configuration_legacy(config_path)
+        
+    except Exception as e:
+        print(f"❌ Configuration validation failed: {e}")
+        return 1
+
+
+def validate_configuration_legacy(config_path: Path):
+    """Legacy configuration validation fallback."""
+    print(f"🔍 Legacy validation for: {config_path}")
     
     # Check if config file exists
     if not config_path.exists():
@@ -36,46 +125,18 @@ def validate_configuration(config_path: Path):
         return 1
     
     try:
-        # Initialize validator
-        validator = ConfigValidator()
-        
-        # Load config with environment overrides
-        config = validator.load_environment_config(config_path)
-        
-        # Validate configuration
-        result = validator.validate_config(config)
-        
-        # Report results
-        if result.warnings:
-            print("\n⚠️  Warnings:")
-            for warning in result.warnings:
-                print(f"   - {warning}")
-        
-        if result.errors:
-            print("\n❌ Errors:")
-            for error in result.errors:
-                print(f"   - {error}")
-            print(f"\n💡 Please fix the errors above and validate again")
-            return 1
-        else:
-            print("\n✅ Configuration is valid!")
-            
-        # Show validation metrics
-        if result.metrics:
-            print(f"\n📊 Validation Metrics:")
-            print(f"   • Validation time: {result.metrics['validation_time_ms']}ms")
-            print(f"   • Properties validated: {result.metrics['properties_validated']}")
-            print(f"   • Schema compliance: {'✅' if result.metrics['schema_compliance'] else '❌'}")
-            if result.metrics['environment_overrides_applied']:
-                print(f"   • Environment overrides: ✅ Applied")
-        
-        # Show effective configuration
-        print("\n📋 Effective Configuration:")
         import yaml
-        print(yaml.dump(result.effective_config, default_flow_style=False, indent=2))
+        with open(config_path, 'r', encoding='utf-8') as f:
+            config = yaml.safe_load(f)
+        
+        print("✅ Configuration file loads successfully!")
+        print(f"📋 Configuration keys: {list(config.keys()) if config else 'Empty'}")
         
         return 0
         
+    except yaml.YAMLError as e:
+        print(f"❌ YAML syntax error: {e}")
+        return 1
     except Exception as e:
         print(f"❌ Validation failed: {e}")
         return 1
