@@ -13,6 +13,8 @@ import logging
 
 # Import utilities for lean architecture
 from utils.srt_parser import SRTParser, SRTSegment
+# Import exceptions for enhanced error handling
+from exceptions import FileError, ProcessingError, ConfigurationError
 from utils.metrics_collector import MetricsCollector, CorrectionDetail
 from utils.processing_reporter import ProcessingReporter, ProcessingResult, DetailedProcessingResult
 
@@ -46,34 +48,94 @@ class LexiconLoader:
             # Load corrections
             corrections_file = self.lexicon_dir / "corrections.yaml"
             if corrections_file.exists():
-                with open(corrections_file, 'r', encoding='utf-8') as f:
-                    data = yaml.safe_load(f)
-                    for entry in data.get('entries', []):
-                        original = entry['original_term']
-                        self.corrections[original] = entry
-                        # Add variations
-                        for variation in entry.get('variations', []):
-                            self.corrections[variation] = entry
-                logger.info(f"Loaded {len(self.corrections)} correction entries")
+                try:
+                    with open(corrections_file, 'r', encoding='utf-8') as f:
+                        data = yaml.safe_load(f)
+                        for entry in data.get('entries', []):
+                            original = entry['original_term']
+                            self.corrections[original] = entry
+                            # Add variations
+                            for variation in entry.get('variations', []):
+                                self.corrections[variation] = entry
+                    logger.info(f"Loaded {len(self.corrections)} correction entries")
+                except yaml.YAMLError as e:
+                    raise FileError(
+                        f"Invalid YAML format in corrections file: {e}",
+                        file_path=str(corrections_file),
+                        file_operation="read",
+                        suggestions=[
+                            "Check YAML syntax with a validator",
+                            "Ensure proper indentation and formatting",
+                            "Restore from backup if corrupted"
+                        ]
+                    )
+                except KeyError as e:
+                    raise FileError(
+                        f"Missing required field {e} in corrections file",
+                        file_path=str(corrections_file),
+                        file_operation="read",
+                        suggestions=[
+                            "Ensure all entries have 'original_term' field",
+                            "Check corrections.yaml format against documentation"
+                        ]
+                    )
+            else:
+                logger.warning(f"Corrections file not found: {corrections_file}")
             
             # Load proper nouns
             proper_nouns_file = self.lexicon_dir / "proper_nouns.yaml"
             if proper_nouns_file.exists():
-                with open(proper_nouns_file, 'r', encoding='utf-8') as f:
-                    data = yaml.safe_load(f)
-                    for entry in data.get('entries', []):
-                        # Handle both 'term' and 'original_term' formats
-                        term = entry.get('term') or entry.get('original_term')
-                        if term:
-                            self.proper_nouns[term.lower()] = entry
-                            # Add variations if they exist
-                            for variation in entry.get('variations', []):
-                                self.proper_nouns[variation.lower()] = entry
-                logger.info(f"Loaded {len(self.proper_nouns)} proper noun entries")
+                try:
+                    with open(proper_nouns_file, 'r', encoding='utf-8') as f:
+                        data = yaml.safe_load(f)
+                        for entry in data.get('entries', []):
+                            # Handle both 'term' and 'original_term' formats
+                            term = entry.get('term') or entry.get('original_term')
+                            if term:
+                                self.proper_nouns[term.lower()] = entry
+                                # Add variations if they exist
+                                for variation in entry.get('variations', []):
+                                    self.proper_nouns[variation.lower()] = entry
+                    logger.info(f"Loaded {len(self.proper_nouns)} proper noun entries")
+                except yaml.YAMLError as e:
+                    raise FileError(
+                        f"Invalid YAML format in proper nouns file: {e}",
+                        file_path=str(proper_nouns_file),
+                        file_operation="read",
+                        suggestions=[
+                            "Check YAML syntax with a validator", 
+                            "Ensure proper indentation and formatting"
+                        ]
+                    )
+            else:
+                logger.warning(f"Proper nouns file not found: {proper_nouns_file}")
                         
+        except FileNotFoundError as e:
+            raise FileError(
+                f"Lexicon directory or file not found: {e}",
+                file_path=str(self.lexicon_dir),
+                file_operation="read", 
+                suggestions=[
+                    "Ensure lexicons directory exists in project root",
+                    "Create missing lexicon files from templates",
+                    "Check file permissions"
+                ]
+            )
         except Exception as e:
+            # Re-raise our custom errors, wrap others
+            if isinstance(e, FileError):
+                raise
             logger.error(f"Failed to load lexicons: {e}")
-            raise
+            raise FileError(
+                f"Unexpected error loading lexicons: {e}",
+                file_path=str(self.lexicon_dir),
+                file_operation="read",
+                suggestions=[
+                    "Check lexicon files for corruption",
+                    "Verify file permissions and encoding",
+                    "Use --verbose flag for detailed error information"
+                ]
+            )
 
 # SRTParser now imported from utils.srt_parser
 
@@ -106,35 +168,68 @@ class SanskritProcessor:
     
     def _load_config(self, config_path: Path) -> dict:
         """Load configuration with fuzzy matching defaults."""
+        config = {}
+        
         try:
             if config_path.exists():
                 with open(config_path, 'r', encoding='utf-8') as f:
                     config = yaml.safe_load(f)
+                logger.info(f"Configuration loaded from {config_path}")
             else:
-                config = {}
-            
-            # Set fuzzy matching defaults
-            if 'processing' not in config:
-                config['processing'] = {}
-            if 'fuzzy_matching' not in config['processing']:
-                config['processing']['fuzzy_matching'] = {
-                    'enabled': True,
-                    'threshold': 0.7,
-                    'log_matches': False
-                }
-            
-            return config
+                logger.info("Config file not found, using defaults")
+                
+        except yaml.YAMLError as e:
+            raise ConfigurationError(
+                f"Invalid YAML syntax in configuration file: {e}",
+                config_file=str(config_path),
+                suggestions=[
+                    "Check YAML syntax with a validator",
+                    "Ensure proper indentation and quotes",
+                    "Compare with config.yaml template"
+                ]
+            )
+        except FileNotFoundError:
+            # File not found is OK - we'll use defaults
+            logger.info("Config file not found, using defaults")
+        except PermissionError as e:
+            raise ConfigurationError(
+                f"Permission denied reading config file: {e}",
+                config_file=str(config_path),
+                suggestions=[
+                    "Check file permissions on config file",
+                    "Run with appropriate user permissions"
+                ]
+            )
         except Exception as e:
             logger.warning(f"Failed to load config, using defaults: {e}")
-            return {
-                'processing': {
-                    'fuzzy_matching': {
-                        'enabled': True,
-                        'threshold': 0.7,
-                        'log_matches': False
-                    }
-                }
+            # Continue with defaults rather than failing completely
+            
+        # Set fuzzy matching defaults
+        if 'processing' not in config:
+            config['processing'] = {}
+        if 'fuzzy_matching' not in config['processing']:
+            config['processing']['fuzzy_matching'] = {
+                'enabled': True,
+                'threshold': 0.7,
+                'log_matches': False
             }
+        
+        # Validate critical configuration values
+        fuzzy_config = config['processing']['fuzzy_matching']
+        threshold = fuzzy_config.get('threshold', 0.7)
+        if not isinstance(threshold, (int, float)) or not (0.0 <= threshold <= 1.0):
+            raise ConfigurationError(
+                f"Invalid fuzzy matching threshold: {threshold}",
+                config_file=str(config_path),
+                config_section="processing.fuzzy_matching",
+                suggestions=[
+                    "Set threshold to value between 0.0 and 1.0",
+                    "Use 0.7 for balanced accuracy/coverage", 
+                    "Use 0.9 for high precision, 0.5 for high recall"
+                ]
+            )
+            
+        return config
     
     def process_text(self, text: str) -> tuple[str, int]:
         """Process a single text segment. Returns (processed_text, corrections_made)."""
@@ -363,13 +458,58 @@ class SanskritProcessor:
         logger.info(f"Processing SRT file: {input_path} -> {output_path}")
         
         try:
+            # Validate input file exists
+            if not input_path.exists():
+                raise FileError(
+                    f"Input SRT file not found: {input_path}",
+                    file_path=str(input_path),
+                    file_operation="read",
+                    suggestions=[
+                        "Check the input file path is correct",
+                        "Ensure the file hasn't been moved or deleted",
+                        "Use absolute paths to avoid confusion"
+                    ]
+                )
+            
             # Read and parse phase
-            with open(input_path, 'r', encoding='utf-8') as f:
-                content = f.read()
+            try:
+                with open(input_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+            except PermissionError as e:
+                raise FileError(
+                    f"Permission denied reading input file: {e}",
+                    file_path=str(input_path),
+                    file_operation="read",
+                    suggestions=[
+                        "Check file permissions",
+                        "Run with appropriate user permissions",
+                        "Ensure file is not locked by another process"
+                    ]
+                )
+            except UnicodeDecodeError as e:
+                raise FileError(
+                    f"Invalid UTF-8 encoding in input file: {e}",
+                    file_path=str(input_path),
+                    file_operation="read",
+                    suggestions=[
+                        "Ensure SRT file is saved with UTF-8 encoding",
+                        "Convert file encoding to UTF-8",
+                        "Check for special characters causing encoding issues"
+                    ]
+                )
             
             segments = SRTParser.parse(content)
             if not segments:
-                raise ValueError("No valid SRT segments found")
+                raise ProcessingError(
+                    "No valid SRT segments found in file",
+                    file_path=str(input_path),
+                    processing_stage="parsing",
+                    suggestions=[
+                        "Check SRT file format (index, timestamp, text structure)",
+                        "Ensure file contains properly formatted segments",
+                        "Verify timestamps are in correct format (HH:MM:SS,mmm)"
+                    ]
+                )
             
             parse_time = time.time() - parse_start
             logger.info(f"Parsed {len(segments)} segments")
@@ -377,20 +517,52 @@ class SanskritProcessor:
             # Processing phase
             process_start = time.time()
             total_corrections = 0
-            for segment in segments:
-                processed_text, corrections = self.process_text(segment.text)
-                segment.text = processed_text
-                total_corrections += corrections
+            processing_errors = []
+            
+            for i, segment in enumerate(segments, 1):
+                try:
+                    processed_text, corrections = self.process_text(segment.text)
+                    segment.text = processed_text
+                    total_corrections += corrections
+                except Exception as e:
+                    # Log but continue processing other segments
+                    error_msg = f"Failed to process segment {i}: {e}"
+                    processing_errors.append(error_msg)
+                    logger.warning(error_msg)
             
             process_time = time.time() - process_start
             
             # Writing phase
             write_start = time.time()
-            output_content = SRTParser.to_srt(segments)
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            
-            with open(output_path, 'w', encoding='utf-8') as f:
-                f.write(output_content)
+            try:
+                output_content = SRTParser.to_srt(segments)
+                output_path.parent.mkdir(parents=True, exist_ok=True)
+                
+                with open(output_path, 'w', encoding='utf-8') as f:
+                    f.write(output_content)
+                    
+            except PermissionError as e:
+                raise FileError(
+                    f"Permission denied writing output file: {e}",
+                    file_path=str(output_path),
+                    file_operation="write",
+                    suggestions=[
+                        "Check output directory permissions",
+                        "Ensure output directory exists",
+                        "Run with appropriate user permissions"
+                    ]
+                )
+            except OSError as e:
+                raise FileError(
+                    f"Failed to write output file: {e}",
+                    file_path=str(output_path),
+                    file_operation="write",
+                    suggestions=[
+                        "Check available disk space",
+                        "Verify output path is valid",
+                        "Ensure output directory is writable"
+                    ]
+                )
             
             write_time = time.time() - write_start
             processing_time = time.time() - start_time
@@ -412,13 +584,13 @@ class SanskritProcessor:
                         pass
                 
                 # Calculate quality score
-                quality_score = self.metrics_collector.calculate_quality_score(len(segments), 0)
+                quality_score = self.metrics_collector.calculate_quality_score(len(segments), len(processing_errors))
                 
                 result = DetailedProcessingResult(
                     segments_processed=len(segments),
                     corrections_made=total_corrections,
                     processing_time=processing_time,
-                    errors=[],
+                    errors=processing_errors,
                     corrections_by_type=self.metrics_collector.corrections_by_type.copy(),
                     correction_details=self.metrics_collector.correction_details.copy(),
                     confidence_scores=self.metrics_collector.confidence_scores.copy(),
@@ -431,7 +603,7 @@ class SanskritProcessor:
                     segments_processed=len(segments),
                     corrections_made=total_corrections,
                     processing_time=processing_time,
-                    errors=[]
+                    errors=processing_errors
                 )
             
             logger.info(f"Processing complete: {len(segments)} segments, "
@@ -439,14 +611,21 @@ class SanskritProcessor:
             
             return result
             
+        except (FileError, ProcessingError, ConfigurationError) as e:
+            # Re-raise our custom exceptions
+            raise
         except Exception as e:
+            # Wrap unexpected exceptions
             logger.error(f"Processing failed: {e}")
-            result_class = DetailedProcessingResult if self.collect_metrics else ProcessingResult
-            return result_class(
-                segments_processed=0,
-                corrections_made=0,
-                processing_time=time.time() - start_time,
-                errors=[str(e)]
+            raise ProcessingError(
+                f"Unexpected processing error: {e}",
+                file_path=str(input_path),
+                processing_stage="general",
+                suggestions=[
+                    "Use --verbose flag for detailed error information",
+                    "Check input file format and encoding",
+                    "Report this error if it persists"
+                ]
             )
 
 # Backward compatibility exports - maintain existing import paths

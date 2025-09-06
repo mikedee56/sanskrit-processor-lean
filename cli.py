@@ -13,6 +13,7 @@ import json
 from enhanced_processor import EnhancedSanskritProcessor
 from sanskrit_processor_v2 import SanskritProcessor
 from services.config_validator import ConfigValidator
+from exceptions import SanskritProcessorError, FileError, ConfigurationError, ProcessingError, get_exit_code
 
 def setup_logging(verbose: bool = False):
     """Setup logging configuration."""
@@ -85,11 +86,11 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python enhanced_cli.py input.srt output.srt
-  python enhanced_cli.py input.srt output.srt --config custom_config.yaml --verbose
-  python enhanced_cli.py input.srt output.srt --status-only
-  python enhanced_cli.py input.srt output.srt --metrics --export-metrics metrics.json
-  python enhanced_cli.py batch input_dir/ output_dir/ --pattern "*.srt"
+  python cli.py input.srt output.srt
+  python cli.py input.srt output.srt --config custom_config.yaml --verbose
+  python cli.py input.srt output.srt --status-only
+  python cli.py input.srt output.srt --metrics --export-metrics metrics.json
+  python cli.py batch input_dir/ output_dir/ --pattern "*.srt"
         """
     )
     
@@ -124,7 +125,9 @@ Examples:
     # Handle command parsing - if first arg looks like 'batch', it's batch mode
     if args.command == 'batch':
         if not args.output:
-            parser.error("Output directory required for batch processing")
+            print("❌ Error: Output directory required for batch processing")
+            print("💡 Usage: python cli.py batch input_dir/ output_dir/")
+            return 1
         return process_batch(args)
     else:
         # Single file mode - adjust args
@@ -135,7 +138,7 @@ Examples:
         return process_single(args)
 
 def process_single(args):
-    """Process single file (original functionality)."""
+    """Process single file with enhanced error handling."""
     # Setup logging
     setup_logging(args.verbose)
     logger = logging.getLogger(__name__)
@@ -157,30 +160,53 @@ def process_single(args):
             if args.simple:
                 print("\n=== SIMPLE MODE STATUS ===")
                 print("Simple processor - no external services")
-                return
+                return 0
             else:
                 status = processor.get_service_status()
                 print("\n=== SERVICE STATUS ===")
                 print(json.dumps(status, indent=2))
                 processor.close()
-                return
+                return 0
         
         # Validate arguments for processing
         if not args.input or not args.output:
-            print("Input and output files are required for processing")
-            sys.exit(1)
+            print("❌ Error: Input and output files are required for processing")
+            print("💡 Usage: python cli.py input.srt output.srt")
+            return 1
         
         if not args.input.exists():
-            logger.error(f"Input file does not exist: {args.input}")
-            sys.exit(1)
+            from exceptions import FileError, get_exit_code
+            error = FileError(
+                f"Input file not found: {args.input}",
+                file_path=str(args.input),
+                file_operation="read"
+            )
+            print(f"❌ {error.get_formatted_message()}")
+            return get_exit_code(error)
         
         if not args.lexicons.exists():
-            logger.error(f"Lexicons directory does not exist: {args.lexicons}")
-            sys.exit(1)
+            from exceptions import FileError, get_exit_code
+            error = FileError(
+                f"Lexicons directory not found: {args.lexicons}",
+                file_path=str(args.lexicons),
+                file_operation="read",
+                suggestions=[
+                    "Ensure lexicons directory exists in project root",
+                    "Use --lexicons flag to specify different path"
+                ]
+            )
+            print(f"❌ {error.get_formatted_message()}")
+            return get_exit_code(error)
         
-        if args.input == args.output:
-            logger.error("Input and output files cannot be the same")
-            sys.exit(1)
+        if args.input.resolve() == args.output.resolve():
+            from exceptions import FileError, get_exit_code
+            error = FileError(
+                "Input and output files cannot be the same",
+                file_path=str(args.input),
+                suggestions=["Use different output filename or path"]
+            )
+            print(f"❌ {error.get_formatted_message()}")
+            return get_exit_code(error)
         
         # Show service status
         if hasattr(processor, 'get_service_status'):
@@ -214,37 +240,58 @@ def process_single(args):
         
         # Report results
         if result.errors:
-            logger.error("Processing completed with errors:")
+            print("⚠️  Processing completed with warnings:")
             for error in result.errors:
-                logger.error(f"  - {error}")
-            processor.close()
-            sys.exit(1)
+                print(f"   • {error}")
+            print("")  # Extra line for readability
+            
+            # Still show success report if segments were processed
+            if result.segments_processed > 0:
+                report = ProcessingReporter.generate_summary(result, verbose=args.verbose)
+                print(report)
+            else:
+                print("❌ No segments were successfully processed")
+                return 3  # Processing error
         else:
             # Use the new reporter for enhanced output
             report = ProcessingReporter.generate_summary(result, verbose=args.verbose)
             print(report)
             
-            # Export metrics if requested
-            if args.export_metrics:
-                import json
-                metrics_data = ProcessingReporter.export_json(result)
-                with open(args.export_metrics, 'w') as f:
-                    json.dump(metrics_data, f, indent=2)
-                print(f"\n📊 Metrics exported to: {args.export_metrics}")
+        # Export metrics if requested
+        if args.export_metrics:
+            import json
+            metrics_data = ProcessingReporter.export_json(result)
+            with open(args.export_metrics, 'w') as f:
+                json.dump(metrics_data, f, indent=2)
+            print(f"\n📊 Metrics exported to: {args.export_metrics}")
         
         # Clean up
         if hasattr(processor, 'close'):
             processor.close()
+        
+        return 0  # Success
             
     except KeyboardInterrupt:
-        logger.info("Processing interrupted by user")
-        sys.exit(1)
+        print("\n⚠️  Processing interrupted by user")
+        return 1
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
-        if args.verbose:
-            import traceback
-            traceback.print_exc()
-        sys.exit(1)
+        from exceptions import get_exit_code, SanskritProcessorError
+        
+        # Handle our custom exceptions with formatted messages
+        if isinstance(e, SanskritProcessorError):
+            print(f"\n❌ {e.get_formatted_message()}")
+            if args.verbose and hasattr(e, 'context') and e.context:
+                print(f"\nContext: {e.context}")
+            return get_exit_code(e)
+        else:
+            # Handle unexpected exceptions
+            print(f"\n❌ Unexpected error: {e}")
+            print("💡 Use --verbose flag for detailed error information")
+            if args.verbose:
+                import traceback
+                print("\nDetailed error trace:")
+                traceback.print_exc()
+            return 1
 
 def process_batch(args):
     """Ultra-lean batch processing implementation."""
@@ -316,4 +363,4 @@ def process_batch(args):
             print(f"   ... and {len(errors)-5} more")
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
