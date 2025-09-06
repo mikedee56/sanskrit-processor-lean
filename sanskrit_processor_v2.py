@@ -159,6 +159,15 @@ class SanskritProcessor:
         compounds_path = self.lexicon_dir / "compounds.yaml"
         self.compound_matcher = CompoundTermMatcher(compounds_path) if compounds_path.exists() else None
         
+        # Initialize sacred text components (Story 6.2)
+        from processors.sacred_classifier import SacredContentClassifier
+        from processors.symbol_protector import SacredSymbolProtector
+        from processors.verse_formatter import VerseFormatter
+        
+        self.sacred_classifier = SacredContentClassifier()
+        self.symbol_protector = SacredSymbolProtector()
+        self.verse_formatter = VerseFormatter()
+        
         # Metrics collection
         self.collect_metrics = collect_metrics
         self.metrics_collector = MetricsCollector() if collect_metrics else None
@@ -179,7 +188,7 @@ class SanskritProcessor:
             'sixteen': '16', 'seventeen': '17', 'eighteen': '18'
         }
         
-        logger.info("Sanskrit processor initialized")
+        logger.info("Sanskrit processor initialized with sacred text preservation")
 
     
     def _load_config(self, config_path: Path) -> dict:
@@ -281,29 +290,58 @@ class SanskritProcessor:
             logger.warning(f"Plugin loading failed: {e}")
     
     def process_text(self, text: str) -> tuple[str, int]:
-        """Process a single text segment. Returns (processed_text, corrections_made)."""
+        """Process a single text segment with sacred text preservation. Returns (processed_text, corrections_made)."""
         original_text = text
         corrections = 0
         
-        # 1. Basic text cleanup
-        text = self._normalize_text(text)
+        # 1. Classify content type for sacred text handling
+        content_type = self.sacred_classifier.classify_content(text)
         
-        # 2. Apply lexicon corrections
-        text, lexicon_corrections = self._apply_lexicon_corrections(text)
-        corrections += lexicon_corrections
-        
-        # 3. Apply proper noun capitalization
-        text, capitalization_corrections = self._apply_capitalization(text)
-        corrections += capitalization_corrections
-        
-        # 4. Clean up extra whitespace
-        text = re.sub(r'\s+', ' ', text).strip()
-        
-        # 5. Apply plugins (lean implementation)
-        text = self.plugin_manager.execute_all(text)
+        if content_type in ['mantra', 'verse', 'prayer']:
+            # Sacred content processing pipeline
+            logger.debug(f"Sacred content detected: {content_type}")
+            
+            # 1. Protect sacred symbols before processing
+            protected_text, restoration_map = self.symbol_protector.protect_symbols(text)
+            
+            # 2. Apply standard corrections to protected text
+            protected_text = self._normalize_text(protected_text)
+            protected_text, lexicon_corrections = self._apply_lexicon_corrections(protected_text)
+            corrections += lexicon_corrections
+            protected_text, capitalization_corrections = self._apply_capitalization(protected_text)
+            corrections += capitalization_corrections
+            
+            # 3. Apply verse formatting
+            formatted_text = self.verse_formatter.process_verse(protected_text, content_type)
+            
+            # 4. Restore sacred symbols
+            final_text = self.symbol_protector.restore_symbols(formatted_text, restoration_map)
+            
+            # 5. Apply plugins (lean implementation)
+            final_text = self.plugin_manager.execute_all(final_text)
+            
+            text = final_text
+        else:
+            # Regular text processing (existing pipeline)
+            # 1. Basic text cleanup
+            text = self._normalize_text(text)
+            
+            # 2. Apply lexicon corrections
+            text, lexicon_corrections = self._apply_lexicon_corrections(text)
+            corrections += lexicon_corrections
+            
+            # 3. Apply proper noun capitalization
+            text, capitalization_corrections = self._apply_capitalization(text)
+            corrections += capitalization_corrections
+            
+            # 4. Clean up extra whitespace
+            text = re.sub(r'\s+', ' ', text).strip()
+            
+            # 5. Apply plugins (lean implementation)
+            text = self.plugin_manager.execute_all(text)
         
         if text != original_text:
-            logger.debug(f"Processed: '{original_text[:50]}...' -> '{text[:50]}...' ({corrections} corrections)")
+            logger.debug(f"Processed ({content_type}): '{original_text[:50]}...' -> '{text[:50]}...' ({corrections} corrections)")
             
         return text, corrections
     
