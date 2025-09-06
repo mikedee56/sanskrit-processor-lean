@@ -17,6 +17,7 @@ from utils.srt_parser import SRTParser, SRTSegment
 from exceptions import FileError, ProcessingError, ConfigurationError
 from utils.metrics_collector import MetricsCollector, CorrectionDetail
 from utils.processing_reporter import ProcessingReporter, ProcessingResult, DetailedProcessingResult
+from utils.smart_cache import LexiconCache
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -149,6 +150,9 @@ class SanskritProcessor:
         
         # Load configuration
         self.config = self._load_config(config_path or Path("config.yaml"))
+        
+        # Initialize smart caching
+        self.lexicon_cache = LexiconCache(self.config)
         
         # Metrics collection
         self.collect_metrics = collect_metrics
@@ -366,11 +370,32 @@ class SanskritProcessor:
         fuzzy_threshold = fuzzy_config.get('threshold', 0.8)
         log_fuzzy = fuzzy_config.get('log_matches', False)
         
+        corrections_file = self.lexicon_dir / "corrections.yaml"
+        
         for word in words:
             # Clean word for lookup (remove punctuation)
             clean_word = re.sub(r'[^\w\s]', '', word.lower())
             
-            # Try exact match first
+            # Try cache first
+            cached_correction = self.lexicon_cache.get_correction(clean_word, corrections_file)
+            if cached_correction is not None:
+                corrected = cached_correction
+                
+                # Preserve capitalization pattern
+                if word[0].isupper():
+                    corrected = corrected.capitalize()
+                
+                # Record metrics if collecting
+                if self.metrics_collector:
+                    self.metrics_collector.start_correction('lexicon', word)
+                    self.metrics_collector.end_correction('lexicon', word, corrected, 1.0)
+                    
+                corrected_words.append(corrected)
+                corrections += 1
+                logger.debug(f"Cached correction: {word} -> {corrected}")
+                continue
+            
+            # Try exact match in lexicon
             if clean_word in self.lexicons.corrections:
                 entry = self.lexicons.corrections[clean_word]
                 
@@ -380,6 +405,9 @@ class SanskritProcessor:
                     corrected = entry['transliteration']
                 else:
                     corrected = entry['original_term']
+                
+                # Cache the result
+                self.lexicon_cache.cache_correction(clean_word, corrected, corrections_file)
                 
                 # Preserve capitalization pattern
                 if word[0].isupper():
@@ -398,6 +426,9 @@ class SanskritProcessor:
             elif fuzzy_enabled and clean_word:
                 fuzzy_match = self._find_fuzzy_match(clean_word, fuzzy_threshold)
                 if fuzzy_match:
+                    # Cache the fuzzy match result
+                    self.lexicon_cache.cache_correction(clean_word, fuzzy_match, corrections_file)
+                    
                     # Preserve capitalization pattern
                     if word[0].isupper():
                         fuzzy_match = fuzzy_match.capitalize()
@@ -418,6 +449,8 @@ class SanskritProcessor:
                     else:
                         logger.debug(f"Fuzzy correction: {word} -> {fuzzy_match}")
                 else:
+                    # Cache negative result to avoid repeated fuzzy searches
+                    self.lexicon_cache.cache_correction(clean_word, word, corrections_file)
                     corrected_words.append(word)
             else:
                 corrected_words.append(word)
@@ -430,12 +463,31 @@ class SanskritProcessor:
         words = text.split()
         corrected_words = []
         
+        proper_nouns_file = self.lexicon_dir / "proper_nouns.yaml"
+        
         for word in words:
             clean_word = re.sub(r'[^\w\s]', '', word.lower())
             
+            # Try cache first
+            cached_proper_noun = self.lexicon_cache.get_proper_noun(clean_word, proper_nouns_file)
+            if cached_proper_noun is not None:
+                # Record metrics if collecting
+                if self.metrics_collector:
+                    self.metrics_collector.start_correction('capitalization', word)
+                    self.metrics_collector.end_correction('capitalization', word, cached_proper_noun, 1.0)
+                
+                corrected_words.append(cached_proper_noun)
+                corrections += 1
+                logger.debug(f"Cached capitalization: {word} -> {cached_proper_noun}")
+                continue
+            
+            # Try lexicon lookup
             if clean_word in self.lexicons.proper_nouns:
                 entry = self.lexicons.proper_nouns[clean_word]
                 corrected = entry.get('term') or entry.get('original_term', word)
+                
+                # Cache the result
+                self.lexicon_cache.cache_proper_noun(clean_word, corrected, proper_nouns_file)
                 
                 # Record metrics if collecting
                 if self.metrics_collector:
@@ -446,6 +498,8 @@ class SanskritProcessor:
                 corrections += 1
                 logger.debug(f"Capitalization: {word} -> {corrected}")
             else:
+                # Cache negative result (no capitalization needed)
+                self.lexicon_cache.cache_proper_noun(clean_word, word, proper_nouns_file)
                 corrected_words.append(word)
         
         return ' '.join(corrected_words), corrections

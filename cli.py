@@ -153,6 +153,7 @@ Examples:
   python cli.py input.srt output.srt --status-only
   python cli.py input.srt output.srt --metrics --export-metrics metrics.json
   python cli.py input.srt output.srt --profile --profile-detail detailed
+  python cli.py input.srt output.srt --cache-stats
   python cli.py batch input_dir/ output_dir/ --pattern "*.srt"
         """
     )
@@ -182,6 +183,8 @@ Examples:
                         help='Enable performance profiling')
     parser.add_argument('--profile-detail', choices=['basic', 'detailed', 'full'],
                         default='basic', help='Profiling detail level')
+    parser.add_argument('--cache-stats', action='store_true',
+                        help='Report cache statistics after processing')
     
     args = parser.parse_args()
     
@@ -334,11 +337,66 @@ def process_single(args):
                 # Use the new reporter for enhanced output
                 report = ProcessingReporter.generate_summary(result, verbose=args.verbose)
                 print(report)
+            
+            # Report cache statistics if requested or enabled in config
+            cache_enabled = getattr(args, 'cache_stats', False) or (
+                hasattr(processor, 'config') and 
+                processor.config.get('processing', {}).get('caching', {}).get('report_stats', False)
+            )
+            
+            if cache_enabled and hasattr(processor, 'lexicon_cache'):
+                cache_stats = processor.lexicon_cache.get_combined_stats()
+                if cache_stats.get('caching') != 'disabled':
+                    print("\n" + "="*40)
+                    print("📊 CACHE STATISTICS")
+                    print("="*40)
+                    
+                    corrections_stats = cache_stats.get('corrections_cache', {})
+                    proper_nouns_stats = cache_stats.get('proper_nouns_cache', {})
+                    
+                    if corrections_stats:
+                        print(f"\n🔧 Corrections Cache:")
+                        print(f"   Entries: {corrections_stats.get('entries', 0)}")
+                        print(f"   Hits: {corrections_stats.get('hits', 0)}")
+                        print(f"   Misses: {corrections_stats.get('misses', 0)}")
+                        print(f"   Hit Rate: {corrections_stats.get('hit_rate_percent', 0)}%")
+                        print(f"   Memory: {corrections_stats.get('estimated_memory_mb', 0)} MB")
+                    
+                    if proper_nouns_stats:
+                        print(f"\n🏛️  Proper Nouns Cache:")
+                        print(f"   Entries: {proper_nouns_stats.get('entries', 0)}")
+                        print(f"   Hits: {proper_nouns_stats.get('hits', 0)}")
+                        print(f"   Misses: {proper_nouns_stats.get('misses', 0)}")
+                        print(f"   Hit Rate: {proper_nouns_stats.get('hit_rate_percent', 0)}%")
+                        print(f"   Memory: {proper_nouns_stats.get('estimated_memory_mb', 0)} MB")
+                    
+                    total_memory = cache_stats.get('total_memory_mb', 0)
+                    print(f"\n💾 Total Cache Memory: {total_memory} MB")
+                    
+                    # Performance analysis
+                    if corrections_stats.get('hits', 0) > 0 or proper_nouns_stats.get('hits', 0) > 0:
+                        total_hits = corrections_stats.get('hits', 0) + proper_nouns_stats.get('hits', 0)
+                        total_requests = (corrections_stats.get('hits', 0) + corrections_stats.get('misses', 0) + 
+                                        proper_nouns_stats.get('hits', 0) + proper_nouns_stats.get('misses', 0))
+                        
+                        if total_requests > 0:
+                            overall_hit_rate = (total_hits / total_requests) * 100
+                            print(f"\n⚡ Overall Cache Performance:")
+                            print(f"   Cache Hit Rate: {overall_hit_rate:.1f}%")
+                            print(f"   Performance Boost: ~{(1 + overall_hit_rate/100):.1f}x faster lookups")
+                
                 
             # Export metrics if requested
             if args.export_metrics:
                 import json
                 metrics_data = ProcessingReporter.export_json(result)
+                
+                # Include cache statistics in exported metrics
+                if hasattr(processor, 'lexicon_cache'):
+                    cache_stats = processor.lexicon_cache.get_combined_stats()
+                    if cache_stats.get('caching') != 'disabled':
+                        metrics_data['cache_statistics'] = cache_stats
+                
                 with open(args.export_metrics, 'w') as f:
                     json.dump(metrics_data, f, indent=2)
                 print(f"\n📊 Metrics exported to: {args.export_metrics}")

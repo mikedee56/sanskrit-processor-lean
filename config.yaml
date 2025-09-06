@@ -12,6 +12,20 @@ processing:
     enabled: true
     threshold: 0.8
     log_matches: false
+  
+  # Smart caching configuration
+  caching:
+    enabled: true  # Enable/disable lexicon caching
+    max_corrections: 2000  # Max cached correction entries
+    max_proper_nouns: 1000  # Max cached proper noun entries
+    max_memory_mb: 30  # Total memory limit for all caches
+    
+    # Cache behavior
+    file_check_interval: 1.0  # Seconds between file modification checks
+    preload_common_terms: true  # Preload frequently used terms
+    
+    # Cache statistics
+    report_stats: false  # Report cache stats with processing results
 
 # Lexicon settings  
 lexicons:
