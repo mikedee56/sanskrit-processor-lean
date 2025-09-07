@@ -154,6 +154,7 @@ Examples:
   python cli.py input.srt output.srt --metrics --export-metrics metrics.json
   python cli.py input.srt output.srt --profile --profile-detail detailed
   python cli.py input.srt output.srt --cache-stats
+  python cli.py input.srt output.srt --qa-report quality_report.json
   python cli.py batch input_dir/ output_dir/ --pattern "*.srt"
         """
     )
@@ -173,6 +174,8 @@ Examples:
                         help='Collect detailed processing metrics')
     parser.add_argument('--export-metrics', type=Path,
                         help='Export metrics to JSON file')
+    parser.add_argument('--qa-report', type=Path,
+                        help='Generate quality assurance report in JSON format')
     parser.add_argument('--pattern', default='*.srt', 
                         help='File pattern for batch processing (default: *.srt)')
     parser.add_argument('--simple', action='store_true',
@@ -313,7 +316,65 @@ def process_single(args):
         # Process file
         logger.info(f"Processing: {args.input} -> {args.output}")
         with profiler.profile_stage("processing"):
-            result = processor.process_srt_file(args.input, args.output)
+            # Handle QA report generation if requested
+            if args.qa_report:
+                logger.info("Quality assurance report requested")
+                # Enable QA in processor if available
+                if hasattr(processor, 'qa_enabled'):
+                    original_qa_state = processor.qa_enabled
+                    processor.qa_enabled = True
+                
+                # Read input file for QA processing
+                with open(args.input, 'r', encoding='utf-8') as f:
+                    srt_content = f.read()
+                
+                # Process with QA
+                if hasattr(processor, 'process_srt_with_qa'):
+                    processed_srt, qa_report = processor.process_srt_with_qa(
+                        srt_content, args.input.name
+                    )
+                    
+                    # Write processed SRT
+                    args.output.parent.mkdir(parents=True, exist_ok=True)
+                    with open(args.output, 'w', encoding='utf-8') as f:
+                        f.write(processed_srt)
+                    
+                    # Write QA report
+                    if qa_report:
+                        import json
+                        with open(args.qa_report, 'w', encoding='utf-8') as f:
+                            json.dump(qa_report, f, indent=2)
+                        logger.info(f"QA report written to: {args.qa_report}")
+                        
+                        # Display QA summary
+                        summary = qa_report.get('quality_summary', {})
+                        total = summary.get('high_confidence_segments', 0) + summary.get('medium_confidence_segments', 0) + summary.get('low_confidence_segments', 0)
+                        review_needed = summary.get('review_recommended_segments', 0)
+                        
+                        print(f"\n🔍 Quality Assurance Summary:")
+                        print(f"   Total segments: {total}")
+                        print(f"   Review recommended: {review_needed}")
+                        if total > 0:
+                            print(f"   Review percentage: {(review_needed/total)*100:.1f}%")
+                    
+                    # Create a basic result object for compatibility
+                    from utils.processing_reporter import ProcessingResult
+                    result = ProcessingResult(
+                        segments_processed=qa_report['metadata']['total_segments'] if qa_report else 0,
+                        corrections_made=0,  # Not tracked in QA mode
+                        processing_time=0.0,
+                        errors=[]
+                    )
+                    
+                    # Restore original QA state
+                    if hasattr(processor, 'qa_enabled'):
+                        processor.qa_enabled = original_qa_state
+                else:
+                    logger.warning("QA report requested but processor doesn't support process_srt_with_qa")
+                    result = processor.process_srt_file(args.input, args.output)
+            else:
+                # Standard processing without QA report
+                result = processor.process_srt_file(args.input, args.output)
         
         with profiler.profile_stage("reporting"):
             # Import reporter after processing

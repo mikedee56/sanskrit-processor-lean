@@ -188,6 +188,23 @@ class SanskritProcessor:
             self.context_pipeline = None
             self.use_context_pipeline = False
         
+        # Initialize quality assurance components (Story 6.6)
+        try:
+            from qa.confidence_scorer import ConfidenceScorer
+            from qa.issue_detector import QualityIssueDetector
+            self.confidence_scorer = ConfidenceScorer(self.config)
+            self.issue_detector = QualityIssueDetector()
+            self.qa_enabled = self.config.get('qa', {}).get('enabled', False)
+            if self.qa_enabled:
+                logger.info("Quality assurance system enabled")
+            else:
+                logger.debug("Quality assurance system initialized but disabled")
+        except ImportError as e:
+            logger.warning(f"Quality assurance system not available: {e}")
+            self.confidence_scorer = None
+            self.issue_detector = None
+            self.qa_enabled = False
+        
         # Metrics collection
         self.collect_metrics = collect_metrics
         self.metrics_collector = MetricsCollector() if collect_metrics else None
@@ -844,6 +861,120 @@ class SanskritProcessor:
                     "Report this error if it persists"
                 ]
             )
+
+    def process_srt_with_qa(self, srt_content: str, filename: str = "processed_file") -> tuple[str, dict]:
+        """Process SRT with quality assurance reporting."""
+        from utils.srt_parser import SRTParser
+        import time
+        
+        segments = SRTParser.parse(srt_content)
+        processed_segments = []
+        confidence_scores = []
+        all_issues = []
+        
+        for segment in segments:
+            # Process segment with context-aware pipeline
+            if self.use_context_pipeline and self.context_pipeline:
+                result = self.context_pipeline.process_segment(segment.text)
+            else:
+                # Fallback to legacy processing
+                processed_text, corrections = self._legacy_process_text(segment.text)
+                from utils.processing_reporter import ProcessingResult
+                result = ProcessingResult(
+                    segments_processed=1,
+                    corrections_made=corrections,
+                    processing_time=0.0,
+                    errors=[]
+                )
+                result.processed_text = processed_text
+            
+            # Generate confidence metrics and quality issues
+            if self.qa_enabled and self.confidence_scorer and self.issue_detector:
+                confidence = self.confidence_scorer.calculate_confidence(result)
+                issues = self.issue_detector.detect_issues(segment, confidence)
+                
+                confidence_scores.append(confidence)
+                all_issues.extend(issues)
+            
+            # Create processed segment
+            processed_segments.append(type(segment)(
+                index=segment.index,
+                start_time=segment.start_time,
+                end_time=segment.end_time,
+                text=result.processed_text if hasattr(result, 'processed_text') else segment.text
+            ))
+        
+        # Generate SRT output
+        output_srt = SRTParser.to_srt(processed_segments)
+        
+        # Generate quality report
+        qa_report = None
+        if self.qa_enabled and confidence_scores:
+            qa_report = self._generate_quality_report(filename, segments, confidence_scores, all_issues)
+        
+        return output_srt, qa_report
+    
+    def _generate_quality_report(self, filename: str, segments: list, 
+                               confidence_scores: list, quality_issues: list) -> dict:
+        """Generate comprehensive quality report."""
+        from datetime import datetime
+        
+        # Overall statistics
+        total_segments = len(segments)
+        high_confidence = sum(1 for c in confidence_scores if c.overall_confidence > 0.9)
+        medium_confidence = sum(1 for c in confidence_scores if 0.7 <= c.overall_confidence <= 0.9)
+        low_confidence = sum(1 for c in confidence_scores if c.overall_confidence < 0.7)
+        
+        # Issue statistics
+        critical_issues = sum(1 for i in quality_issues if i.severity == 'critical')
+        high_issues = sum(1 for i in quality_issues if i.severity == 'high')
+        
+        report = {
+            "metadata": {
+                "filename": filename,
+                "processed_at": datetime.now().isoformat(),
+                "processor_version": "1.0",
+                "total_segments": total_segments
+            },
+            "quality_summary": {
+                "high_confidence_segments": high_confidence,
+                "medium_confidence_segments": medium_confidence, 
+                "low_confidence_segments": low_confidence,
+                "critical_issues": critical_issues,
+                "high_priority_issues": high_issues,
+                "review_recommended_segments": low_confidence + critical_issues + high_issues
+            },
+            "segment_details": [
+                {
+                    "segment_number": i + 1,
+                    "timestamp": f"{seg.start_time} --> {seg.end_time}",
+                    "confidence": {
+                        "overall": conf.overall_confidence,
+                        "lexicon": conf.lexicon_confidence,
+                        "sacred": conf.sacred_confidence,
+                        "compound": conf.compound_confidence,
+                        "scripture": conf.scripture_confidence
+                    },
+                    "flags": conf.processing_flags,
+                    "issues": [
+                        {
+                            "type": issue.issue_type,
+                            "severity": issue.severity,
+                            "description": issue.description,
+                            "suggested_action": issue.suggested_action
+                        }
+                        for issue in quality_issues 
+                        if issue.timestamp_start == seg.start_time
+                    ]
+                }
+                for i, (seg, conf) in enumerate(zip(segments, confidence_scores))
+                if conf.overall_confidence < 0.9 or any(
+                    issue.timestamp_start == seg.start_time for issue in quality_issues
+                )
+            ]
+        }
+        
+        return report
 
     def close(self):
         """Clean up database connections and resources."""
