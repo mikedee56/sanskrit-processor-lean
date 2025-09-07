@@ -58,6 +58,14 @@ performance:
     track_memory_usage: true
     track_service_response_times: true
 
+# Database Integration Configuration (Story 6.3)
+database:
+  enabled: true  # Enable database integration
+  path: "data/sanskrit_terms.db"  # Path to existing term database
+  fallback_to_yaml: true  # Use YAML lexicons when database unavailable
+  connection_timeout: 5.0  # Database connection timeout in seconds
+  cache_size: 1000  # In-memory term cache limit
+
 # Plugin System Configuration (Lean Implementation)
 plugins:
   enabled: false  # Master plugin enable/disable (default: disabled)

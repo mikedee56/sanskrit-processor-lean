@@ -1,0 +1,49 @@
+{
+  "@context": "https://schema.org/",
+  "@type": "VideoObject",
+  "name": "sample_test",
+  "description": "Sanskrit lecture processed with quality enhancements",
+  "processingMetadata": {},
+  "qualityReport": {},
+  "transcript": [
+    {
+      "startTime": "00:00:01,000",
+      "endTime": "00:00:04,000",
+      "text": "Sarasvatī Kṛṣṇa Kṛṣṇa Kṛṣṇa Kṛṣṇa Kṛṣṇa Kṛṣṇa Kṛṣṇa",
+      "confidence": 1.0,
+      "hasIssues": false,
+      "metadata": {
+        "index": 1,
+        "duration_ms": 3000,
+        "contains_sanskrit": false,
+        "character_count": 51
+      }
+    },
+    {
+      "startTime": "00:00:05,000",
+      "endTime": "00:00:08,000",
+      "text": "Kṛṣṇa asks Kṛṣṇa Kṛṣṇa Kṛṣṇa Kṛṣṇa Kṛṣṇa Kṛṣṇa",
+      "confidence": 1.0,
+      "hasIssues": false,
+      "metadata": {
+        "index": 2,
+        "duration_ms": 3000,
+        "contains_sanskrit": false,
+        "character_count": 46
+      }
+    },
+    {
+      "startTime": "00:00:09,000",
+      "endTime": "00:00:12,000",
+      "text": "Kṛṣṇa Kṛṣṇa Kṛṣṇa Kṛṣṇa Kṛṣṇa Kṛṣṇa Kṛṣṇa",
+      "confidence": 1.0,
+      "hasIssues": false,
+      "metadata": {
+        "index": 3,
+        "duration_ms": 3000,
+        "contains_sanskrit": false,
+        "character_count": 41
+      }
+    }
+  ]
+}

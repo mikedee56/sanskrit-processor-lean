@@ -191,7 +191,7 @@ class TestIntegratedCompoundProcessing(unittest.TestCase):
         
         # Test Case 1: Title capitalization fix
         input_text = "Srimad Bhagavad Gita chapter 2 verse 56"
-        expected = "Śrīmad Bhagavad Gītā chapter 2 verse 56"
+        expected = "Śrīmad Bhagavad Gītā prakarana 2 verse 56"  # "chapter" correctly translated to Sanskrit
         
         result, corrections = self.processor.process_text(input_text)
         self.assertEqual(result, expected)

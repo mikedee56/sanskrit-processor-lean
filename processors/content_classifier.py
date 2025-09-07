@@ -40,7 +40,7 @@ class ContentClassifier:
         r'\d+\.\d+',  # Verse references (e.g., "2.47")  
         r'\bchapter\s+\d+\b|\badhyaya\b',  # Chapter references
         r'\bverse\s+\d+\b|\bshloka\b|\u015bloka',  # Verse indicators
-        r'\bgita\b|\bupanishads?\b|\bvedas?\b',  # Scripture names (fixed plural)
+        r'\bupanishads?\b|\bvedas?\b',  # Scripture names (removed gita - too broad)
     ]
     
     TITLE_PATTERNS = [
@@ -133,8 +133,10 @@ class ContentClassifier:
             processors.extend(['sacred'])
         if 'verse' in detected_types:
             processors.extend(['scripture'])
-        if 'title' in detected_types or 'commentary' in detected_types:
-            processors.extend(['compound'])
+        
+        # CRITICAL: Always apply compound processing for potential Sanskrit terms
+        # This ensures compound terms like "Srimad Bhagavad Gita" are recognized
+        processors.extend(['compound'])
             
         # Remove duplicates while preserving order
         processors = list(dict.fromkeys(processors))
@@ -168,7 +170,12 @@ class ContentClassifier:
             return False
         
         # Skip if it has verse/scripture indicators (those should be classified as verses)
-        if any(word in text.lower() for word in ['chapter', 'verse', 'gita', 'upanishad']):
+        # EXCEPTION: Allow compound titles like "Srimad Bhagavad Gita" to be titles
+        text_lower = text.lower()
+        if any(word in text_lower for word in ['chapter', 'verse', 'upanishad']):
+            return False
+        # Allow compound titles containing "gita" if they also have other title indicators
+        if 'gita' in text_lower and not ('srimad' in text_lower or 'bhagavad' in text_lower):
             return False
         
         # Skip if it looks like a mantra (avoid mixed classification for obvious mantras)
@@ -239,10 +246,16 @@ class ContentClassifier:
             strategy['case_sensitive'] = True  # Preserve proper capitalization
             
         # Performance optimization: reorder processors for efficiency
+        # CRITICAL: Move compound to front so it processes full phrases first
+        if 'compound' in strategy['processor_order']:
+            strategy['processor_order'].remove('compound')
+            strategy['processor_order'].insert(0, 'compound')
         if 'database' in strategy['processor_order']:
-            # Move database to front for caching benefits
+            # Move database after compound for caching benefits
             strategy['processor_order'].remove('database')
-            strategy['processor_order'].insert(0, 'database')
+            # Insert after compound if present, otherwise at front
+            insert_pos = 1 if 'compound' in strategy['processor_order'] else 0
+            strategy['processor_order'].insert(insert_pos, 'database')
             
         return strategy
     

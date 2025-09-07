@@ -150,6 +150,8 @@ def main():
 Examples:
   python cli.py input.srt output.srt
   python cli.py input.srt output.srt --config custom_config.yaml --verbose
+  python cli.py input.srt output.srt --export-formats srt vtt json xml
+  python cli.py input.srt output.srt --export-formats vtt --verbose
   python cli.py input.srt output.srt --status-only
   python cli.py input.srt output.srt --metrics --export-metrics metrics.json
   python cli.py input.srt output.srt --profile --profile-detail detailed
@@ -188,6 +190,11 @@ Examples:
                         default='basic', help='Profiling detail level')
     parser.add_argument('--cache-stats', action='store_true',
                         help='Report cache statistics after processing')
+    parser.add_argument('--export-formats', 
+                       nargs='+', 
+                       default=['srt'],
+                       choices=['srt', 'vtt', 'json', 'xml'],
+                       help='Output formats to generate (default: srt)')
     
     args = parser.parse_args()
     
@@ -453,6 +460,42 @@ def process_single(args):
                             print(f"   Performance Boost: ~{(1 + overall_hit_rate/100):.1f}x faster lookups")
                 
                 
+            # Multi-format export if requested
+            if len(args.export_formats) > 1 or 'srt' not in args.export_formats:
+                from exporters.format_manager import FormatManager, ExportRequest
+                from utils.srt_parser import SRTParser
+                
+                # Read processed segments from output SRT file
+                try:
+                    with open(args.output, 'r', encoding='utf-8') as f:
+                        processed_srt = f.read()
+                    processed_segments = SRTParser.parse(processed_srt)
+                    
+                    format_manager = FormatManager()
+                    export_request = ExportRequest(
+                        source_filename=Path(args.input).stem,
+                        segments=processed_segments,
+                        qa_report=qa_report if 'qa_report' in locals() else {},
+                        metadata=getattr(result, 'metadata', {}),
+                        output_formats=args.export_formats,
+                        output_directory=Path(args.output).parent
+                    )
+                    
+                    export_results = format_manager.export_all_formats(export_request)
+                    
+                    print(f"\n📦 Export Results:")
+                    for format_name, result_file in export_results.items():
+                        if "Error:" in str(result_file):
+                            print(f"   {format_name.upper()}: ❌ {result_file}")
+                        else:
+                            print(f"   {format_name.upper()}: ✅ {result_file}")
+                            
+                except Exception as e:
+                    print(f"\n⚠️  Multi-format export failed: {e}")
+                    if args.verbose:
+                        import traceback
+                        traceback.print_exc()
+            
             # Export metrics if requested
             if args.export_metrics:
                 import json

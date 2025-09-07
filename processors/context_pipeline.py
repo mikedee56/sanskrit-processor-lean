@@ -128,6 +128,7 @@ class ContextAwarePipeline:
         all_corrections = []
         metadata = classification.metadata.copy() or {}
         specialized_results = {}
+        protected_spans = []  # Track text spans protected from further processing
         
         # Step 4: Apply specialized processing in optimized order
         for processor_name in strategy['processor_order']:
@@ -139,6 +140,11 @@ class ContextAwarePipeline:
                         processed_text, strategy
                     )
                     all_corrections.extend(corrections)
+                    # Track words protected by compound corrections
+                    for correction in corrections:
+                        # Store the corrected words to avoid re-processing them
+                        corrected_words = correction['corrected'].split()
+                        protected_spans.extend(corrected_words)
                     specialized_results['compound'] = {
                         'corrections': len(corrections),
                         'time': time.time() - processor_start
@@ -156,7 +162,7 @@ class ContextAwarePipeline:
                     
                 elif processor_name == 'database' and 'database' in self._processors:
                     processed_text, corrections = self._apply_database_processing(
-                        processed_text, strategy
+                        processed_text, strategy, protected_spans
                     )
                     all_corrections.extend(corrections)
                     specialized_results['database'] = {
@@ -200,8 +206,8 @@ class ContextAwarePipeline:
     
     def _apply_compound_processing(self, text: str, strategy: dict) -> Tuple[str, List[Dict]]:
         """Apply compound term recognition (Story 6.1)."""
-        if not strategy.get('apply_fuzzy_matching', True):
-            return text, []  # Skip for sacred content
+        # ALWAYS apply compound processing since titles can appear in verses
+        # The fuzzy_matching flag is for database processing, not compounds
             
         compound_processor = self._processors['compound']
         processed_text, matches = compound_processor.process_text(text)
@@ -209,9 +215,9 @@ class ContextAwarePipeline:
         corrections = [
             {
                 'type': 'compound',
-                'original': match.get('original', ''),
-                'corrected': match.get('corrected', ''),
-                'confidence': match.get('confidence', 1.0)
+                'original': match.original,
+                'corrected': match.corrected,
+                'confidence': match.confidence
             }
             for match in matches
         ]
@@ -254,7 +260,7 @@ class ContextAwarePipeline:
         
         return final_text, metadata
     
-    def _apply_database_processing(self, text: str, strategy: dict) -> Tuple[str, List[Dict]]:
+    def _apply_database_processing(self, text: str, strategy: dict, protected_words: List[str] = None) -> Tuple[str, List[Dict]]:
         """Apply database + YAML lexicon processing (Story 6.3)."""
         database_processor = self._processors['database']
         
@@ -265,28 +271,39 @@ class ContextAwarePipeline:
         corrections = []
         
         for word in words:
-            clean_word = re.sub(r'[^\\w\\s]', '', word.lower())
+            clean_word = re.sub(r'[^\w\s]', '', word.lower())
             
-            # Try database lookup first
-            if hasattr(database_processor, 'corrections'):
-                if clean_word in database_processor.corrections:
-                    entry = database_processor.corrections[clean_word]
-                    corrected = entry.get('original_term', word)
-                    
-                    # Preserve capitalization if needed
-                    if word[0].isupper() and not strategy['case_sensitive']:
-                        corrected = corrected.capitalize()
-                    
-                    corrected_words.append(corrected)
-                    corrections.append({
-                        'type': 'lexicon',
-                        'original': word,
-                        'corrected': corrected,
-                        'confidence': 1.0,
-                        'source': 'database'
-                    })
-                else:
-                    corrected_words.append(word)
+            # Skip processing if word is already protected by compound corrections
+            if protected_words and word in protected_words:
+                corrected_words.append(word)
+                continue
+            
+            # Try database lookup - check both corrections and proper_nouns
+            corrected = None
+            correction_source = None
+            
+            if hasattr(database_processor, 'corrections') and clean_word in database_processor.corrections:
+                entry = database_processor.corrections[clean_word]
+                corrected = entry.get('original_term', word)
+                correction_source = 'corrections'
+            elif hasattr(database_processor, 'proper_nouns') and clean_word in database_processor.proper_nouns:
+                entry = database_processor.proper_nouns[clean_word]
+                corrected = entry.get('term', word)  # proper_nouns uses 'term', not 'original_term'
+                correction_source = 'proper_nouns'
+            
+            if corrected and corrected != word:
+                # Preserve capitalization if needed
+                if word[0].isupper() and not strategy.get('case_sensitive', False):
+                    corrected = corrected.capitalize()
+                
+                corrected_words.append(corrected)
+                corrections.append({
+                    'type': 'lexicon',
+                    'original': word,
+                    'corrected': corrected,
+                    'confidence': 1.0,
+                    'source': f'database_{correction_source}'
+                })
             else:
                 corrected_words.append(word)
         
