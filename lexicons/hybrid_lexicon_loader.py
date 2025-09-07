@@ -8,31 +8,57 @@ import logging
 logger = logging.getLogger(__name__)
 
 class HybridLexiconDict(dict):
-    """Database-first dictionary with YAML fallback."""
+    """Database-first dictionary with YAML fallback and lookup cache."""
     def __init__(self, database, yaml_dict, stats, lookup_type='corrections'):
         super().__init__(yaml_dict)
         self.database, self.stats, self.lookup_type = database, stats, lookup_type
+        self._lookup_cache = {}  # Cache database results
         
     def __contains__(self, key):
+        # Check cache first
+        if key in self._lookup_cache:
+            return self._lookup_cache[key] is not None
+            
+        # Check database
         if self.database:
             result = self.database.lookup_term(key)
             if result and (result.confidence >= 0.7 if self.lookup_type == 'corrections' 
                           else result.category in ['deity', 'person', 'place']):
+                self._lookup_cache[key] = result
                 return True
+            else:
+                self._lookup_cache[key] = None  # Cache negative results too
+        
+        # Check YAML fallback
         return super().__contains__(key)
         
     def __getitem__(self, key):
-        if self.database:
+        # Check cache first
+        if key in self._lookup_cache and self._lookup_cache[key] is not None:
+            result = self._lookup_cache[key]
+            self.stats['database_hits'] += 1
+            is_correction = self.lookup_type == 'corrections'
+            return {'original_term': result.original_term, 'variations': result.variations, 
+                   'category': result.category} | ({'term': result.original_term} if not is_correction else {})
+        
+        # Database lookup (if not cached)
+        if self.database and key not in self._lookup_cache:
             result = self.database.lookup_term(key)
             is_correction = self.lookup_type == 'corrections'
             if result and (result.confidence >= 0.7 if is_correction 
                           else result.category in ['deity', 'person', 'place']):
+                self._lookup_cache[key] = result
                 self.stats['database_hits'] += 1
                 return {'original_term': result.original_term, 'variations': result.variations, 
                        'category': result.category} | ({'term': result.original_term} if not is_correction else {})
+            else:
+                self._lookup_cache[key] = None
+        
+        # YAML fallback
         if super().__contains__(key):
             self.stats['yaml_hits'] += 1
             return super().__getitem__(key)
+            
         self.stats['misses'] += 1
         raise KeyError(key)
 
@@ -43,16 +69,34 @@ class HybridLexiconLoader:
         self.lexicon_dir, self.config = Path(lexicon_dir), config or {}
         self.stats = {'database_hits': 0, 'yaml_hits': 0, 'misses': 0}
         
-        # Initialize database
+        # Initialize database with proper configuration
         self.database = None
+        
+        # Try to get database config from multiple sources
         db_config = self.config.get('database', {})
-        if db_config.get('enabled', True) and db_config.get('path'):
-            db_path = Path(db_config['path'])
-            self.database = LexiconDatabase(db_path)
-            if self.database.connect():
-                logger.info(f"Connected to database: {db_path}")
-            else:
-                logger.warning("Database connection failed, using YAML fallback only")
+        if not db_config and 'lexicons' in self.config:
+            db_config = self.config['lexicons'].get('database', {})
+        
+        # Default database path if not specified
+        if db_config.get('enabled', True):
+            db_path = db_config.get('path', 'data/sanskrit_terms.db')
+            db_path = Path(db_path)
+            
+            # Try to import and initialize LexiconDatabase
+            try:
+                from database.lexicon_db import LexiconDatabase
+                self.database = LexiconDatabase(db_path)
+                if self.database.connect():
+                    term_count = self.database.get_term_count() if hasattr(self.database, 'get_term_count') else 'unknown'
+                    logger.info(f"Connected to database: {db_path} ({term_count} terms)")
+                else:
+                    logger.warning("Database connection failed, using YAML fallback only")
+                    self.database = None
+            except ImportError as e:
+                logger.warning(f"Database module not available: {e}, using YAML fallback only")
+                self.database = None
+            except Exception as e:
+                logger.warning(f"Database initialization failed: {e}, using YAML fallback only")
                 self.database = None
                 
         # Load YAML lexicons
