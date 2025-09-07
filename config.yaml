@@ -5,7 +5,9 @@ processing:
   # Output configuration
   use_iast_diacritics: true  # Use IAST transliterations with diacritics
   preserve_capitalization: true  # Maintain proper noun capitalization
-  use_consolidated_services: false  # Safe default during transition
+  use_consolidated_services: true  # Enable all advanced services
+  enable_semantic_analysis: true  # Enable MCP semantic processing
+  enable_scripture_lookup: true  # Enable API scripture references
   
   # Fuzzy matching
   fuzzy_matching:
@@ -57,14 +59,25 @@ performance:
     track_segment_rate: true
     track_memory_usage: true
     track_service_response_times: true
+    
+  # Optimization for concurrent GPU usage
+  concurrent_processing:
+    cpu_throttle: true  # Reduce CPU usage when GPU processes detected
+    max_cpu_percent: 70  # Limit to 70% CPU when other processes running
+    batch_size_limit: 50  # Process smaller batches to reduce memory pressure
+    io_optimization: true  # Optimize database I/O patterns
 
 # Database Integration Configuration (Story 6.3)
 database:
   enabled: true  # Enable database integration
   path: "data/sanskrit_terms.db"  # Path to existing term database
   fallback_to_yaml: true  # Use YAML lexicons when database unavailable
-  connection_timeout: 5.0  # Database connection timeout in seconds
-  cache_size: 1000  # In-memory term cache limit
+  connection_timeout: 2.0  # Reduced timeout for concurrent processing
+  cache_size: 2000  # Increased cache to reduce I/O
+  # Optimizations for concurrent GPU usage
+  connection_pool_size: 1  # Single connection to reduce overhead
+  batch_queries: true  # Batch database queries for efficiency
+  pragma_optimizations: true  # Enable SQLite performance pragmas
 
 # Plugin System Configuration (Lean Implementation)
 plugins:

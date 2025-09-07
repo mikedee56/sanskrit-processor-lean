@@ -12,20 +12,20 @@ This is a **Sanskrit SRT Processor** with lean architecture - a focused, maintai
 
 ### Basic Processing (Core Functionality)
 ```bash
-# Process SRT with lexicon corrections only
-python3 simple_cli.py input.srt output.srt --lexicons lexicons --verbose
+# Process SRT with lexicon corrections only (simple mode)
+python3 cli.py input.srt output.srt --simple --verbose
 
-# Test with sample file
-python3 simple_cli.py sample_test.srt test_output.srt --lexicons lexicons --verbose
+# Test with sample file (simple mode)
+python3 cli.py sample_test.srt test_output.srt --simple --verbose
 ```
 
 ### Enhanced Processing (With External Services)
 ```bash
-# Full processing with MCP/API integration
-python3 enhanced_cli.py input.srt output.srt --config config.yaml --verbose
+# Full processing with MCP/API integration (default mode)
+python3 cli.py input.srt output.srt --config config.yaml --verbose
 
 # Check external service status
-python3 enhanced_cli.py --status-only
+python3 cli.py --status-only
 ```
 
 ### Development Setup
@@ -39,8 +39,11 @@ test_windows.bat  # or test_windows.ps1
 
 ### Testing & Validation
 ```bash
-# Basic validation test
-python3 simple_cli.py sample_test.srt test_output.srt --lexicons lexicons --verbose
+# Basic validation test (simple mode)
+python3 cli.py sample_test.srt test_output.srt --simple --verbose
+
+# Enhanced validation test
+python3 cli.py sample_test.srt test_output.srt --config config.yaml --verbose
 
 # Syntax check
 python3 -m py_compile sanskrit_processor_v2.py
@@ -52,9 +55,8 @@ pytest --cov
 ## High-Level Architecture
 
 ### Core Components
-- **`sanskrit_processor_v2.py`** - Main processor (200 lines): SRTSegment, ProcessingResult, LexiconLoader, SRTParser, SanskritProcessor
-- **`simple_cli.py`** - Basic CLI for lexicon-only processing
-- **`enhanced_cli.py`** - Full CLI with MCP/API integration
+- **`sanskrit_processor_v2.py`** - Main processor (752 lines): SRTSegment, ProcessingResult, LexiconLoader, SRTParser, SanskritProcessor
+- **`cli.py`** - Unified CLI with both simple and enhanced processing modes
 - **`enhanced_processor.py`** - External service integration layer
 
 ### Service Layer
@@ -92,8 +94,8 @@ pytest --cov
 - Test files: `test_windows.bat` and `test_windows.ps1`
 
 ### Task Completion Requirements
-- Test basic functionality: `python3 simple_cli.py sample_test.srt test_output.srt --lexicons lexicons --verbose`
-- Test enhanced features: `python3 enhanced_cli.py --status-only`
+- Test basic functionality: `python3 cli.py sample_test.srt test_output.srt --simple --verbose`
+- Test enhanced features: `python3 cli.py --status-only`
 - Verify cross-platform compatibility
 - Validate YAML configuration files
 - Performance: maintain 2,600+ segments/second, <50MB memory

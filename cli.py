@@ -650,8 +650,13 @@ def process_batch(args):
         # Create output directory
         args.output.mkdir(parents=True, exist_ok=True)
         
-        # Initialize processor once
-        processor = EnhancedSanskritProcessor(args.lexicons, args.config)
+        # Initialize processor once based on mode
+        if args.simple:
+            logger.info("Batch processing with Simple Sanskrit processor...")
+            processor = SanskritProcessor(args.lexicons)
+        else:
+            logger.info("Batch processing with Enhanced Sanskrit processor...")
+            processor = EnhancedSanskritProcessor(args.lexicons, args.config)
     
     with profiler.profile_stage("batch_processing"):
         # Process files with simple progress
