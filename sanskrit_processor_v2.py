@@ -146,10 +146,19 @@ class SanskritProcessor:
     def __init__(self, lexicon_dir: Path = None, config_path: Path = None, collect_metrics: bool = False):
         """Initialize processor with lexicon directory and configuration."""
         self.lexicon_dir = lexicon_dir or Path("lexicons")
-        self.lexicons = LexiconLoader(self.lexicon_dir)
         
-        # Load configuration
+        # Load configuration first (needed for database setup)
         self.config = self._load_config(config_path or Path("config.yaml"))
+        
+        # Use hybrid lexicon loader for database + YAML integration
+        try:
+            from lexicons.hybrid_lexicon_loader import HybridLexiconLoader
+            self.lexicons = HybridLexiconLoader(self.lexicon_dir, self.config)
+            logger.info("Using hybrid lexicon loader (database + YAML)")
+        except ImportError:
+            # Fallback to original loader if hybrid not available
+            self.lexicons = LexiconLoader(self.lexicon_dir)
+            logger.info("Using YAML-only lexicon loader (fallback)")
         
         # Initialize smart caching
         self.lexicon_cache = LexiconCache(self.config)
@@ -167,6 +176,17 @@ class SanskritProcessor:
         self.sacred_classifier = SacredContentClassifier()
         self.symbol_protector = SacredSymbolProtector()
         self.verse_formatter = VerseFormatter()
+        
+        # Initialize context-aware pipeline (Story 6.5)
+        try:
+            from processors.context_pipeline import ContextAwarePipeline
+            self.context_pipeline = ContextAwarePipeline(self.config)
+            self.use_context_pipeline = True
+            logger.info("Context-aware pipeline initialized")
+        except ImportError as e:
+            logger.warning(f"Context-aware pipeline not available: {e}")
+            self.context_pipeline = None
+            self.use_context_pipeline = False
         
         # Metrics collection
         self.collect_metrics = collect_metrics
@@ -188,7 +208,7 @@ class SanskritProcessor:
             'sixteen': '16', 'seventeen': '17', 'eighteen': '18'
         }
         
-        logger.info("Sanskrit processor initialized with sacred text preservation")
+        logger.info("Sanskrit processor initialized with context-aware processing")
 
     
     def _load_config(self, config_path: Path) -> dict:
@@ -240,6 +260,14 @@ class SanskritProcessor:
         except Exception as e:
             # Log the error but don't fail completely
             logger.warning(f"Configuration loading error: {e}")
+            # Try legacy loading as final fallback
+            try:
+                if config_path.exists():
+                    with open(config_path, 'r', encoding='utf-8') as f:
+                        config = yaml.safe_load(f) or {}
+                    logger.info(f"Final fallback: loaded config from {config_path}")
+            except Exception:
+                pass  # Use empty config as ultimate fallback
             
         # Set fuzzy matching defaults if not present
         if 'processing' not in config:
@@ -290,7 +318,47 @@ class SanskritProcessor:
             logger.warning(f"Plugin loading failed: {e}")
     
     def process_text(self, text: str) -> tuple[str, int]:
-        """Process a single text segment with sacred text preservation. Returns (processed_text, corrections_made)."""
+        """Process a single text segment with context-aware processing. Returns (processed_text, corrections_made)."""
+        # Use context-aware pipeline if available (Story 6.5)
+        if self.use_context_pipeline and self.context_pipeline:
+            try:
+                result = self.context_pipeline.process_segment(text)
+                return result.processed_text, result.corrections_made
+            except Exception as e:
+                logger.warning(f"Context pipeline failed, falling back to legacy processing: {e}")
+        
+        # Fallback to legacy processing pipeline
+        return self._legacy_process_text(text)
+    
+    def process_segment_detailed(self, segment) -> 'ProcessingResult':
+        """
+        New method providing detailed processing results with context information.
+        Returns comprehensive processing result from context-aware pipeline.
+        """
+        if self.use_context_pipeline and self.context_pipeline:
+            from processors.context_pipeline import ProcessingResult as ContextProcessingResult
+            
+            # Use the context-aware pipeline for detailed results
+            result = self.context_pipeline.process_segment(segment.text)
+            
+            # Convert to the format expected by the existing system
+            # Note: We import from context_pipeline to avoid conflicts
+            return result
+        else:
+            # Fallback to basic processing
+            processed_text, corrections = self._legacy_process_text(segment.text)
+            
+            # Create a basic ProcessingResult (import from utils.processing_reporter)
+            from utils.processing_reporter import ProcessingResult
+            return ProcessingResult(
+                segments_processed=1,
+                corrections_made=corrections,
+                processing_time=0.0,
+                errors=[]
+            )
+    
+    def _legacy_process_text(self, text: str) -> tuple[str, int]:
+        """Legacy processing pipeline (pre-Story 6.5) for fallback."""
         original_text = text
         corrections = 0
         
@@ -335,7 +403,7 @@ class SanskritProcessor:
             corrections += capitalization_corrections
             
             # 4. Clean up extra whitespace
-            text = re.sub(r'\s+', ' ', text).strip()
+            text = re.sub(r'\\s+', ' ', text).strip()
             
             # 5. Apply plugins (lean implementation)
             text = self.plugin_manager.execute_all(text)
@@ -776,6 +844,12 @@ class SanskritProcessor:
                     "Report this error if it persists"
                 ]
             )
+
+    def close(self):
+        """Clean up database connections and resources."""
+        if hasattr(self.lexicons, 'close') and callable(self.lexicons.close):
+            self.lexicons.close()
+            logger.info("Database connections closed")
 
 # Backward compatibility exports - maintain existing import paths
 # These allow existing code to continue importing from sanskrit_processor_v2

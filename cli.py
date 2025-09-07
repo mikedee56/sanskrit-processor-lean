@@ -330,6 +330,9 @@ def process_single(args):
                 if result.segments_processed > 0:
                     report = ProcessingReporter.generate_summary(result, verbose=args.verbose)
                     print(report)
+                    
+                    # Display context-aware processing information if available
+                    display_context_information(result)
                 else:
                     print("❌ No segments were successfully processed")
                     return 3  # Processing error
@@ -337,6 +340,9 @@ def process_single(args):
                 # Use the new reporter for enhanced output
                 report = ProcessingReporter.generate_summary(result, verbose=args.verbose)
                 print(report)
+                
+                # Display context-aware processing information if available
+                display_context_information(result)
             
             # Report cache statistics if requested or enabled in config
             cache_enabled = getattr(args, 'cache_stats', False) or (
@@ -397,6 +403,15 @@ def process_single(args):
                     if cache_stats.get('caching') != 'disabled':
                         metrics_data['cache_statistics'] = cache_stats
                 
+                # Include context-aware metrics if available
+                if hasattr(result, 'quality_metrics') and result.quality_metrics:
+                    metrics_data['context_aware_metrics'] = {
+                        'content_type': getattr(result, 'content_type', 'unknown'),
+                        'confidence': getattr(result, 'confidence', 0.0),
+                        'quality_metrics': result.quality_metrics,
+                        'specialized_processing': getattr(result, 'specialized_processing', {})
+                    }
+                
                 with open(args.export_metrics, 'w') as f:
                     json.dump(metrics_data, f, indent=2)
                 print(f"\n📊 Metrics exported to: {args.export_metrics}")
@@ -448,6 +463,57 @@ def process_single(args):
                 print("\nDetailed error trace:")
                 traceback.print_exc()
             return 1
+
+def display_context_information(result):
+    """Display context-aware processing information if available."""
+    if not hasattr(result, 'content_type'):
+        return  # Not a context-aware result
+    
+    print("\n" + "="*40)
+    print("🧠 CONTEXT-AWARE PROCESSING")
+    print("="*40)
+    
+    # Content classification
+    print(f"\n📋 Content Classification:")
+    print(f"   Type: {result.content_type}")
+    print(f"   Confidence: {result.confidence:.1%}")
+    
+    if hasattr(result, 'metadata') and result.metadata:
+        print(f"\n📊 Content Metadata:")
+        for key, value in result.metadata.items():
+            if isinstance(value, bool):
+                print(f"   {key}: {'✓' if value else '✗'}")
+            elif isinstance(value, list):
+                print(f"   {key}: {len(value)} items")
+            else:
+                print(f"   {key}: {value}")
+    
+    # Specialized processing results
+    if hasattr(result, 'specialized_processing') and result.specialized_processing:
+        print(f"\n⚙️  Specialized Processing:")
+        for processor, info in result.specialized_processing.items():
+            if isinstance(info, dict):
+                if 'corrections' in info:
+                    print(f"   {processor.title()}: {info['corrections']} corrections in {info.get('time', 0):.3f}s")
+                elif 'references' in info:
+                    print(f"   {processor.title()}: {info['references']} references in {info.get('time', 0):.3f}s")
+                elif 'protected' in info:
+                    print(f"   {processor.title()}: {info['protected']} symbols protected in {info.get('time', 0):.3f}s")
+                else:
+                    print(f"   {processor.title()}: processed in {info.get('time', 0):.3f}s")
+    
+    # Quality metrics
+    if hasattr(result, 'quality_metrics') and result.quality_metrics:
+        print(f"\n📈 Quality Metrics:")
+        for metric, value in result.quality_metrics.items():
+            if 'similarity' in metric:
+                print(f"   {metric.replace('_', ' ').title()}: {value:.1%}")
+            elif 'speed' in metric:
+                print(f"   {metric.replace('_', ' ').title()}: {value:.0f} chars/sec")
+            elif 'confidence' in metric:
+                print(f"   {metric.replace('_', ' ').title()}: {value:.1%}")
+            else:
+                print(f"   {metric.replace('_', ' ').title()}: {value:.3f}")
 
 def process_batch(args):
     """Ultra-lean batch processing implementation."""
