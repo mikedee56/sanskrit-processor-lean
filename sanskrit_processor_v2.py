@@ -8,7 +8,7 @@ import re
 import yaml
 from pathlib import Path
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional, Any
+from typing import List, Dict, Optional, Any, Union
 import logging
 
 # Import utilities for lean architecture
@@ -419,8 +419,8 @@ class SanskritProcessor:
             text, capitalization_corrections = self._apply_capitalization(text)
             corrections += capitalization_corrections
             
-            # 4. Clean up extra whitespace
-            text = re.sub(r'\\s+', ' ', text).strip()
+            # 4. Clean up extra whitespace (preserve line breaks)
+            text = re.sub(r'[ \\t]+', ' ', text).strip()
             
             # 5. Apply plugins (lean implementation)
             text = self.plugin_manager.execute_all(text)
@@ -432,8 +432,8 @@ class SanskritProcessor:
     
     def _normalize_text(self, text: str) -> str:
         """Basic text normalization with punctuation enhancement."""
-        # Remove excessive whitespace
-        text = re.sub(r'\s+', ' ', text)
+        # Remove excessive whitespace (preserve line breaks)
+        text = re.sub(r'[ \t]+', ' ', text)
         
         # Convert number words to digits
         for word, digit in self.number_words.items():
@@ -467,24 +467,110 @@ class SanskritProcessor:
             if not text.rstrip().endswith('?'):
                 text = text.rstrip() + '?'
         
-        # Clean spacing
-        text = re.sub(r'\s+([.,:;!?])', r'\1', text)
+        # Clean spacing (preserve line breaks)
+        text = re.sub(r'[ \t]+([.,:;!?])', r'\1', text)
         text = re.sub(r'([.!?])([A-Z])', r'\1 \2', text)
         
         return text
 
-    def _is_sanskrit_context(self, text: str) -> bool:
-        """Check if text contains Sanskrit/sacred content that should be preserved."""
-        sanskrit_indicators = [
-            r'\d+\.\d+',  # Verse references like "2.47"
-            r'chapter\s+\d+',  # "Chapter 2"  
-            r'[āīūṛṅṇṭḍṣśḥṃ]',  # IAST characters
-            r'om\s+\w+\s+om',  # Mantras
-            'bhagavad gita', 'upanishad', 'vedas'
+    def detect_context(self, text: str) -> str:
+        """Detect content context: 'sanskrit', 'english', or 'mixed'.
+        
+        Enhanced with input validation and caching for optimal performance.
+        """
+        # Input validation for robustness
+        if not text or not isinstance(text, str):
+            return 'mixed'  # Default to mixed for safety
+            
+        # Normalize whitespace for consistent processing
+        normalized_text = ' '.join(text.split())
+        if not normalized_text.strip():
+            return 'mixed'
+        
+        # Check cache for performance optimization
+        cache_key = hash(normalized_text)
+        if hasattr(self, '_context_cache') and cache_key in self._context_cache:
+            return self._context_cache[cache_key]
+        
+        # Initialize cache if needed
+        if not hasattr(self, '_context_cache'):
+            self._context_cache = {}
+        
+        sanskrit_score = self.calculate_sanskrit_density(normalized_text)
+        confidence_config = self.config.get('processing', {}).get('context_detection', {})
+        
+        # Validate and constrain thresholds for reliability
+        high_threshold = max(0.5, min(0.9, confidence_config.get('sanskrit_threshold', 0.7)))
+        low_threshold = max(0.1, min(0.5, confidence_config.get('english_threshold', 0.3)))
+        
+        # Ensure thresholds are logically consistent
+        if low_threshold >= high_threshold:
+            low_threshold = high_threshold - 0.2
+            
+        if sanskrit_score > high_threshold:
+            result = 'sanskrit'
+        elif sanskrit_score < low_threshold:
+            result = 'english'
+        else:
+            result = 'mixed'
+            
+        # Cache result for future lookups (limit cache size)
+        if len(self._context_cache) < 1000:
+            self._context_cache[cache_key] = result
+            
+        return result
+    
+    def calculate_sanskrit_density(self, text: str) -> float:
+        """Calculate the density of Sanskrit indicators in text."""
+        if not text.strip():
+            return 0.0
+        
+        score = 0.0
+        text_lower = text.lower()
+        
+        # Sanskrit Context Indicators (higher weights)
+        if text_lower.startswith('om ') or ' om ' in text_lower:
+            score += 0.4
+        
+        # IAST diacritical marks
+        iast_chars = 'āīūṛṅṇṭḍṣśḥṃ'
+        iast_count = sum(1 for char in text if char in iast_chars)
+        if len(text) > 0:
+            score += min(0.3, iast_count / len(text) * 10)  # Cap at 0.3
+        
+        # Verse number references (e.g., "2.41", "4.7") 
+        verse_refs = len(re.findall(r'\d+\.\d+', text))
+        score += min(0.2, verse_refs * 0.1)
+        
+        # Sanskrit terms density
+        words = text.lower().split()
+        sanskrit_word_count = 0
+        for word in words:
+            clean_word = re.sub(r'[^\w]', '', word)
+            if clean_word in self.lexicons.corrections or clean_word in self.lexicons.proper_nouns:
+                sanskrit_word_count += 1
+        
+        if len(words) > 0:
+            sanskrit_word_ratio = sanskrit_word_count / len(words)
+            score += min(0.4, sanskrit_word_ratio)
+        
+        # English Context Indicators (reduce score)
+        english_indicators = [
+            r'\b(means?|refers?\s+to|explains?|this|that|what|how|why|when)\b',
+            r'\b(chapter|section|verse|explains?|teaching)\b',
+            r'\?$',  # Question ending
         ]
         
-        return any(re.search(pattern, text, re.IGNORECASE) 
-                  for pattern in sanskrit_indicators)
+        for pattern in english_indicators:
+            if re.search(pattern, text, re.IGNORECASE):
+                score -= 0.15
+        
+        return max(0.0, min(1.0, score))  # Clamp between 0 and 1
+    
+    def _is_sanskrit_context(self, text: str) -> bool:
+        """Check if text contains Sanskrit/sacred content that should be preserved."""
+        context = self.detect_context(text)
+        return context in ['sanskrit', 'mixed']
     
     def _apply_lexicon_corrections(self, text: str) -> tuple[str, int]:
         """Apply corrections from lexicon files with compound matching and fuzzy matching fallback."""
@@ -497,149 +583,212 @@ class SanskritProcessor:
             if compound_matches:
                 logger.debug(f"Compound corrections: {len(compound_matches)}")
         
-        # 2. Second pass: Individual word corrections (existing logic)
-        words = text.split()
-        corrected_words = []
+        # 2. Second pass: Individual word corrections (context-aware and preserve line structure)
+        lines = text.split('\n')
+        corrected_lines = []
         
-        # Get fuzzy matching config
-        fuzzy_config = self.config.get('processing', {}).get('fuzzy_matching', {})
-        fuzzy_enabled = fuzzy_config.get('enabled', True)
-        fuzzy_threshold = fuzzy_config.get('threshold', 0.8)
-        log_fuzzy = fuzzy_config.get('log_matches', False)
+        # Detect context for the entire text
+        text_context = self.detect_context(text)
+        
+        # Get confidence threshold from config
+        confidence_config = self.config.get('processing', {}).get('context_detection', {})
+        confidence_threshold = confidence_config.get('confidence_threshold', 0.8)
+        
+        logger.debug(f"Text context detected: {text_context} (confidence threshold: {confidence_threshold})")
+        
+        for line in lines:
+            words = line.split()
+            corrected_words = []
+            
+            for word in words:
+                # Process word with context-aware punctuation preservation
+                corrected_word = self._process_word_with_punctuation(word, text_context, confidence_threshold)
+                corrected_words.append(corrected_word)
+                if corrected_word != word:
+                    corrections += 1
+                    logger.debug(f"Context-aware correction ({text_context}): {word} -> {corrected_word}")
+            
+            corrected_lines.append(' '.join(corrected_words))
+        
+        return '\n'.join(corrected_lines), corrections
+    
+    def _process_word_with_punctuation(self, word: str, context: str = None, confidence_threshold: float = 0.8) -> str:
+        """Process word while preserving punctuation and respecting context.
+        
+        Enhanced with comprehensive edge case handling and validation.
+        """
+        # Input validation for robustness
+        if not word or not isinstance(word, str):
+            return word or ''
+            
+        # Handle empty or whitespace-only words
+        if not word.strip():
+            return word
+            
+        # Handle special cases: pure punctuation, numbers, single characters
+        if not re.search(r'\w', word):
+            return word  # Pure punctuation or symbols
+        if word.isdigit():
+            return word  # Pure numbers
+        if len(word.strip()) == 1:
+            return word  # Single characters
+            
+        # Extract leading/trailing punctuation with enhanced pattern
+        # Handle complex punctuation like quotes, ellipsis, multiple punctuation
+        match = re.match(r'^(\W*?)(\w+(?:\'\w+)*?)(\W*?)$', word)
+        if not match:
+            return word  # Fallback for complex cases
+        
+        prefix, clean_word, suffix = match.groups()
+        
+        # Handle contractions and possessives properly
+        if "'" in clean_word:
+            # For contractions like "don't" or possessives like "Krishna's"
+            parts = clean_word.split("'")
+            if len(parts) == 2 and parts[1].lower() in ['t', 's', 'd', 're', 've', 'll']:
+                clean_word = parts[0]  # Process base word only
+                suffix = "'" + parts[1] + suffix
+        
+        clean_lower = clean_word.lower()
+        
+        # Validate context parameter
+        if context not in ['english', 'sanskrit', 'mixed', None]:
+            context = 'mixed'  # Default to mixed for invalid context
+            
+        # Validate confidence threshold
+        confidence_threshold = max(0.1, min(1.0, confidence_threshold))
         
         corrections_file = self.lexicon_dir / "corrections.yaml"
+        corrected = clean_word  # Default to no change
         
-        for word in words:
-            # Clean word for lookup (remove punctuation)
-            clean_word = re.sub(r'[^\w\s]', '', word.lower())
-            
-            # Try cache first
-            cached_correction = self.lexicon_cache.get_correction(clean_word, corrections_file)
-            if cached_correction is not None:
-                corrected = cached_correction
-                
-                # Preserve capitalization pattern
-                if word[0].isupper():
-                    corrected = corrected.capitalize()
-                
-                # Record metrics if collecting
-                if self.metrics_collector:
-                    self.metrics_collector.start_correction('lexicon', word)
-                    self.metrics_collector.end_correction('lexicon', word, corrected, 1.0)
-                    
-                corrected_words.append(corrected)
-                corrections += 1
-                logger.debug(f"Cached correction: {word} -> {corrected}")
-                continue
-            
-            # Try exact match in lexicon
-            if clean_word in self.lexicons.corrections:
-                entry = self.lexicons.corrections[clean_word]
-                
-                # Choose output format based on configuration
-                use_diacritics = self.config.get('processing', {}).get('use_iast_diacritics', False)
-                if use_diacritics and 'transliteration' in entry:
-                    corrected = entry['transliteration']
-                else:
-                    corrected = entry['original_term']
-                
-                # Cache the result
-                self.lexicon_cache.cache_correction(clean_word, corrected, corrections_file)
-                
-                # Preserve capitalization pattern
-                if word[0].isupper():
-                    corrected = corrected.capitalize()
-                
-                # Record metrics if collecting
-                if self.metrics_collector:
-                    self.metrics_collector.start_correction('lexicon', word)
-                    self.metrics_collector.end_correction('lexicon', word, corrected, 1.0)
-                    
-                corrected_words.append(corrected)
-                corrections += 1
-                logger.debug(f"Exact correction: {word} -> {corrected}")
-                
-            # Try fuzzy match if enabled and no exact match
-            elif fuzzy_enabled and clean_word:
-                fuzzy_match = self._find_fuzzy_match(clean_word, fuzzy_threshold)
-                if fuzzy_match:
-                    # Cache the fuzzy match result
-                    self.lexicon_cache.cache_correction(clean_word, fuzzy_match, corrections_file)
-                    
-                    # Preserve capitalization pattern
-                    if word[0].isupper():
-                        fuzzy_match = fuzzy_match.capitalize()
-                    
-                    # Calculate confidence for fuzzy match
-                    confidence = self._calculate_similarity(clean_word, fuzzy_match.lower())
-                    
-                    # Record metrics if collecting
-                    if self.metrics_collector:
-                        self.metrics_collector.start_correction('fuzzy', word)
-                        self.metrics_collector.end_correction('fuzzy', word, fuzzy_match, confidence)
-                        
-                    corrected_words.append(fuzzy_match)
-                    corrections += 1
-                    
-                    if log_fuzzy:
-                        logger.info(f"Fuzzy correction: {word} -> {fuzzy_match}")
+        try:
+            # Context-aware processing with enhanced error handling
+            if context == 'english':
+                # In English context, be very conservative with corrections
+                # Only correct if it's a clear Sanskrit proper noun
+                if hasattr(self.lexicons, 'proper_nouns') and clean_lower in self.lexicons.proper_nouns:
+                    entry = self.lexicons.proper_nouns[clean_lower]
+                    if isinstance(entry, dict):
+                        corrected = entry.get('term', clean_word)
                     else:
-                        logger.debug(f"Fuzzy correction: {word} -> {fuzzy_match}")
+                        corrected = str(entry) if entry else clean_word
                 else:
-                    # Cache negative result to avoid repeated fuzzy searches
-                    self.lexicon_cache.cache_correction(clean_word, word, corrections_file)
-                    corrected_words.append(word)
-            else:
-                corrected_words.append(word)
+                    corrected = clean_word  # No correction in English context
+            elif context == 'sanskrit':
+                # In Sanskrit context, apply all corrections aggressively
+                corrected = self._get_best_correction(clean_lower, corrections_file, confidence_threshold)
+            else:  # mixed context or None
+                # In mixed context, apply corrections with higher confidence threshold
+                adjusted_threshold = min(0.9, confidence_threshold + 0.1)
+                corrected = self._get_best_correction(clean_lower, corrections_file, adjusted_threshold)
+        except Exception as e:
+            # Graceful error handling - log and return original
+            logger.warning(f"Error processing word '{clean_word}': {e}")
+            corrected = clean_word
         
-        return ' '.join(corrected_words), corrections
+        # If no correction found, keep original
+        if corrected == clean_lower or not corrected:
+            corrected = clean_word
+        
+        # Preserve capitalization pattern intelligently
+        if clean_word and corrected:
+            if clean_word.isupper():
+                corrected = corrected.upper()
+            elif clean_word[0].isupper():
+                corrected = corrected.capitalize()
+            elif clean_word.islower():
+                corrected = corrected.lower()
+        
+        # Reconstruct word with preserved punctuation
+        result = prefix + corrected + suffix
+        
+        # Final validation - ensure result is reasonable
+        if not result or len(result) > len(word) * 3:  # Prevent unreasonable expansion
+            return word
+            
+        return result
+    
+    def _get_best_correction(self, clean_lower: str, corrections_file, confidence_threshold: float) -> str:
+        """Get best correction for a word with confidence filtering."""
+        # Try cache first
+        cached_correction = self.lexicon_cache.get_correction(clean_lower, corrections_file)
+        if cached_correction is not None:
+            return cached_correction
+        
+        # Try exact match in lexicon
+        if clean_lower in self.lexicons.corrections:
+            entry = self.lexicons.corrections[clean_lower]
+            use_diacritics = self.config.get('processing', {}).get('use_iast_diacritics', False)
+            if use_diacritics and 'transliteration' in entry:
+                corrected = entry['transliteration']
+            else:
+                corrected = entry['original_term']
+            # Cache the result
+            self.lexicon_cache.cache_correction(clean_lower, corrected, corrections_file)
+            return corrected
+        
+        # Try fuzzy match if enabled and confidence is high enough
+        fuzzy_config = self.config.get('processing', {}).get('fuzzy_matching', {})
+        if fuzzy_config.get('enabled', True):
+            fuzzy_match = self._find_fuzzy_match(clean_lower, max(confidence_threshold, fuzzy_config.get('threshold', 0.8)))
+            if fuzzy_match:
+                self.lexicon_cache.cache_correction(clean_lower, fuzzy_match, corrections_file)
+                return fuzzy_match
+        
+        return clean_lower  # No suitable correction found
     
     def _apply_capitalization(self, text: str) -> tuple[str, int]:
         """Apply proper noun capitalization."""
         corrections = 0
-        words = text.split()
-        corrected_words = []
+        lines = text.split('\n')
+        corrected_lines = []
         
         proper_nouns_file = self.lexicon_dir / "proper_nouns.yaml"
         
-        for word in words:
-            clean_word = re.sub(r'[^\w\s]', '', word.lower())
+        for line in lines:
+            words = line.split()
+            corrected_words = []
             
-            # Try cache first
-            cached_proper_noun = self.lexicon_cache.get_proper_noun(clean_word, proper_nouns_file)
-            if cached_proper_noun is not None:
-                # Record metrics if collecting
-                if self.metrics_collector:
-                    self.metrics_collector.start_correction('capitalization', word)
-                    self.metrics_collector.end_correction('capitalization', word, cached_proper_noun, 1.0)
+            for word in words:
+                clean_word = re.sub(r'[^\w\s]', '', word.lower())
                 
-                corrected_words.append(cached_proper_noun)
-                corrections += 1
-                logger.debug(f"Cached capitalization: {word} -> {cached_proper_noun}")
-                continue
+                # Try cache first
+                cached_proper_noun = self.lexicon_cache.get_proper_noun(clean_word, proper_nouns_file)
+                if cached_proper_noun is not None:
+                    # Record metrics if collecting
+                    if self.metrics_collector:
+                        self.metrics_collector.start_correction('capitalization', word)
+                        self.metrics_collector.end_correction('capitalization', word, cached_proper_noun, 1.0)
+                    
+                    corrected_words.append(cached_proper_noun)
+                    corrections += 1
+                    logger.debug(f"Cached capitalization: {word} -> {cached_proper_noun}")
+                    continue
+                
+                # Try lexicon lookup
+                if clean_word in self.lexicons.proper_nouns:
+                    entry = self.lexicons.proper_nouns[clean_word]
+                    corrected = entry.get('term') or entry.get('original_term', word)
+                    
+                    # Cache the result
+                    self.lexicon_cache.cache_proper_noun(clean_word, corrected, proper_nouns_file)
+                    
+                    # Record metrics if collecting
+                    if self.metrics_collector:
+                        self.metrics_collector.start_correction('capitalization', word)
+                        self.metrics_collector.end_correction('capitalization', word, corrected, 1.0)
+                    
+                    corrected_words.append(corrected)
+                    corrections += 1
+                    logger.debug(f"Capitalization: {word} -> {corrected}")
+                else:
+                    # Cache negative result (no capitalization needed)
+                    self.lexicon_cache.cache_proper_noun(clean_word, word, proper_nouns_file)
+                    corrected_words.append(word)
             
-            # Try lexicon lookup
-            if clean_word in self.lexicons.proper_nouns:
-                entry = self.lexicons.proper_nouns[clean_word]
-                corrected = entry.get('term') or entry.get('original_term', word)
-                
-                # Cache the result
-                self.lexicon_cache.cache_proper_noun(clean_word, corrected, proper_nouns_file)
-                
-                # Record metrics if collecting
-                if self.metrics_collector:
-                    self.metrics_collector.start_correction('capitalization', word)
-                    self.metrics_collector.end_correction('capitalization', word, corrected, 1.0)
-                
-                corrected_words.append(corrected)
-                corrections += 1
-                logger.debug(f"Capitalization: {word} -> {corrected}")
-            else:
-                # Cache negative result (no capitalization needed)
-                self.lexicon_cache.cache_proper_noun(clean_word, word, proper_nouns_file)
-                corrected_words.append(word)
+            corrected_lines.append(' '.join(corrected_words))
         
-        return ' '.join(corrected_words), corrections
+        return '\n'.join(corrected_lines), corrections
 
     def _calculate_similarity(self, str1: str, str2: str) -> float:
         """Simple character similarity for lean architecture."""
@@ -673,11 +822,15 @@ class SanskritProcessor:
                 
         return best_match
     
-    def process_srt_file(self, input_path: Path, output_path: Path) -> ProcessingResult:
+    def process_srt_file(self, input_path: Union[str, Path], output_path: Union[str, Path]) -> ProcessingResult:
         """Process an SRT file with Sanskrit corrections."""
         import time
         start_time = time.time()
         parse_start = time.time()
+        
+        # Convert strings to Path objects for consistent handling
+        input_path = Path(input_path) if isinstance(input_path, str) else input_path
+        output_path = Path(output_path) if isinstance(output_path, str) else output_path
         
         # Memory monitoring (only when collecting metrics and psutil is available)
         memory_start = None

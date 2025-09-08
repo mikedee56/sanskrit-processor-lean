@@ -1,0 +1,5 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+addopts = "--cov=sanskrit_processor_v2 --cov=cli --cov=enhanced_processor --cov-report=html --cov-report=term"
