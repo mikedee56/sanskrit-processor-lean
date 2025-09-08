@@ -128,7 +128,7 @@ class ContextAwarePipeline:
         all_corrections = []
         metadata = classification.metadata.copy() or {}
         specialized_results = {}
-        protected_spans = []  # Track text spans protected from further processing
+        protected_ranges = []  # Track character ranges protected from further processing
         
         # Step 4: Apply specialized processing in optimized order
         for processor_name in strategy['processor_order']:
@@ -140,11 +140,19 @@ class ContextAwarePipeline:
                         processed_text, strategy
                     )
                     all_corrections.extend(corrections)
-                    # Track words protected by compound corrections
+                    
+                    # FIXED: Track character positions of compound corrections to prevent reprocessing
                     for correction in corrections:
-                        # Store the corrected words to avoid re-processing them
-                        corrected_words = correction['corrected'].split()
-                        protected_spans.extend(corrected_words)
+                        # Find the position of the corrected text in the current processed_text
+                        corrected = correction['corrected']
+                        original = correction['original']
+                        
+                        # Find where this correction was applied in the text
+                        if corrected in processed_text:
+                            start_pos = processed_text.find(corrected)
+                            end_pos = start_pos + len(corrected)
+                            protected_ranges.append((start_pos, end_pos, original))
+                    
                     specialized_results['compound'] = {
                         'corrections': len(corrections),
                         'time': time.time() - processor_start
@@ -162,7 +170,7 @@ class ContextAwarePipeline:
                     
                 elif processor_name == 'database' and 'database' in self._processors:
                     processed_text, corrections = self._apply_database_processing(
-                        processed_text, strategy, protected_spans
+                        processed_text, strategy, protected_ranges
                     )
                     all_corrections.extend(corrections)
                     specialized_results['database'] = {
@@ -260,71 +268,125 @@ class ContextAwarePipeline:
         
         return final_text, metadata
     
-    def _apply_database_processing(self, text: str, strategy: dict, protected_words: List[str] = None) -> Tuple[str, List[Dict]]:
+    def _apply_database_processing(self, text: str, strategy: dict, protected_ranges: List[tuple] = None) -> Tuple[str, List[Dict]]:
         """Apply database + YAML lexicon processing (Story 6.3)."""
         database_processor = self._processors['database']
         
-        # Extract individual words for processing
+        # Extract individual words for processing (preserve line structure)
         import re
-        words = text.split()
-        corrected_words = []
+        lines = text.split('\n')
+        corrected_lines = []
         corrections = []
         
-        for word in words:
-            clean_word = re.sub(r'[^\w\s]', '', word.lower())
+        for line in lines:
+            words = line.split()
+            corrected_words = []
             
-            # Skip processing if word is already protected by compound corrections
-            if protected_words and word in protected_words:
-                corrected_words.append(word)
-                continue
-            
-            # Try database lookup - check both corrections and proper_nouns
-            corrected = None
-            correction_source = None
-            
-            if hasattr(database_processor, 'corrections') and clean_word in database_processor.corrections:
-                entry = database_processor.corrections[clean_word]
-                corrected = entry.get('original_term', word)
-                correction_source = 'corrections'
-            elif hasattr(database_processor, 'proper_nouns') and clean_word in database_processor.proper_nouns:
-                entry = database_processor.proper_nouns[clean_word]
-                corrected = entry.get('term', word)  # proper_nouns uses 'term', not 'original_term'
-                correction_source = 'proper_nouns'
-            
-            if corrected and corrected != word:
-                # Preserve capitalization if needed
-                if word[0].isupper() and not strategy.get('case_sensitive', False):
-                    corrected = corrected.capitalize()
+            for word in words:
+                # FIXED: Check if this word position is within any protected range
+                word_start = text.find(word)
+                word_end = word_start + len(word)
+                is_protected = False
                 
-                corrected_words.append(corrected)
-                corrections.append({
-                    'type': 'lexicon',
-                    'original': word,
-                    'corrected': corrected,
-                    'confidence': 1.0,
-                    'source': f'database_{correction_source}'
-                })
-            else:
-                corrected_words.append(word)
+                if protected_ranges:
+                    for prot_start, prot_end, original in protected_ranges:
+                        if word_start >= prot_start and word_end <= prot_end:
+                            is_protected = True
+                            break
+                
+                if is_protected:
+                    # Skip processing - word is already corrected by compound processor
+                    corrected_words.append(word)
+                else:
+                    # Process word with punctuation preservation  
+                    corrected_word = self._process_word_with_punctuation(word, database_processor, strategy, protected_ranges)
+                    corrected_words.append(corrected_word)
+                    if corrected_word != word:
+                        corrections.append({
+                            'type': 'lexicon',
+                            'original': word,
+                            'corrected': corrected_word,
+                            'confidence': 1.0,
+                            'source': 'database_punctuation_preserved'
+                        })
+            
+            corrected_lines.append(' '.join(corrected_words))
         
-        return ' '.join(corrected_words), corrections
+        return '\n'.join(corrected_lines), corrections
     
-    def _apply_scripture_processing(self, text: str, strategy: dict) -> Dict[str, Any]:
-        """Apply scripture reference detection (Story 6.4)."""
-        # This is a simplified implementation - actual scripture engine would be more complex
+    def _process_word_with_punctuation(self, word: str, database_processor, strategy: dict, protected_ranges: List[tuple] = None) -> str:
+        """Process word while preserving punctuation in context pipeline."""
         import re
         
-        scripture_references = []
+        # Extract leading/trailing punctuation
+        match = re.match(r'^(\W*?)(\w+)(\W*?)$', word)
+        if not match:
+            return word  # No word characters found, return as-is
         
-        # Look for verse references like "2.47", "Chapter 2", etc.
-        verse_pattern = r'\\b(\\d+)\\.(\\d+)\\b'
-        chapter_pattern = r'\\bchapter\\s+(\\d+)\\b'
+        prefix, clean_word, suffix = match.groups()
+        clean_lower = clean_word.lower()
+        
+        # Try database lookup - check both corrections and proper_nouns
+        corrected = clean_word  # Default to original
+        
+        if hasattr(database_processor, 'corrections') and clean_lower in database_processor.corrections:
+            entry = database_processor.corrections[clean_lower]
+            corrected = entry.get('original_term', clean_word)
+        elif hasattr(database_processor, 'proper_nouns') and clean_lower in database_processor.proper_nouns:
+            entry = database_processor.proper_nouns[clean_lower]
+            corrected = entry.get('term', clean_word)  # proper_nouns uses 'term', not 'original_term'
+        
+        # Preserve capitalization if needed
+        if clean_word[0].isupper() and not strategy.get('case_sensitive', False) and corrected:
+            corrected = corrected.capitalize()
+        
+        return prefix + corrected + suffix
+    
+    def _apply_scripture_processing(self, text: str, strategy: dict) -> Dict[str, Any]:
+        """Enhanced scripture reference detection using ScriptureReferenceEngine (Story 6.4)."""
+        import re
+        from pathlib import Path
+        
+        scripture_references = []
+        verse_matches = []
+        
+        # Try to use enhanced scripture engine
+        try:
+            from scripture.verse_engine import ScriptureReferenceEngine
+            
+            # Initialize engine if not already done
+            if not hasattr(self, '_scripture_engine'):
+                db_path = Path("data/scripture_verses.db")
+                self._scripture_engine = ScriptureReferenceEngine(db_path)
+            
+            # Use enhanced verse recognition
+            threshold = strategy.get('confidence_threshold', 0.6)
+            verse_matches = self._scripture_engine.identify_verses(text, threshold)
+            
+            # Convert to reference format
+            for match in verse_matches:
+                scripture_references.append({
+                    'type': 'verse_match',
+                    'source': match.source,
+                    'chapter': match.chapter,
+                    'verse': match.verse,
+                    'matched_text': match.matched_text,
+                    'confidence': match.confidence,
+                    'citation': match.citation
+                })
+            
+        except Exception as e:
+            logger.warning(f"Enhanced scripture recognition failed: {e}, falling back to regex")
+        
+        # Fallback: Look for explicit verse references like "2.47", "Chapter 2", etc.
+        verse_pattern = r'\b(\d+)\.(\d+)\b'
+        chapter_pattern = r'\bchapter\s+(\d+)\b'
         
         for match in re.finditer(verse_pattern, text, re.IGNORECASE):
             scripture_references.append({
                 'type': 'verse_reference',
-                'chapter': match.group(1),
-                'verse': match.group(2),
+                'chapter': int(match.group(1)),
+                'verse': int(match.group(2)),
                 'matched_text': match.group(0),
                 'confidence': 0.9
             })
@@ -332,14 +394,23 @@ class ContextAwarePipeline:
         for match in re.finditer(chapter_pattern, text, re.IGNORECASE):
             scripture_references.append({
                 'type': 'chapter_reference', 
-                'chapter': match.group(1),
+                'chapter': int(match.group(1)),
                 'matched_text': match.group(0),
                 'confidence': 0.8
             })
         
+        # Calculate aggregate confidence
+        avg_confidence = 0.0
+        if scripture_references:
+            confidences = [ref.get('confidence', 0.0) for ref in scripture_references]
+            avg_confidence = sum(confidences) / len(confidences)
+        
         return {
             'scripture_references': scripture_references,
-            'reference_count': len(scripture_references)
+            'reference_count': len(scripture_references),
+            'verse_matches': len(verse_matches),
+            'average_confidence': avg_confidence,
+            'validated': len(verse_matches) > 0  # Mark as validated if we found verse matches
         }
     
     def _calculate_quality_metrics(

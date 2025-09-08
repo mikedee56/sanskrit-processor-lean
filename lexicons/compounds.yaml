@@ -15,6 +15,15 @@ compound_terms:
     type: "scriptural_title"
     context_clues: ["chapter", "verse", "adhyaya", "sloka", "srimad", "shreemad", "shrimad"]
     
+  - phrase: "Śrīmad Bhāgavatam"
+    variations:
+      - "srimad bhagavatam"
+      - "shrimad bhagavatam"
+      - "shreemad bhagavatam"
+      - "srimad bhagwatam"
+    type: "scriptural_title"
+    context_clues: ["canto", "chapter", "verse", "sloka", "srimad", "shreemad", "shrimad"]
+    
   - phrase: "Bhagavad Gītā"
     variations:
       - "bhagavad gita" 
@@ -96,7 +105,6 @@ compound_terms:
     variations:
       - "sri krishna"
       - "shri krishna"
-      - "krishna"
     type: "divine_name"
     context_clues: ["lord", "bhagavan", "god"]
     

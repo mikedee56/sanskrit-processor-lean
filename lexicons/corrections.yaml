@@ -178,7 +178,6 @@ entries:
 - original_term: dhyana
   variations:
   - dhyan
-  - meditation
   - contemplation
   - dhyaan
   transliteration: dhyāna
@@ -191,7 +190,6 @@ entries:
 - original_term: dharana
   variations:
   - dharanaa
-  - concentration
   - dhaarana
   transliteration: dhāraṇā
   is_proper_noun: false
@@ -201,7 +199,6 @@ entries:
 - original_term: samadhi
   variations:
   - samaadhi
-  - absorption
   - samadhii
   transliteration: samādhi
   is_proper_noun: false
@@ -241,8 +238,6 @@ entries:
 - original_term: sadhana
   variations:
   - saadhana
-  - spiritual practice
-  - practice
   transliteration: sādhana
   is_proper_noun: false
   category: practice
@@ -273,7 +268,6 @@ entries:
 - original_term: puja
   variations:
   - pooja
-  - worship
   - ritual
   - pujaa
   transliteration: pūjā
@@ -340,8 +334,6 @@ entries:
 - original_term: bhakti
   variations:
   - bhaktii
-  - devotion
-  - love
   - bhakthi
   transliteration: bhakti
   is_proper_noun: false
@@ -354,7 +346,6 @@ entries:
   variations:
   - gyaan
   - gnana
-  - knowledge
   - jnaana
   transliteration: jñāna
   is_proper_noun: false
@@ -364,7 +355,6 @@ entries:
 - original_term: vairagya
   variations:
   - vairaagya
-  - detachment
   - dispassion
   - vairaaggya
   transliteration: vairāgya
@@ -375,7 +365,6 @@ entries:
 - original_term: kirtana
   variations:
   - kirtan
-  - chanting
   - kirtanaa
   - keertana
   transliteration: kīrtana
@@ -386,8 +375,6 @@ entries:
 - original_term: seva
   variations:
   - sewa
-  - service
-  - selfless service
   - sevaa
   transliteration: sevā
   is_proper_noun: false
@@ -397,7 +384,6 @@ entries:
 - original_term: abhyasa
   variations:
   - abhyaas
-  - practice
   - abhyassa
   transliteration: abhyāsa
   is_proper_noun: false
@@ -481,7 +467,6 @@ entries:
 - original_term: raga
   variations:
   - raag
-  - attachment
   - desire
   transliteration: rāga
   is_proper_noun: false
@@ -589,7 +574,6 @@ entries:
 - original_term: surrender
   variations:
   - saranagati
-  - complete surrender
   - giving up
   transliteration: śaraṇāgati
   is_proper_noun: false
@@ -637,7 +621,6 @@ entries:
 - original_term: katha
   variations:
   - kathaa
-  - story
   - narrative
   transliteration: kathā
   is_proper_noun: false
@@ -650,7 +633,6 @@ entries:
   variations:
   - kirtana
   - group singing
-  - chanting
   transliteration: kīrtana
   is_proper_noun: false
   category: practice
@@ -709,7 +691,6 @@ entries:
   variations:
   - prakaranam
   - section
-  - chapter
   transliteration: prakaraṇa
   is_proper_noun: false
   category: literature
@@ -744,8 +725,6 @@ entries:
 - original_term: jagat
   variations:
   - jagataa
-  - world
-  - universe
   transliteration: jagat
   is_proper_noun: false
   category: concept
@@ -852,7 +831,6 @@ entries:
 - original_term: upadesha
   variations:
   - upadesh
-  - teaching
   - spiritual instruction
   transliteration: upadeśa
   is_proper_noun: false
@@ -861,6 +839,17 @@ entries:
   source_authority: Traditional
   difficulty_level: intermediate
   meaning: spiritual teaching, instruction
+- original_term: Om vasudevasutaḿ devaḿ kaḿsa-cāṇūra-mardanam devakī-paramānandaḿ kṛṣṇaḿ vande jagadgurum
+  variations:
+  - Om Vahudevo Sutam Devam Kansa Chan Uram Ardanam Devaki Paramahnam Trishnam Vande Jagad Guru
+  - om vahudevo sutam devam kansa chan uram ardanam devaki paramahnam trishnam vande jagad guru
+  transliteration: Om vasudevasutaḿ devaḿ kaḿsa-cāṇūra-mardanam devakī-paramānandaḿ kṛṣṇaḿ vande jagadgurum
+  is_proper_noun: false
+  category: mantra
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: Om, I bow to Krishna, son of Vasudeva, destroyer of Kamsa and Chanura, supreme bliss of Devaki, teacher of the universe
 - original_term: sadhaka
   variations:
   - saadhaka
@@ -1104,7 +1093,6 @@ entries:
 - original_term: shantata
   variations:
   - shantataa
-  - peace
   - tranquility
   transliteration: śāntatā
   is_proper_noun: false
