@@ -28,6 +28,7 @@ class ScriptureMatch:
     translation: str
     confidence: float
     source: str
+    transliteration: str = ""
 
 @dataclass
 class QualityValidation:
@@ -136,8 +137,18 @@ class ExternalAPIClient:
                             sanskrit_text=cached_verse.sanskrit,
                             translation=cached_verse.translation,
                             confidence=0.95,  # High confidence for exact matches
-                            source="local_cache"
+                            source="local_cache",
+                            transliteration=cached_verse.transliteration
                         )
+                    else:
+                        # Verse not in local cache - try external APIs
+                        logger.info(f"Verse {chapter}.{verse} not in cache, trying external APIs")
+                        # Try external APIs for verses not in cache
+                        external_result = self._lookup_bhagavad_gita(text_snippet)
+                        if not external_result:
+                            external_result = self._lookup_wisdom_library(text_snippet)
+                        if external_result:
+                            return external_result
                 
                 # Try content search in cache
                 search_results = self.verse_cache.search_content(text_snippet)
@@ -148,7 +159,8 @@ class ExternalAPIClient:
                         sanskrit_text=best_match.sanskrit,
                         translation=best_match.translation,
                         confidence=0.8,  # Lower confidence for content search
-                        source="local_cache"
+                        source="local_cache",
+                        transliteration=best_match.transliteration
                     )
             except Exception as e:
                 logger.warning(f"Cache lookup failed: {e}")
@@ -167,28 +179,55 @@ class ExternalAPIClient:
         return None
     
     def _lookup_bhagavad_gita(self, text: str) -> Optional[ScriptureMatch]:
-        """Lookup verse in Bhagavad Gita API."""
+        """Lookup verse in Bhagavad Gita API using Vedic Scriptures API."""
         if not self.circuit_breakers["bhagavad_gita"].can_call():
             logger.debug("Bhagavad Gita API circuit breaker open")
             return None
         
         try:
-            # Simple keyword matching approach for demo
+            # Try to detect verse references for specific API calls
+            if self.verse_cache:
+                # Use verse cache for reference detection
+                references = self.verse_cache.detect_verse_references(text)
+                if references:
+                    chapter, verse = references[0]
+                    # Call the real Vedic Scriptures API
+                    api_url = f"https://vedicscriptures.github.io/slok/{chapter}/{verse}"
+                    
+                    if REQUESTS_AVAILABLE:
+                        response = self.session.get(api_url, timeout=self.config.timeout)
+                        if response.status_code == 200:
+                            data = response.json()
+                            self.circuit_breakers["bhagavad_gita"].record_success()
+                            
+                            # Extract transliteration if available
+                            transliteration = data.get('transliteration', '')
+                            if not transliteration and 'slok' in data:
+                                # Generate basic transliteration from sanskrit if not provided
+                                transliteration = self._basic_transliteration(data['slok'])
+                            
+                            return ScriptureMatch(
+                                verse_reference=f"BG {chapter}.{verse}",
+                                sanskrit_text=data.get('slok', ''),
+                                translation=data.get('translation', ''),
+                                confidence=0.9,
+                                source="vedic_scriptures_api",
+                                transliteration=transliteration
+                            )
+                    
+            # Fallback: search for common keywords if no specific verse detected
             keywords = ["dharma", "karma", "yoga", "arjuna", "krishna"]
-            if not any(keyword in text.lower() for keyword in keywords):
-                return None
-            
-            # In a real implementation, this would call the actual API
-            # For now, return a mock response for demonstration
-            if "dharma" in text.lower():
-                self.circuit_breakers["bhagavad_gita"].record_success()
-                return ScriptureMatch(
-                    verse_reference="Bhagavad Gita 2.47",
-                    sanskrit_text="कर्मण्येवाधिकारस्ते मा फलेषु कदाचन",
-                    translation="You have the right to perform your prescribed duty, but not to the fruits of action.",
-                    confidence=0.8,
-                    source="bhagavad_gita_api"
-                )
+            if any(keyword in text.lower() for keyword in keywords):
+                # Return high-confidence verses for common concepts
+                if "karma" in text.lower() and "action" in text.lower():
+                    return ScriptureMatch(
+                        verse_reference="BG 2.47",
+                        sanskrit_text="कर्मण्येवाधिकारस्ते मा फलेषु कदाचन। मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥",
+                        translation="You have the right to perform your prescribed duty, but not to the fruits of action. Never consider yourself the cause of the results of your activities, and never be attached to not doing your duty.",
+                        confidence=0.75,
+                        source="keyword_match",
+                        transliteration="karmaṇy evādhikāras te mā phaleṣu kadācana mā karma-phala-hetur bhūr mā te saṅgo 'stv akarmaṇi"
+                    )
             
         except Exception as e:
             logger.warning(f"Bhagavad Gita API lookup failed: {e}")
@@ -196,14 +235,54 @@ class ExternalAPIClient:
         
         return None
     
+    def _basic_transliteration(self, sanskrit_text: str) -> str:
+        """Basic Sanskrit to IAST transliteration helper."""
+        # This is a simplified transliteration - in production would use proper library
+        transliteration_map = {
+            'कर्म': 'karma', 'धर्म': 'dharma', 'योग': 'yoga', 
+            'अर्जुन': 'arjuna', 'कृष्ण': 'kṛṣṇa', 'भगवान्': 'bhagavān',
+            'गीता': 'gītā', 'वेद': 'veda', 'उपनिषद्': 'upaniṣad'
+        }
+        
+        # For now, return simplified version
+        for sanskrit, iast in transliteration_map.items():
+            if sanskrit in sanskrit_text:
+                return iast + "..."  # Simplified indication
+        
+        return sanskrit_text  # Fallback to original
+    
     def _lookup_wisdom_library(self, text: str) -> Optional[ScriptureMatch]:
-        """Lookup in Wisdom Library."""
+        """Lookup using alternative APIs like BhagavadGita.io or TheAum.org."""
         if not self.circuit_breakers["wisdom_library"].can_call():
-            logger.debug("Wisdom Library API circuit breaker open")
+            logger.debug("Alternative API circuit breaker open")
             return None
         
         try:
-            # Mock implementation - in reality would scrape or use API
+            # Try BhagavadGita.io style API if verse reference detected
+            if self.verse_cache:
+                references = self.verse_cache.detect_verse_references(text)
+                if references:
+                    chapter, verse = references[0]
+                    
+                    # Try TheAum.org API format
+                    api_url = f"https://bhagavadgita.theaum.org/chapters/{chapter}/verses/{verse}"
+                    
+                    if REQUESTS_AVAILABLE:
+                        response = self.session.get(api_url, timeout=self.config.timeout)
+                        if response.status_code == 200:
+                            data = response.json()
+                            self.circuit_breakers["wisdom_library"].record_success()
+                            
+                            return ScriptureMatch(
+                                verse_reference=f"BG {chapter}.{verse}",
+                                sanskrit_text=data.get('verse_text', data.get('sanskrit', '')),
+                                translation=data.get('translation', data.get('meaning', '')),
+                                confidence=0.85,
+                                source="theaum_api",
+                                transliteration=data.get('transliteration', '')
+                            )
+            
+            # Fallback keyword search
             spiritual_terms = ["moksha", "samsara", "upanishad", "veda"]
             if any(term in text.lower() for term in spiritual_terms):
                 self.circuit_breakers["wisdom_library"].record_success()

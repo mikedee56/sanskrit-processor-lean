@@ -5,7 +5,7 @@ processing:
   # Output configuration
   use_iast_diacritics: true  # Use IAST transliterations with diacritics
   preserve_capitalization: true  # Maintain proper noun capitalization
-  use_consolidated_services: true  # Enable all advanced services
+  use_consolidated_services: false  # Use legacy services for better verse lookup
   enable_semantic_analysis: true  # Enable MCP semantic processing
   enable_scripture_lookup: true  # Enable API scripture references
   

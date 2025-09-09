@@ -219,6 +219,7 @@ Examples:
 
 def process_single(args):
     """Process single file with enhanced error handling."""
+    global json  # Ensure we use the global json import
     # Setup logging
     setup_logging(args.verbose)
     logger = logging.getLogger(__name__)
@@ -348,7 +349,6 @@ def process_single(args):
                     
                     # Write QA report
                     if qa_report:
-                        import json
                         with open(args.qa_report, 'w', encoding='utf-8') as f:
                             json.dump(qa_report, f, indent=2)
                         logger.info(f"QA report written to: {args.qa_report}")

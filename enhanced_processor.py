@@ -41,8 +41,12 @@ class EnhancedSanskritProcessor(SanskritProcessor):
             self.external_clients = None  # Legacy not used
             logger.info("Using consolidated external services")
         else:
-            # Legacy approach (during transition)
-            self.external_clients = ExternalClients(self.config)
+            # Legacy approach (during transition) - need to map config structure
+            legacy_config = {
+                'mcp': self.config.get('services', {}).get('consolidated', {}).get('mcp', {}),
+                'api': self.config.get('services', {}).get('consolidated', {}).get('api', {})
+            }
+            self.external_clients = ExternalClients(legacy_config)
             self.external_services = None  # Consolidated not used
             logger.info("Using legacy external clients")
         
@@ -161,15 +165,14 @@ class EnhancedSanskritProcessor(SanskritProcessor):
             try:
                 scripture_match = None
                 if self.external_services:
-                    # Consolidated approach
                     scripture_match = self.external_services.api_lookup_scripture(processed_text)
                 elif self.external_clients and self.external_clients.api_client:
-                    # Legacy approach
                     scripture_match = self.external_clients.api_client.lookup_scripture(processed_text)
                 
-                if scripture_match and (isinstance(scripture_match, dict) and scripture_match.get('results')):
-                    logger.debug(f"Scripture match found: {len(scripture_match.get('results', []))} results")
-                    # Note: In a full implementation, might add footnote or enhance text
+                if scripture_match and hasattr(scripture_match, 'transliteration') and scripture_match.confidence > 0.7:
+                    processed_text = scripture_match.transliteration
+                    total_corrections += 1
+                
             except Exception as e:
                 logger.debug(f"Scripture lookup skipped: {e}")
         

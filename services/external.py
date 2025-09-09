@@ -5,6 +5,7 @@ Consolidated from multiple service files to maintain lean codebase
 
 import json
 import logging
+import yaml
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
@@ -48,7 +49,8 @@ class SimpleFallbackNER:
         
         if entities_file and entities_file.exists():
             try:
-                self.entities = json.loads(entities_file.read_text())
+                with open(entities_file, 'r', encoding='utf-8') as f:
+                    self.entities = yaml.safe_load(f)
             except Exception as e:
                 logger.warning(f"Could not load entities: {e}")
     
@@ -93,15 +95,25 @@ class ExternalClients:
             try:
                 from .mcp_client import MCPClient
                 self.mcp_client = MCPClient(config['mcp'])
-            except ImportError:
-                logger.info("MCP client not available")
+            except (ImportError, AttributeError) as e:
+                logger.info(f"MCP client not available: {e}")
+                self.mcp_client = None
         
         if config.get('api', {}).get('enabled', False):
             try:
-                from .api_client import APIClient  
-                self.api_client = APIClient(config['api'])
-            except ImportError:
-                logger.info("API client not available")
+                from .api_client import ExternalAPIClient, APIConfig
+                # Map config parameters to APIConfig format
+                api_params = {
+                    'rapidapi_key': config['api'].get('api_key', ''),
+                    'timeout': config['api'].get('timeout', 15),
+                    'max_retries': config['api'].get('max_retries', 3),
+                    'enabled': config['api'].get('enabled', True)
+                }
+                api_config = APIConfig(**api_params)
+                self.api_client = ExternalAPIClient(api_config)
+            except (ImportError, Exception) as e:
+                logger.info(f"API client not available: {e}")
+                self.api_client = None
     
     def close(self):
         """Close all external connections."""
