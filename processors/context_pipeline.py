@@ -11,6 +11,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from .content_classifier import ContentClassifier, ContentClassification
+from .compound_word_processor import SanskritCompoundProcessor
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +57,9 @@ class ContextAwarePipeline:
         # Initialize specialized processors (lazy loading for performance)
         self._processors = {}
         self._initialize_processors()
+        
+        # Initialize new systematic processors
+        self.compound_processor = SanskritCompoundProcessor()
         
         logger.info("Context-aware pipeline initialized with specialized processors")
     

@@ -1,0 +1,3929 @@
+entries:
+- category: technology
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: true
+  meaning: Apple tablet device
+  original_term: iPad
+  source_authority: Modern
+  transliteration: iPad
+  variations:
+  - eye pad
+  - ipad
+  - i pad
+- category: scripture
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: true
+  meaning: Song of God - sacred Hindu text
+  original_term: Bhagavad Gita
+  source_authority: IAST
+  transliteration: Bhagavad Gītā
+  variations:
+  - bhagavad gita
+  - bhagvad geeta
+  - bhagwad gita
+  - bhagavat gita
+- category: concept
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: righteous duty, natural law
+  original_term: dharma
+  source_authority: IAST
+  transliteration: dharma
+  variations:
+  - dhrma
+  - dharama
+  - darma
+- category: practice
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: union, spiritual discipline
+  original_term: yoga
+  source_authority: IAST
+  transliteration: yoga
+  variations:
+  - yog
+  - yogaa
+  - youga
+- category: concept
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: action, law of cause and effect
+  original_term: karma
+  source_authority: IAST
+  transliteration: karma
+  variations:
+  - karm
+  - karmaa
+  - carma
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: liberation, spiritual release
+  original_term: moksha
+  source_authority: IAST
+  transliteration: mokṣa
+  variations:
+  - moksh
+  - mokshaa
+  - moksa
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: cycle of birth, death and rebirth
+  original_term: samsara
+  source_authority: IAST
+  transliteration: saṃsāra
+  variations:
+  - samsaar
+  - sansara
+  - samsaara
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: non-dualism, unity of all existence
+  original_term: advaita
+  source_authority: Traditional
+  transliteration: advaita
+  variations:
+  - adwita
+  - advait
+  - advaitic
+- category: philosophy
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: dvaita
+  source_authority: Traditional
+  transliteration: dvaita
+  variations:
+  - dwita
+  - dvait
+- category: philosophy
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: vishistadvaita
+  source_authority: Traditional
+  transliteration: viśiṣṭādvaita
+  variations:
+  - vishishtadvaita
+  - vishishta advaita
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: ultimate reality, universal consciousness
+  original_term: brahman
+  source_authority: IAST
+  transliteration: brahman
+  variations:
+  - brahmn
+  - brahma
+  - brahmaan
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: individual soul, true self
+  original_term: atman
+  source_authority: IAST
+  transliteration: ātman
+  variations:
+  - aatman
+  - atmaa
+  - atma
+- category: philosophy
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: maya
+  source_authority: IAST
+  transliteration: māyā
+  variations:
+  - maaya
+  - mayaa
+  - maia
+- category: philosophy
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: jiva
+  source_authority: IAST
+  transliteration: jīva
+  variations:
+  - jeeva
+  - jivaa
+  - jiiva
+- category: practice
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: breath control, yogic breathing technique
+  original_term: pranayama
+  source_authority: IAST
+  transliteration: prāṇāyāma
+  variations:
+  - pranayam
+  - praanayama
+- category: practice
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: physical posture, yoga pose
+  original_term: asana
+  source_authority: IAST
+  transliteration: āsana
+  variations:
+  - asan
+  - aasana
+- category: practice
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: meditation, sustained awareness
+  original_term: dhyana
+  source_authority: IAST
+  transliteration: dhyāna
+  variations:
+  - dhyan
+  - dhyaan
+- category: practice
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: dharana
+  source_authority: IAST
+  transliteration: dhāraṇā
+  variations:
+  - dharanaa
+  - dhaarana
+- category: practice
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: samadhi
+  source_authority: IAST
+  transliteration: samādhi
+  variations:
+  - samaadhi
+  - samadhii
+- category: practice
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: yama
+  source_authority: IAST
+  transliteration: yama
+  variations:
+  - yamaa
+- category: practice
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: niyama
+  source_authority: IAST
+  transliteration: niyama
+  variations:
+  - niyamaa
+- category: practice
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: pratyahara
+  source_authority: IAST
+  transliteration: pratyāhāra
+  variations:
+  - pratyaahara
+- category: practice
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: sadhana
+  source_authority: IAST
+  transliteration: sādhana
+  variations:
+  - saadhana
+- category: practice
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: tapas
+  source_authority: IAST
+  transliteration: tapas
+  variations:
+  - tapasya
+  - tapa
+- category: practice
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: mantra
+  source_authority: IAST
+  transliteration: mantra
+  variations:
+  - mantram
+  - sacred sound
+  - chant
+  - mantraa
+- category: ritual
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: worship ritual, devotional ceremony
+  original_term: puja
+  source_authority: IAST
+  transliteration: pūjā
+  variations:
+  - pooja
+  - ritual
+  - pujaa
+- category: ritual
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: aarti
+  source_authority: IAST
+  transliteration: āratī
+  variations:
+  - arti
+  - aarati
+  - lamp ceremony
+  - aartii
+- category: ritual
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: sankirtana
+  source_authority: IAST
+  transliteration: saṅkīrtana
+  variations:
+  - sankirtan
+  - group chanting
+  - congregational singing
+  - sankiirtana
+- category: ritual
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: bhajan
+  source_authority: IAST
+  transliteration: bhajana
+  variations:
+  - bhajans
+  - devotional song
+  - bhajana
+- category: ritual
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: yajna
+  source_authority: IAST
+  transliteration: yajña
+  variations:
+  - yagna
+  - fire sacrifice
+  - homa
+  - yajnaa
+- category: ritual
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: satsang
+  source_authority: IAST
+  transliteration: satsaṅga
+  variations:
+  - satsanga
+  - spiritual gathering
+  - holy company
+  - satsanga
+- category: concept
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: devotion, loving surrender to divine
+  original_term: bhakti
+  source_authority: IAST
+  transliteration: bhakti
+  variations:
+  - bhaktii
+  - bhakthi
+- category: concept
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: jnana
+  source_authority: IAST
+  transliteration: jñāna
+  variations:
+  - gyaan
+  - gnana
+  - jnaana
+- category: concept
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: vairagya
+  source_authority: IAST
+  transliteration: vairāgya
+  variations:
+  - vairaagya
+  - vairaaggya
+- category: practice
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: kirtana
+  source_authority: IAST
+  transliteration: kīrtana
+  variations:
+  - kirtan
+  - kirtanaa
+  - keertana
+- category: practice
+  confidence: 1.0
+  is_proper_noun: false
+  original_term: seva
+  source_authority: IAST
+  transliteration: sevā
+  variations:
+  - sewa
+  - sevaa
+- category: practice
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: persistent practice, repeated effort
+  original_term: abhyasa
+  source_authority: Traditional
+  transliteration: abhyāsa
+  variations:
+  - abhyaas
+  - abhyassa
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: mental modifications, thought patterns
+  original_term: vritti
+  source_authority: Traditional
+  transliteration: vṛtti
+  variations:
+  - vriti
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: cessation, restraint of mental modifications
+  original_term: nirodha
+  source_authority: Traditional
+  transliteration: nirodha
+  variations:
+  - nirodh
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: mental impressions, latent tendencies
+  original_term: samskara
+  source_authority: Traditional
+  transliteration: saṃskāra
+  variations:
+  - sanskaar
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: mental afflictions, sources of suffering
+  original_term: klesa
+  source_authority: Traditional
+  transliteration: kleśa
+  variations:
+  - klesha
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: ignorance, spiritual unknowing
+  original_term: avidya
+  source_authority: Traditional
+  transliteration: avidyā
+  variations:
+  - avidyaa
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: egoism, sense of I-am-ness
+  original_term: asmita
+  source_authority: Traditional
+  transliteration: asmitā
+  variations:
+  - asmitaa
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: attachment, desire for pleasure
+  original_term: raga
+  source_authority: Traditional
+  transliteration: rāga
+  variations:
+  - raag
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: aversion, hatred, repulsion
+  original_term: dvesha
+  source_authority: Traditional
+  transliteration: dveṣa
+  variations:
+  - dvesh
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: apparent reality, neither real nor unreal
+  original_term: mithya
+  source_authority: Traditional
+  transliteration: mithyā
+  variations:
+  - mithyaa
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: truth, ultimate reality
+  original_term: satya
+  source_authority: Traditional
+  transliteration: satya
+  variations:
+  - satyaa
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: witness consciousness, silent observer
+  original_term: sakshi
+  source_authority: Traditional
+  transliteration: sākṣī
+  variations:
+  - saakshi
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: limiting condition, adjunct
+  original_term: upadi
+  source_authority: Traditional
+  transliteration: upādhi
+  variations:
+  - upadhi
+  - limiting adjunct
+  - condition
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: superimposition, false attribution
+  original_term: adhyasa
+  source_authority: Traditional
+  transliteration: adhyāsa
+  variations:
+  - adhyaas
+  - superimposition
+  - false attribution
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: divine love, pure spiritual love
+  original_term: prema
+  source_authority: Traditional
+  transliteration: prema
+  variations:
+  - prem
+  - divine love
+  - pure love
+- category: concept
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: faith, trust, devotional confidence
+  original_term: shraddha
+  source_authority: Traditional
+  transliteration: śraddhā
+  variations:
+  - shraddhaa
+- category: practice
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: complete surrender to divine will
+  original_term: surrender
+  source_authority: Traditional
+  transliteration: śaraṇāgati
+  variations:
+  - saranagati
+- category: language
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: regional language of Awadh, used by Tulsidas
+  original_term: awadhi
+  source_authority: Traditional
+  transliteration: avadhī
+  variations:
+  - avadhi
+  - awadhee
+- category: literature
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: rhyming couplet, poetic form
+  original_term: doha
+  source_authority: Traditional
+  transliteration: dohā
+  variations:
+  - dohe
+- category: literature
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: four-line verse, poetic meter
+  original_term: chaupai
+  source_authority: Traditional
+  transliteration: caupāī
+  variations:
+  - caupai
+  - choupai
+  - quatrain
+- category: literature
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: story, narrative, sacred tale
+  original_term: katha
+  source_authority: Traditional
+  transliteration: kathā
+  variations:
+  - kathaa
+  - narrative
+- category: practice
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: devotional group singing, chanting
+  original_term: kirtan
+  source_authority: Traditional
+  transliteration: kīrtana
+  variations:
+  - kirtana
+  - group singing
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: lord of Raghu dynasty, epithet for Rama
+  original_term: raghupati
+  source_authority: Traditional
+  transliteration: raghupati
+  variations:
+  - raghu pati
+  - lord of raghu dynasty
+- category: place
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: ancient kingdom, Rama's birthplace
+  original_term: kosala
+  source_authority: Traditional
+  transliteration: kośala
+  variations:
+  - kosalaa
+  - kosala kingdom
+  - ayodhya kingdom
+- category: place
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: forest where Rama spent his exile
+  original_term: dandaka
+  source_authority: Traditional
+  transliteration: daṇḍakāraṇya
+  variations:
+  - dandakaranya
+  - dandaka forest
+  - exile forest
+- category: sage
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: great sage, teacher of Rama in Yoga Vasistha
+  original_term: vasistha
+  source_authority: Traditional
+  transliteration: vasiṣṭha
+  variations:
+  - vasishtha
+  - sage vasistha
+  - guru vasistha
+- category: literature
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: section or chapter, as in Yoga Vasistha
+  original_term: prakarana
+  source_authority: Traditional
+  transliteration: prakaraṇa
+  variations:
+  - prakaranam
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: seeker of liberation, spiritual aspirant
+  original_term: mumukshu
+  source_authority: Traditional
+  transliteration: mumukṣu
+  variations:
+  - mumukshuu
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: discrimination between real and unreal
+  original_term: viveka
+  source_authority: Traditional
+  transliteration: viveka
+  variations:
+  - vivekaa
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: world, universe, phenomenal reality
+  original_term: jagat
+  source_authority: Traditional
+  transliteration: jagat
+  variations:
+  - jagataa
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: vibration, pulsation of consciousness
+  original_term: sphurana
+  source_authority: Traditional
+  transliteration: sphuraṇa
+  variations:
+  - sphuranam
+  - vibration
+  - pulsation
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: mental impressions, latent tendencies
+  original_term: samskaras
+  source_authority: Traditional
+  transliteration: saṃskāra
+  variations:
+  - sanskaar
+  - impressions
+  - mental tendencies
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: the seen, object of perception
+  original_term: drishya
+  source_authority: Traditional
+  transliteration: dṛśya
+  variations:
+  - drishyaa
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: the seer, witness consciousness
+  original_term: drashta
+  source_authority: Traditional
+  transliteration: draṣṭā
+  variations:
+  - drashtaa
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: isolation, state of pure consciousness
+  original_term: kaivalya
+  source_authority: Traditional
+  transliteration: kaivalya
+  variations:
+  - kaivalyaa
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: without mental modifications, thoughtless state
+  original_term: nirvikalpa
+  source_authority: Traditional
+  transliteration: nirvikalpa
+  variations:
+  - nirvikalpaa
+- category: practice
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: vision, spiritual sight, philosophy
+  original_term: darshan
+  source_authority: Traditional
+  transliteration: darśana
+  variations:
+  - darshan
+- category: ritual
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: blessed food, divine grace
+  original_term: prasad
+  source_authority: Traditional
+  transliteration: prasāda
+  variations:
+  - prasaad
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: spiritual teaching, instruction
+  original_term: upadesha
+  source_authority: Traditional
+  transliteration: upadeśa
+  variations:
+  - upadesh
+- category: mantra
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: Om, I bow to Krishna, son of Vasudeva, destroyer of Kamsa and Chanura,
+    supreme bliss of Devaki, teacher of the universe
+  original_term: Om vasudevasutaḿ devaḿ kaḿsa-cāṇūra-mardanam devakī-paramānandaḿ
+    kṛṣṇaḿ vande jagadgurum
+  source_authority: Traditional
+  transliteration: Om vasudevasutaḿ devaḿ kaḿsa-cāṇūra-mardanam devakī-paramānandaḿ
+    kṛṣṇaḿ vande jagadgurum
+  variations:
+  - Om Vahudevo Sutam Devam Kansa Chan Uram Ardanam Devaki Paramahnam Trishnam Vande
+    Jagad Guru
+  - om vahudevo sutam devam kansa chan uram ardanam devaki paramahnam trishnam vande
+    jagad guru
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: spiritual practitioner, seeker
+  original_term: sadhaka
+  source_authority: Traditional
+  transliteration: sādhaka
+  variations:
+  - saadhaka
+- category: literature
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: short verse meter used in Ramcharitmanas
+  original_term: soratha
+  source_authority: Traditional
+  transliteration: soraṭhā
+  variations:
+  - sorattha
+- category: literature
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: poetic meter, verse structure
+  original_term: chhand
+  source_authority: Traditional
+  transliteration: chandas
+  variations:
+  - chhanda
+- category: literature
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: auspicious invocation, opening verses
+  original_term: mangalacharan
+  source_authority: Traditional
+  transliteration: maṅgalācaraṇa
+  variations:
+  - mangal charan
+- category: concept
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: ideal kingdom of Rama, perfect governance
+  original_term: ramrajya
+  source_authority: Traditional
+  transliteration: rāmarājya
+  variations:
+  - ram rajya
+- category: concept
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: name of Rama, divine name chanting
+  original_term: ramnam
+  source_authority: Traditional
+  transliteration: rāmanāma
+  variations:
+  - ram nam
+  - rama nama
+- category: literature
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: story of Rama, Ramayana narrative
+  original_term: ramkatha
+  source_authority: Traditional
+  transliteration: rāmakathā
+  variations:
+  - ram katha
+- category: concept
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: character, noble deeds, conduct
+  original_term: charitra
+  source_authority: Traditional
+  transliteration: caritra
+  variations:
+  - charitar
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: divine play, cosmic drama
+  original_term: leela
+  source_authority: Traditional
+  transliteration: līlā
+  variations:
+  - lila
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: divine incarnation, descent of God
+  original_term: avatara
+  source_authority: Traditional
+  transliteration: avatāra
+  variations:
+  - avatar
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: righteous conduct, proper behavior
+  original_term: maryada
+  source_authority: Traditional
+  transliteration: maryādā
+  variations:
+  - maryaada
+- category: concept
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: forest exile, period of banishment
+  original_term: vanvas
+  source_authority: Traditional
+  transliteration: vanavāsa
+  variations:
+  - vanvaas
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: royal duties, responsibilities of a king
+  original_term: rajdharma
+  source_authority: Traditional
+  transliteration: rājadharma
+  variations:
+  - raj dharma
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: duties of a son, filial obligations
+  original_term: putradharma
+  source_authority: Traditional
+  transliteration: putradharma
+  variations:
+  - putra dharma
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: modifications of consciousness, mental fluctuations
+  original_term: chittavritti
+  source_authority: Traditional
+  transliteration: cittavṛtti
+  variations:
+  - chitta vritti
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: fourth state of consciousness beyond waking, dream, sleep
+  original_term: turiya
+  source_authority: Traditional
+  transliteration: turīya
+  variations:
+  - turiyaa
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: one with steady wisdom, stable consciousness
+  original_term: sthitaprajna
+  source_authority: Traditional
+  transliteration: sthitaprajña
+  variations:
+  - sthita prajna
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: liberated while living, free even in body
+  original_term: jivanmukta
+  source_authority: Traditional
+  transliteration: jīvanmukta
+  variations:
+  - jivan mukta
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: liberation after leaving the body
+  original_term: videhamukta
+  source_authority: Traditional
+  transliteration: videhamukta
+  variations:
+  - videha mukta
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: completeness, fullness of being
+  original_term: purnata
+  source_authority: Traditional
+  transliteration: pūrṇatā
+  variations:
+  - purnataa
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: state of peace, tranquility
+  original_term: shantata
+  source_authority: Traditional
+  transliteration: śāntatā
+  variations:
+  - shantataa
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: true nature, essential form
+  original_term: swarupa
+  source_authority: Traditional
+  transliteration: svarūpa
+  variations:
+  - svaroopa
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: direct experience, immediate knowledge
+  original_term: aparoksha
+  source_authority: Traditional
+  transliteration: aparokṣa
+  variations:
+  - aparokshaa
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: indirect knowledge, mediated through concepts
+  original_term: paroksha
+  source_authority: Traditional
+  transliteration: parokṣa
+  variations:
+  - parokshaa
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: practical level of reality, relative existence
+  original_term: vyavaharika
+  source_authority: Traditional
+  transliteration: vyāvahārika
+  variations:
+  - vyavahaarika
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: absolute level of reality, ultimate truth
+  original_term: paramarthika
+  source_authority: Traditional
+  transliteration: pāramārthika
+  variations:
+  - paramaarthika
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: apparent reality, illusory level of existence
+  original_term: pratibhasika
+  source_authority: Traditional
+  transliteration: prātibhāsika
+  variations:
+  - pratibhaasika
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: cessation of mental modifications, peace
+  original_term: upasama
+  source_authority: Traditional
+  transliteration: upaśama
+  variations:
+  - upasham
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: dissolution of mind, transcendence of thinking
+  original_term: manonasha
+  source_authority: Traditional
+  transliteration: manonāśa
+  variations:
+  - mano nasha
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: destruction of mental tendencies and habits
+  original_term: vasanakshaya
+  source_authority: Traditional
+  transliteration: vāsanākṣaya
+  variations:
+  - vasana kshaya
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: principle, essential nature, reality
+  original_term: tattva
+  source_authority: Traditional
+  transliteration: tattva
+  variations:
+  - tatvaa
+- category: philosophy
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: limiting condition, conditioning factor
+  original_term: upadhi
+  source_authority: Traditional
+  transliteration: upādhi
+  variations:
+  - upadhii
+- category: mantra
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: complete, whole, full
+  original_term: purnam
+  source_authority: Upanishads
+  transliteration: pūrṇam
+  variations:
+  - puna
+  - purna
+  - poorna
+  - purnaam
+  - puurnam
+- category: mantra
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: only, alone, purely
+  original_term: kevalam
+  source_authority: Brahmananda Saraswati
+  transliteration: kevalam
+  variations:
+  - kevala
+  - kevalum
+  - kevalaam
+- category: mantra
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: knowledge, consciousness
+  original_term: jnanam
+  source_authority: Brahmananda Saraswati
+  transliteration: jñānam
+  variations:
+  - gyanam
+  - gnaanam
+  - jnaanam
+  - gyaanam
+- category: mantra
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: beyond duality, transcending opposites
+  original_term: dvandvatitam
+  source_authority: Brahmananda Saraswati
+  transliteration: dvandvātītam
+  variations:
+  - dvandvaateetam
+  - dvandvaatitam
+- category: mantra
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: like the sky, vast as ether
+  original_term: gaganasadrisham
+  source_authority: Brahmananda Saraswati
+  transliteration: gagana-sadṛśam
+  variations:
+  - gagana sadrisham
+  - gaganasadrishyam
+- category: mantra
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: goal indicated by 'That thou art'
+  original_term: asyadilakshyam
+  source_authority: Brahmananda Saraswati
+  transliteration: asyādi-lakṣyam
+  variations:
+  - asyaadi lakshyam
+  - asyadilakshya
+- category: mantra
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: immovable, steady, unchanging
+  original_term: vachalam
+  source_authority: Brahmananda Saraswati
+  transliteration: acalam
+  variations:
+  - vachala
+  - achalam
+- category: mantra
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: all intelligence, universal consciousness
+  original_term: sarvdhi
+  source_authority: Brahmananda Saraswati
+  transliteration: sarvadhī
+  variations:
+  - sarvadhee
+  - sarvadhi
+- category: mantra
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: witness consciousness
+  original_term: sahakshibhutam
+  source_authority: Brahmananda Saraswati
+  transliteration: sākṣibhūtam
+  variations:
+  - saakshibhutam
+  - sakshibhutam
+- category: mantra
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: beyond all states of existence
+  original_term: bhavatitam
+  source_authority: Brahmananda Saraswati
+  transliteration: bhāvātītam
+  variations:
+  - bhaavateetam
+  - bhaavaatitam
+- category: mantra
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: beyond the three gunas
+  original_term: trigunarahitam
+  source_authority: Brahmananda Saraswati
+  transliteration: tri-guṇa-rahitam
+  variations:
+  - tri guna rahitam
+  - trigunarahit
+- category: mantra
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: true teacher, realized master
+  original_term: sadgurum
+  source_authority: Brahmananda Saraswati
+  transliteration: sad-guruṁ
+  variations:
+  - sad gurum
+  - sadguru
+- category: scripture
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: true
+  meaning: philosophical text attributed to sage Vasistha
+  original_term: yogavashistha
+  source_authority: Traditional
+  transliteration: Yogavāsiṣṭha
+  variations:
+  - yoga vasistha
+  - yogabashi
+  - yoga vashishtha
+  - yogavaasishtha
+- category: scripture
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: true
+  meaning: creation section of Yogavasishtha
+  original_term: utpati
+  source_authority: Traditional
+  transliteration: Utpatti
+  variations:
+  - utpatti
+  - utpatty
+  - utpatii
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: stages, levels of consciousness
+  original_term: bhoomikaas
+  source_authority: Traditional
+  transliteration: bhūmikā
+  variations:
+  - bhoomika
+  - bhumikas
+  - bhoomikaa
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: activity, engagement with the world
+  original_term: parvritthi
+  source_authority: Traditional
+  transliteration: pravṛtti
+  variations:
+  - pravritthi
+  - pravritti
+- category: sage
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: true
+  meaning: great sage, author of Yogavasishtha
+  original_term: shivashistha
+  source_authority: Traditional
+  transliteration: Vaśiṣṭha
+  variations:
+  - shivaasistha
+  - vasistha
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: creation, origination
+  original_term: utpatti
+  source_authority: Traditional
+  transliteration: utpatti
+  variations:
+  - utpati
+  - utpatii
+  - utpatty
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: stages, levels (plural)
+  original_term: bhumikaah
+  source_authority: Traditional
+  transliteration: bhūmikāḥ
+  variations:
+  - bhoomikaas
+  - bhoomikah
+  - bhumikas
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: good desire, first stage of knowledge
+  original_term: shubheccha
+  source_authority: Yogavasishtha
+  transliteration: śubhecchā
+  variations:
+  - shubh iccha
+  - shubh ichha
+  - shubheccha
+- category: deity
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: true
+  meaning: the blessed one, God
+  original_term: bhagawan
+  source_authority: Traditional
+  transliteration: Bhagavān
+  variations:
+  - bhagavan
+  - bhagvaan
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: liberated while living
+  original_term: jeevan mukta
+  source_authority: Traditional
+  transliteration: jivanmukta
+  variations:
+  - jivan mukta
+  - jeeva mukta
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: subtle mind, second stage of knowledge
+  original_term: tanvamanasi
+  source_authority: Yogavasishtha
+  transliteration: tanumānasi
+  variations:
+  - tanva manasi
+  - tanuma nasi
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: attraction and aversion
+  original_term: radha dvesha
+  source_authority: Traditional
+  transliteration: rāga-dveṣa
+  variations:
+  - raga dvesha
+  - raag dvesh
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: attainment of sattva, third stage of knowledge
+  original_term: sattvapatti
+  source_authority: Yogavasishtha
+  transliteration: sattvāpatti
+  variations:
+  - sattva patti
+  - satva patti
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: covering, concealment
+  original_term: avarna
+  source_authority: Traditional
+  transliteration: āvaraṇa
+  variations:
+  - aavarna
+  - aavarnam
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: liberation while living
+  original_term: jeevan mukti
+  source_authority: Traditional
+  transliteration: jīvanmukti
+  variations:
+  - jivan mukti
+  - jeeva mukti
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: non-attachment, fourth stage of knowledge
+  original_term: asam sakti
+  source_authority: Yogavasishtha
+  transliteration: asaṁsakti
+  variations:
+  - asamsakti
+  - asansakti
+- category: concept
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: perception of objects, fifth stage of knowledge
+  original_term: padartha bhavana
+  source_authority: Yogavasishtha
+  transliteration: padārtha-bhāvanā
+  variations:
+  - padartha bhavan
+  - padaartha bhavana
+- category: mantra
+  confidence: 1.0
+  difficulty_level: advanced
+  is_proper_noun: false
+  meaning: I am Brahman, great statement
+  original_term: aham brahmas
+  source_authority: Upanishads
+  transliteration: ahaṁ brahmāsmi
+  variations:
+  - aham brahma
+  - aham brahmaa
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: human birth, first qualification
+  original_term: manushyatvam
+  source_authority: Traditional
+  transliteration: manuṣyatvam
+  variations:
+  - manushyatva
+  - manushatvam
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: desire for liberation, second qualification
+  original_term: mumukshutvam
+  source_authority: Traditional
+  transliteration: mumukṣutvam
+  variations:
+  - mumukshutva
+  - mumukshatva
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: shelter of great souls, third qualification
+  original_term: mahapurusha samsaya
+  source_authority: Traditional
+  transliteration: Mahāpuruṣa-saṁśrayaḥ
+  variations:
+  - mahapurusha samsaay
+  - maha purusha samsaya
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: dispassion, detachment
+  original_term: iragya
+  source_authority: Traditional
+  transliteration: vairāgya
+  variations:
+  - vairagya
+  - viragya
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: striving, making effort
+  original_term: yathamanam
+  source_authority: Traditional
+  transliteration: yatamānam
+  variations:
+  - yatha manam
+  - yatamaanam
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: single-pointed senses
+  original_term: ekendriyam
+  source_authority: Traditional
+  transliteration: ekendriyaṁ
+  variations:
+  - eka indriyam
+  - ekendriya
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: control, mastery
+  original_term: vashikaram
+  source_authority: Traditional
+  transliteration: vaśīkaraṇaṁ
+  variations:
+  - vashi karam
+  - vaashikaram
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: self-control, restraint
+  original_term: dhamma
+  source_authority: Traditional
+  transliteration: dama
+  variations:
+  - damma
+  - dhaam
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: composure, equanimity
+  original_term: samadhan
+  source_authority: Traditional
+  transliteration: samādhāna
+  variations:
+  - samadhaan
+  - samaadhan
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: fitness, qualification for spiritual practice
+  original_term: adhikaritva
+  source_authority: Traditional
+  transliteration: adhikāritva
+  variations:
+  - adhikar itva
+  - adhikaaritvam
+- category: number
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: the number 7 (should remain English in lectures)
+  original_term: seven
+  source_authority: English
+  transliteration: seven
+  variations:
+  - 7
+  - VII
+- category: number
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: the number 6 (should remain English in lectures)
+  original_term: six
+  source_authority: English
+  transliteration: six
+  variations:
+  - 6
+  - VI
+- category: error
+  confidence: 1.0
+  difficulty_level: beginner
+  is_proper_noun: false
+  meaning: correction of corrupted word
+  original_term: dalvit
+  source_authority: Error
+  transliteration: dullwit
+  variations:
+  - dullwit
+  - dalvit
+- category: concept
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: lack of passion, detachment (English term used in spiritual context)
+  original_term: dispassion
+  source_authority: English
+  transliteration: dispassion
+  variations:
+  - this passion
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vyavasāyinām
+  source_authority: Scripture
+  transliteration: vyavasāyinām
+  variations:
+  - vyava sāyinām
+  - vyavasāyinām
+  - vyavasā yinām
+  - vyavas āyinām
+  - vyavasaayinaam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: nandana
+  source_authority: Scripture
+  transliteration: nandana
+  variations:
+  - nan dana
+  - na ndana
+  - nandana
+  - nand ana
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vyavasāyātmikā
+  source_authority: Scripture
+  transliteration: vyavasāyātmikā
+  variations:
+  - vyavasaayaatmikaa
+  - vyavasā yātmikā
+  - vyavasāyātmikā
+  - vyavas āyātmikā
+  - vyavasāy ātmikā
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: śākhā
+  source_authority: Scripture
+  transliteration: śākhā
+  variations:
+  - śākhā
+  - shaakhaa
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: anantāś
+  source_authority: Scripture
+  transliteration: anantāś
+  variations:
+  - an antāś
+  - anan tāś
+  - anantaash
+  - ana ntāś
+  - anantāś
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vyavasaya
+  source_authority: Scripture
+  transliteration: vyavasaya
+  variations:
+  - vyavasaya
+  - vya vasaya
+  - vyava saya
+  - vyav asaya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vijānataḥ
+  source_authority: Scripture
+  transliteration: vijānataḥ
+  variations:
+  - vijānataḥ
+  - vijā nataḥ
+  - vijaanatah
+  - vijān ataḥ
+  - vij ānataḥ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vedeṣu
+  source_authority: Scripture
+  transliteration: vedeṣu
+  variations:
+  - vedesu
+  - vedeṣu
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: brāhmaṇasya
+  source_authority: Scripture
+  transliteration: brāhmaṇasya
+  variations:
+  - brāhm aṇasya
+  - braahmanasya
+  - brāhmaṇasya
+  - brāhma ṇasya
+  - brāh maṇasya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: udapāne
+  source_authority: Scripture
+  transliteration: udapāne
+  variations:
+  - ud apāne
+  - udap āne
+  - udapāne
+  - uda pāne
+  - udapaane
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: yāvān
+  source_authority: Scripture
+  transliteration: yāvān
+  variations:
+  - yaavaan
+  - yāvān
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: tāvān
+  source_authority: Scripture
+  transliteration: tāvān
+  variations:
+  - tāvān
+  - taavaan
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: sarvataḥ
+  source_authority: Scripture
+  transliteration: sarvataḥ
+  variations:
+  - sarva taḥ
+  - sarv ataḥ
+  - sarvataḥ
+  - sar vataḥ
+  - sarvatah
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: sarveṣu
+  source_authority: Scripture
+  transliteration: sarveṣu
+  variations:
+  - sarv eṣu
+  - sarvesu
+  - sar veṣu
+  - sa rveṣu
+  - sarveṣu
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vedas
+  source_authority: Scripture
+  transliteration: vedas
+  variations:
+  - vedas
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: kadācana
+  source_authority: Scripture
+  transliteration: kadācana
+  variations:
+  - kadaacana
+  - kad ācana
+  - kadācana
+  - kadāc ana
+  - kadā cana
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: phaleṣu
+  source_authority: Scripture
+  transliteration: phaleṣu
+  variations:
+  - pha leṣu
+  - phal eṣu
+  - phaleṣu
+  - phalesu
+  - ph aleṣu
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: evādhikāras
+  source_authority: Scripture
+  transliteration: evādhikāras
+  variations:
+  - evādh ikāras
+  - evād hikāras
+  - evādhi kāras
+  - evādhikāras
+  - evaadhikaaras
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: akarmaṇi
+  source_authority: Scripture
+  transliteration: akarmaṇi
+  variations:
+  - akarm aṇi
+  - akar maṇi
+  - akarmaṇi
+  - aka rmaṇi
+  - akarmani
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: karmaṇy
+  source_authority: Scripture
+  transliteration: karmaṇy
+  variations:
+  - ka rmaṇy
+  - kar maṇy
+  - karm aṇy
+  - karmaṇy
+  - karmany
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: saṅgo
+  source_authority: Scripture
+  transliteration: saṅgo
+  variations:
+  - saṅgo
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: bhūr
+  source_authority: Scripture
+  transliteration: bhūr
+  variations:
+  - bhuur
+  - bhūr
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: prescribed
+  source_authority: Scripture
+  transliteration: prescribed
+  variations:
+  - presc ribed
+  - pres cribed
+  - prescr ibed
+  - prescribed
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: sthita
+  source_authority: Scripture
+  transliteration: sthita
+  variations:
+  - sthita
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: dhīr
+  source_authority: Scripture
+  transliteration: dhīr
+  variations:
+  - dhiir
+  - dhīr
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: krodhaḥ
+  source_authority: Scripture
+  transliteration: krodhaḥ
+  variations:
+  - krodhaḥ
+  - kr odhaḥ
+  - krod haḥ
+  - kro dhaḥ
+  - krodhah
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vīta
+  source_authority: Scripture
+  transliteration: vīta
+  variations:
+  - viita
+  - vīta
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: duḥkheṣv
+  source_authority: Scripture
+  transliteration: duḥkheṣv
+  variations:
+  - duḥkh eṣv
+  - duḥkheṣv
+  - duḥk heṣv
+  - duḥ kheṣv
+  - duhkhesv
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vigata
+  source_authority: Scripture
+  transliteration: vigata
+  variations:
+  - vigata
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: spṛhaḥ
+  source_authority: Scripture
+  transliteration: spṛhaḥ
+  variations:
+  - spṛhaḥ
+  - sprhah
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: anudvigna
+  source_authority: Scripture
+  transliteration: anudvigna
+  variations:
+  - anudv igna
+  - anu dvigna
+  - anudvigna
+  - anud vigna
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: manāḥ
+  source_authority: Scripture
+  transliteration: manāḥ
+  variations:
+  - manaah
+  - manāḥ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: bhaya
+  source_authority: Scripture
+  transliteration: bhaya
+  variations:
+  - bhaya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: sukheṣu
+  source_authority: Scripture
+  transliteration: sukheṣu
+  variations:
+  - sukh eṣu
+  - sukhesu
+  - suk heṣu
+  - sukheṣu
+  - su kheṣu
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: rāga
+  source_authority: Scripture
+  transliteration: rāga
+  variations:
+  - raaga
+  - rāga
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: bhārata
+  source_authority: Scripture
+  transliteration: bhārata
+  variations:
+  - bhārata
+  - bhār ata
+  - bhā rata
+  - bh ārata
+  - bhaarata
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: sṛjāmy
+  source_authority: Scripture
+  transliteration: sṛjāmy
+  variations:
+  - sṛjāmy
+  - srjaamy
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: tadātmānaṃ
+  source_authority: Scripture
+  transliteration: tadātmānaṃ
+  variations:
+  - tadātm ānaṃ
+  - tadaatmaanam
+  - tadātmānaṃ
+  - tadā tmānaṃ
+  - tadāt mānaṃ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: abhyutthānam
+  source_authority: Scripture
+  transliteration: abhyutthānam
+  variations:
+  - abhyu tthānam
+  - abhyut thānam
+  - abhyutthānam
+  - abhyutthaanam
+  - abhyutt hānam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: adharmasya
+  source_authority: Scripture
+  transliteration: adharmasya
+  variations:
+  - adharm asya
+  - adha rmasya
+  - adharmasya
+  - adhar masya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: yadā
+  source_authority: Scripture
+  transliteration: yadā
+  variations:
+  - yadaa
+  - yadā
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: dharmasya
+  source_authority: Scripture
+  transliteration: dharmasya
+  variations:
+  - dha rmasya
+  - dharm asya
+  - dhar masya
+  - dharmasya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: glānir
+  source_authority: Scripture
+  transliteration: glānir
+  variations:
+  - glānir
+  - glaanir
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vināśāya
+  source_authority: Scripture
+  transliteration: vināśāya
+  variations:
+  - vināśāya
+  - vin āśāya
+  - vinaashaaya
+  - vināś āya
+  - vinā śāya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: paritrāṇāya
+  source_authority: Scripture
+  transliteration: paritrāṇāya
+  variations:
+  - pari trāṇāya
+  - paritr āṇāya
+  - parit rāṇāya
+  - paritrāṇāya
+  - paritraanaaya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: sādhūnāṃ
+  source_authority: Scripture
+  transliteration: sādhūnāṃ
+  variations:
+  - sādh ūnāṃ
+  - saadhuunaam
+  - sādhūnāṃ
+  - sādhū nāṃ
+  - sād hūnāṃ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: saṃsthāpanārthāya
+  source_authority: Scripture
+  transliteration: saṃsthāpanārthāya
+  variations:
+  - saṃsthā panārthāya
+  - saṃsthāpa nārthāya
+  - samsthaapanaarthaaya
+  - saṃsthāp anārthāya
+  - saṃsthāpanārthāya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: duṣkṛtām
+  source_authority: Scripture
+  transliteration: duṣkṛtām
+  variations:
+  - duṣkṛ tām
+  - duṣk ṛtām
+  - duskrtaam
+  - duṣkṛtām
+  - duṣ kṛtām
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: sambhavāmi
+  source_authority: Scripture
+  transliteration: sambhavāmi
+  variations:
+  - samb havāmi
+  - sambhavaami
+  - sambh avāmi
+  - sambha vāmi
+  - sambhavāmi
+- category: scripture
+  confidence: 0.7999999999999999
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: protection
+  source_authority: Scripture
+  transliteration: protection
+  variations:
+  - prote ction
+  - protec tion
+  - protection
+  - prot ection
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: ātmanātmānaṃ
+  source_authority: Scripture
+  transliteration: ātmanātmānaṃ
+  variations:
+  - ātmanātmānaṃ
+  - ātmanāt mānaṃ
+  - ātmanā tmānaṃ
+  - ātman ātmānaṃ
+  - aatmanaatmaanam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: ātmaiva
+  source_authority: Scripture
+  transliteration: ātmaiva
+  variations:
+  - aatmaiva
+  - ātma iva
+  - ātmaiva
+  - ātm aiva
+  - āt maiva
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: ātmano
+  source_authority: Scripture
+  transliteration: ātmano
+  variations:
+  - ātmano
+  - aatmano
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: ātmanaḥ
+  source_authority: Scripture
+  transliteration: ātmanaḥ
+  variations:
+  - āt manaḥ
+  - ātm anaḥ
+  - ātmanaḥ
+  - aatmanah
+  - ātma naḥ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: avasādayet
+  source_authority: Scripture
+  transliteration: avasādayet
+  variations:
+  - avasād ayet
+  - avasaadayet
+  - avasā dayet
+  - avas ādayet
+  - avasādayet
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: nātmānam
+  source_authority: Scripture
+  transliteration: nātmānam
+  variations:
+  - naatmaanam
+  - nāt mānam
+  - nātmā nam
+  - nātmānam
+  - nātm ānam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vahāmy
+  source_authority: Scripture
+  transliteration: vahāmy
+  variations:
+  - vahāmy
+  - vahaamy
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: kṣemaṃ
+  source_authority: Scripture
+  transliteration: kṣemaṃ
+  variations:
+  - kṣemaṃ
+  - ksemam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: nityābhiyuktānāṃ
+  source_authority: Scripture
+  transliteration: nityābhiyuktānāṃ
+  variations:
+  - nityābhi yuktānāṃ
+  - nityaabhiyuktaanaam
+  - nityābhiyuktānāṃ
+  - nityābh iyuktānāṃ
+  - nityābhiy uktānāṃ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: ananyāś
+  source_authority: Scripture
+  transliteration: ananyāś
+  variations:
+  - an anyāś
+  - ananyāś
+  - anan yāś
+  - ana nyāś
+  - ananyaash
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: paryupāsate
+  source_authority: Scripture
+  transliteration: paryupāsate
+  variations:
+  - pary upāsate
+  - paryup āsate
+  - paryu pāsate
+  - paryupāsate
+  - paryupaasate
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: māṃ
+  source_authority: Scripture
+  transliteration: māṃ
+  variations:
+  - māṃ
+  - maam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: teṣāṃ
+  source_authority: Scripture
+  transliteration: teṣāṃ
+  variations:
+  - tesaam
+  - teṣāṃ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: janāḥ
+  source_authority: Scripture
+  transliteration: janāḥ
+  variations:
+  - janāḥ
+  - janaah
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: preservation
+  source_authority: Scripture
+  transliteration: preservation
+  variations:
+  - prese rvation
+  - preser vation
+  - preserv ation
+  - preservation
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: kshema
+  source_authority: Scripture
+  transliteration: kshema
+  variations:
+  - kshema
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: pāpebhyo
+  source_authority: Scripture
+  transliteration: pāpebhyo
+  variations:
+  - pāpeb hyo
+  - pāpebhyo
+  - pāp ebhyo
+  - pāpe bhyo
+  - paapebhyo
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: tvāṃ
+  source_authority: Scripture
+  transliteration: tvāṃ
+  variations:
+  - tvaam
+  - tvāṃ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: dharmān
+  source_authority: Scripture
+  transliteration: dharmān
+  variations:
+  - dharmān
+  - dha rmān
+  - dh armān
+  - dharmaan
+  - dhar mān
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: mām
+  source_authority: Scripture
+  transliteration: mām
+  variations:
+  - mām
+  - maam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: sarva
+  source_authority: Scripture
+  transliteration: sarva
+  variations:
+  - sarva
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: ahaṃ
+  source_authority: Scripture
+  transliteration: ahaṃ
+  variations:
+  - ahaṃ
+  - aham
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: ekaṃ
+  source_authority: Scripture
+  transliteration: ekaṃ
+  variations:
+  - ekaṃ
+  - ekam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: śaraṇaṃ
+  source_authority: Scripture
+  transliteration: śaraṇaṃ
+  variations:
+  - śa raṇaṃ
+  - śara ṇaṃ
+  - śaraṇaṃ
+  - sharanam
+  - śar aṇaṃ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: mokṣayiṣyāmi
+  source_authority: Scripture
+  transliteration: mokṣayiṣyāmi
+  variations:
+  - mokṣayi ṣyāmi
+  - mokṣa yiṣyāmi
+  - mokṣay iṣyāmi
+  - moksayisyaami
+  - mokṣayiṣyāmi
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: parityajya
+  source_authority: Scripture
+  transliteration: parityajya
+  variations:
+  - parit yajya
+  - parityajya
+  - parity ajya
+  - pari tyajya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: śucaḥ
+  source_authority: Scripture
+  transliteration: śucaḥ
+  variations:
+  - śucaḥ
+  - shucah
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: sarvaṃ
+  source_authority: Scripture
+  transliteration: sarvaṃ
+  variations:
+  - sarvaṃ
+  - sarvam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: tyaktena
+  source_authority: Scripture
+  transliteration: tyaktena
+  variations:
+  - tya ktena
+  - tyak tena
+  - tyakt ena
+  - tyaktena
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: īśāvāsyam
+  source_authority: Scripture
+  transliteration: īśāvāsyam
+  variations:
+  - īśāvāsyam
+  - īśā vāsyam
+  - īśāv āsyam
+  - īśāvā syam
+  - iishaavaasyam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: kiñca
+  source_authority: Scripture
+  transliteration: kiñca
+  variations:
+  - kiñca
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: bhuñjīthā
+  source_authority: Scripture
+  transliteration: bhuñjīthā
+  variations:
+  - bhu ñjīthā
+  - bhuñjiithaa
+  - bhuñjīthā
+  - bhuñj īthā
+  - bhuñ jīthā
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: kasya
+  source_authority: Scripture
+  transliteration: kasya
+  variations:
+  - kasya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: dhanam
+  source_authority: Scripture
+  transliteration: dhanam
+  variations:
+  - dhanam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: jagatyāṃ
+  source_authority: Scripture
+  transliteration: jagatyāṃ
+  variations:
+  - jaga tyāṃ
+  - jagatyaam
+  - jagatyāṃ
+  - jag atyāṃ
+  - jagat yāṃ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: gṛdhaḥ
+  source_authority: Scripture
+  transliteration: gṛdhaḥ
+  variations:
+  - grdhah
+  - gṛdhaḥ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: idaṃ
+  source_authority: Scripture
+  transliteration: idaṃ
+  variations:
+  - idaṃ
+  - idam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: śvetaketo
+  source_authority: Scripture
+  transliteration: śvetaketo
+  variations:
+  - śveta keto
+  - śvet aketo
+  - śvetaketo
+  - shvetaketo
+  - śve taketo
+- category: scripture
+  confidence: 0.8999999999999999
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: mahavakya
+  source_authority: Scripture
+  transliteration: mahavakya
+  variations:
+  - mahav akya
+  - mah avakya
+  - maha vakya
+  - mahavakya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: brahmāsmi
+  source_authority: Scripture
+  transliteration: brahmāsmi
+  variations:
+  - brahm āsmi
+  - brahmaasmi
+  - bra hmāsmi
+  - brah māsmi
+  - brahmāsmi
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: yajatrāḥ
+  source_authority: Scripture
+  transliteration: yajatrāḥ
+  variations:
+  - yajatrāḥ
+  - yajat rāḥ
+  - yaj atrāḥ
+  - yaja trāḥ
+  - yajatraah
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: karṇebhiḥ
+  source_authority: Scripture
+  transliteration: karṇebhiḥ
+  variations:
+  - karṇ ebhiḥ
+  - karṇebhiḥ
+  - kar ṇebhiḥ
+  - karṇe bhiḥ
+  - karnebhih
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: śṛṇuyāma
+  source_authority: Scripture
+  transliteration: śṛṇuyāma
+  variations:
+  - śṛṇu yāma
+  - śṛṇuyāma
+  - shrnuyaama
+  - śṛṇuy āma
+  - śṛṇ uyāma
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: bhadraṃ
+  source_authority: Scripture
+  transliteration: bhadraṃ
+  variations:
+  - bha draṃ
+  - bhadraṃ
+  - bhadram
+  - bh adraṃ
+  - bhad raṃ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: devāḥ
+  source_authority: Scripture
+  transliteration: devāḥ
+  variations:
+  - devāḥ
+  - devaah
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: paśyemākṣabhir
+  source_authority: Scripture
+  transliteration: paśyemākṣabhir
+  variations:
+  - paśyemāk ṣabhir
+  - paśyemā kṣabhir
+  - paśyem ākṣabhir
+  - paśyemākṣabhir
+  - pashyemaaksabhir
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: bravīmy
+  source_authority: Scripture
+  transliteration: bravīmy
+  variations:
+  - bravīmy
+  - brav īmy
+  - bra vīmy
+  - br avīmy
+  - braviimy
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: āmananti
+  source_authority: Scripture
+  transliteration: āmananti
+  variations:
+  - āman anti
+  - āmananti
+  - āma nanti
+  - āmana nti
+  - aamananti
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: brahmacaryaṃ
+  source_authority: Scripture
+  transliteration: brahmacaryaṃ
+  variations:
+  - brahm acaryaṃ
+  - brahma caryaṃ
+  - brahmacaryaṃ
+  - brahmacaryam
+  - brahmac aryaṃ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: sarvāṇi
+  source_authority: Scripture
+  transliteration: sarvāṇi
+  variations:
+  - sarvaani
+  - sa rvāṇi
+  - sarvāṇi
+  - sarv āṇi
+  - sar vāṇi
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: tapāṃsi
+  source_authority: Scripture
+  transliteration: tapāṃsi
+  variations:
+  - tapā ṃsi
+  - ta pāṃsi
+  - tapaamsi
+  - tapāṃsi
+  - tap āṃsi
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: padam
+  source_authority: Scripture
+  transliteration: padam
+  variations:
+  - padam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: padaṃ
+  source_authority: Scripture
+  transliteration: padaṃ
+  variations:
+  - padam
+  - padaṃ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vedā
+  source_authority: Scripture
+  transliteration: vedā
+  variations:
+  - vedā
+  - vedaa
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: saṃgraheṇa
+  source_authority: Scripture
+  transliteration: saṃgraheṇa
+  variations:
+  - samgrahena
+  - saṃgra heṇa
+  - saṃgr aheṇa
+  - saṃgraheṇa
+  - saṃg raheṇa
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: brahmacharya
+  source_authority: Scripture
+  transliteration: brahmacharya
+  variations:
+  - brahm acharya
+  - brahmac harya
+  - brahmacharya
+  - brahma charya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vidhūya
+  source_authority: Scripture
+  transliteration: vidhūya
+  variations:
+  - vid hūya
+  - vidh ūya
+  - vi dhūya
+  - vidhūya
+  - vidhuuya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: kartāram
+  source_authority: Scripture
+  transliteration: kartāram
+  variations:
+  - kartāram
+  - kartā ram
+  - kartaaram
+  - kart āram
+  - kar tāram
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vidvān
+  source_authority: Scripture
+  transliteration: vidvān
+  variations:
+  - vidvaan
+  - vidvān
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: nirañjanaḥ
+  source_authority: Scripture
+  transliteration: nirañjanaḥ
+  variations:
+  - nirañjanaḥ
+  - nira ñjanaḥ
+  - nirañjanah
+  - nirañj anaḥ
+  - nirañ janaḥ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: paśyaḥ
+  source_authority: Scripture
+  transliteration: paśyaḥ
+  variations:
+  - paśyaḥ
+  - pashyah
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: īśaṃ
+  source_authority: Scripture
+  transliteration: īśaṃ
+  variations:
+  - īśaṃ
+  - iisham
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: tadā
+  source_authority: Scripture
+  transliteration: tadā
+  variations:
+  - tadā
+  - tadaa
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: rukma
+  source_authority: Scripture
+  transliteration: rukma
+  variations:
+  - rukma
+- category: scripture
+  confidence: 0.7999999999999999
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: brahma
+  source_authority: Scripture
+  transliteration: brahma
+  variations:
+  - brahma
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: sāmyam
+  source_authority: Scripture
+  transliteration: sāmyam
+  variations:
+  - saamyam
+  - sāmyam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: puṇya
+  source_authority: Scripture
+  transliteration: puṇya
+  variations:
+  - punya
+  - puṇya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: paramaṃ
+  source_authority: Scripture
+  transliteration: paramaṃ
+  variations:
+  - para maṃ
+  - pa ramaṃ
+  - par amaṃ
+  - paramaṃ
+  - paramam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: paśyate
+  source_authority: Scripture
+  transliteration: paśyate
+  variations:
+  - paś yate
+  - pa śyate
+  - paśyate
+  - pashyate
+  - paśy ate
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: pāpe
+  source_authority: Scripture
+  transliteration: pāpe
+  variations:
+  - pāpe
+  - paape
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: varṇaṃ
+  source_authority: Scripture
+  transliteration: varṇaṃ
+  variations:
+  - varnam
+  - varṇaṃ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: puruṣaṃ
+  source_authority: Scripture
+  transliteration: puruṣaṃ
+  variations:
+  - puru ṣaṃ
+  - purusam
+  - pur uṣaṃ
+  - pu ruṣaṃ
+  - puruṣaṃ
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: yogānuśāsanam
+  source_authority: Scripture
+  transliteration: yogānuśāsanam
+  variations:
+  - yogānuśāsanam
+  - yogānu śāsanam
+  - yogaanushaasanam
+  - yogānuś āsanam
+  - yogān uśāsanam
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: vṛtti
+  source_authority: Scripture
+  transliteration: vṛtti
+  variations:
+  - vṛtti
+  - vrtti
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: nirodhaḥ
+  source_authority: Scripture
+  transliteration: nirodhaḥ
+  variations:
+  - nirodhah
+  - nirodhaḥ
+  - niro dhaḥ
+  - nir odhaḥ
+  - nirod haḥ
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: yogaś
+  source_authority: Scripture
+  transliteration: yogaś
+  variations:
+  - yogash
+  - yogaś
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: citta
+  source_authority: Scripture
+  transliteration: citta
+  variations:
+  - citta
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: vasthānam
+  source_authority: Scripture
+  transliteration: vasthānam
+  variations:
+  - vasth ānam
+  - vasthānam
+  - vas thānam
+  - vast hānam
+  - vasthaanam
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: svarūpe
+  source_authority: Scripture
+  transliteration: svarūpe
+  variations:
+  - sv arūpe
+  - svarūpe
+  - sva rūpe
+  - svar ūpe
+  - svaruupe
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: draṣṭuḥ
+  source_authority: Scripture
+  transliteration: draṣṭuḥ
+  variations:
+  - dra ṣṭuḥ
+  - draṣ ṭuḥ
+  - dr aṣṭuḥ
+  - drastuh
+  - draṣṭuḥ
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: 'true'
+  source_authority: Scripture
+  transliteration: 'true'
+  variations:
+  - 'true'
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: dṛḍha
+  source_authority: Scripture
+  transliteration: dṛḍha
+  variations:
+  - dṛḍha
+  - drdha
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: satkārāsevito
+  source_authority: Scripture
+  transliteration: satkārāsevito
+  variations:
+  - satkārāsevito
+  - satkā rāsevito
+  - satkār āsevito
+  - satkaaraasevito
+  - satkārā sevito
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: nairantarya
+  source_authority: Scripture
+  transliteration: nairantarya
+  variations:
+  - nair antarya
+  - nairan tarya
+  - naira ntarya
+  - nairantarya
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: bhūmiḥ
+  source_authority: Scripture
+  transliteration: bhūmiḥ
+  variations:
+  - bhuumih
+  - bhūmiḥ
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: kāla
+  source_authority: Scripture
+  transliteration: kāla
+  variations:
+  - kaala
+  - kāla
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: dīrgha
+  source_authority: Scripture
+  transliteration: dīrgha
+  variations:
+  - diirgha
+  - dīrgha
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: practice
+  source_authority: Scripture
+  transliteration: practice
+  variations:
+  - pract ice
+  - pra ctice
+  - practice
+  - prac tice
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: grounded
+  source_authority: Scripture
+  transliteration: grounded
+  variations:
+  - groun ded
+  - grou nded
+  - grounded
+  - gro unded
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: sukham
+  source_authority: Scripture
+  transliteration: sukham
+  variations:
+  - sukham
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: āsanam
+  source_authority: Scripture
+  transliteration: āsanam
+  variations:
+  - aasanam
+  - āsanam
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: sthira
+  source_authority: Scripture
+  transliteration: sthira
+  variations:
+  - sthira
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: śaithilya
+  source_authority: Scripture
+  transliteration: śaithilya
+  variations:
+  - śait hilya
+  - śaith ilya
+  - shaithilya
+  - śaithilya
+  - śai thilya
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: ānanta
+  source_authority: Scripture
+  transliteration: ānanta
+  variations:
+  - ānanta
+  - aananta
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: samāpattibhyām
+  source_authority: Scripture
+  transliteration: samāpattibhyām
+  variations:
+  - samāpatt ibhyām
+  - samāpattibhyām
+  - samaapattibhyaam
+  - samāpa ttibhyām
+  - samāpat tibhyām
+- category: yoga_sutra
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from yoga_sutra
+  original_term: prayatna
+  source_authority: Scripture
+  transliteration: prayatna
+  variations:
+  - praya tna
+  - pray atna
+  - prayatna
+  - pra yatna
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: bhaktiṃ
+  source_authority: Scripture
+  transliteration: bhaktiṃ
+  variations:
+  - bh aktiṃ
+  - bha ktiṃ
+  - bhaktim
+  - bhak tiṃ
+  - bhaktiṃ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vyākhyāsyāmaḥ
+  source_authority: Scripture
+  transliteration: vyākhyāsyāmaḥ
+  variations:
+  - vyākh yāsyāmaḥ
+  - vyaakhyaasyaamah
+  - vyākhyāsyāmaḥ
+  - vyākhyā syāmaḥ
+  - vyākhy āsyāmaḥ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: rūpā
+  source_authority: Scripture
+  transliteration: rūpā
+  variations:
+  - ruupaa
+  - rūpā
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: parama
+  source_authority: Scripture
+  transliteration: parama
+  variations:
+  - parama
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: mīmāṃsā
+  source_authority: Scripture
+  transliteration: mīmāṃsā
+  variations:
+  - miimaamsaa
+  - mīmā ṃsā
+  - mīmāṃsā
+  - mīm āṃsā
+  - mī māṃsā
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: athāto
+  source_authority: Scripture
+  transliteration: athāto
+  variations:
+  - athāto
+  - athaato
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: śirasā
+  source_authority: Scripture
+  transliteration: śirasā
+  variations:
+  - śirasā
+  - shirasaa
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: guruṃ
+  source_authority: Scripture
+  transliteration: guruṃ
+  variations:
+  - guruṃ
+  - gurum
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: jñānāvabodhāya
+  source_authority: Scripture
+  transliteration: jñānāvabodhāya
+  variations:
+  - jñānāvab odhāya
+  - jñānāv abodhāya
+  - jñānāvabodhāya
+  - jñānāva bodhāya
+  - jñaanaavabodhaaya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: varam
+  source_authority: Scripture
+  transliteration: varam
+  variations:
+  - varam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vakṣye
+  source_authority: Scripture
+  transliteration: vakṣye
+  variations:
+  - vakṣye
+  - vaksye
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vivekatām
+  source_authority: Scripture
+  transliteration: vivekatām
+  variations:
+  - viv ekatām
+  - vivek atām
+  - vive katām
+  - vivekatām
+  - vivekataam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vidāṃ
+  source_authority: Scripture
+  transliteration: vidāṃ
+  variations:
+  - vidaam
+  - vidāṃ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: praṇamya
+  source_authority: Scripture
+  transliteration: praṇamya
+  variations:
+  - praṇa mya
+  - praṇamya
+  - pranamya
+  - pra ṇamya
+  - praṇ amya
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: devaṃ
+  source_authority: Scripture
+  transliteration: devaṃ
+  variations:
+  - devaṃ
+  - devam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: truth
+  source_authority: Scripture
+  transliteration: truth
+  variations:
+  - truth
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: brūhi
+  source_authority: Scripture
+  transliteration: brūhi
+  variations:
+  - brūhi
+  - bruuhi
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: prāptam
+  source_authority: Scripture
+  transliteration: prāptam
+  variations:
+  - praaptam
+  - prāptam
+  - prāp tam
+  - pr āptam
+  - prā ptam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: jñānam
+  source_authority: Scripture
+  transliteration: jñānam
+  variations:
+  - jñaanam
+  - jñānam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: prabho
+  source_authority: Scripture
+  transliteration: prabho
+  variations:
+  - prabho
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: bhaviṣyati
+  source_authority: Scripture
+  transliteration: bhaviṣyati
+  variations:
+  - bhavisyati
+  - bhaviṣyati
+  - bhav iṣyati
+  - bhaviṣ yati
+  - bhavi ṣyati
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: kathaṃ
+  source_authority: Scripture
+  transliteration: kathaṃ
+  variations:
+  - katham
+  - kathaṃ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: avāpnoti
+  source_authority: Scripture
+  transliteration: avāpnoti
+  variations:
+  - avā pnoti
+  - avaapnoti
+  - avāp noti
+  - avāpnoti
+  - avāpn oti
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: vairāgyaṃ
+  source_authority: Scripture
+  transliteration: vairāgyaṃ
+  variations:
+  - vair āgyaṃ
+  - vai rāgyaṃ
+  - vairā gyaṃ
+  - vairāgyaṃ
+  - vairaagyam
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: abhijñaḥ
+  source_authority: Scripture
+  transliteration: abhijñaḥ
+  variations:
+  - abhijñah
+  - abhi jñaḥ
+  - abhijñaḥ
+  - abh ijñaḥ
+  - abhij ñaḥ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: janmādy
+  source_authority: Scripture
+  transliteration: janmādy
+  variations:
+  - ja nmādy
+  - janm ādy
+  - janmādy
+  - jan mādy
+  - janmaady
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: ādi
+  source_authority: Scripture
+  transliteration: ādi
+  variations:
+  - ādi
+  - aadi
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: sūrayaḥ
+  source_authority: Scripture
+  transliteration: sūrayaḥ
+  variations:
+  - sūr ayaḥ
+  - sū rayaḥ
+  - sūra yaḥ
+  - suurayah
+  - sūrayaḥ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: hṛdā
+  source_authority: Scripture
+  transliteration: hṛdā
+  variations:
+  - hrdaa
+  - hṛdā
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: nvayād
+  source_authority: Scripture
+  transliteration: nvayād
+  variations:
+  - nvayād
+  - nvayaad
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: cārtheṣv
+  source_authority: Scripture
+  transliteration: cārtheṣv
+  variations:
+  - cārt heṣv
+  - caarthesv
+  - cārtheṣv
+  - cār theṣv
+  - cārth eṣv
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: svarāṭ
+  source_authority: Scripture
+  transliteration: svarāṭ
+  variations:
+  - svarāṭ
+  - svaraat
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: itarataś
+  source_authority: Scripture
+  transliteration: itarataś
+  variations:
+  - itara taś
+  - ita rataś
+  - itar ataś
+  - itaratash
+  - itarataś
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: śrīmad
+  source_authority: Scripture
+  transliteration: śrīmad
+  variations:
+  - śrīmad
+  - shriimad
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: purāṇe
+  source_authority: Scripture
+  transliteration: purāṇe
+  variations:
+  - puraane
+  - purāṇe
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: saṃvāde
+  source_authority: Scripture
+  transliteration: saṃvāde
+  variations:
+  - saṃ vāde
+  - saṃvāde
+  - sa ṃvāde
+  - samvaade
+  - saṃv āde
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: lakṣmī
+  source_authority: Scripture
+  transliteration: lakṣmī
+  variations:
+  - laksmii
+  - lakṣmī
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: hariḥ
+  source_authority: Scripture
+  transliteration: hariḥ
+  variations:
+  - harih
+  - hariḥ
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: garuḍa
+  source_authority: Scripture
+  transliteration: garuḍa
+  variations:
+  - garuda
+  - garuḍa
+- category: scripture
+  confidence: 0.7
+  difficulty_level: intermediate
+  is_proper_noun: false
+  meaning: Sanskrit term from scripture
+  original_term: purana
+  source_authority: Scripture
+  transliteration: purana
+  variations:
+  - purana
