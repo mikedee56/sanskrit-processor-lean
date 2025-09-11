@@ -1,0 +1,174 @@
+# Language Markers Configuration for Context Detection
+# Used by processors/context_detector.py to identify English vs Sanskrit content
+
+english_markers:
+  function_words:
+    - the
+    - is
+    - are  
+    - was
+    - were
+    - am
+    - be
+    - being
+    - been
+    - have
+    - has
+    - had
+    - do
+    - does
+    - did
+    - will
+    - would
+    - could
+    - should
+    - may
+    - might
+    - can
+    - shall
+    - must
+    - ought
+    - a
+    - an
+    - and
+    - or
+    - but
+    - nor
+    - for
+    - yet
+    - so
+    - in
+    - on
+    - at
+    - by
+    - to
+    - of
+    - with
+    - from
+    - about
+
+  progressive_tense_words:
+    - treading
+    - reading  
+    - leading
+    - heading
+    - feeding
+    - needing
+
+  past_tense_words:
+    - agitated
+    - meditated
+    - dedicated
+    - concentrated
+    - frustrated
+
+  modal_patterns:
+    - "was "
+    - "were "
+    - "is "
+    - "are "
+
+  # English words that should NEVER be processed as Sanskrit
+  blocklist:
+    - treading
+    - reading
+    - leading
+    - heading
+    - feeding
+    - needing
+    - agitated
+    - meditated
+    - dedicated
+    - concentrated
+    - frustrated
+    - guru
+    - teacher
+    - student
+    - devotee
+    - practitioner
+    - master
+    - the
+    - they
+    - them
+    - their
+    - there
+    - these
+    - those
+    - this
+    - was
+    - were
+    - will
+    - would
+    - when
+    - where
+    - what
+    - who
+    - through
+    - forest
+    - delay
+    - session
+    - together
+    - carefully
+
+sanskrit_markers:
+  # Unicode diacritical characters used in Sanskrit
+  diacriticals:
+    - ā  # \u0101
+    - ī  # \u012b  
+    - ū  # \u016b
+    - ṛ  # \u1e5b
+    - ṝ  # \u1e5d
+    - ḷ  # \u1e37
+    - ṅ  # \u1e45
+    - ñ  # \u00f1
+    - ṇ  # \u1e47
+    - ṭ  # \u1e6d
+    - ḍ  # \u1e0d
+    - ś  # \u015b
+    - ṣ  # \u1e63
+    - ḥ  # \u1e25
+    - ṁ  # \u1e43
+
+  # Sacred terms and common Sanskrit words
+  sacred_terms:
+    - oṁ
+    - oṃ
+    - namaḥ
+    - namah
+    - śrī
+    - sri
+    - mahā
+    - maha
+    - bhagavad
+    - gītā
+    - gita
+    - rāmāyaṇa
+    - ramayana
+    - dharma
+    - karma
+    - yoga
+    - vedanta
+    - upaniṣad
+    - upanishad
+    - kṛṣṇa
+    - krishna
+    - rāma
+    - rama
+
+  # Common Sanskrit word endings
+  common_suffixes:
+    - āya
+    - aya
+    - āni
+    - ani
+    - asya
+    - ānām
+    - anam
+
+# Context detection thresholds
+thresholds:
+  english_confidence_threshold: 0.7
+  sanskrit_confidence_threshold: 0.7
+  diacritical_density_high: 0.3  # >30% = Sanskrit context
+  diacritical_density_medium: 0.1  # >10% = Some Sanskrit
+  english_markers_required: 2  # Need 2+ English markers for English context
