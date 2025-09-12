@@ -1,0 +1,48 @@
+{
+  "mcp_responses": {
+    "semantic_analysis": {
+      "confidence": 0.85,
+      "corrections": [
+        {
+          "original": "filosofy",
+          "corrected": "philosophy",
+          "confidence": 0.9
+        },
+        {
+          "original": "darma",
+          "corrected": "dharma",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "batch_processing": {
+      "processed_count": 100,
+      "success_rate": 0.92,
+      "processing_time": 2.3
+    }
+  },
+  "api_responses": {
+    "scripture_lookup": [
+      {
+        "verse": "योगस्थः कुरु कर्माणि सङ्गं त्यक्त्वा धनञ्जय",
+        "translation": "Established in yoga, perform actions abandoning attachment, O Dhananjaya",
+        "reference": "Bhagavad Gītā 2.48"
+      }
+    ],
+    "iast_validation": {
+      "valid_terms": [
+        "yoga",
+        "dharma",
+        "karma"
+      ],
+      "invalid_terms": [
+        "yogabashi",
+        "darma"
+      ],
+      "suggestions": {
+        "yogabashi": "yogavāsiṣṭha",
+        "darma": "dharma"
+      }
+    }
+  }
+}

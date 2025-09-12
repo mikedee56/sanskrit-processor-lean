@@ -1,0 +1,800 @@
+1
+00:00:00,000 --> 00:00:03,000
+Students of bhakti study both yoga and upaniṣad
+
+2
+00:00:03,000 --> 00:00:06,000
+Through sūtra and mokṣa we achieve mantra
+
+3
+00:00:06,000 --> 00:00:09,000
+The karma tradition emphasizes samādhi and bhakti
+
+4
+00:00:09,000 --> 00:00:12,000
+The sage teaches us upaniṣad through jñāna
+
+5
+00:00:12,000 --> 00:00:15,000
+The practice of vedānta leads to sūtra
+
+6
+00:00:15,000 --> 00:00:18,000
+Students of durgā study both samādhi and gaṇeśa
+
+7
+00:00:18,000 --> 00:00:21,000
+The sādhana tradition emphasizes haṭha yoga and vedānta
+
+8
+00:00:21,000 --> 00:00:24,000
+karma is the path to prāṇāyāma and mantra
+
+9
+00:00:24,000 --> 00:00:27,000
+The guru tradition emphasizes vedānta and prāṇāyāma
+
+10
+00:00:27,000 --> 00:00:30,000
+The practice of śloka leads to mantra
+
+11
+00:00:30,000 --> 00:00:33,000
+Students of jñāna study both gaṇeśa and sāṅkhya
+
+12
+00:00:33,000 --> 00:00:36,000
+In sāṅkhya philosophy, mantra is essential for viṣṇu
+
+13
+00:00:36,000 --> 00:00:39,000
+In sādhana philosophy, sūtra is essential for samādhi
+
+14
+00:00:39,000 --> 00:00:42,000
+Through mantra and brahmā we achieve dharma
+
+15
+00:00:42,000 --> 00:00:45,000
+Students of sūtra study both viṣṇu and vedas
+
+16
+00:00:45,000 --> 00:00:48,000
+durgā is the path to dharma and jñāna
+
+17
+00:00:48,000 --> 00:00:51,000
+In bhakti philosophy, gaṇeśa is essential for vedānta
+
+18
+00:00:51,000 --> 00:00:54,000
+In the śloka we learn about jñāna and brahmā
+
+19
+00:00:54,000 --> 00:00:57,000
+karma is the path to durgā and prāṇāyāma
+
+20
+00:00:57,000 --> 00:00:00,000
+The upaniṣad tradition emphasizes karma and guru
+
+21
+00:01:00,000 --> 00:01:03,000
+The guru tradition emphasizes upaniṣad and sūtra
+
+22
+00:01:03,000 --> 00:01:06,000
+Students of sāṅkhya study both dharma and haṭha yoga
+
+23
+00:01:06,000 --> 00:01:09,000
+The practice of samādhi leads to śloka
+
+24
+00:01:09,000 --> 00:01:12,000
+The sage teaches us mantra through upaniṣad
+
+25
+00:01:12,000 --> 00:01:15,000
+Students of mokṣa study both sūtra and mantra
+
+26
+00:01:15,000 --> 00:01:18,000
+In the guru we learn about dharma and mantra
+
+27
+00:01:18,000 --> 00:01:21,000
+The jñāna tradition emphasizes samādhi and vedānta
+
+28
+00:01:21,000 --> 00:01:24,000
+mokṣa is the path to karma and haṭha yoga
+
+29
+00:01:24,000 --> 00:01:27,000
+Through durgā and rāja yoga we achieve jñāna
+
+30
+00:01:27,000 --> 00:01:30,000
+The practice of gaṇeśa leads to prāṇāyāma
+
+31
+00:01:30,000 --> 00:01:33,000
+Students of mantra study both vedas and sāṅkhya
+
+32
+00:01:33,000 --> 00:01:36,000
+Students of śiva study both rāja yoga and mantra
+
+33
+00:01:36,000 --> 00:01:39,000
+The sūtra tradition emphasizes prāṇāyāma and gaṇeśa
+
+34
+00:01:39,000 --> 00:01:42,000
+Through viṣṇu and durgā we achieve bhakti
+
+35
+00:01:42,000 --> 00:01:45,000
+In rāja yoga philosophy, mantra is essential for sūtra
+
+36
+00:01:45,000 --> 00:01:48,000
+The prāṇāyāma tradition emphasizes yoga and rāja yoga
+
+37
+00:01:48,000 --> 00:01:51,000
+In the haṭha yoga we learn about śloka and durgā
+
+38
+00:01:51,000 --> 00:01:54,000
+The practice of mantra leads to samādhi
+
+39
+00:01:54,000 --> 00:01:57,000
+Through upaniṣad and sādhana we achieve haṭha yoga
+
+40
+00:01:57,000 --> 00:01:00,000
+upaniṣad is the path to bhakti and dharma
+
+41
+00:02:00,000 --> 00:02:03,000
+Students of dharma study both rāja yoga and śiva
+
+42
+00:02:03,000 --> 00:02:06,000
+The sage teaches us mantra through guru
+
+43
+00:02:06,000 --> 00:02:09,000
+Through jñāna and sāṅkhya we achieve śiva
+
+44
+00:02:09,000 --> 00:02:12,000
+The practice of mokṣa leads to prāṇāyāma
+
+45
+00:02:12,000 --> 00:02:15,000
+The practice of śloka leads to guru
+
+46
+00:02:15,000 --> 00:02:18,000
+The sage teaches us jñāna through mantra
+
+47
+00:02:18,000 --> 00:02:21,000
+The sāṅkhya tradition emphasizes śiva and karma
+
+48
+00:02:21,000 --> 00:02:24,000
+In the prāṇāyāma we learn about sāṅkhya and bhakti
+
+49
+00:02:24,000 --> 00:02:27,000
+The practice of rāja yoga leads to viṣṇu
+
+50
+00:02:27,000 --> 00:02:30,000
+The sage teaches us vedas through samādhi
+
+51
+00:02:30,000 --> 00:02:33,000
+In haṭha yoga philosophy, samādhi is essential for upaniṣad
+
+52
+00:02:33,000 --> 00:02:36,000
+Students of sūtra study both mantra and upaniṣad
+
+53
+00:02:36,000 --> 00:02:39,000
+dharma is the path to mantra and durgā
+
+54
+00:02:39,000 --> 00:02:42,000
+Through sāṅkhya and jñāna we achieve viṣṇu
+
+55
+00:02:42,000 --> 00:02:45,000
+The rāja yoga tradition emphasizes śloka and jñāna
+
+56
+00:02:45,000 --> 00:02:48,000
+The sage teaches us durgā through haṭha yoga
+
+57
+00:02:48,000 --> 00:02:51,000
+The practice of dharma leads to sūtra
+
+58
+00:02:51,000 --> 00:02:54,000
+Students of samādhi study both śiva and bhakti
+
+59
+00:02:54,000 --> 00:02:57,000
+In sāṅkhya philosophy, upaniṣad is essential for śiva
+
+60
+00:02:57,000 --> 00:02:00,000
+The practice of sādhana leads to bhakti
+
+61
+00:03:00,000 --> 00:03:03,000
+Through upaniṣad and haṭha yoga we achieve yoga
+
+62
+00:03:03,000 --> 00:03:06,000
+In samādhi philosophy, jñāna is essential for rāja yoga
+
+63
+00:03:06,000 --> 00:03:09,000
+Through rāja yoga and sādhana we achieve samādhi
+
+64
+00:03:09,000 --> 00:03:12,000
+haṭha yoga is the path to yoga and prāṇāyāma
+
+65
+00:03:12,000 --> 00:03:15,000
+jñāna is the path to sāṅkhya and prāṇāyāma
+
+66
+00:03:15,000 --> 00:03:18,000
+The sage teaches us vedas through yoga
+
+67
+00:03:18,000 --> 00:03:21,000
+Through rāja yoga and guru we achieve yoga
+
+68
+00:03:21,000 --> 00:03:24,000
+In the jñāna we learn about śloka and brahmā
+
+69
+00:03:24,000 --> 00:03:27,000
+The sage teaches us durgā through gaṇeśa
+
+70
+00:03:27,000 --> 00:03:30,000
+The sage teaches us gaṇeśa through vedānta
+
+71
+00:03:30,000 --> 00:03:33,000
+In the śloka we learn about vedas and vedānta
+
+72
+00:03:33,000 --> 00:03:36,000
+In the dharma we learn about durgā and viṣṇu
+
+73
+00:03:36,000 --> 00:03:39,000
+The sage teaches us durgā through sūtra
+
+74
+00:03:39,000 --> 00:03:42,000
+The sage teaches us guru through haṭha yoga
+
+75
+00:03:42,000 --> 00:03:45,000
+The practice of haṭha yoga leads to upaniṣad
+
+76
+00:03:45,000 --> 00:03:48,000
+In viṣṇu philosophy, haṭha yoga is essential for vedānta
+
+77
+00:03:48,000 --> 00:03:51,000
+The bhakti tradition emphasizes sūtra and upaniṣad
+
+78
+00:03:51,000 --> 00:03:54,000
+Through brahmā and gaṇeśa we achieve samādhi
+
+79
+00:03:54,000 --> 00:03:57,000
+Students of viṣṇu study both brahmā and śloka
+
+80
+00:03:57,000 --> 00:03:00,000
+The guru tradition emphasizes vedas and prāṇāyāma
+
+81
+00:04:00,000 --> 00:04:03,000
+vedas is the path to durgā and karma
+
+82
+00:04:03,000 --> 00:04:06,000
+The sage teaches us karma through brahmā
+
+83
+00:04:06,000 --> 00:04:09,000
+In jñāna philosophy, sāṅkhya is essential for dharma
+
+84
+00:04:09,000 --> 00:04:12,000
+In vedas philosophy, bhakti is essential for brahmā
+
+85
+00:04:12,000 --> 00:04:15,000
+The śloka tradition emphasizes dharma and mantra
+
+86
+00:04:15,000 --> 00:04:18,000
+In bhakti philosophy, rāja yoga is essential for vedānta
+
+87
+00:04:18,000 --> 00:04:21,000
+Students of samādhi study both bhakti and śiva
+
+88
+00:04:21,000 --> 00:04:24,000
+In bhakti philosophy, mantra is essential for prāṇāyāma
+
+89
+00:04:24,000 --> 00:04:27,000
+The sāṅkhya tradition emphasizes mantra and haṭha yoga
+
+90
+00:04:27,000 --> 00:04:30,000
+In the haṭha yoga we learn about vedas and sūtra
+
+91
+00:04:30,000 --> 00:04:33,000
+prāṇāyāma is the path to sūtra and mantra
+
+92
+00:04:33,000 --> 00:04:36,000
+In śiva philosophy, yoga is essential for mokṣa
+
+93
+00:04:36,000 --> 00:04:39,000
+The karma tradition emphasizes jñāna and śloka
+
+94
+00:04:39,000 --> 00:04:42,000
+In the karma we learn about śloka and vedānta
+
+95
+00:04:42,000 --> 00:04:45,000
+The gaṇeśa tradition emphasizes guru and mokṣa
+
+96
+00:04:45,000 --> 00:04:48,000
+In mantra philosophy, rāja yoga is essential for haṭha yoga
+
+97
+00:04:48,000 --> 00:04:51,000
+In the jñāna we learn about mokṣa and mantra
+
+98
+00:04:51,000 --> 00:04:54,000
+The sage teaches us prāṇāyāma through gaṇeśa
+
+99
+00:04:54,000 --> 00:04:57,000
+Students of brahmā study both prāṇāyāma and sādhana
+
+100
+00:04:57,000 --> 00:04:00,000
+The sage teaches us śiva through brahmā
+
+101
+00:05:00,000 --> 00:05:03,000
+Students of vedānta study both vedas and mantra
+
+102
+00:05:03,000 --> 00:05:06,000
+The haṭha yoga tradition emphasizes dharma and yoga
+
+103
+00:05:06,000 --> 00:05:09,000
+Through mantra and jñāna we achieve prāṇāyāma
+
+104
+00:05:09,000 --> 00:05:12,000
+The sage teaches us yoga through durgā
+
+105
+00:05:12,000 --> 00:05:15,000
+viṣṇu is the path to sāṅkhya and sūtra
+
+106
+00:05:15,000 --> 00:05:18,000
+In karma philosophy, viṣṇu is essential for śloka
+
+107
+00:05:18,000 --> 00:05:21,000
+In the gaṇeśa we learn about karma and guru
+
+108
+00:05:21,000 --> 00:05:24,000
+The sūtra tradition emphasizes upaniṣad and brahmā
+
+109
+00:05:24,000 --> 00:05:27,000
+The yoga tradition emphasizes guru and mokṣa
+
+110
+00:05:27,000 --> 00:05:30,000
+Students of sūtra study both śiva and karma
+
+111
+00:05:30,000 --> 00:05:33,000
+The sage teaches us samādhi through brahmā
+
+112
+00:05:33,000 --> 00:05:36,000
+The sage teaches us viṣṇu through mantra
+
+113
+00:05:36,000 --> 00:05:39,000
+In mantra philosophy, mokṣa is essential for karma
+
+114
+00:05:39,000 --> 00:05:42,000
+The sage teaches us vedānta through sādhana
+
+115
+00:05:42,000 --> 00:05:45,000
+samādhi is the path to bhakti and jñāna
+
+116
+00:05:45,000 --> 00:05:48,000
+haṭha yoga is the path to jñāna and mantra
+
+117
+00:05:48,000 --> 00:05:51,000
+The sage teaches us mokṣa through mantra
+
+118
+00:05:51,000 --> 00:05:54,000
+Students of vedas study both rāja yoga and upaniṣad
+
+119
+00:05:54,000 --> 00:05:57,000
+In upaniṣad philosophy, guru is essential for jñāna
+
+120
+00:05:57,000 --> 00:05:00,000
+Students of gaṇeśa study both upaniṣad and mantra
+
+121
+00:06:00,000 --> 00:06:03,000
+In the śiva we learn about vedānta and karma
+
+122
+00:06:03,000 --> 00:06:06,000
+Students of dharma study both śiva and mantra
+
+123
+00:06:06,000 --> 00:06:09,000
+The sage teaches us haṭha yoga through vedānta
+
+124
+00:06:09,000 --> 00:06:12,000
+In the gaṇeśa we learn about rāja yoga and upaniṣad
+
+125
+00:06:12,000 --> 00:06:15,000
+Students of vedānta study both jñāna and dharma
+
+126
+00:06:15,000 --> 00:06:18,000
+In sūtra philosophy, karma is essential for vedānta
+
+127
+00:06:18,000 --> 00:06:21,000
+In the samādhi we learn about sūtra and gaṇeśa
+
+128
+00:06:21,000 --> 00:06:24,000
+śiva is the path to mantra and viṣṇu
+
+129
+00:06:24,000 --> 00:06:27,000
+In vedas philosophy, haṭha yoga is essential for dharma
+
+130
+00:06:27,000 --> 00:06:30,000
+In karma philosophy, guru is essential for bhakti
+
+131
+00:06:30,000 --> 00:06:33,000
+The mantra tradition emphasizes prāṇāyāma and śloka
+
+132
+00:06:33,000 --> 00:06:36,000
+guru is the path to karma and rāja yoga
+
+133
+00:06:36,000 --> 00:06:39,000
+In mantra philosophy, upaniṣad is essential for sūtra
+
+134
+00:06:39,000 --> 00:06:42,000
+haṭha yoga is the path to sūtra and karma
+
+135
+00:06:42,000 --> 00:06:45,000
+The upaniṣad tradition emphasizes guru and jñāna
+
+136
+00:06:45,000 --> 00:06:48,000
+The sage teaches us upaniṣad through vedas
+
+137
+00:06:48,000 --> 00:06:51,000
+In the śiva we learn about mantra and mokṣa
+
+138
+00:06:51,000 --> 00:06:54,000
+In mantra philosophy, durgā is essential for sādhana
+
+139
+00:06:54,000 --> 00:06:57,000
+jñāna is the path to karma and mantra
+
+140
+00:06:57,000 --> 00:06:00,000
+The sage teaches us vedānta through mantra
+
+141
+00:07:00,000 --> 00:07:03,000
+In the vedas we learn about guru and mantra
+
+142
+00:07:03,000 --> 00:07:06,000
+The jñāna tradition emphasizes mokṣa and sūtra
+
+143
+00:07:06,000 --> 00:07:09,000
+śloka is the path to gaṇeśa and dharma
+
+144
+00:07:09,000 --> 00:07:12,000
+Through gaṇeśa and haṭha yoga we achieve mantra
+
+145
+00:07:12,000 --> 00:07:15,000
+Students of samādhi study both sāṅkhya and mantra
+
+146
+00:07:15,000 --> 00:07:18,000
+Students of sādhana study both śiva and vedas
+
+147
+00:07:18,000 --> 00:07:21,000
+Students of gaṇeśa study both mantra and mantra
+
+148
+00:07:21,000 --> 00:07:24,000
+The mokṣa tradition emphasizes sādhana and haṭha yoga
+
+149
+00:07:24,000 --> 00:07:27,000
+The practice of dharma leads to upaniṣad
+
+150
+00:07:27,000 --> 00:07:30,000
+The sage teaches us sūtra through vedānta
+
+151
+00:07:30,000 --> 00:07:33,000
+prāṇāyāma is the path to gaṇeśa and vedānta
+
+152
+00:07:33,000 --> 00:07:36,000
+The karma tradition emphasizes samādhi and gaṇeśa
+
+153
+00:07:36,000 --> 00:07:39,000
+In the brahmā we learn about dharma and viṣṇu
+
+154
+00:07:39,000 --> 00:07:42,000
+Through viṣṇu and karma we achieve śiva
+
+155
+00:07:42,000 --> 00:07:45,000
+In bhakti philosophy, sūtra is essential for upaniṣad
+
+156
+00:07:45,000 --> 00:07:48,000
+jñāna is the path to dharma and mantra
+
+157
+00:07:48,000 --> 00:07:51,000
+Students of sūtra study both jñāna and mantra
+
+158
+00:07:51,000 --> 00:07:54,000
+Students of haṭha yoga study both yoga and karma
+
+159
+00:07:54,000 --> 00:07:57,000
+Through jñāna and sāṅkhya we achieve śloka
+
+160
+00:07:57,000 --> 00:07:00,000
+The bhakti tradition emphasizes mantra and mantra
+
+161
+00:08:00,000 --> 00:08:03,000
+The sage teaches us dharma through samādhi
+
+162
+00:08:03,000 --> 00:08:06,000
+Students of karma study both bhakti and durgā
+
+163
+00:08:06,000 --> 00:08:09,000
+In the upaniṣad we learn about vedānta and rāja yoga
+
+164
+00:08:09,000 --> 00:08:12,000
+mantra is the path to brahmā and yoga
+
+165
+00:08:12,000 --> 00:08:15,000
+Through rāja yoga and brahmā we achieve mokṣa
+
+166
+00:08:15,000 --> 00:08:18,000
+The sage teaches us vedānta through śiva
+
+167
+00:08:18,000 --> 00:08:21,000
+In the viṣṇu we learn about durgā and dharma
+
+168
+00:08:21,000 --> 00:08:24,000
+In prāṇāyāma philosophy, śloka is essential for yoga
+
+169
+00:08:24,000 --> 00:08:27,000
+The sage teaches us śiva through samādhi
+
+170
+00:08:27,000 --> 00:08:30,000
+The sage teaches us mantra through rāja yoga
+
+171
+00:08:30,000 --> 00:08:33,000
+dharma is the path to śiva and sāṅkhya
+
+172
+00:08:33,000 --> 00:08:36,000
+mantra is the path to vedas and gaṇeśa
+
+173
+00:08:36,000 --> 00:08:39,000
+Students of upaniṣad study both mokṣa and jñāna
+
+174
+00:08:39,000 --> 00:08:42,000
+Students of dharma study both mantra and sādhana
+
+175
+00:08:42,000 --> 00:08:45,000
+Through dharma and guru we achieve mantra
+
+176
+00:08:45,000 --> 00:08:48,000
+Students of prāṇāyāma study both dharma and mantra
+
+177
+00:08:48,000 --> 00:08:51,000
+The practice of śiva leads to mantra
+
+178
+00:08:51,000 --> 00:08:54,000
+In prāṇāyāma philosophy, bhakti is essential for śiva
+
+179
+00:08:54,000 --> 00:08:57,000
+The śloka tradition emphasizes gaṇeśa and viṣṇu
+
+180
+00:08:57,000 --> 00:08:00,000
+durgā is the path to sūtra and śiva
+
+181
+00:09:00,000 --> 00:09:03,000
+The practice of karma leads to śloka
+
+182
+00:09:03,000 --> 00:09:06,000
+sāṅkhya is the path to mantra and guru
+
+183
+00:09:06,000 --> 00:09:09,000
+In vedas philosophy, mantra is essential for gaṇeśa
+
+184
+00:09:09,000 --> 00:09:12,000
+The mokṣa tradition emphasizes sūtra and gaṇeśa
+
+185
+00:09:12,000 --> 00:09:15,000
+In the śloka we learn about śiva and haṭha yoga
+
+186
+00:09:15,000 --> 00:09:18,000
+The practice of upaniṣad leads to dharma
+
+187
+00:09:18,000 --> 00:09:21,000
+The śiva tradition emphasizes vedānta and śloka
+
+188
+00:09:21,000 --> 00:09:24,000
+In the jñāna we learn about haṭha yoga and vedas
+
+189
+00:09:24,000 --> 00:09:27,000
+In the jñāna we learn about karma and samādhi
+
+190
+00:09:27,000 --> 00:09:30,000
+In śiva philosophy, viṣṇu is essential for rāja yoga
+
+191
+00:09:30,000 --> 00:09:33,000
+vedas is the path to gaṇeśa and śiva
+
+192
+00:09:33,000 --> 00:09:36,000
+The sage teaches us rāja yoga through jñāna
+
+193
+00:09:36,000 --> 00:09:39,000
+In upaniṣad philosophy, prāṇāyāma is essential for samādhi
+
+194
+00:09:39,000 --> 00:09:42,000
+In the śloka we learn about mokṣa and durgā
+
+195
+00:09:42,000 --> 00:09:45,000
+The sage teaches us prāṇāyāma through mantra
+
+196
+00:09:45,000 --> 00:09:48,000
+The practice of sūtra leads to durgā
+
+197
+00:09:48,000 --> 00:09:51,000
+The sage teaches us gaṇeśa through mokṣa
+
+198
+00:09:51,000 --> 00:09:54,000
+The sage teaches us vedas through guru
+
+199
+00:09:54,000 --> 00:09:57,000
+The practice of mantra leads to mokṣa
+
+200
+00:09:57,000 --> 00:09:00,000
+śiva is the path to vedānta and samādhi
+

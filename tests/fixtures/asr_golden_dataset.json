@@ -1,0 +1,539 @@
+{
+  "asr_test_dataset": {
+    "version": "1.0",
+    "created": "2024-01-15",
+    "total_cases": 52,
+    "categories": {
+      "phonetic_substitution": [
+        {
+          "id": "ph_001",
+          "input": "filosofy",
+          "expected": "philosophy",
+          "category": "phonetic_substitution",
+          "pattern": "ph→f",
+          "difficulty": "easy",
+          "confidence_threshold": 0.9,
+          "notes": "Common ASR phonetic error"
+        },
+        {
+          "id": "ph_002",
+          "input": "darma",
+          "expected": "dharma",
+          "category": "phonetic_substitution", 
+          "pattern": "th→t",
+          "difficulty": "easy",
+          "confidence_threshold": 0.9,
+          "notes": "Sanskrit th sound often transcribed as t"
+        },
+        {
+          "id": "ph_003",
+          "input": "wasistha",
+          "expected": "vāsiṣṭha",
+          "category": "phonetic_substitution",
+          "pattern": "v→w",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Sanskrit v sound confusion with w"
+        },
+        {
+          "id": "ph_004",
+          "input": "siva",
+          "expected": "śiva",
+          "category": "phonetic_substitution",
+          "pattern": "sh→s",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Sanskrit śa sound transcribed as s"
+        },
+        {
+          "id": "ph_005",
+          "input": "krisna",
+          "expected": "kṛṣṇa",
+          "category": "phonetic_substitution",
+          "pattern": "sh→s",
+          "difficulty": "hard",
+          "confidence_threshold": 0.7,
+          "notes": "Multiple Sanskrit sounds in one word"
+        },
+        {
+          "id": "ph_006",
+          "input": "ganesha",
+          "expected": "gaṇeśa",
+          "category": "phonetic_substitution",
+          "pattern": "sh→ś",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Sanskrit śa sound"
+        },
+        {
+          "id": "ph_007",
+          "input": "prakrti",
+          "expected": "prakṛti",
+          "category": "phonetic_substitution",
+          "pattern": "r→ṛ",
+          "difficulty": "hard",
+          "confidence_threshold": 0.7,
+          "notes": "Sanskrit vocalic r"
+        },
+        {
+          "id": "ph_008",
+          "input": "samskara",
+          "expected": "saṁskāra",
+          "category": "phonetic_substitution",
+          "pattern": "m→ṁ",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Sanskrit anusvāra"
+        },
+        {
+          "id": "ph_009",
+          "input": "pranayama",
+          "expected": "prāṇāyāma",
+          "category": "phonetic_substitution",
+          "pattern": "a→ā",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Long vowel markings"
+        },
+        {
+          "id": "ph_010",
+          "input": "mantra",
+          "expected": "mantra",
+          "category": "phonetic_substitution",
+          "pattern": "already_correct",
+          "difficulty": "easy",
+          "confidence_threshold": 0.95,
+          "notes": "Should remain unchanged"
+        },
+        {
+          "id": "ph_011",
+          "input": "chakra",
+          "expected": "cakra",
+          "category": "phonetic_substitution",
+          "pattern": "ch→c",
+          "difficulty": "easy",
+          "confidence_threshold": 0.9,
+          "notes": "Sanskrit ca sound"
+        },
+        {
+          "id": "ph_012",
+          "input": "bhakti",
+          "expected": "bhakti",
+          "category": "phonetic_substitution",
+          "pattern": "already_correct",
+          "difficulty": "easy",
+          "confidence_threshold": 0.95,
+          "notes": "Should remain unchanged"
+        },
+        {
+          "id": "ph_013",
+          "input": "nirvana",
+          "expected": "nirvāṇa",
+          "category": "phonetic_substitution",
+          "pattern": "a→ā",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Long vowel marking"
+        },
+        {
+          "id": "ph_014",
+          "input": "moksha",
+          "expected": "mokṣa",
+          "category": "phonetic_substitution",
+          "pattern": "sh→ṣ",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Retroflex śa sound"
+        },
+        {
+          "id": "ph_015",
+          "input": "sadhana",
+          "expected": "sādhana",
+          "category": "phonetic_substitution",
+          "pattern": "a→ā",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Long vowel marking"
+        }
+      ],
+      "case_variations": [
+        {
+          "id": "case_001",
+          "input": "YOGA VASISTHA",
+          "expected": "Yogavāsiṣṭha",
+          "category": "case_variation",
+          "pattern": "all_caps",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "All caps proper noun correction"
+        },
+        {
+          "id": "case_002",
+          "input": "karma yoga",
+          "expected": "karma yoga",
+          "category": "case_variation",
+          "pattern": "lowercase",
+          "difficulty": "easy",
+          "confidence_threshold": 0.9,
+          "notes": "Lowercase compound term"
+        },
+        {
+          "id": "case_003",
+          "input": "JNANA",
+          "expected": "jñāna",
+          "category": "case_variation",
+          "pattern": "all_caps",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "All caps to lowercase with diacritics"
+        },
+        {
+          "id": "case_004",
+          "input": "bhagavad gita",
+          "expected": "Bhagavadgītā",
+          "category": "case_variation",
+          "pattern": "title_case",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Scripture title proper case"
+        },
+        {
+          "id": "case_005",
+          "input": "RAMAYANA",
+          "expected": "Rāmāyaṇa",
+          "category": "case_variation",
+          "pattern": "all_caps",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Epic title with diacritics"
+        },
+        {
+          "id": "case_006",
+          "input": "mahabharata",
+          "expected": "Mahābhārata",
+          "category": "case_variation",
+          "pattern": "lowercase",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Epic title proper case"
+        },
+        {
+          "id": "case_007",
+          "input": "upanishad",
+          "expected": "upaniṣad",
+          "category": "case_variation",
+          "pattern": "lowercase",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Scripture category with diacritics"
+        },
+        {
+          "id": "case_008",
+          "input": "PATANJALI",
+          "expected": "Patañjali",
+          "category": "case_variation",
+          "pattern": "all_caps",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Sage name proper case"
+        },
+        {
+          "id": "case_009",
+          "input": "VEDANTA",
+          "expected": "Vedānta",
+          "category": "case_variation",
+          "pattern": "all_caps",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Philosophy name"
+        },
+        {
+          "id": "case_010",
+          "input": "yoga sutras",
+          "expected": "Yoga Sūtras",
+          "category": "case_variation",
+          "pattern": "title_case",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Scripture title with diacritics"
+        }
+      ],
+      "compound_words": [
+        {
+          "id": "comp_001",
+          "input": "karma yoga",
+          "expected": "karma yoga",
+          "category": "compound_word",
+          "pattern": "space_maintained",
+          "difficulty": "easy",
+          "confidence_threshold": 0.95,
+          "notes": "Compound maintained as separate words"
+        },
+        {
+          "id": "comp_002",
+          "input": "maha bharata",
+          "expected": "Mahābhārata",
+          "category": "compound_word",
+          "pattern": "space_to_compound",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Epic title compound"
+        },
+        {
+          "id": "comp_003",
+          "input": "sapta bhoomi",
+          "expected": "sapta-bhūmi",
+          "category": "compound_word",
+          "pattern": "space_to_hyphen",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Hyphenated compound with diacritics"
+        },
+        {
+          "id": "comp_004",
+          "input": "yoga vasistha",
+          "expected": "Yogavāsiṣṭha",
+          "category": "compound_word",
+          "pattern": "space_to_compound",
+          "difficulty": "hard",
+          "confidence_threshold": 0.7,
+          "notes": "Scripture title compound"
+        },
+        {
+          "id": "comp_005",
+          "input": "bhagavad gita",
+          "expected": "Bhagavadgītā",
+          "category": "compound_word",
+          "pattern": "space_to_compound",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Famous scripture compound"
+        },
+        {
+          "id": "comp_006",
+          "input": "hatha yoga",
+          "expected": "haṭha yoga",
+          "category": "compound_word",
+          "pattern": "space_maintained",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Yoga type with diacritics"
+        },
+        {
+          "id": "comp_007",
+          "input": "raja yoga",
+          "expected": "rāja yoga",
+          "category": "compound_word",
+          "pattern": "space_maintained",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Yoga type with diacritics"
+        },
+        {
+          "id": "comp_008",
+          "input": "jnana yoga",
+          "expected": "jñāna yoga",
+          "category": "compound_word",
+          "pattern": "space_maintained",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Yoga path with diacritics"
+        },
+        {
+          "id": "comp_009",
+          "input": "karma kanda",
+          "expected": "karma-kāṇḍa",
+          "category": "compound_word",
+          "pattern": "space_to_hyphen",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Vedic section compound"
+        },
+        {
+          "id": "comp_010",
+          "input": "moksha dharma",
+          "expected": "mokṣa dharma",
+          "category": "compound_word",
+          "pattern": "space_maintained",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Philosophy compound with diacritics"
+        }
+      ],
+      "asr_transcription_errors": [
+        {
+          "id": "asr_001",
+          "input": "yogabashi",
+          "expected": "Yogavāsiṣṭha",
+          "category": "asr_transcription_error",
+          "pattern": "phonetic_corruption",
+          "difficulty": "hard",
+          "confidence_threshold": 0.6,
+          "notes": "Heavy ASR corruption of scripture name"
+        },
+        {
+          "id": "asr_002",
+          "input": "shivashistha",
+          "expected": "Śivāśiṣṭa",
+          "category": "asr_transcription_error",
+          "pattern": "phonetic_corruption",
+          "difficulty": "hard",
+          "confidence_threshold": 0.6,
+          "notes": "ASR confusion of similar Sanskrit name"
+        },
+        {
+          "id": "asr_003",
+          "input": "malagrasth",
+          "expected": "mala-grasta",
+          "category": "asr_transcription_error",
+          "pattern": "phonetic_corruption",
+          "difficulty": "hard",
+          "confidence_threshold": 0.6,
+          "notes": "ASR compound word corruption"
+        },
+        {
+          "id": "asr_004",
+          "input": "bhagabat",
+          "expected": "Bhagavat",
+          "category": "asr_transcription_error",
+          "pattern": "phonetic_substitution",
+          "difficulty": "medium",
+          "confidence_threshold": 0.7,
+          "notes": "Common divine title ASR error"
+        },
+        {
+          "id": "asr_005",
+          "input": "patangali",
+          "expected": "Patañjali",
+          "category": "asr_transcription_error",
+          "pattern": "phonetic_substitution",
+          "difficulty": "medium",
+          "confidence_threshold": 0.7,
+          "notes": "Sage name ASR error"
+        },
+        {
+          "id": "asr_006",
+          "input": "sanscreet",
+          "expected": "Sanskrit",
+          "category": "asr_transcription_error",
+          "pattern": "phonetic_corruption",
+          "difficulty": "easy",
+          "confidence_threshold": 0.8,
+          "notes": "Language name ASR error"
+        },
+        {
+          "id": "asr_007",
+          "input": "pranayam",
+          "expected": "prāṇāyāma",
+          "category": "asr_transcription_error",
+          "pattern": "truncation",
+          "difficulty": "medium",
+          "confidence_threshold": 0.7,
+          "notes": "ASR truncation of final syllable"
+        },
+        {
+          "id": "asr_008",
+          "input": "samadhi",
+          "expected": "samādhi",
+          "category": "asr_transcription_error",
+          "pattern": "vowel_length",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Missing long vowel marking"
+        },
+        {
+          "id": "asr_009",
+          "input": "ashrama",
+          "expected": "āśrama",
+          "category": "asr_transcription_error",
+          "pattern": "initial_vowel",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Missing initial long vowel"
+        },
+        {
+          "id": "asr_010",
+          "input": "guru",
+          "expected": "guru",
+          "category": "asr_transcription_error",
+          "pattern": "already_correct",
+          "difficulty": "easy",
+          "confidence_threshold": 0.95,
+          "notes": "Should remain unchanged"
+        }
+      ],
+      "diacritical_issues": [
+        {
+          "id": "diac_001",
+          "input": "jnana",
+          "expected": "jñāna",
+          "category": "diacritical_issue",
+          "pattern": "missing_conjunct",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Missing conjunct consonant and long vowel"
+        },
+        {
+          "id": "diac_002",
+          "input": "dharma",
+          "expected": "dharma",
+          "category": "diacritical_issue",
+          "pattern": "already_correct",
+          "difficulty": "easy",
+          "confidence_threshold": 0.95,
+          "notes": "Should remain unchanged"
+        },
+        {
+          "id": "diac_003",
+          "input": "krishna",
+          "expected": "kṛṣṇa",
+          "category": "diacritical_issue",
+          "pattern": "missing_vocalic_r",
+          "difficulty": "hard",
+          "confidence_threshold": 0.7,
+          "notes": "Missing vocalic r and retroflex sounds"
+        },
+        {
+          "id": "diac_004",
+          "input": "shiva",
+          "expected": "śiva",
+          "category": "diacritical_issue",
+          "pattern": "missing_palatalization",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Missing palatal śa marking"
+        },
+        {
+          "id": "diac_005",
+          "input": "vishnu",
+          "expected": "viṣṇu",
+          "category": "diacritical_issue",
+          "pattern": "missing_retroflexion",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Missing retroflex sounds"
+        },
+        {
+          "id": "diac_006",
+          "input": "rama",
+          "expected": "rāma",
+          "category": "diacritical_issue",
+          "pattern": "missing_long_vowel",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Missing long ā marking"
+        },
+        {
+          "id": "diac_007",
+          "input": "ganga",
+          "expected": "gaṅgā",
+          "category": "diacritical_issue",
+          "pattern": "missing_anusvara",
+          "difficulty": "medium",
+          "confidence_threshold": 0.8,
+          "notes": "Missing anusvāra and long vowel"
+        }
+      ]
+    }
+  }
+}

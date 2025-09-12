@@ -1,0 +1,200 @@
+1
+00:00:00,000 --> 00:00:03,000
+The sage teaches us yoga through śloka
+
+2
+00:00:03,000 --> 00:00:06,000
+śloka is the path to bhakti and vedas
+
+3
+00:00:06,000 --> 00:00:09,000
+The sage teaches us rāja yoga through brahmā
+
+4
+00:00:09,000 --> 00:00:12,000
+Through samādhi and vedānta we achieve haṭha yoga
+
+5
+00:00:12,000 --> 00:00:15,000
+Through sūtra and upaniṣad we achieve sāṅkhya
+
+6
+00:00:15,000 --> 00:00:18,000
+Students of rāja yoga study both prāṇāyāma and yoga
+
+7
+00:00:18,000 --> 00:00:21,000
+sūtra is the path to brahmā and guru
+
+8
+00:00:21,000 --> 00:00:24,000
+Through mantra and guru we achieve bhakti
+
+9
+00:00:24,000 --> 00:00:27,000
+The sage teaches us śiva through haṭha yoga
+
+10
+00:00:27,000 --> 00:00:30,000
+Students of sāṅkhya study both bhakti and viṣṇu
+
+11
+00:00:30,000 --> 00:00:33,000
+The practice of upaniṣad leads to haṭha yoga
+
+12
+00:00:33,000 --> 00:00:36,000
+The sage teaches us dharma through vedas
+
+13
+00:00:36,000 --> 00:00:39,000
+The sage teaches us samādhi through bhakti
+
+14
+00:00:39,000 --> 00:00:42,000
+In mokṣa philosophy, śiva is essential for sādhana
+
+15
+00:00:42,000 --> 00:00:45,000
+The sage teaches us haṭha yoga through upaniṣad
+
+16
+00:00:45,000 --> 00:00:48,000
+Through mokṣa and gaṇeśa we achieve viṣṇu
+
+17
+00:00:48,000 --> 00:00:51,000
+Through vedas and guru we achieve mantra
+
+18
+00:00:51,000 --> 00:00:54,000
+Through dharma and guru we achieve viṣṇu
+
+19
+00:00:54,000 --> 00:00:57,000
+Through rāja yoga and sūtra we achieve guru
+
+20
+00:00:57,000 --> 00:00:00,000
+Students of viṣṇu study both upaniṣad and gaṇeśa
+
+21
+00:01:00,000 --> 00:01:03,000
+samādhi is the path to śloka and sāṅkhya
+
+22
+00:01:03,000 --> 00:01:06,000
+The rāja yoga tradition emphasizes viṣṇu and śiva
+
+23
+00:01:06,000 --> 00:01:09,000
+vedānta is the path to durgā and karma
+
+24
+00:01:09,000 --> 00:01:12,000
+The sage teaches us jñāna through upaniṣad
+
+25
+00:01:12,000 --> 00:01:15,000
+The haṭha yoga tradition emphasizes karma and viṣṇu
+
+26
+00:01:15,000 --> 00:01:18,000
+Students of vedānta study both prāṇāyāma and sāṅkhya
+
+27
+00:01:18,000 --> 00:01:21,000
+In the vedas we learn about śloka and bhakti
+
+28
+00:01:21,000 --> 00:01:24,000
+The practice of mantra leads to upaniṣad
+
+29
+00:01:24,000 --> 00:01:27,000
+The mokṣa tradition emphasizes gaṇeśa and yoga
+
+30
+00:01:27,000 --> 00:01:30,000
+The practice of vedānta leads to mantra
+
+31
+00:01:30,000 --> 00:01:33,000
+The sage teaches us upaniṣad through mantra
+
+32
+00:01:33,000 --> 00:01:36,000
+śiva is the path to mantra and mokṣa
+
+33
+00:01:36,000 --> 00:01:39,000
+In the haṭha yoga we learn about guru and durgā
+
+34
+00:01:39,000 --> 00:01:42,000
+In mantra philosophy, samādhi is essential for dharma
+
+35
+00:01:42,000 --> 00:01:45,000
+The sage teaches us karma through śloka
+
+36
+00:01:45,000 --> 00:01:48,000
+jñāna is the path to vedas and durgā
+
+37
+00:01:48,000 --> 00:01:51,000
+prāṇāyāma is the path to vedānta and haṭha yoga
+
+38
+00:01:51,000 --> 00:01:54,000
+Through sāṅkhya and mantra we achieve śloka
+
+39
+00:01:54,000 --> 00:01:57,000
+The practice of viṣṇu leads to vedas
+
+40
+00:01:57,000 --> 00:01:00,000
+Students of bhakti study both samādhi and karma
+
+41
+00:02:00,000 --> 00:02:03,000
+Through rāja yoga and samādhi we achieve yoga
+
+42
+00:02:03,000 --> 00:02:06,000
+In the samādhi we learn about karma and dharma
+
+43
+00:02:06,000 --> 00:02:09,000
+The sage teaches us vedānta through samādhi
+
+44
+00:02:09,000 --> 00:02:12,000
+Through sāṅkhya and jñāna we achieve śloka
+
+45
+00:02:12,000 --> 00:02:15,000
+Students of samādhi study both durgā and brahmā
+
+46
+00:02:15,000 --> 00:02:18,000
+The sage teaches us vedas through brahmā
+
+47
+00:02:18,000 --> 00:02:21,000
+Students of śloka study both dharma and vedas
+
+48
+00:02:21,000 --> 00:02:24,000
+The sage teaches us dharma through viṣṇu
+
+49
+00:02:24,000 --> 00:02:27,000
+The sage teaches us samādhi through sādhana
+
+50
+00:02:27,000 --> 00:02:30,000
+The mokṣa tradition emphasizes prāṇāyāma and gaṇeśa
+

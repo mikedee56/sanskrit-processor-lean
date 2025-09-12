@@ -1,0 +1,37 @@
+[
+  {
+    "input": "",
+    "expected": "",
+    "description": "empty_segment"
+  },
+  {
+    "input": "yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga",
+    "expected": "yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga yoga",
+    "description": "very_long_segment"
+  },
+  {
+    "input": "English text with yoga and Sanskrit dharma mixed together",
+    "expected": "English text with yoga and Sanskrit dharma mixed together",
+    "description": "mixed_language"
+  },
+  {
+    "input": "yoga! dharma? (sanskrit) [terms] - punctuation",
+    "expected": "yoga! dharma? (sanskrit) [terms] - punctuation",
+    "description": "special_characters"
+  },
+  {
+    "input": "108 repetitions of the mantra Om",
+    "expected": "108 repetitions of the mantra Om",
+    "description": "numbers_and_sanskrit"
+  },
+  {
+    "input": "<i>italicized yoga</i> and <b>bold dharma</b>",
+    "expected": "<i>italicized yoga</i> and <b>bold dharma</b>",
+    "description": "html_formatting"
+  },
+  {
+    "input": "filosofy teaches us about darma and krisna",
+    "expected": "philosophy teaches us about dharma and kṛṣṇa",
+    "description": "multiple_corrections"
+  }
+]
