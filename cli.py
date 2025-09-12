@@ -157,6 +157,7 @@ Examples:
   python cli.py input.srt output.srt --profile --profile-detail detailed
   python cli.py input.srt output.srt --cache-stats
   python cli.py input.srt output.srt --qa-report quality_report.json
+  python cli.py input.srt output.srt --debug-context --verbose
   python cli.py batch input_dir/ output_dir/ --pattern "*.srt"
         """
     )
@@ -192,6 +193,8 @@ Examples:
                         default='basic', help='Profiling detail level')
     parser.add_argument('--cache-stats', action='store_true',
                         help='Report cache statistics after processing')
+    parser.add_argument('--debug-context', action='store_true',
+                        help='Enable detailed context detection logging and decision visibility')
     parser.add_argument('--export-formats', 
                        nargs='+', 
                        default=['srt'],
@@ -258,6 +261,11 @@ def process_single(args):
                     lexicon_dir=args.lexicons,
                     config_path=args.config
                 )
+                
+                # Enable debug context logging if requested
+                if args.debug_context and hasattr(processor, 'context_detector'):
+                    logger.info("🔍 Context detection debug logging enabled")
+                    processor.context_detector.config.debug_logging = True
         
         # Show status if requested (enhanced mode only)
         if args.status_only:

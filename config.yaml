@@ -99,6 +99,51 @@ database:
   batch_queries: true  # Batch database queries for efficiency
   pragma_optimizations: true  # Enable SQLite performance pragmas
 
+# Context Detection Configuration (Story 10.2)
+context_detection:
+  thresholds:
+    english_confidence: 0.8      # Increased from ~0.3 for more accurate English detection
+    sanskrit_confidence: 0.6     # Confidence for Sanskrit detection
+    mixed_content: 0.5           # Threshold for mixed processing
+    whitelist_override: 0.9      # High confidence override threshold
+    diacritical_density_high: 0.3
+    diacritical_density_medium: 0.1
+    english_markers_required: 2
+  
+  markers:
+    sanskrit_priority_terms:
+      - dharma
+      - karma  
+      - yoga
+      - jñāna
+      - jnana
+      - brahman
+      - guru
+      - mantra
+      - yogavāsiṣṭha
+      - yogavasistha
+      - śivāśiṣṭha
+      - shivashistha
+      - gītā
+      - gita
+      - upaniṣad
+      - upanishad
+    
+    english_function_words:
+      - the
+      - and
+      - is
+      - are
+      - was
+      - were
+      # Reduced list - removed words that commonly appear with Sanskrit
+    
+  processing:
+    enable_whitelist_override: true
+    debug_logging: false
+    cache_context_results: true
+    performance_profiling: false
+
 # Plugin System Configuration (Lean Implementation)
 plugins:
   enabled: false  # Master plugin enable/disable (default: disabled)

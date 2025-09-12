@@ -77,9 +77,19 @@ class EnhancedSanskritProcessor(SanskritProcessor):
         entities_file = Path(self.config.get('ner', {}).get('fallback', {}).get('entities_file', 'data/entities.yaml'))
         self.simple_ner = SimpleFallbackNER(entities_file if entities_file.exists() else None)
         
-        # Initialize context detector (CRITICAL: Prevents English→Sanskrit translation bugs)
-        self.context_detector = ContextDetector()
-        logger.info("Context detector initialized for English protection")
+        # Initialize enhanced context detector with configuration
+        try:
+            from processors.context_config import ContextConfig
+            
+            # Create context config from main configuration
+            context_config = ContextConfig.from_dict(self.config)
+            self.context_detector = ContextDetector(context_config=context_config)
+            logger.info(f"Enhanced context detector initialized with {len(context_config.sanskrit_priority_terms)} priority terms")
+        except ImportError as e:
+            # Fallback to legacy context detector if new one not available
+            logger.warning(f"Enhanced context detector not available, using legacy: {e}")
+            self.context_detector = ContextDetector()
+            logger.info("Legacy context detector initialized for English protection")
         
         logger.info("Enhanced Sanskrit processor initialized")
     
@@ -216,57 +226,177 @@ class EnhancedSanskritProcessor(SanskritProcessor):
             return []
     
     def process_text(self, text: str, context: Dict = None) -> tuple[str, int]:
-        """Enhanced text processing with context-aware protection and external services."""
+        """Enhanced text processing with context-aware protection and per-segment overrides.
+        
+        Args:
+            text: Input text to process
+            context: Optional context dictionary that can include:
+                - force_processing: bool - Force processing regardless of context
+                - segment_type: str - Override detected segment type ('sanskrit', 'english', 'mixed')
+                - threshold_overrides: dict - Override specific thresholds for this segment
+                - debug_segment: bool - Enable debug logging for this specific segment
+                
+        Returns:
+            Tuple of (processed_text, corrections_count)
+        """
         if not text or not text.strip():
             return text, 0
         
         processed_text = text
         total_corrections = 0
         
-        # STEP 0: CONTEXT DETECTION GATE (CRITICAL - Prevents English→Sanskrit translation bugs)
-        context_result = self.context_detector.detect_context(text)
-        logger.debug(f"Context detected: {context_result.context_type} (confidence: {context_result.confidence:.2f})")
+        # Initialize context if not provided
+        if context is None:
+            context = {}
         
-        # Handle different context types
-        if context_result.context_type == 'english':
-            # English context: Pass through unchanged (ZERO MODIFICATIONS)
-            logger.debug(f"English context detected, bypassing all processing: {context_result.markers_found}")
-            return text, 0
+        # Check for segment-level debug override
+        debug_enabled = context.get('debug_segment', False) or (
+            hasattr(self.context_detector, 'config') and 
+            self.context_detector.config.debug_logging
+        )
         
-        elif context_result.context_type == 'mixed':
-            # Mixed content: Process only Sanskrit segments
-            if context_result.segments:
-                words = text.split()
-                modified_words = words.copy()
-                
-                # Process segments in reverse order to preserve word indices
-                for start_idx, end_idx, segment_type in reversed(context_result.segments):
-                    if segment_type == 'sanskrit':
-                        segment_text = ' '.join(words[start_idx:end_idx])
-                        segment_processed, segment_corrections = self._process_sanskrit_segment(segment_text, context)
-                        
-                        if segment_corrections > 0:
-                            # Replace segment words with processed version
-                            processed_segment_words = segment_processed.split()
-                            modified_words[start_idx:end_idx] = processed_segment_words
-                            total_corrections += segment_corrections
-                            logger.debug(f"Processed Sanskrit segment [{start_idx}:{end_idx}]: {segment_corrections} corrections")
-                
-                processed_text = ' '.join(modified_words)
-                return processed_text, total_corrections
-            else:
-                # No Sanskrit segments found in mixed content, treat as English
-                logger.debug("Mixed content with no Sanskrit segments, bypassing processing")
+        # STEP 0: Check for manual segment type override
+        if 'segment_type' in context:
+            override_type = context['segment_type']
+            if debug_enabled:
+                logger.debug(f"🔧 Segment type manually overridden to: {override_type}")
+            
+            if override_type == 'english':
+                if debug_enabled:
+                    logger.debug("Manual override: bypassing processing (English)")
                 return text, 0
+            elif override_type == 'sanskrit':
+                if debug_enabled:
+                    logger.debug("Manual override: applying full Sanskrit processing")
+                return self._process_sanskrit_segment(text, context)
+            elif override_type == 'mixed':
+                # Force mixed content analysis even if context detection would suggest otherwise
+                if debug_enabled:
+                    logger.debug("Manual override: forcing mixed content analysis")
+                context_result = self.context_detector.analyze_mixed_content(text)
+                return self._process_mixed_content(text, context_result, context)
         
-        elif context_result.context_type == 'sanskrit':
-            # Sanskrit context: Full processing pipeline
-            logger.debug(f"Sanskrit context detected, applying full processing: {context_result.markers_found}")
+        # Check for force processing override
+        if context.get('force_processing', False):
+            if debug_enabled:
+                logger.debug("🔧 Force processing enabled - bypassing context detection")
             return self._process_sanskrit_segment(text, context)
         
+        # Apply threshold overrides if provided
+        original_config = None
+        if 'threshold_overrides' in context and hasattr(self.context_detector, 'config'):
+            original_config = {
+                'english_threshold': self.context_detector.config.english_threshold,
+                'sanskrit_threshold': self.context_detector.config.sanskrit_threshold,
+                'mixed_threshold': self.context_detector.config.mixed_threshold
+            }
+            
+            overrides = context['threshold_overrides']
+            if 'english_threshold' in overrides:
+                self.context_detector.config.english_threshold = overrides['english_threshold']
+            if 'sanskrit_threshold' in overrides:
+                self.context_detector.config.sanskrit_threshold = overrides['sanskrit_threshold']
+            if 'mixed_threshold' in overrides:
+                self.context_detector.config.mixed_threshold = overrides['mixed_threshold']
+            
+            if debug_enabled:
+                logger.debug(f"🔧 Applied threshold overrides: {overrides}")
+        
+        try:
+            # STEP 1: CONTEXT DETECTION GATE (CRITICAL - Prevents English→Sanskrit translation bugs)
+            context_result = self.context_detector.detect_context(text)
+            
+            if debug_enabled or (hasattr(self.context_detector, 'config') and self.context_detector.config.debug_logging):
+                logger.debug(f"🔍 Context detected: {context_result.context_type} (confidence: {context_result.confidence:.2f})")
+                if hasattr(context_result, 'override_reason') and context_result.override_reason:
+                    logger.debug(f"🔍 Override reason: {context_result.override_reason}")
+                logger.debug(f"🔍 Markers found: {context_result.markers_found}")
+            
+            # Handle different context types
+            if context_result.context_type == 'english':
+                # English context: Pass through unchanged (ZERO MODIFICATIONS)
+                if debug_enabled:
+                    logger.debug(f"English context detected, bypassing all processing: {context_result.markers_found}")
+                return text, 0
+            
+            elif context_result.context_type == 'mixed':
+                # Mixed content: Process only Sanskrit segments
+                return self._process_mixed_content(text, context_result, context)
+            
+            elif context_result.context_type == 'sanskrit':
+                # Sanskrit context: Full processing pipeline
+                if debug_enabled:
+                    logger.debug(f"Sanskrit context detected, applying full processing: {context_result.markers_found}")
+                return self._process_sanskrit_segment(text, context)
+            
+            else:
+                # Unknown context: Default to safe mode (no processing)
+                if debug_enabled:
+                    logger.debug(f"Unknown context type: {context_result.context_type}, defaulting to safe mode")
+                return text, 0
+                
+        finally:
+            # Restore original thresholds if they were overridden
+            if original_config and hasattr(self.context_detector, 'config'):
+                self.context_detector.config.english_threshold = original_config['english_threshold']
+                self.context_detector.config.sanskrit_threshold = original_config['sanskrit_threshold']
+                self.context_detector.config.mixed_threshold = original_config['mixed_threshold']
+                
+                if debug_enabled:
+                    logger.debug("🔧 Restored original threshold configuration")
+    
+    def _process_mixed_content(self, text: str, context_result: 'ContextResult', context: Dict = None) -> tuple[str, int]:
+        """Process mixed content with enhanced segment handling.
+        
+        Args:
+            text: Input text
+            context_result: Result from context detection
+            context: Processing context with potential overrides
+            
+        Returns:
+            Tuple of (processed_text, corrections_count)
+        """
+        if context is None:
+            context = {}
+        
+        debug_enabled = context.get('debug_segment', False) or (
+            hasattr(self.context_detector, 'config') and 
+            self.context_detector.config.debug_logging
+        )
+        
+        total_corrections = 0
+        
+        if context_result.segments:
+            words = text.split()
+            modified_words = words.copy()
+            
+            # Process segments in reverse order to preserve word indices
+            for start_idx, end_idx, segment_type in reversed(context_result.segments):
+                if segment_type == 'sanskrit':
+                    segment_text = ' '.join(words[start_idx:end_idx])
+                    
+                    # Create segment-specific context
+                    segment_context = context.copy()
+                    segment_context['segment_bounds'] = (start_idx, end_idx)
+                    segment_context['parent_text'] = text
+                    
+                    segment_processed, segment_corrections = self._process_sanskrit_segment(segment_text, segment_context)
+                    
+                    if segment_corrections > 0:
+                        # Replace segment words with processed version
+                        processed_segment_words = segment_processed.split()
+                        modified_words[start_idx:end_idx] = processed_segment_words
+                        total_corrections += segment_corrections
+                        
+                        if debug_enabled:
+                            logger.debug(f"🔍 Processed Sanskrit segment [{start_idx}:{end_idx}]: '{segment_text}' -> '{segment_processed}' ({segment_corrections} corrections)")
+            
+            processed_text = ' '.join(modified_words)
+            return processed_text, total_corrections
         else:
-            # Unknown context: Default to safe mode (no processing)
-            logger.debug(f"Unknown context type: {context_result.context_type}, defaulting to safe mode")
+            # No Sanskrit segments found in mixed content, treat as English
+            if debug_enabled:
+                logger.debug("Mixed content with no Sanskrit segments, bypassing processing")
             return text, 0
     
     def _process_sanskrit_segment(self, text: str, context: Dict = None) -> tuple[str, int]:

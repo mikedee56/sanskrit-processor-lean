@@ -1,0 +1,138 @@
+# Sanskrit Priority Terms
+# High-priority Sanskrit terms that should override English protection
+# These terms will force Sanskrit processing regardless of context detection
+
+priority_terms:
+  # Core philosophical terms
+  - dharma
+  - karma
+  - yoga
+  - jñāna
+  - jnana  # ASR variation
+  - brahman
+  - ātman
+  - atman
+  - mokṣa
+  - moksha
+  - saṃsāra
+  - samsara
+  
+  # Deities and Names
+  - kṛṣṇa
+  - krishna
+  - rāma
+  - rama
+  - śiva
+  - shiva
+  - viṣṇu
+  - vishnu
+  - gaṇeśa
+  - ganesha
+  - hanumān
+  - hanuman
+  
+  # Texts and Literature
+  - gītā
+  - gita
+  - bhagavad
+  - rāmāyaṇa
+  - ramayana
+  - mahābhārata
+  - mahabharata
+  - upaniṣad
+  - upanishad
+  - vedas
+  - purāṇa
+  - purana
+  
+  # Spiritual Terms
+  - guru
+  - mantra
+  - yantra
+  - tantra
+  - sādhanā
+  - sadhana
+  - tapas
+  - prāṇa
+  - prana
+  - kuṇḍalinī
+  - kundalini
+  - cakra
+  - chakra
+  
+  # Specific Texts
+  - yogavāsiṣṭha
+  - yogavasistha
+  - śivāśiṣṭha
+  - shivashistha
+  - advaita
+  - vedanta
+  - sāṅkhya
+  - sankhya
+  
+  # Common Sanskrit Compounds (ASR frequently mangles these)
+  - ānanda
+  - ananda
+  - saccidānanda
+  - satchitananda
+  - paramātman
+  - paramatman
+  - brahmavidyā
+  - brahmavidya
+  
+  # Sacred Sounds
+  - oṁ
+  - om
+  - oṃ
+  - namaḥ
+  - namah
+  - śrī
+  - sri
+  - mahā
+  - maha
+  
+  # Yoga Terms
+  - āsana
+  - asana
+  - prāṇāyāma
+  - pranayama
+  - dhyāna
+  - dhyana
+  - samādhi
+  - samadhi
+  - mudrā
+  - mudra
+  - bandha
+  
+  # Philosophical Schools
+  - mīmāṃsā
+  - mimamsa
+  - nyāya
+  - nyaya
+  - vaiśeṣika
+  - vaisheshika
+  
+# Common ASR variations and corrections
+# These are terms that ASR systems commonly mangle
+asr_variations:
+  # Yogavasistha variations
+  yogabashi: yogavāsiṣṭha
+  yogavashi: yogavāsiṣṭha
+  yogabasistha: yogavāsiṣṭha
+  
+  # Gita variations  
+  geeta: gītā
+  bhagavat: bhagavad
+  
+  # Krishna variations
+  krisha: kṛṣṇa
+  krishn: kṛṣṇa
+  
+  # Rama variations
+  ramaya: rāmāyaṇa
+  ramayan: rāmāyaṇa
+  
+  # Common term variations
+  ved: veda
+  sanskrit: saṃskṛta
+  vedic: vaidika
