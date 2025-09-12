@@ -13,6 +13,14 @@ from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
 
+try:
+    from utils.performance_cache import get_performance_cache
+    from utils.pattern_manager import get_pattern_manager
+    PERF_CACHE_AVAILABLE = True
+except ImportError:
+    PERF_CACHE_AVAILABLE = False
+    logger.debug("Performance cache not available - using basic caching")
+
 @dataclass
 class ContextResult:
     """Result of context detection analysis."""
@@ -83,6 +91,19 @@ class ContextDetector:
         self.context_cache = {} if self.config.cache_results else None
         self.cache_hits = 0
         self.cache_misses = 0
+        
+        # Initialize performance cache and pattern manager if available
+        self.perf_cache = None
+        self.pattern_manager = None
+        if PERF_CACHE_AVAILABLE and self.config.cache_results:
+            self.perf_cache = get_performance_cache()
+            self.pattern_manager = get_pattern_manager()
+            # Apply performance caching to expensive methods
+            self.is_pure_english = self.perf_cache.cache_context_detection(self.is_pure_english)
+            self.has_sanskrit_markers = self.perf_cache.cache_context_detection(self.has_sanskrit_markers)
+            self.analyze_mixed_content = self.perf_cache.cache_context_detection(self.analyze_mixed_content)
+            # Preload patterns for better performance
+            self.pattern_manager.preload_for_context('mixed')
         
         logger.info(f"Context detector initialized with {len(self.sanskrit_priority_set)} priority terms")
         if self.config.debug_logging:
@@ -312,7 +333,10 @@ class ContextDetector:
         Returns high confidence for text that should pass through unchanged.
         """
         text_lower = text.lower()
-        words = re.findall(r'\b\w+\b', text_lower)
+        if self.pattern_manager:
+            words = self.pattern_manager.extract_words_fast(text_lower)
+        else:
+            words = re.findall(r'\b\w+\b', text_lower)
         
         if not words:
             return ContextResult('english', 0.5, markers_found=['no_words'])
@@ -382,7 +406,10 @@ class ContextDetector:
         
         # Check for Sanskrit sacred terms using optimized set lookup
         text_lower = text.lower()
-        words = re.findall(r'\b\w+\b', text_lower)
+        if self.pattern_manager:
+            words = self.pattern_manager.extract_words_fast(text_lower)
+        else:
+            words = re.findall(r'\b\w+\b', text_lower)
         
         sanskrit_terms = [word for word in words if word in self.sanskrit_sacred_set]
         if sanskrit_terms:
@@ -398,10 +425,16 @@ class ContextDetector:
                     markers_found.append(f'sanskrit_suffix_{suffix}')
                     break
         
-        # Check for specific Sanskrit phrases
-        if re.search(r'oṁ\s+namaḥ|bhagavad\s+gītā|śrī\s+\w+', text, re.IGNORECASE):
-            score += 0.5
-            markers_found.append('sanskrit_phrase_pattern')
+        # Check for specific Sanskrit phrases using optimized patterns
+        if self.pattern_manager:
+            if (self.pattern_manager.search_with_pattern('sanskrit_om', text) or 
+                self.pattern_manager.search_with_pattern('sanskrit_phrase', text)):
+                score += 0.5
+                markers_found.append('sanskrit_phrase_pattern')
+        else:
+            if re.search(r'oṁ\s+namaḥ|bhagavad\s+gītā|śrī\s+\w+', text, re.IGNORECASE):
+                score += 0.5
+                markers_found.append('sanskrit_phrase_pattern')
         
         return ContextResult('sanskrit', min(score, 1.0), markers_found=markers_found)
     
@@ -411,7 +444,11 @@ class ContextDetector:
         
         Returns segment boundaries for selective processing.
         """
-        words = re.findall(r'\S+', text)  # Include punctuation
+        if self.pattern_manager:
+            # Use optimized word extraction
+            words = text.split()  # Simple split is faster for mixed content
+        else:
+            words = re.findall(r'\S+', text)  # Include punctuation
         word_contexts = []
         
         for word in words:
@@ -547,6 +584,16 @@ class ContextDetector:
             }
         else:
             stats['cache'] = {'enabled': False}
+        
+        # Performance cache statistics
+        if self.perf_cache is not None:
+            perf_stats = self.perf_cache.get_performance_stats()
+            hit_rates = self.perf_cache.get_hit_rates()
+            stats['performance_cache'] = {
+                'context_detection_hit_rate': hit_rates.get('context_detection', 0.0),
+                'memory_usage_mb': perf_stats.get('memory_usage', {}).get('context_cache_mb', 0.0),
+                'time_saved_ms': perf_stats.get('context_detection', {}).get('total_time_saved_ms', 0.0)
+            }
         
         # Configuration statistics
         stats['configuration'] = {

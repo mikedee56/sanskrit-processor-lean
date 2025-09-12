@@ -61,15 +61,31 @@ class ContextAwarePipeline:
         # Initialize new systematic processors
         self.compound_processor = SanskritCompoundProcessor()
         
+        # Initialize systematic term matcher
+        try:
+            from processors.systematic_term_matcher import SystematicTermMatcher
+            self._processors['systematic'] = SystematicTermMatcher()
+            logger.info("Systematic term matcher initialized in context pipeline")
+        except ImportError as e:
+            logger.warning(f"Systematic term matcher not available: {e}")
+        
         logger.info("Context-aware pipeline initialized with specialized processors")
     
     def _initialize_processors(self):
         """Initialize specialized processors from previous stories."""
         try:
-            # Story 6.1: Compound Term Recognition
+            # Story 6.1: Compound Term Recognition (Updated)
+            from processors.compound_word_processor import SanskritCompoundProcessor
+            self._processors['compound'] = SanskritCompoundProcessor()
+            logger.info("Sanskrit compound processor initialized")
+        except ImportError as e:
+            logger.warning(f"Compound processor not available: {e}")
+        
+        try:
+            # Legacy compound matcher fallback
             from utils.compound_matcher import CompoundTermMatcher
             compounds_path = Path("lexicons/compounds.yaml")
-            if compounds_path.exists():
+            if compounds_path.exists() and 'compound' not in self._processors:
                 self._processors['compound'] = CompoundTermMatcher(compounds_path)
                 logger.debug("Compound processor initialized")
             
@@ -139,7 +155,17 @@ class ContextAwarePipeline:
             try:
                 processor_start = time.time()
                 
-                if processor_name == 'compound' and 'compound' in self._processors:
+                if processor_name == 'systematic' and 'systematic' in self._processors:
+                    processed_text, corrections = self._apply_systematic_processing(
+                        processed_text, strategy
+                    )
+                    all_corrections.extend(corrections)
+                    specialized_results['systematic'] = {
+                        'corrections': len(corrections),
+                        'time': time.time() - processor_start
+                    }
+                
+                elif processor_name == 'compound' and 'compound' in self._processors:
                     processed_text, corrections = self._apply_compound_processing(
                         processed_text, strategy
                     )
@@ -216,13 +242,53 @@ class ContextAwarePipeline:
             specialized_processing=specialized_results
         )
     
+    def _apply_systematic_processing(self, text: str, strategy: dict) -> Tuple[str, List[Dict]]:
+        """Apply systematic term matching with scripture database."""
+        systematic_processor = self._processors['systematic']
+        processed_text, term_matches = systematic_processor.apply_corrections(text)
+        
+        corrections = [
+            {
+                'type': 'systematic',
+                'original': match.original,
+                'corrected': match.corrected,
+                'confidence': match.confidence,
+                'source': match.source,
+                'match_type': match.match_type
+            }
+            for match in term_matches
+        ]
+        
+        return processed_text, corrections
+    
     def _apply_compound_processing(self, text: str, strategy: dict) -> Tuple[str, List[Dict]]:
         """Apply compound term recognition (Story 6.1)."""
         # ALWAYS apply compound processing since titles can appear in verses
         # The fuzzy_matching flag is for database processing, not compounds
             
         compound_processor = self._processors['compound']
-        processed_text, matches = compound_processor.process_text(text)
+        
+        # Handle different compound processor types
+        if hasattr(compound_processor, 'find_compound_candidates'):
+            # New SanskritCompoundProcessor
+            candidates = compound_processor.find_compound_candidates(text)
+            processed_text = text
+            corrections = []
+            
+            for original, corrected in candidates:
+                if original != corrected:
+                    processed_text = processed_text.replace(original, corrected)
+                    corrections.append({
+                        'type': 'compound',
+                        'original': original,
+                        'corrected': corrected,
+                        'confidence': 0.85
+                    })
+            
+            return processed_text, corrections
+        else:
+            # Legacy compound processor
+            processed_text, matches = compound_processor.process_text(text)
         
         corrections = [
             {

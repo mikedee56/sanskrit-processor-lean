@@ -200,6 +200,12 @@ Examples:
                        default=['srt'],
                        choices=['srt', 'vtt', 'json', 'xml'],
                        help='Output formats to generate (default: srt)')
+    parser.add_argument('--parallel', action='store_true',
+                        help='Enable parallel processing for batch operations')
+    parser.add_argument('--max-workers', type=int,
+                        help='Maximum number of parallel workers (default: CPU count)')
+    parser.add_argument('--quiet', '-q', action='store_true',
+                        help='Disable progress bars and reduce output')
     
     args = parser.parse_args()
     
@@ -644,8 +650,8 @@ def display_context_information(result):
                 print(f"   {metric.replace('_', ' ').title()}: {value:.3f}")
 
 def process_batch(args):
-    """Ultra-lean batch processing implementation."""
-    import glob
+    """Enhanced batch processing with parallel processing and performance optimization."""
+    from utils.batch_processor import BatchProcessor
     import time
     from pathlib import Path
     
@@ -658,98 +664,150 @@ def process_batch(args):
         detail_level=args.profile_detail
     )
     
-    with profiler.profile_stage("batch_initialization"):
-        # Discover files
-        input_dir = args.input
-        if not input_dir.is_dir():
-            logger.error(f"Input must be directory for batch processing: {input_dir}")
-            sys.exit(1)
+    try:
+        with profiler.profile_stage("batch_initialization"):
+            # Validate input directory
+            input_dir = args.input
+            if not input_dir.is_dir():
+                logger.error(f"Input must be directory for batch processing: {input_dir}")
+                return 1
             
-        pattern = str(input_dir / args.pattern)
-        files = [Path(f) for f in glob.glob(pattern)]
-        if not files:
-            logger.error(f"No files found matching: {pattern}")
-            sys.exit(1)
+            # Create output directory
+            args.output.mkdir(parents=True, exist_ok=True)
+            
+            # Initialize processor based on mode
+            if args.simple:
+                logger.info("Initializing Simple Sanskrit processor for batch processing...")
+                processor = SanskritProcessor(args.lexicons)
+            elif args.asr:
+                logger.info("Initializing ASR Sanskrit processor for batch processing...")
+                from processors.asr_processor import ASRProcessor
+                processor = ASRProcessor(args.lexicons, args.config)
+            else:
+                logger.info("Initializing Enhanced Sanskrit processor for batch processing...")
+                processor = EnhancedSanskritProcessor(args.lexicons, args.config)
+            
+            # Initialize batch processor with performance optimizations
+            batch_processor = BatchProcessor(
+                processor_instance=processor,
+                max_workers=args.max_workers,
+                use_threading=False  # Use multiprocessing for CPU-bound tasks
+            )
+            
+            # Log batch processing configuration
+            logger.info(f"Batch processing configuration:")
+            logger.info(f"  Input directory: {input_dir}")
+            logger.info(f"  Output directory: {args.output}")
+            logger.info(f"  File pattern: {args.pattern}")
+            logger.info(f"  Parallel processing: {args.parallel}")
+            if args.parallel:
+                logger.info(f"  Max workers: {args.max_workers or 'auto-detect'}")
+            logger.info(f"  Quiet mode: {args.quiet}")
         
-        # Create output directory
-        args.output.mkdir(parents=True, exist_ok=True)
+        with profiler.profile_stage("batch_processing"):
+            start_time = time.time()
+            
+            # Process directory with enhanced batch processor
+            batch_result = batch_processor.process_directory(
+                input_dir=input_dir,
+                output_dir=args.output,
+                pattern=args.pattern,
+                parallel=args.parallel,
+                quiet=args.quiet,
+                verbose=args.verbose,
+                metrics=args.metrics,
+                debug_context=args.debug_context
+            )
+            
+            end_time = time.time()
+            total_time = end_time - start_time
         
-        # Initialize processor once based on mode
-        if args.simple:
-            logger.info("Batch processing with Simple Sanskrit processor...")
-            processor = SanskritProcessor(args.lexicons)
-        elif args.asr:
-            logger.info("Batch processing with ASR Sanskrit processor...")
-            from processors.asr_processor import ASRProcessor
-            processor = ASRProcessor(args.lexicons, args.config)
-        else:
-            logger.info("Batch processing with Enhanced Sanskrit processor...")
-            processor = EnhancedSanskritProcessor(args.lexicons, args.config)
-    
-    with profiler.profile_stage("batch_processing"):
-        # Process files with simple progress
-        results = []
-        errors = []
-        start_time = time.time()
-        
-        print(f"🔄 Processing {len(files)} files...")
-        
-        for i, file_path in enumerate(files, 1):
-            try:
-                output_path = args.output / file_path.name
-                print(f"[{i}/{len(files)}] {file_path.name}", end=" ... ")
+        with profiler.profile_stage("batch_reporting"):
+            # Display comprehensive batch results
+            print(f"\n📊 BATCH PROCESSING COMPLETE")
+            print(f"════════════════════════════════════")
+            print(f"📁 Files Processed: {batch_result.successful_files}/{batch_result.total_files}")
+            print(f"✅ Success Rate: {batch_result.successful_files/batch_result.total_files*100:.1f}%")
+            print(f"⏱️  Total Time: {batch_result.processing_time_seconds:.2f}s")
+            print(f"🚀 Throughput: {batch_result.files_per_second:.2f} files/sec")
+            
+            if batch_result.summary_stats:
+                stats = batch_result.summary_stats
+                print(f"\n📈 PERFORMANCE STATISTICS")
+                print(f"────────────────────────────────────")
+                print(f"⚡ Avg Processing Time: {stats['average_processing_time']:.2f}s/file")
+                if 'throughput_mb_per_second' in stats:
+                    print(f"💾 Data Throughput: {stats['throughput_mb_per_second']:.2f} MB/sec")
+                    print(f"📦 Total Data Processed: {stats['total_input_size_mb']:.1f} MB")
                 
-                result = processor.process_srt_file(file_path, output_path)
-                if result.errors:
-                    errors.extend(result.errors)
-                    print("❌")
-                else:
-                    results.append(result)
-                    print("✅")
+            # Show cache statistics if requested
+            if args.cache_stats and hasattr(processor, 'get_performance_stats'):
+                try:
+                    cache_stats = processor.get_performance_stats()
+                    print(f"\n🗄️  CACHE PERFORMANCE")
+                    print(f"────────────────────────────────────")
                     
-            except Exception as e:
-                errors.append(f"{file_path.name}: {e}")
-                print("❌")
+                    if 'overall_performance' in cache_stats:
+                        overall = cache_stats['overall_performance']
+                        print(f"📊 Overall Hit Rate: {overall['overall_hit_rate']*100:.1f}%")
+                        print(f"🎯 Cache Effectiveness: {overall['cache_effectiveness']}")
+                        print(f"📞 Total Requests: {overall['total_cache_requests']:,}")
+                    
+                except Exception as e:
+                    logger.debug(f"Cache stats unavailable: {e}")
+            
+            # Report failed files if any
+            if batch_result.failed_files > 0:
+                print(f"\n❌ FAILED FILES ({batch_result.failed_files})")
+                print(f"────────────────────────────────────")
+                for filename, error in batch_result.failed_file_details[:5]:
+                    print(f"   {filename}: {error}")
+                if len(batch_result.failed_file_details) > 5:
+                    print(f"   ... and {len(batch_result.failed_file_details) - 5} more")
+        
+        with profiler.profile_stage("batch_cleanup"):
+            # Clean up processor resources
+            if hasattr(processor, 'close'):
+                processor.close()
+        
+        # Generate and display performance report if profiling enabled
+        if args.profile:
+            perf_report = profiler.generate_report()
+            print(f"\n{'='*50}")
+            print("BATCH PERFORMANCE REPORT")
+            print(f"{'='*50}")
+            print(f"Total Duration: {perf_report['total_duration']:.2f}s")
+            print(f"Peak Memory: {perf_report['peak_memory_mb']:.1f}MB")
+            print(f"Processing Rate: {batch_result.files_per_second:.1f} files/second")
+            
+            if perf_report.get('stage_timings'):
+                print("\nStage Breakdown:")
+                for stage, timing in perf_report['stage_timings'].items():
+                    percentage = (timing['duration'] / perf_report['total_duration']) * 100
+                    print(f"  {stage}: {timing['duration']:.2f}s ({percentage:.1f}%)")
+            
+            if perf_report.get('recommendations'):
+                print("\nOptimization Recommendations:")
+                for rec in perf_report['recommendations']:
+                    print(f"  • {rec}")
+        
+        # Return success/failure based on results
+        if batch_result.failed_files == 0:
+            print(f"\n🎉 All {batch_result.total_files} files processed successfully!")
+            return 0
+        elif batch_result.successful_files > 0:
+            print(f"\n⚠️  Partial success: {batch_result.successful_files}/{batch_result.total_files} files processed")
+            return 2  # Partial failure
+        else:
+            print(f"\n❌ Batch processing failed: No files processed successfully")
+            return 1  # Complete failure
     
-    with profiler.profile_stage("batch_cleanup"):
-        processor.close()
-        
-        # Simple summary report
-        duration = time.time() - start_time
-        total_corrections = sum(r.corrections_made for r in results)
-        
-        print(f"\n📊 Batch Complete:")
-        print(f"   Files: {len(results)} success, {len(errors)} errors")
-        print(f"   Time: {duration:.1f}s ({len(files)/duration:.1f} files/min)")
-        print(f"   Total corrections: {total_corrections}")
-        
-        if errors:
-            print(f"\n❌ Errors:")
-            for error in errors[:5]:  # Limit error output
-                print(f"   - {error}")
-            if len(errors) > 5:
-                print(f"   ... and {len(errors)-5} more")
-    
-    # Generate and display performance report if profiling enabled
-    if args.profile:
-        perf_report = profiler.generate_report()
-        print("\n" + "="*50)
-        print("BATCH PERFORMANCE REPORT")
-        print("="*50)
-        print(f"Total Duration: {perf_report['total_duration']:.2f}s")
-        print(f"Peak Memory: {perf_report['peak_memory_mb']:.1f}MB")
-        print(f"Processing Rate: {len(results)/perf_report['total_duration']:.1f} files/second")
-        
-        if perf_report.get('stage_timings'):
-            print("\nStage Breakdown:")
-            for stage, timing in perf_report['stage_timings'].items():
-                percentage = (timing['duration'] / perf_report['total_duration']) * 100
-                print(f"  {stage}: {timing['duration']:.2f}s ({percentage:.1f}%)")
-        
-        if perf_report.get('recommendations'):
-            print("\nOptimization Recommendations:")
-            for rec in perf_report['recommendations']:
-                print(f"  • {rec}")
+    except Exception as e:
+        logger.error(f"Batch processing failed: {e}")
+        if args.verbose:
+            import traceback
+            traceback.print_exc()
+        return 1
 
 if __name__ == "__main__":
     sys.exit(main())

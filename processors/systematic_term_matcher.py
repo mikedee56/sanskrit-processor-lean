@@ -19,6 +19,14 @@ from utils.fuzzy_matcher import FuzzyMatcher
 
 logger = logging.getLogger(__name__)
 
+try:
+    from utils.performance_cache import get_performance_cache
+    from utils.smart_cache import LexiconCache
+    PERF_CACHE_AVAILABLE = True
+except ImportError:
+    PERF_CACHE_AVAILABLE = False
+    logger.debug("Performance cache not available - using basic caching")
+
 @dataclass
 class TermMatch:
     """Represents a matched Sanskrit term with correction."""
@@ -44,6 +52,14 @@ class SystematicTermMatcher:
         self.phonetic_cache = {}  # word_pair -> similarity_score
         self.term_index = {}      # first_letter -> [terms] for fast lookup
         self.processed_words = set()  # Track processed words to avoid recomputation
+        
+        # Initialize performance and lexicon caching systems
+        self.perf_cache = None
+        self.lexicon_cache = None
+        if PERF_CACHE_AVAILABLE and self.config.get('caching', {}).get('enabled', True):
+            self.perf_cache = get_performance_cache()
+            self.lexicon_cache = LexiconCache(self.config)
+            logger.info("Performance caching enabled for systematic term matcher")
         
         # Initialize context detector for English protection
         self.context_detector = ContextDetector()
@@ -211,7 +227,13 @@ class SystematicTermMatcher:
         return corrections
     
     def _find_scripture_matches(self, text: str) -> List[TermMatch]:
-        """Find exact matches in scripture database."""
+        """Find exact matches in scripture database with caching."""
+        # Check cache first if available
+        if self.lexicon_cache:
+            cached_result = self.lexicon_cache.get_correction(text, self.lexicon_dir / "corrections_with_scripture.yaml")
+            if cached_result is not None:
+                return cached_result
+        
         matches = []
         words = re.findall(r'\b\w+\b', text.lower())
         
@@ -252,6 +274,10 @@ class SystematicTermMatcher:
                         match_type='scripture',
                         source=entry.get('category', 'unknown')
                     ))
+        
+        # Cache the result if caching is available
+        if self.lexicon_cache:
+            self.lexicon_cache.cache_correction(text, matches, self.lexicon_dir / "corrections_with_scripture.yaml")
         
         return matches
     
@@ -786,6 +812,85 @@ class SystematicTermMatcher:
         self.processed_words.update(batch_processed_words)
         
         return results
+    
+    def get_performance_stats(self) -> Dict[str, any]:
+        """Get comprehensive performance statistics from all caching systems."""
+        stats = {
+            'systematic_matcher_stats': {
+                'total_terms': len(self.scripture_terms),
+                'term_index_buckets': len(self.term_index),
+                'processed_words': len(self.processed_words),
+                'phonetic_cache_size': len(self.phonetic_cache)
+            }
+        }
+        
+        # Add fuzzy matcher stats if available
+        if self.fuzzy_matcher:
+            stats['fuzzy_matcher_stats'] = self.fuzzy_matcher.get_cache_stats()
+        
+        # Add performance cache stats if available
+        if self.perf_cache:
+            perf_stats = self.perf_cache.get_performance_stats()
+            hit_rates = self.perf_cache.get_hit_rates()
+            stats['performance_cache_stats'] = {
+                'overall_hit_rate': hit_rates.get('overall', 0.0),
+                'fuzzy_match_hit_rate': hit_rates.get('fuzzy_matches', 0.0),
+                'context_detection_hit_rate': hit_rates.get('context_detection', 0.0),
+                'total_time_saved_ms': sum(
+                    op_stats.get('total_time_saved_ms', 0.0) 
+                    for op_stats in perf_stats.values() 
+                    if isinstance(op_stats, dict)
+                ),
+                'memory_usage': perf_stats.get('memory_usage', {})
+            }
+        
+        # Add lexicon cache stats if available
+        if self.lexicon_cache:
+            lexicon_stats = self.lexicon_cache.get_combined_stats()
+            stats['lexicon_cache_stats'] = lexicon_stats
+        
+        # Add context detector stats if available
+        if hasattr(self.context_detector, 'get_performance_stats'):
+            context_stats = self.context_detector.get_performance_stats()
+            stats['context_detector_stats'] = context_stats
+        
+        # Calculate overall cache effectiveness
+        total_requests = 0
+        total_hits = 0
+        
+        for cache_type, cache_stats in stats.items():
+            if isinstance(cache_stats, dict):
+                if 'hits' in cache_stats and 'misses' in cache_stats:
+                    total_hits += cache_stats['hits']
+                    total_requests += cache_stats['hits'] + cache_stats['misses']
+                elif 'cache' in cache_stats and isinstance(cache_stats['cache'], dict):
+                    cache_info = cache_stats['cache']
+                    if 'hits' in cache_info and 'misses' in cache_info:
+                        total_hits += cache_info['hits']
+                        total_requests += cache_info['hits'] + cache_info['misses']
+        
+        # Overall performance summary
+        stats['overall_performance'] = {
+            'total_cache_requests': total_requests,
+            'total_cache_hits': total_hits,
+            'overall_hit_rate': total_hits / total_requests if total_requests > 0 else 0.0,
+            'cache_effectiveness': self._get_cache_effectiveness_rating(total_hits / total_requests if total_requests > 0 else 0.0)
+        }
+        
+        return stats
+    
+    def _get_cache_effectiveness_rating(self, hit_rate: float) -> str:
+        """Get cache effectiveness rating based on hit rate."""
+        if hit_rate >= 0.8:
+            return "Excellent"
+        elif hit_rate >= 0.6:
+            return "Good"
+        elif hit_rate >= 0.4:
+            return "Fair"
+        elif hit_rate >= 0.2:
+            return "Poor"
+        else:
+            return "Very Poor"
 
 if __name__ == "__main__":
     matcher = SystematicTermMatcher()

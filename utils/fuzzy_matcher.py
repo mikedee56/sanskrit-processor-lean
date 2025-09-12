@@ -7,6 +7,7 @@ import re
 from typing import Optional, Dict, Any, List
 from dataclasses import dataclass
 import logging
+from .performance_cache import get_performance_cache
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +40,13 @@ class FuzzyMatcher:
         self.min_confidence = min_confidence
         self.enable_cache = enable_cache
         self.cache: Dict[str, MatchResult] = {}
+        
+        # Initialize performance cache for expensive operations
+        if enable_cache:
+            self.perf_cache = get_performance_cache()
+            # Apply decorators to expensive methods
+            self.levenshtein_distance = self.perf_cache.cache_fuzzy_match(self.levenshtein_distance)
+            self._phonetic_distance = self.perf_cache.cache_fuzzy_match(self._phonetic_distance)
         
         # Sanskrit-specific phonetic mappings for enhanced matching
         self.sanskrit_phonetic_groups = {
@@ -474,12 +482,25 @@ class FuzzyMatcher:
         self.cache.clear()
         logger.debug("FuzzyMatcher cache cleared")
     
-    def get_cache_stats(self) -> Dict[str, int]:
-        """Get cache statistics."""
-        return {
+    def get_cache_stats(self) -> Dict[str, Any]:
+        """Get comprehensive cache statistics."""
+        stats = {
             'cache_size': len(self.cache),
             'cache_enabled': self.enable_cache
         }
+        
+        # Add performance cache stats if enabled
+        if self.enable_cache and hasattr(self, 'perf_cache'):
+            perf_stats = self.perf_cache.get_performance_stats()
+            hit_rates = self.perf_cache.get_hit_rates()
+            
+            stats.update({
+                'performance_cache_stats': perf_stats,
+                'fuzzy_match_hit_rate': hit_rates.get('fuzzy_matches', 0.0),
+                'performance_cache_memory_mb': perf_stats.get('memory_usage', {}).get('total_cache_mb', 0.0)
+            })
+        
+        return stats
 
 if __name__ == "__main__":
     # Test the fuzzy matcher
