@@ -1,0 +1,108 @@
+# Quality Gate Decision: Story 10.6 Metrics & Reporting
+
+# Required fields
+schema: 1
+story: "10.6"
+story_title: "ASR Correction Metrics & Reporting"
+gate: FAIL
+status_reason: "Critical disconnect between claimed comprehensive implementation and actual CLI functionality violates professional standards for honest technical assessment."
+reviewer: "Quinn (Test Architect)"
+updated: "2025-09-12T12:15:00Z"
+
+# Waiver status
+waiver: { active: false }
+
+# Critical issues identified
+top_issues:
+  - id: "INTEGRATION-001"
+    severity: high
+    finding: "MetricsCollector not integrated into live CLI processing pipeline"
+    suggested_action: "Connect comprehensive metrics system to actual CLI workflow"
+    suggested_owner: dev
+  - id: "INTEGRATION-002" 
+    severity: high
+    finding: "CLI falls back to 'Basic metrics' instead of comprehensive system described in story"
+    suggested_action: "Enable comprehensive metrics export in production CLI"
+    suggested_owner: dev
+  - id: "INTEGRATION-003"
+    severity: high
+    finding: "HistoricalTracker implemented but not active in live CLI workflow"
+    suggested_action: "Integrate historical tracking into production processing"
+    suggested_owner: dev
+  - id: "VALIDATION-001"
+    severity: medium
+    finding: "HTML and CSV export formats not validated with real data"
+    suggested_action: "Test all export formats with actual processing workloads"
+    suggested_owner: dev
+  - id: "STANDARDS-001"
+    severity: high
+    finding: "Professional Standards Architecture violation: inaccurate claims vs reality"
+    suggested_action: "Ensure all claimed functionality actually works in live system"
+    suggested_owner: dev
+
+# Quality assessment
+quality_score: 20  # 100 - (20 × 4 high issues) = 20
+expires: "2025-09-26T12:15:00Z"
+
+# Evidence from review
+evidence:
+  tests_reviewed: 18
+  risks_identified: 5
+  trace:
+    ac_covered: [5]  # Only partial JSON export works
+    ac_gaps: [1, 2, 3, 4, 6, 7]  # 6 of 7 ACs not implemented in live system
+
+# NFR validation results
+nfr_validation:
+  security:
+    status: PASS
+    notes: "No security concerns - metrics collection handles no sensitive data"
+  performance:
+    status: CONCERNS
+    notes: "Cannot assess comprehensive system performance due to integration issues"
+  reliability:
+    status: FAIL
+    notes: "System claims functionality that doesn't work in production"
+  maintainability:
+    status: PASS
+    notes: "Code architecture is well-structured and documented"
+
+# Recommendations
+recommendations:
+  immediate:  # Must fix before production
+    - action: "Integrate MetricsCollector into CLI processing pipeline"
+      refs: ["cli.py:256", "enhanced_processor.py"]
+    - action: "Enable comprehensive metrics export instead of basic fallback"
+      refs: ["cli.py:530-610"]
+    - action: "Activate HistoricalTracker in live CLI workflow"
+      refs: ["cli.py:557-577", "utils/historical_tracker.py"]
+    - action: "Validate all export formats with real processing data"
+      refs: ["utils/metrics_reporter.py:200-544"]
+  future:  # Address in next iteration
+    - action: "Add integration tests that verify end-to-end CLI functionality"
+      refs: ["tests/test_metrics_reporting.py"]
+    - action: "Consider automated validation of story claims vs actual functionality"
+      refs: ["docs/stories/"]
+
+# Professional Standards Architecture Compliance Assessment
+professional_standards:
+  technical_integrity: FAIL
+  honest_assessment: FAIL
+  crisis_reporting_accuracy: PASS  # This review is accurate
+  team_accountability: REQUIRES_ACTION
+  
+# Risk summary
+risk_summary:
+  totals:
+    critical: 1  # Professional standards violation
+    high: 4      # Integration failures  
+    medium: 1    # Validation gaps
+    low: 0
+  highest: critical
+  recommendations:
+    must_fix:
+      - "Connect comprehensive metrics system to live CLI workflow"
+      - "Ensure story claims match actual functionality"
+    monitor:
+      - "Integration test coverage for end-to-end workflows"
+      - "Professional standards compliance in future stories"

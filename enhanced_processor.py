@@ -29,8 +29,8 @@ class EnhancedSanskritProcessor(SanskritProcessor):
     
     def __init__(self, lexicon_dir: Path = None, config_path: Path = None):
         """Initialize with enhanced services."""
-        # Initialize base processor
-        super().__init__(lexicon_dir)
+        # Initialize base processor with metrics collection enabled
+        super().__init__(lexicon_dir, collect_metrics=True)
         
         # Load configuration
         self.config = self._load_config(config_path)

@@ -253,7 +253,7 @@ def process_single(args):
             # Initialize processor based on mode
             if args.simple:
                 logger.info("Initializing Simple Sanskrit processor...")
-                processor = SanskritProcessor(args.lexicons)
+                processor = SanskritProcessor(args.lexicons, collect_metrics=True)
             elif args.asr:
                 logger.info("Initializing ASR Sanskrit processor...")
                 from processors.asr_processor import ASRProcessor
@@ -526,29 +526,91 @@ def process_single(args):
                         import traceback
                         traceback.print_exc()
             
-            # Export metrics if requested
+            # Export comprehensive metrics if requested (Story 10.6)
             if args.export_metrics:
-                import json
-                metrics_data = ProcessingReporter.export_json(result)
-                
-                # Include cache statistics in exported metrics
-                if hasattr(processor, 'lexicon_cache'):
-                    cache_stats = processor.lexicon_cache.get_combined_stats()
-                    if cache_stats.get('caching') != 'disabled':
-                        metrics_data['cache_statistics'] = cache_stats
-                
-                # Include context-aware metrics if available
-                if hasattr(result, 'quality_metrics') and result.quality_metrics:
-                    metrics_data['context_aware_metrics'] = {
-                        'content_type': getattr(result, 'content_type', 'unknown'),
-                        'confidence': getattr(result, 'confidence', 0.0),
-                        'quality_metrics': result.quality_metrics,
-                        'specialized_processing': getattr(result, 'specialized_processing', {})
-                    }
-                
-                with open(args.export_metrics, 'w') as f:
-                    json.dump(metrics_data, f, indent=2)
-                print(f"\n📊 Metrics exported to: {args.export_metrics}")
+                try:
+                    # Use enhanced metrics system if available
+                    if hasattr(processor, 'metrics_collector') and processor.metrics_collector:
+                        from utils.metrics_reporter import MetricsReporter
+                        from utils.historical_tracker import HistoricalTracker
+                        from pathlib import Path
+                        
+                        # Create comprehensive metrics report
+                        metrics_reporter = MetricsReporter(processor.metrics_collector)
+                        export_path = Path(args.export_metrics)
+                        
+                        # Determine export format from file extension
+                        if export_path.suffix.lower() == '.html':
+                            metrics_reporter.export_html(export_path)
+                            print(f"\n📊 Comprehensive HTML metrics report exported to: {export_path}")
+                        elif export_path.suffix.lower() == '.csv':
+                            metrics_reporter.export_csv(export_path)
+                            print(f"\n📊 CSV corrections data exported to: {export_path}")
+                        else:
+                            # Default to JSON for comprehensive data
+                            if export_path.suffix.lower() != '.json':
+                                export_path = export_path.with_suffix('.json')
+                            metrics_reporter.export_json(export_path)
+                            print(f"\n📊 Comprehensive JSON metrics exported to: {export_path}")
+                        
+                        # Store in historical database if enabled
+                        try:
+                            historical_tracker = HistoricalTracker()
+                            run_id = historical_tracker.store_run(processor.metrics_collector, metrics_reporter.report)
+                            print(f"📈 Run stored in history database (ID: {run_id})")
+                            
+                            # Show comparison with recent baseline if available
+                            comparison = historical_tracker.compare_with_baseline(metrics_reporter.report)
+                            if comparison.baseline_run and comparison.trends:
+                                print("\n🔍 HISTORICAL COMPARISON:")
+                                for trend in comparison.trends[:3]:  # Show top 3 trends
+                                    direction_emoji = "📈" if trend.trend_direction == "improving" else "📉" if trend.trend_direction == "declining" else "➡️"
+                                    print(f"   {direction_emoji} {trend.metric_name}: {trend.change_percent:+.1f}% ({trend.trend_direction})")
+                                
+                                if comparison.recommendations:
+                                    print("💡 RECOMMENDATIONS:")
+                                    for rec in comparison.recommendations[:2]:  # Show top 2 recommendations
+                                        print(f"   • {rec}")
+                                        
+                        except Exception as e:
+                            if args.verbose:
+                                print(f"⚠️  Historical tracking failed: {e}")
+                        
+                        # Display detailed console report if verbose
+                        if args.verbose or args.metrics:
+                            print("\n" + "="*60)
+                            console_report = metrics_reporter.generate_console_report(verbose=True)
+                            print(console_report)
+                        
+                    else:
+                        # Fallback to legacy metrics export
+                        import json
+                        metrics_data = ProcessingReporter.export_json(result)
+                        
+                        # Include cache statistics in exported metrics
+                        if hasattr(processor, 'lexicon_cache'):
+                            cache_stats = processor.lexicon_cache.get_combined_stats()
+                            if cache_stats.get('caching') != 'disabled':
+                                metrics_data['cache_statistics'] = cache_stats
+                        
+                        # Include context-aware metrics if available
+                        if hasattr(result, 'quality_metrics') and result.quality_metrics:
+                            metrics_data['context_aware_metrics'] = {
+                                'content_type': getattr(result, 'content_type', 'unknown'),
+                                'confidence': getattr(result, 'confidence', 0.0),
+                                'quality_metrics': result.quality_metrics,
+                                'specialized_processing': getattr(result, 'specialized_processing', {})
+                            }
+                        
+                        with open(args.export_metrics, 'w') as f:
+                            json.dump(metrics_data, f, indent=2)
+                        print(f"\n📊 Basic metrics exported to: {args.export_metrics}")
+                        
+                except Exception as e:
+                    print(f"\n❌ Failed to export metrics: {e}")
+                    if args.verbose:
+                        import traceback
+                        traceback.print_exc()
         
         # Generate and display performance report if profiling enabled
         if args.profile:
@@ -678,7 +740,7 @@ def process_batch(args):
             # Initialize processor based on mode
             if args.simple:
                 logger.info("Initializing Simple Sanskrit processor for batch processing...")
-                processor = SanskritProcessor(args.lexicons)
+                processor = SanskritProcessor(args.lexicons, collect_metrics=True)
             elif args.asr:
                 logger.info("Initializing ASR Sanskrit processor for batch processing...")
                 from processors.asr_processor import ASRProcessor

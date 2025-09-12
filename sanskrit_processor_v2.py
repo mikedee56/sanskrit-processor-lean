@@ -823,26 +823,23 @@ class SanskritProcessor:
         return best_match
     
     def process_srt_file(self, input_path: Union[str, Path], output_path: Union[str, Path]) -> ProcessingResult:
-        """Process an SRT file with Sanskrit corrections."""
+        """Process an SRT file with Sanskrit corrections and comprehensive metrics."""
         import time
         start_time = time.time()
-        parse_start = time.time()
         
         # Convert strings to Path objects for consistent handling
         input_path = Path(input_path) if isinstance(input_path, str) else input_path
         output_path = Path(output_path) if isinstance(output_path, str) else output_path
         
-        # Memory monitoring (only when collecting metrics and psutil is available)
-        memory_start = None
-        if self.collect_metrics:
-            try:
-                import psutil
-                process = psutil.Process()
-                memory_start = process.memory_info().rss / 1024 / 1024  # MB
-            except ImportError:
-                pass
-        
         logger.info(f"Processing SRT file: {input_path} -> {output_path}")
+        
+        # Initialize enhanced metrics collection
+        if self.collect_metrics and self.metrics_collector:
+            self.metrics_collector.start_processing(
+                file_path=str(input_path), 
+                mode=getattr(self, 'processing_mode', 'standard')
+            )
+            self.metrics_collector.start_phase('parsing')
         
         try:
             # Validate input file exists
@@ -859,6 +856,7 @@ class SanskritProcessor:
                 )
             
             # Read and parse phase
+            parse_start = time.time()
             try:
                 with open(input_path, 'r', encoding='utf-8') as f:
                     content = f.read()
@@ -898,10 +896,15 @@ class SanskritProcessor:
                     ]
                 )
             
+            # End parsing phase and start processing
+            if self.collect_metrics and self.metrics_collector:
+                self.metrics_collector.end_phase('parsing')
+                self.metrics_collector.start_phase('processing')
+            
             parse_time = time.time() - parse_start
             logger.info(f"Parsed {len(segments)} segments")
             
-            # Processing phase
+            # Processing phase with enhanced metrics
             process_start = time.time()
             total_corrections = 0
             processing_errors = []
@@ -911,11 +914,22 @@ class SanskritProcessor:
                     processed_text, corrections = self.process_text(segment.text)
                     segment.text = processed_text
                     total_corrections += corrections
+                    
+                    # Record cache performance if available
+                    if self.collect_metrics and hasattr(self, 'lexicon_cache'):
+                        # This is a placeholder - actual cache hits would be tracked in the correction methods
+                        pass
+                        
                 except Exception as e:
                     # Log but continue processing other segments
                     error_msg = f"Failed to process segment {i}: {e}"
                     processing_errors.append(error_msg)
                     logger.warning(error_msg)
+            
+            # End processing phase and start writing
+            if self.collect_metrics and self.metrics_collector:
+                self.metrics_collector.end_phase('processing')
+                self.metrics_collector.start_phase('writing')
             
             process_time = time.time() - process_start
             
@@ -951,24 +965,18 @@ class SanskritProcessor:
                     ]
                 )
             
+            # Complete metrics collection
+            if self.collect_metrics and self.metrics_collector:
+                self.metrics_collector.end_phase('writing')
+                self.metrics_collector.finish_processing(len(segments))
+            
             write_time = time.time() - write_start
             processing_time = time.time() - start_time
             
-            # Create appropriate result type
+            # Create appropriate result type with enhanced metrics
             if self.collect_metrics and self.metrics_collector:
-                # Calculate memory usage
-                memory_usage = {}
-                if memory_start:
-                    try:
-                        import psutil
-                        process = psutil.Process()
-                        memory_end = process.memory_info().rss / 1024 / 1024
-                        memory_usage = {
-                            'peak': memory_end,
-                            'average': (memory_start + memory_end) / 2
-                        }
-                    except ImportError:
-                        pass
+                # Get performance metrics
+                performance_metrics = self.metrics_collector.get_performance_metrics()
                 
                 # Calculate quality score
                 quality_score = self.metrics_collector.calculate_quality_score(len(segments), len(processing_errors))
@@ -981,9 +989,9 @@ class SanskritProcessor:
                     corrections_by_type=self.metrics_collector.corrections_by_type.copy(),
                     correction_details=self.metrics_collector.correction_details.copy(),
                     confidence_scores=self.metrics_collector.confidence_scores.copy(),
-                    processing_phases={'parse': parse_time, 'process': process_time, 'write': write_time},
+                    processing_phases=self.metrics_collector.processing_phases.copy(),
                     quality_score=quality_score,
-                    memory_usage=memory_usage
+                    memory_usage=performance_metrics.get('memory_usage', {})
                 )
             else:
                 result = ProcessingResult(
