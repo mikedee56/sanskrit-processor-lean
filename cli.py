@@ -182,6 +182,8 @@ Examples:
                         help='File pattern for batch processing (default: *.srt)')
     parser.add_argument('--simple', action='store_true',
                         help='Use simple processor (lexicons only, no external services)')
+    parser.add_argument('--asr', action='store_true',
+                        help='Use ASR mode for aggressive ASR error correction')
     parser.add_argument('--validate-config', action='store_true',
                         help='Validate configuration file and exit')
     parser.add_argument('--profile', action='store_true',
@@ -197,6 +199,13 @@ Examples:
                        help='Output formats to generate (default: srt)')
     
     args = parser.parse_args()
+    
+    # Validate mutually exclusive flags
+    mode_flags = [args.simple, args.asr]
+    if sum(mode_flags) > 1:
+        print("❌ Error: --simple and --asr flags are mutually exclusive")
+        print("💡 Choose only one processing mode")
+        return 1
     
     # Handle config validation if requested
     if args.validate_config:
@@ -236,6 +245,13 @@ def process_single(args):
             if args.simple:
                 logger.info("Initializing Simple Sanskrit processor...")
                 processor = SanskritProcessor(args.lexicons)
+            elif args.asr:
+                logger.info("Initializing ASR Sanskrit processor...")
+                from processors.asr_processor import ASRProcessor
+                processor = ASRProcessor(
+                    lexicon_dir=args.lexicons,
+                    config_path=args.config
+                )
             else:
                 logger.info("Initializing Enhanced Sanskrit processor...")
                 processor = EnhancedSanskritProcessor(
@@ -654,6 +670,10 @@ def process_batch(args):
         if args.simple:
             logger.info("Batch processing with Simple Sanskrit processor...")
             processor = SanskritProcessor(args.lexicons)
+        elif args.asr:
+            logger.info("Batch processing with ASR Sanskrit processor...")
+            from processors.asr_processor import ASRProcessor
+            processor = ASRProcessor(args.lexicons, args.config)
         else:
             logger.info("Batch processing with Enhanced Sanskrit processor...")
             processor = EnhancedSanskritProcessor(args.lexicons, args.config)

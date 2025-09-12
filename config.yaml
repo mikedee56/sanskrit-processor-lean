@@ -9,11 +9,31 @@ processing:
   enable_semantic_analysis: true  # Enable MCP semantic processing
   enable_scripture_lookup: true  # Enable API scripture references
   
+  # Systematic Sanskrit Processing
+  enable_systematic_matching: true  # Enable systematic term matching from scriptures
+  enable_compound_processing: true  # Enable compound word processing
+  
+  # Systematic processing configuration
+  systematic_processing:
+    confidence_threshold: 0.8  # Minimum confidence for systematic matches
+    enable_phonetic_matching: true  # Enable Sanskrit phonetic similarity
+    enable_asr_correction: true  # Enable ASR pattern reversal
+    max_corrections_per_segment: 20  # Limit corrections to prevent over-processing
+  
   # Fuzzy matching
   fuzzy_matching:
     enabled: true
     threshold: 0.8
     log_matches: false
+  
+  # ASR Mode Configuration
+  asr_correction_mode: false  # Default disabled
+  asr_settings:
+    english_protection_threshold: 0.8  # Higher threshold allows more processing
+    case_sensitive_matching: false     # ASR needs case flexibility
+    sanskrit_whitelist_override: true  # Bypass protection for known terms
+    minimum_correction_target: 25      # Percentage target for correction rate
+    aggressive_compound_matching: true # Handle compound variations
   
   # Smart caching configuration
   caching:
