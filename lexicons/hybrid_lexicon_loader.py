@@ -91,7 +91,25 @@ ENGLISH_BLOCKLIST = {
     'may', 'new', 'now', 'old', 'see', 'two', 'way', 'who', 'boy', 'did',
     'its', 'let', 'put', 'say', 'she', 'too', 'use', 'run', 'big', 'end',
     'why', 'win', 'yes', 'yet', 'cut', 'cup', 'fun', 'gun', 'hot', 'job',
-    'lot', 'met', 'net', 'pen', 'red', 'run', 'sun', 'top', 'try', 'win'
+    'lot', 'met', 'net', 'pen', 'red', 'run', 'sun', 'top', 'try', 'win',
+    # CRITICAL: English words that were being incorrectly translated
+    'treading', 'reading', 'leading', 'heading', 'spreading', 'breeding',
+    'agitated', 'meditated', 'dedicated', 'activated', 'created', 'related',
+    'seated', 'treated', 'heated', 'repeated', 'completed', 'defeated',
+    'worship', 'business', 'success', 'given', 'extension', 'whole',
+    'tell', 'four', 'neither', 'respect', 'courteous', 'gesture',
+    'realized', 'surrender', 'looking', 'thinking', 'feeling', 'asking',
+    'explained', 'carrying', 'powerful', 'mystical', 'meanings',
+    'concluding', 'stage', 'grief', 'trees', 'plants', 'where',
+    'different', 'sympathy', 'surprised', 'supposed', 'incarnation',
+    'questioned', 'grieving', 'family', 'loss', 'makes', 'mind',
+    'little', 'insane', 'extent', 'leaves', 'exaggerating', 'subtle',
+    'meaning', 'behind', 'tells', 'experience', 'know', 'pretended',
+    'herself', 'message', 'place', 'conquered', 'backed', 'certain',
+    'some', 'authenticated', 'comes', 'fear', 'what',
+    'bigger', 'well', 'read', 'will', 'there', 'when', 'easily',
+    'guru', 'devotees', 'delay', 'forest', 'carefully', 'through',
+    'together', 'session', 'meditation'
 }
 
 class HybridLexiconDict(dict):
@@ -128,6 +146,18 @@ class HybridLexiconDict(dict):
         if key.lower().strip() in ENGLISH_BLOCKLIST:
             self.stats['misses'] += 1
             raise KeyError(key)
+        
+        # Trigger lazy loading if needed (only for corrections lookup)
+        if hasattr(self, '_parent_loader') and self.lookup_type == 'corrections':
+            self._parent_loader._ensure_asr_corrections_loaded()
+        
+        # Check for high-priority ASR corrections first in YAML
+        if super().__contains__(key):
+            yaml_result = super().__getitem__(key)
+            if yaml_result.get('asr_priority') or yaml_result.get('asr_common_error'):
+                self.stats['yaml_hits'] += 1
+                self.stats['asr_hits'] = self.stats.get('asr_hits', 0) + 1
+                return yaml_result
             
         # Check cache first
         if key in self._lookup_cache and self._lookup_cache[key] is not None:
@@ -158,6 +188,19 @@ class HybridLexiconDict(dict):
         # Phonetic matching for Sanskrit terms (corrections only)
         is_correction = self.lookup_type == 'corrections'
         if is_correction and len(key) > 3:  # Only for longer terms
+            # CRITICAL: Skip phonetic matching for English words
+            if key.lower().strip() in ENGLISH_BLOCKLIST:
+                self.stats['misses'] += 1
+                raise KeyError(key)
+            
+            # Additional check: skip common English patterns
+            if (key.lower().isascii() and 
+                (key.lower().endswith('ing') or key.lower().endswith('ed') or 
+                 key.lower().endswith('er') or key.lower().endswith('est') or
+                 key.lower().endswith('ly') or key.lower().endswith('tion'))):
+                self.stats['misses'] += 1
+                raise KeyError(key)
+                
             best_match = None
             best_similarity = 0.0
             
@@ -188,7 +231,11 @@ class HybridLexiconLoader:
     """Database + YAML lexicon loader with seamless fallback."""
     def __init__(self, lexicon_dir: Path, config: dict = None):
         self.lexicon_dir, self.config = Path(lexicon_dir), config or {}
-        self.stats = {'database_hits': 0, 'yaml_hits': 0, 'misses': 0}
+        self.stats = {'database_hits': 0, 'yaml_hits': 0, 'misses': 0, 'asr_hits': 0}
+        
+        # Performance optimization flags
+        self.lazy_asr_loading = self.config.get('lexicons', {}).get('lazy_asr_loading', False)
+        self._asr_corrections_loaded = False
         
         # Initialize database with proper configuration
         self.database = None
@@ -226,11 +273,13 @@ class HybridLexiconLoader:
         
         # Create hybrid dictionaries
         self.corrections = HybridLexiconDict(self.database, yaml_corrections, self.stats, 'corrections')
+        self.corrections._parent_loader = self  # For lazy loading
         self.proper_nouns = HybridLexiconDict(self.database, yaml_proper_nouns, self.stats, 'proper_nouns')
         
     def _load_yaml_lexicons(self, corrections_dict, proper_nouns_dict):
-        """Load YAML files as fallback."""
+        """Load YAML files as fallback, including ASR corrections."""
         try:
+            # Load main lexicon files
             for filename, target_dict in [('corrections.yaml', corrections_dict), 
                                         ('proper_nouns.yaml', proper_nouns_dict)]:
                 filepath = self.lexicon_dir / filename
@@ -246,8 +295,48 @@ class HybridLexiconLoader:
                                     var_key = variation.lower() if filename == 'proper_nouns.yaml' else variation
                                     target_dict[var_key] = entry
                     logger.info(f"Loaded {len(target_dict)} {filename.replace('.yaml', '')} entries")
+            
+            # Load ASR corrections with high priority (unless lazy loading is enabled)
+            if not self.lazy_asr_loading:
+                self._load_asr_corrections(corrections_dict)
+            else:
+                logger.info("ASR corrections will be loaded lazily on first access")
+                    
         except Exception as e:
             logger.warning(f"Failed to load YAML lexicons: {e}")
+    
+    def _load_asr_corrections(self, corrections_dict):
+        """Load ASR corrections into the corrections dictionary."""
+        asr_filepath = self.lexicon_dir / 'asr_corrections.yaml'
+        if asr_filepath.exists():
+            with open(asr_filepath, 'r', encoding='utf-8') as f:
+                asr_data = yaml.safe_load(f)
+                asr_count = 0
+                for entry in asr_data.get('asr_corrections', []):
+                    key = entry.get('original_term')
+                    if key:
+                        # Mark as high-priority ASR correction
+                        entry['asr_priority'] = True
+                        entry['asr_common_error'] = entry.get('asr_common_error', True)
+                        
+                        # Add to corrections dict (most ASR corrections are concept corrections)
+                        corrections_dict[key.lower()] = entry
+                        for variation in entry.get('variations', []):
+                            corrections_dict[variation.lower()] = entry
+                        asr_count += 1
+                logger.info(f"Loaded {asr_count} ASR correction entries with high priority")
+                self._asr_corrections_loaded = True
+    
+    def _ensure_asr_corrections_loaded(self):
+        """Ensure ASR corrections are loaded (for lazy loading)."""
+        if self.lazy_asr_loading and not self._asr_corrections_loaded:
+            logger.info("Lazy loading ASR corrections...")
+            # We need to reload since corrections dict is already created
+            temp_dict = {}
+            self._load_asr_corrections(temp_dict)
+            # Merge into existing corrections dict
+            for key, value in temp_dict.items():
+                self.corrections[key] = value
             
     def get_compound_terms(self, text: str) -> List[DatabaseTerm]:
         """Get compound terms from database."""

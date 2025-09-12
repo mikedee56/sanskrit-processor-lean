@@ -1,0 +1,665 @@
+metadata:
+  version: '1.0'
+  description: ASR-specific corrections for common transcription errors
+  created_date: 2025-09-12
+  total_entries: 47
+  confidence_threshold: 0.95
+  priority: high
+
+asr_corrections:
+# High-priority ASR errors identified in story analysis
+- original_term: yogabashi
+  variations:
+    - yoga bashi
+    - yogavashi
+    - yoga vashi  
+    - yogabasi
+    - yoga basi
+  transliteration: Yogavāsiṣṭha
+  is_proper_noun: true
+  category: scripture
+  confidence: 1.0
+  asr_common_error: true
+  error_type: phonetic_substitution
+  frequency: high
+  source_authority: ASR_Pattern_Analysis
+
+- original_term: shivashistha
+  variations:
+    - shiva shistha
+    - sivashistha
+    - shivaasistha
+    - shiva sistha
+    - sivasistha
+  transliteration: Vaśiṣṭha
+  is_proper_noun: true
+  category: sage
+  confidence: 1.0
+  asr_common_error: true
+  error_type: compound_word_error
+  frequency: high
+  source_authority: Sanskrit_Authority
+
+- original_term: malagrasth
+  variations:
+    - mala grasth
+    - malagrastha
+    - malagrast
+    - mala grast
+    - malagrasht
+  transliteration: mala-grasta
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  asr_common_error: true
+  error_type: compound_hyphenation
+  frequency: medium
+  source_authority: ASR_Pattern_Analysis
+
+# Phonetic substitution patterns
+- original_term: darma
+  variations:
+    - dharama
+    - dhrma
+    - darma
+  transliteration: dharma
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  asr_common_error: true
+  error_type: phonetic_substitution
+  frequency: high
+  source_authority: IAST
+
+- original_term: barata
+  variations:
+    - bharata
+    - bharat
+    - barata
+  transliteration: bharata
+  is_proper_noun: true
+  category: ancient_text
+  confidence: 1.0
+  asr_common_error: true
+  error_type: phonetic_substitution
+  frequency: high
+  source_authority: IAST
+
+- original_term: wasistha
+  variations:
+    - vasistha
+    - wasistha
+    - vasishtha
+    - washishtha
+  transliteration: Vasiṣṭha
+  is_proper_noun: true
+  category: sage
+  confidence: 1.0
+  asr_common_error: true
+  error_type: phonetic_substitution
+  frequency: medium
+  source_authority: Sanskrit_Authority
+
+- original_term: gnana
+  variations:
+    - jnana
+    - gnana
+    - gyana
+    - yania
+  transliteration: jñāna
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  asr_common_error: true
+  error_type: phonetic_substitution
+  frequency: high
+  source_authority: IAST
+
+- original_term: utpati
+  variations:
+    - utpatti
+    - utpati
+    - udpati
+    - utpadi
+  transliteration: utpatti
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  asr_common_error: true
+  error_type: dropped_consonants
+  frequency: medium
+  source_authority: Sanskrit_Grammar
+
+- original_term: bhoomikaas
+  variations:
+    - bhūmikāḥ
+    - bhoomikaas
+    - bhoomikās
+    - bhumikas
+  transliteration: bhūmikāḥ
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  asr_common_error: true
+  error_type: plural_form_error
+  frequency: medium
+  source_authority: Sanskrit_Grammar
+
+# Common scripture name variations
+- original_term: bhagavad gita
+  variations:
+    - bhagvad geeta
+    - bhagwad gita
+    - bagavad gita
+    - bhagavat gita
+    - bhagwad geeta
+  transliteration: Bhagavad-gītā
+  is_proper_noun: true
+  category: scripture
+  confidence: 1.0
+  asr_common_error: true
+  error_type: compound_word_error
+  frequency: high
+  source_authority: IAST
+
+- original_term: maha bharata
+  variations:
+    - mahabarata
+    - mahabharat
+    - maha barata
+    - mahabharatam
+  transliteration: Mahābhārata
+  is_proper_noun: true
+  category: scripture
+  confidence: 1.0
+  asr_common_error: true
+  error_type: compound_word_error
+  frequency: high
+  source_authority: IAST
+
+# Common philosophical terms
+- original_term: carma
+  variations:
+    - karma
+    - carma
+    - karama
+    - kharma
+  transliteration: karma
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  asr_common_error: true
+  error_type: phonetic_substitution
+  frequency: high
+  source_authority: IAST
+
+- original_term: siva
+  variations:
+    - shiva
+    - siva
+    - śiva
+    - sheeva
+  transliteration: śiva
+  is_proper_noun: true
+  category: deity
+  confidence: 1.0
+  asr_common_error: true
+  error_type: phonetic_substitution
+  frequency: high
+  source_authority: IAST
+
+- original_term: yog
+  variations:
+    - yoga
+    - yog
+    - youga
+    - yogaa
+  transliteration: yoga
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  asr_common_error: true
+  error_type: truncation
+  frequency: medium
+  source_authority: IAST
+
+# Compound word spacing variations
+- original_term: karma yoga
+  variations:
+    - karmayoga
+    - karma-yoga
+    - karma yoga
+  transliteration: karma-yoga
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  asr_common_error: true
+  error_type: compound_spacing
+  frequency: medium
+  source_authority: IAST
+
+- original_term: bhakti yoga
+  variations:
+    - bhaktiyoga
+    - bhakti-yoga
+    - bhakti yoga
+  transliteration: bhakti-yoga
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  asr_common_error: true
+  error_type: compound_spacing
+  frequency: medium
+  source_authority: IAST
+
+- original_term: raja yoga
+  variations:
+    - rajayoga
+    - raja-yoga
+    - raja yoga
+  transliteration: rāja-yoga
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  asr_common_error: true
+  error_type: compound_spacing
+  frequency: medium
+  source_authority: IAST
+
+# Case variation patterns for major terms
+- original_term: DHARMA
+  variations:
+    - dharma
+    - Dharma
+    - DHARMA
+  transliteration: dharma
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  asr_common_error: true
+  error_type: case_variations
+  frequency: medium
+  source_authority: IAST
+
+- original_term: KARMA
+  variations:
+    - karma
+    - Karma
+    - KARMA
+  transliteration: karma
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  asr_common_error: true
+  error_type: case_variations
+  frequency: medium
+  source_authority: IAST
+
+- original_term: YOGA
+  variations:
+    - yoga
+    - Yoga
+    - YOGA
+  transliteration: yoga
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  asr_common_error: true
+  error_type: case_variations
+  frequency: medium
+  source_authority: IAST
+
+# Additional Sanskrit terms with common ASR errors
+- original_term: filosofy
+  variations:
+    - philosophy
+    - filosofy
+    - filosophy
+    - phylosophy
+  transliteration: philosophy
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  asr_common_error: true
+  error_type: phonetic_substitution
+  frequency: low
+  source_authority: English
+
+- original_term: gyan
+  variations:
+    - jnana
+    - gyan
+    - gyaan
+    - gyana
+  transliteration: jñāna
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  asr_common_error: true
+  error_type: phonetic_substitution
+  frequency: medium
+  source_authority: IAST
+
+- original_term: moksh
+  variations:
+    - moksha
+    - moksh
+    - moksa
+    - mokṣa
+  transliteration: mokṣa
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  asr_common_error: true
+  error_type: truncation
+  frequency: medium
+  source_authority: IAST
+
+- original_term: sadhana
+  variations:
+    - saadhana
+    - sadhna
+    - sadhana
+    - sādhanā
+  transliteration: sādhanā
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  asr_common_error: true
+  error_type: vowel_variations
+  frequency: medium
+  source_authority: IAST
+
+- original_term: swami
+  variations:
+    - swamy
+    - swami
+    - svami
+    - svāmi
+  transliteration: svāmi
+  is_proper_noun: false
+  category: title
+  confidence: 1.0
+  asr_common_error: true
+  error_type: phonetic_substitution
+  frequency: medium
+  source_authority: IAST
+
+- original_term: guru
+  variations:
+    - guroo
+    - gooroo
+    - guru
+    - guro
+  transliteration: guru
+  is_proper_noun: false
+  category: person
+  confidence: 1.0
+  asr_common_error: true
+  error_type: vowel_variations
+  frequency: low
+  source_authority: IAST
+
+# Sanskrit verse/chanting common errors
+- original_term: om
+  variations:
+    - aum
+    - ohm
+    - om
+    - oom
+  transliteration: oṃ
+  is_proper_noun: false
+  category: mantra
+  confidence: 1.0
+  asr_common_error: true
+  error_type: phonetic_substitution
+  frequency: medium
+  source_authority: IAST
+
+- original_term: shanti
+  variations:
+    - shantih
+    - shanti
+    - śanti
+    - shaanti
+  transliteration: śānti
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  asr_common_error: true
+  error_type: phonetic_substitution
+  frequency: medium
+  source_authority: IAST
+
+# Deity name variations
+- original_term: krishna
+  variations:
+    - krishana
+    - krsna
+    - krishna
+    - kriṣṇa
+  transliteration: kṛṣṇa
+  is_proper_noun: true
+  category: deity
+  confidence: 1.0
+  asr_common_error: true
+  error_type: vowel_variations
+  frequency: medium
+  source_authority: IAST
+
+- original_term: rama
+  variations:
+    - ramaa
+    - ram
+    - rama
+    - rāma
+  transliteration: rāma
+  is_proper_noun: true
+  category: deity
+  confidence: 1.0
+  asr_common_error: true
+  error_type: vowel_variations
+  frequency: medium
+  source_authority: IAST
+
+# Meditation and practice terms
+- original_term: dhyana
+  variations:
+    - dhyaan
+    - dhyana
+    - dhyāna
+    - dyana
+  transliteration: dhyāna
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  asr_common_error: true
+  error_type: vowel_variations
+  frequency: medium
+  source_authority: IAST
+
+- original_term: pranayam
+  variations:
+    - pranayama
+    - pranayam
+    - prāṇāyāma
+    - pranayaama
+  transliteration: prāṇāyāma
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  asr_common_error: true
+  error_type: truncation
+  frequency: medium
+  source_authority: IAST
+
+# Place/location name variations
+- original_term: bharat
+  variations:
+    - bharata
+    - bharat
+    - barata
+    - bharath
+  transliteration: bharata
+  is_proper_noun: true
+  category: place
+  confidence: 1.0
+  asr_common_error: true
+  error_type: phonetic_substitution
+  frequency: medium
+  source_authority: Sanskrit_Authority
+
+- original_term: ganga
+  variations:
+    - gangaa
+    - ganga
+    - gaṅgā
+    - ganhga
+  transliteration: gaṅgā
+  is_proper_noun: true
+  category: place
+  confidence: 1.0
+  asr_common_error: true
+  error_type: vowel_variations
+  frequency: low
+  source_authority: IAST
+
+# Complex compound terms
+- original_term: yogavasistha
+  variations:
+    - yoga vasistha
+    - yogabashi
+    - yogawasistha
+    - yogavasitta
+  transliteration: Yogavāsiṣṭha
+  is_proper_noun: true
+  category: scripture
+  confidence: 1.0
+  asr_common_error: true
+  error_type: compound_error
+  frequency: high
+  source_authority: Sanskrit_Authority
+
+- original_term: advaita vedanta
+  variations:
+    - advaita vedanta
+    - advaitavedanta
+    - adwaita vedanta
+    - advaita vedaanta
+  transliteration: advaita-vedānta
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  asr_common_error: true
+  error_type: compound_spacing
+  frequency: medium
+  source_authority: Sanskrit_Authority
+
+# Technical Sanskrit terms
+- original_term: sadhak
+  variations:
+    - sadhaka
+    - sadhak
+    - saadhaka
+    - sādhakaḥ
+  transliteration: sādhaka
+  is_proper_noun: false
+  category: person
+  confidence: 1.0
+  asr_common_error: true
+  error_type: truncation
+  frequency: medium
+  source_authority: IAST
+
+- original_term: tapas
+  variations:
+    - tapa
+    - tapas
+    - tapasya
+    - tapaḥ
+  transliteration: tapas
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  asr_common_error: true
+  error_type: truncation
+  frequency: medium
+  source_authority: IAST
+
+# Spiritual states and concepts
+- original_term: samadhi
+  variations:
+    - samadhi
+    - samaadhi
+    - samādhi
+    - samadhe
+  transliteration: samādhi
+  is_proper_noun: false
+  category: state
+  confidence: 1.0
+  asr_common_error: true
+  error_type: vowel_variations
+  frequency: medium
+  source_authority: IAST
+
+- original_term: moksha
+  variations:
+    - moksh
+    - moksha
+    - mokṣa
+    - moksa
+  transliteration: mokṣa
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  asr_common_error: true
+  error_type: diacritical_missing
+  frequency: medium
+  source_authority: IAST
+
+# Sanskrit grammatical terms
+- original_term: mantra
+  variations:
+    - mantram
+    - mantra
+    - mantrah
+    - maantra
+  transliteration: mantra
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  asr_common_error: true
+  error_type: case_endings
+  frequency: medium
+  source_authority: IAST
+
+- original_term: sloka
+  variations:
+    - shloka
+    - sloka
+    - śloka
+    - slokam
+  transliteration: śloka
+  is_proper_noun: false
+  category: literary
+  confidence: 1.0
+  asr_common_error: true
+  error_type: phonetic_substitution
+  frequency: medium
+  source_authority: IAST
+
+# Final entry for comprehensive coverage
+- original_term: vedanta
+  variations:
+    - vedanta
+    - vedaanta
+    - vedānta
+    - vaidanta
+  transliteration: vedānta
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  asr_common_error: true
+  error_type: vowel_variations
+  frequency: medium
+  source_authority: IAST

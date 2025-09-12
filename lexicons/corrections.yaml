@@ -28,7 +28,12 @@ entries:
   variations:
   - dhrma
   - dharama
-  - darma
+  - darma        # ASR dh→d substitution
+  - DHARMA       # ASR all caps
+  - Dharma       # ASR mixed case
+  - dharama      # ASR vowel insertion
+  - dhrama       # ASR consonant rearrangement
+  - dharma       # base form
   transliteration: dharma
   is_proper_noun: false
   category: concept
@@ -38,9 +43,13 @@ entries:
   meaning: righteous duty, natural law
 - original_term: yoga
   variations:
-  - yog
-  - yogaa
-  - youga
+  - yog          # ASR truncation
+  - yogaa        # ASR vowel extension
+  - youga        # ASR vowel substitution
+  - YOGA         # ASR all caps
+  - Yoga         # ASR mixed case
+  - yogah        # Sanskrit case ending
+  - yogam        # Sanskrit case ending
   transliteration: yoga
   is_proper_noun: false
   category: practice
@@ -1622,3 +1631,80 @@ entries:
   source_authority: English
   difficulty_level: intermediate
   meaning: lack of passion, detachment (English term used in spiritual context)
+
+# ASR-specific additions for expanded coverage
+- original_term: jnana
+  variations:
+  - gnana        # ASR j→g substitution  
+  - jnana        # base form
+  - gyana        # common variant
+  - gyaan        # ASR vowel extension
+  - JNANA        # ASR all caps
+  - Jnana        # ASR mixed case
+  - jnanam       # Sanskrit case ending
+  - jnanah       # Sanskrit case ending
+  transliteration: jñāna
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: intermediate
+  meaning: knowledge, wisdom
+
+- original_term: utpatti
+  variations:
+  - utpati       # ASR double consonant drop
+  - udpati       # ASR t→d substitution
+  - utpadi       # ASR tt→d substitution
+  - utpattih     # Sanskrit case ending
+  - UTPATTI      # ASR all caps
+  transliteration: utpatti
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Sanskrit_Grammar
+  difficulty_level: advanced
+  meaning: origin, birth, production
+
+- original_term: mala-grasta
+  variations:
+  - malagrasth   # ASR hyphen removal + consonant drop
+  - mala grasth  # ASR space insertion
+  - malagrastha  # ASR vowel addition
+  - malagrast    # ASR consonant drop
+  - malagrasht   # ASR consonant substitution
+  transliteration: mala-grasta
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: ASR_Pattern_Analysis
+  difficulty_level: advanced
+  meaning: afflicted by impurity
+
+- original_term: bhumikah
+  variations:
+  - bhoomikaas   # ASR vowel substitution + plural error
+  - bhoomikās    # partial correction
+  - bhumikāḥ     # proper diacritical
+  - bhumikas     # simplified plural
+  - BHUMIKAH     # ASR all caps
+  transliteration: bhūmikāḥ
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Sanskrit_Grammar
+  difficulty_level: advanced
+  meaning: levels, stages (plural)
+
+- original_term: shivashistha
+  variations:
+  - Vaśiṣṭha      # correct name (this is an error where ASR confuses Shiva + Vasistha)
+  - shiva sishtha # space separation error
+  - shivaasistha  # vowel insertion error
+  transliteration: Vaśiṣṭha
+  is_proper_noun: true
+  category: sage
+  confidence: 1.0
+  source_authority: ASR_Pattern_Analysis
+  difficulty_level: advanced
+  meaning: sage Vasistha (ASR commonly mistakes this)
