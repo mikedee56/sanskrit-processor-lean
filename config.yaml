@@ -14,17 +14,31 @@ processing:
   enable_compound_processing: true  # Enable compound word processing
   
   # Systematic processing configuration
-  systematic_processing:
-    confidence_threshold: 0.8  # Minimum confidence for systematic matches
-    enable_phonetic_matching: true  # Enable Sanskrit phonetic similarity
-    enable_asr_correction: true  # Enable ASR pattern reversal
-    max_corrections_per_segment: 20  # Limit corrections to prevent over-processing
+  case_sensitive_matching: false  # Enable case-insensitive matching (Story 10.3)
+  confidence_threshold: 0.8  # Minimum confidence for systematic matches
+  enable_phonetic_matching: true  # Enable Sanskrit phonetic similarity
+  enable_asr_correction: true  # Enable ASR pattern reversal
+  max_corrections_per_segment: 20  # Limit corrections to prevent over-processing
   
-  # Fuzzy matching
+  # Enhanced fuzzy matching configuration (Story 10.3)
   fuzzy_matching:
     enabled: true
-    threshold: 0.8
+    max_edit_distance: 3  # Maximum Levenshtein distance for matches
+    min_confidence: 0.6   # Minimum confidence threshold
+    enable_caching: true  # Cache expensive fuzzy calculations
+    enable_phonetic_matching: true  # Sanskrit-aware phonetic matching
     log_matches: false
+    
+  # ASR pattern matching configuration (Story 10.3)
+  asr_pattern_matching:
+    enabled: true
+    enable_compound_splitting: true  # Handle compound word ASR errors
+    common_substitutions:
+      'ph': 'f'
+      'th': 't'
+      'sh': 'ś'
+      'v': 'w'
+    sanskrit_specific: true
   
   # ASR Mode Configuration
   asr_correction_mode: false  # Default disabled
