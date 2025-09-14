@@ -138,6 +138,7 @@ class LexiconLoader:
                 ]
             )
 
+
 # SRTParser now imported from utils.srt_parser
 
 class SanskritProcessor:
@@ -159,6 +160,14 @@ class SanskritProcessor:
             # Fallback to original loader if hybrid not available
             self.lexicons = LexiconLoader(self.lexicon_dir)
             logger.info("Using YAML-only lexicon loader (fallback)")
+
+        # Initialize validation cache for performance optimization (Story 11.1)
+        try:
+            from utils.validation import DatabaseValidator
+            DatabaseValidator.initialize_validation_cache(self.lexicons)
+        except Exception as e:
+            logger.warning(f"Failed to initialize validation cache: {e}")
+            # Continue without cache - system will work but with validation overhead
         
         # Initialize smart caching
         self.lexicon_cache = LexiconCache(self.config)

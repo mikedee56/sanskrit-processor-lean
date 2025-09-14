@@ -12,6 +12,7 @@ from pathlib import Path
 
 from .content_classifier import ContentClassifier, ContentClassification
 from .compound_word_processor import SanskritCompoundProcessor
+from utils.validation import InputValidator, DatabaseValidator
 
 logger = logging.getLogger(__name__)
 
@@ -394,21 +395,57 @@ class ContextAwarePipeline:
             return word  # No word characters found, return as-is
         
         prefix, clean_word, suffix = match.groups()
-        clean_lower = clean_word.lower()
-        
-        # Try database lookup - check both corrections and proper_nouns
-        corrected = clean_word  # Default to original
-        
-        if hasattr(database_processor, 'corrections') and clean_lower in database_processor.corrections:
-            entry = database_processor.corrections[clean_lower]
-            corrected = entry.get('original_term', clean_word)
-        elif hasattr(database_processor, 'proper_nouns') and clean_lower in database_processor.proper_nouns:
-            entry = database_processor.proper_nouns[clean_lower]
-            corrected = entry.get('term', clean_word)  # proper_nouns uses 'term', not 'original_term'
+
+        # Fast input validation (Story 11.1: Optimized Performance)
+        validated_word = DatabaseValidator.validate_word_input(clean_word)
+        if not validated_word:
+            logger.debug(f"Invalid word input: {clean_word} ({type(clean_word)})")
+            return word  # Return original if validation fails
+
+        clean_lower = validated_word.lower()
+
+        # Fast cached lookup - try pre-validated entries first (Story 11.1: Performance Fix)
+        corrected = validated_word  # Default to validated input
+
+        try:
+            # Try validated cache first (zero validation overhead at runtime)
+            cached_entry = DatabaseValidator.get_validated_entry('corrections', clean_lower)
+            if cached_entry:
+                corrected = cached_entry.get('original_term', validated_word)
+            else:
+                cached_entry = DatabaseValidator.get_validated_entry('proper_nouns', clean_lower)
+                if cached_entry:
+                    corrected = cached_entry.get('term', validated_word)
+                else:
+                    # Fallback to legacy lookup with safe accessors (only if cache disabled)
+                    if hasattr(database_processor, 'corrections') and clean_lower in database_processor.corrections:
+                        entry = database_processor.corrections[clean_lower]
+                        corrected = DatabaseValidator.safe_get_entry_value(entry, 'original_term', validated_word)
+                    elif hasattr(database_processor, 'proper_nouns') and clean_lower in database_processor.proper_nouns:
+                        entry = database_processor.proper_nouns[clean_lower]
+                        corrected = DatabaseValidator.safe_get_entry_value(entry, 'term', validated_word)
+
+        except Exception as e:
+            logger.warning(f"Processor database failed: {e}")
+            # Continue with validated word if database lookup fails
+            corrected = validated_word
         
         # Preserve capitalization if needed
         if clean_word[0].isupper() and not strategy.get('case_sensitive', False) and corrected:
-            corrected = corrected.capitalize()
+            # Check if the entry has preserve_capitalization flag
+            preserve_cap = False
+            try:
+                if hasattr(database_processor, 'corrections') and clean_lower in database_processor.corrections:
+                    entry = database_processor.corrections[clean_lower]
+                    preserve_cap = isinstance(entry, dict) and entry.get('preserve_capitalization', False)
+                elif hasattr(database_processor, 'proper_nouns') and clean_lower in database_processor.proper_nouns:
+                    entry = database_processor.proper_nouns[clean_lower]  
+                    preserve_cap = isinstance(entry, dict) and entry.get('preserve_capitalization', False)
+            except:
+                pass
+                
+            if not preserve_cap:
+                corrected = corrected.capitalize()
         
         return prefix + corrected + suffix
     
