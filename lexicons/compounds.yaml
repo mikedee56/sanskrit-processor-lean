@@ -68,7 +68,6 @@ compound_terms:
     variations:
       - "advaita vedanta"
       - "advait vedant"
-      - "non-dual vedanta"
     type: "philosophical_system"
     context_clues: ["philosophy", "school", "tradition", "system"]
     

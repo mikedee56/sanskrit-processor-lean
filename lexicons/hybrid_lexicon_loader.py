@@ -358,6 +358,84 @@ class HybridLexiconLoader:
             'database_hit_rate': self.stats['database_hits'] / total * 100,
             'yaml_hit_rate': self.stats['yaml_hits'] / total * 100, 'total_lookups': total}
         
+    def __call__(self, word: str, strategy: dict = None) -> dict:
+        """
+        Make HybridLexiconLoader callable for context pipeline compatibility.
+
+        Args:
+            word: The word to lookup corrections for
+            strategy: Processing strategy (unused but required for compatibility)
+
+        Returns:
+            Dictionary with corrections in expected format
+        """
+        if not word or not isinstance(word, str):
+            return {'corrections': []}
+
+        word_lower = word.lower()
+
+        # Check corrections first
+        for correction in self.corrections:
+            if not isinstance(correction, dict):
+                continue
+
+            original = correction.get('original_term', '')
+            if not isinstance(original, str):
+                continue
+
+            if original.lower() == word_lower:
+                return {
+                    'corrections': [{
+                        'original_term': correction.get('transliteration', word),
+                        'transliteration': correction.get('transliteration', word),
+                        'confidence': 0.95
+                    }]
+                }
+
+            # Check variations
+            variations = correction.get('variations', [])
+            if isinstance(variations, list):
+                for var in variations:
+                    if isinstance(var, str) and var.lower() == word_lower:
+                        return {
+                            'corrections': [{
+                                'original_term': correction.get('transliteration', word),
+                                'transliteration': correction.get('transliteration', word),
+                                'confidence': 0.9
+                            }]
+                        }
+
+        # Check proper nouns
+        for noun in self.proper_nouns:
+            if not isinstance(noun, dict):
+                continue
+
+            # For proper nouns, look for 'term' field instead of 'original_term'
+            term = noun.get('term', noun.get('original_term', ''))
+            if isinstance(term, str) and term.lower() == word_lower:
+                return {
+                    'corrections': [{
+                        'original_term': term,
+                        'transliteration': term,
+                        'confidence': 0.95
+                    }]
+                }
+
+            # Check proper noun variations
+            variations = noun.get('variations', [])
+            if isinstance(variations, list):
+                for var in variations:
+                    if isinstance(var, str) and var.lower() == word_lower:
+                        return {
+                            'corrections': [{
+                                'original_term': term,
+                                'transliteration': term,
+                                'confidence': 0.9
+                            }]
+                        }
+
+        return {'corrections': []}
+
     def close(self):
         """Clean up database connections."""
         if self.database:

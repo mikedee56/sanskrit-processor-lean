@@ -28,14 +28,31 @@ class ASRProcessor(EnhancedSanskritProcessor):
         # Compile regex patterns for performance
         self._compiled_patterns = self._compile_whitelist_patterns()
         
-        # ASR-specific configuration
-        self.asr_config = self.config.get('processing', {}).get('asr_settings', {
-            'english_protection_threshold': 0.8,
+        # ASR-specific configuration with improved defaults
+        default_asr_config = {
+            'english_protection_threshold': 0.6,
             'case_sensitive_matching': False,
             'sanskrit_whitelist_override': True,
-            'minimum_correction_target': 25,
-            'aggressive_compound_matching': True
-        })
+            'minimum_correction_target': 30,
+            'aggressive_compound_matching': True,
+            'enable_fuzzy_matching': True,
+            'fuzzy_threshold': 0.7,
+            'enable_phonetic_patterns': True,
+            'context_detection_sensitivity': 0.5
+        }
+        
+        # Enable ASR mode in configuration
+        self.config.setdefault('processing', {})['asr_correction_mode'] = True
+        self.asr_config = self.config['processing'].get('asr_settings', default_asr_config)
+        
+        # Apply ASR settings to processing config
+        if 'fuzzy_matching' in self.config['processing']:
+            self.config['processing']['fuzzy_matching'].update({
+                'enabled': self.asr_config.get('enable_fuzzy_matching', True),
+                'min_confidence': self.asr_config.get('fuzzy_threshold', 0.7)
+            })
+        
+        logger.info(f"ASR mode enabled with aggressive settings (threshold: {self.asr_config.get('english_protection_threshold')})")
         
         # Override context detector with ASR-specific thresholds
         self.context_detector = ASRContextDetector(

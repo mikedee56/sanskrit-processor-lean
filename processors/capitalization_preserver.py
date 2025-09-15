@@ -60,11 +60,11 @@ class CapitalizationPreserver:
         # Check explicit preservation flag
         preserve_flag = entry.get('preserve_capitalization', False)
         if preserve_flag:
-            return self._preserve_original_case(original, corrected)
+            return self._preserve_original_case(original, corrected, entry)
 
         # Optimized category checking with caching
         if self._should_preserve_by_category(entry):
-            return self._preserve_original_case(original, corrected)
+            return self._preserve_original_case(original, corrected, entry)
 
         # Default: standard capitalization
         return corrected.capitalize() if corrected else ""
@@ -93,7 +93,55 @@ class CapitalizationPreserver:
         self._category_cache[all_categories] = result
         return result
 
-    def _preserve_original_case(self, original: str, corrected: str) -> str:
+    def _is_sanskrit_term(self, word: str) -> bool:
+        """
+        Detect if a word is likely Sanskrit/divine term or English
+        
+        Args:
+            word: Word to analyze
+            
+        Returns:
+            True if likely Sanskrit, False if likely English
+        """
+        if not word:
+            return False
+        
+        # Check for Sanskrit diacritics
+        sanskrit_chars = {'ā', 'ī', 'ū', 'ṛ', 'ḷ', 'ṃ', 'ḥ', 'ṅ', 'ñ', 'ṭ', 'ḍ', 'ṇ', 'ś', 'ṣ'}
+        if any(char in word.lower() for char in sanskrit_chars):
+            return True
+        
+        # Common English words that should not be capitalized
+        english_words = {
+            'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by',
+            'from', 'about', 'into', 'through', 'during', 'before', 'after', 'above', 'below',
+            'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does',
+            'did', 'will', 'would', 'could', 'should', 'may', 'might', 'can', 'must',
+            'a', 'an', 'this', 'that', 'these', 'those', 'my', 'your', 'his', 'her', 'its', 'our',
+            'their', 'some', 'any', 'all', 'each', 'every', 'no', 'not', 'only', 'just', 'even',
+            'speaks', 'teaches', 'says', 'tells', 'explains', 'describes', 'contains', 'includes',
+            'chapter', 'verse', 'text', 'book', 'wisdom', 'knowledge', 'truth', 'path', 'way'
+        }
+        
+        if word.lower() in english_words:
+            return False
+        
+        # Sanskrit/divine name patterns (common terms that should be capitalized)
+        sanskrit_patterns = {
+            'krishna', 'rama', 'shiva', 'vishnu', 'lakshmi', 'saraswati', 'ganesha', 'hanuman',
+            'bhagavan', 'bhagawan', 'devi', 'mata', 'ji', 'sri', 'sree', 'shri',
+            'yoga', 'dharma', 'karma', 'moksha', 'moksa', 'jnana', 'gyana', 'bhakti', 'seva',
+            'guru', 'swami', 'maharaj', 'ji', 'das', 'dasa',
+            'gita', 'upanishad', 'veda', 'vedanta', 'sutra', 'shastra'
+        }
+        
+        if word.lower() in sanskrit_patterns:
+            return True
+        
+        # Default: if unsure, treat as English to be conservative
+        return False
+
+    def _preserve_original_case(self, original: str, corrected: str, entry: Dict) -> str:
         """
         Preserve capitalization pattern from original to corrected text
 
@@ -135,16 +183,28 @@ class CapitalizationPreserver:
         result_words = []
         for orig_word, corr_word in zip(original_words, corrected_words):
             try:
-                if orig_word.isupper():
+                # Strip punctuation for case analysis but preserve it in output
+                import re
+                clean_orig = re.sub(r'^[^\w]+|[^\w]+$', '', orig_word, flags=re.UNICODE)
+                
+                if not clean_orig:
+                    # If word is all punctuation, keep corrected as-is
+                    result_words.append(corr_word)
+                    continue
+                
+                if clean_orig.isupper():
                     result_words.append(corr_word.upper())
-                elif orig_word.istitle():
+                elif clean_orig.istitle():
                     result_words.append(corr_word.capitalize())
-                elif orig_word.islower():
-                    # For divine names, even lowercase input should preserve proper capitalization
-                    result_words.append(corr_word.capitalize())
+                elif clean_orig.islower():
+                    # Special handling for scripture titles and divine names
+                    if self._should_preserve_by_category(entry) or self._is_sanskrit_term(corr_word):
+                        result_words.append(corr_word.capitalize())
+                    else:
+                        result_words.append(corr_word.lower())
                 else:
-                    # Mixed case - apply intelligent preservation
-                    result_words.append(self._preserve_mixed_case(orig_word, corr_word))
+                    # Mixed case - apply intelligent preservation using clean word
+                    result_words.append(self._preserve_mixed_case(clean_orig, corr_word))
             except (AttributeError, UnicodeError) as e:
                 logger.warning(f"Case preservation error for '{orig_word}' -> '{corr_word}': {e}")
                 # Fallback to safe capitalization
@@ -216,11 +276,17 @@ class CapitalizationPreserver:
             return corrected or ""
             
         try:
-            # Enhanced heuristic: if first letter is capital, capitalize corrected
-            if original and original[0].isupper():
+            # Priority 1: For Sanskrit/divine terms, apply intelligent capitalization
+            if self._is_sanskrit_term(corrected):
+                # Divine names and Sanskrit terms should be properly capitalized
+                return corrected.capitalize()
+            
+            # Priority 2: For non-Sanskrit terms, preserve case pattern of first character
+            if original and original[0].islower():
+                return corrected.lower()
+            elif original and original[0].isupper():
                 return corrected.capitalize()
             else:
-                # For divine names, prefer proper capitalization
                 return corrected.capitalize()
         except (AttributeError, UnicodeError, IndexError) as e:
             logger.warning(f"Mixed case preservation error: {e}")

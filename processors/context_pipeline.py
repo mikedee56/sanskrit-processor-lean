@@ -316,7 +316,7 @@ class ContextAwarePipeline:
             protected_text, restoration_map = text, {}
         
         # Step 2: Apply verse formatting if needed
-        if classification.content_type in ['verse', 'mixed_verse']:
+        if classification.content_type in ['verse', 'mixed_verse', 'mantra']:
             formatted_text = sacred_processors['formatter'].process_verse(
                 protected_text, classification.content_type
             )
@@ -333,7 +333,7 @@ class ContextAwarePipeline:
         
         metadata = {
             'symbols_protected': len(restoration_map),
-            'verse_formatted': classification.content_type in ['verse', 'mixed_verse'],
+            'verse_formatted': classification.content_type in ['verse', 'mixed_verse', 'mantra'],
             'sacred_content_preserved': True
         }
         
@@ -402,6 +402,11 @@ class ContextAwarePipeline:
             logger.debug(f"Invalid word input: {clean_word} ({type(clean_word)})")
             return word  # Return original if validation fails
 
+        # Additional safety check for validated_word type
+        if not isinstance(validated_word, str):
+            logger.error(f"DatabaseValidator returned non-string: {validated_word} (type: {type(validated_word)}) for input: {clean_word}")
+            return word
+
         clean_lower = validated_word.lower()
 
         # Fast cached lookup - try pre-validated entries first (Story 11.1: Performance Fix)
@@ -413,39 +418,16 @@ class ContextAwarePipeline:
             if cached_entry:
                 corrected = cached_entry.get('original_term', validated_word)
             else:
-                cached_entry = DatabaseValidator.get_validated_entry('proper_nouns', clean_lower)
-                if cached_entry:
-                    corrected = cached_entry.get('term', validated_word)
-                else:
-                    # Fallback to legacy lookup with safe accessors (only if cache disabled)
-                    if hasattr(database_processor, 'corrections') and clean_lower in database_processor.corrections:
-                        entry = database_processor.corrections[clean_lower]
-                        corrected = DatabaseValidator.safe_get_entry_value(entry, 'original_term', validated_word)
-                    elif hasattr(database_processor, 'proper_nouns') and clean_lower in database_processor.proper_nouns:
-                        entry = database_processor.proper_nouns[clean_lower]
-                        corrected = DatabaseValidator.safe_get_entry_value(entry, 'term', validated_word)
-
+                # Fallback to direct database lookup for new terms
+                result = database_processor(validated_word, strategy)
+                if result and result.get('corrections'):
+                    correction = result['corrections'][0]
+                    corrected = correction.get('transliteration') or correction.get('original_term', validated_word)
+        
         except Exception as e:
             logger.warning(f"Processor database failed: {e}")
-            # Continue with validated word if database lookup fails
-            corrected = validated_word
-        
-        # Preserve capitalization if needed
-        if clean_word[0].isupper() and not strategy.get('case_sensitive', False) and corrected:
-            # Check if the entry has preserve_capitalization flag
-            preserve_cap = False
-            try:
-                if hasattr(database_processor, 'corrections') and clean_lower in database_processor.corrections:
-                    entry = database_processor.corrections[clean_lower]
-                    preserve_cap = isinstance(entry, dict) and entry.get('preserve_capitalization', False)
-                elif hasattr(database_processor, 'proper_nouns') and clean_lower in database_processor.proper_nouns:
-                    entry = database_processor.proper_nouns[clean_lower]  
-                    preserve_cap = isinstance(entry, dict) and entry.get('preserve_capitalization', False)
-            except:
-                pass
-                
-            if not preserve_cap:
-                corrected = corrected.capitalize()
+            # Continue with fallback processing instead of crashing
+            return word
         
         return prefix + corrected + suffix
     

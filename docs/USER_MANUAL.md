@@ -1,3 +1,4 @@
+1
 # Sanskrit SRT Processor - User Manual & Quick Start Guide
 
 ## 📖 **Overview**

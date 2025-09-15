@@ -181,10 +181,14 @@ class SanskritProcessor:
         from processors.sacred_classifier import SacredContentClassifier
         from processors.symbol_protector import SacredSymbolProtector
         from processors.verse_formatter import VerseFormatter
-        
+
         self.sacred_classifier = SacredContentClassifier()
         self.symbol_protector = SacredSymbolProtector()
         self.verse_formatter = VerseFormatter()
+
+        # Initialize capitalization preservation (Story 11.2)
+        from processors.capitalization_preserver import CapitalizationPreserver
+        self.capitalization_preserver = CapitalizationPreserver(self.config.get('processing', {}))
         
         # Initialize context-aware pipeline (Story 6.5)
         try:
@@ -699,14 +703,15 @@ class SanskritProcessor:
         if corrected == clean_lower or not corrected:
             corrected = clean_word
         
-        # Preserve capitalization pattern intelligently
-        if clean_word and corrected:
-            if clean_word.isupper():
-                corrected = corrected.upper()
-            elif clean_word[0].isupper():
-                corrected = corrected.capitalize()
-            elif clean_word.islower():
-                corrected = corrected.lower()
+        # Apply intelligent capitalization preservation (Story 11.2)
+        if clean_word and corrected and corrected != clean_word:
+            # Find the correction entry to check for preserve_capitalization flag
+            correction_entry = {}
+            if hasattr(self.lexicons, 'corrections') and clean_lower in self.lexicons.corrections:
+                correction_entry = self.lexicons.corrections[clean_lower]
+
+            # Use CapitalizationPreserver for intelligent capitalization
+            corrected = self.capitalization_preserver.apply_capitalization(clean_word, corrected, correction_entry)
         
         # Reconstruct word with preserved punctuation
         result = prefix + corrected + suffix

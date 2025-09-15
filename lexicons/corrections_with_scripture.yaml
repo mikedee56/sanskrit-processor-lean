@@ -1260,7 +1260,7 @@ entries:
   meaning: true teacher, realized master
   original_term: sadgurum
   source_authority: Brahmananda Saraswati
-  transliteration: sad-guruṁ
+  transliteration: Sadguru
   variations:
   - sad gurum
   - sadguru
@@ -1271,7 +1271,7 @@ entries:
   meaning: philosophical text attributed to sage Vasistha
   original_term: yogavashistha
   source_authority: Traditional
-  transliteration: Yogavāsiṣṭha
+  transliteration: Yoga Vāsiṣṭha
   variations:
   - yoga vasistha
   - yogabashi
@@ -1588,7 +1588,7 @@ entries:
   source_authority: English
   transliteration: seven
   variations:
-  - 7
+  - "7"
   - VII
 - category: number
   confidence: 1.0
@@ -1599,7 +1599,7 @@ entries:
   source_authority: English
   transliteration: six
   variations:
-  - 6
+  - "6"
   - VI
 - category: error
   confidence: 1.0

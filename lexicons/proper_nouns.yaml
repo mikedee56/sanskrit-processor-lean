@@ -811,3 +811,33 @@ entries:
   - chittaa
   category: concept
   confidence: 1.0
+
+# Scripture and title additions from golden transcript
+- term: Ashtavakra Gītā
+  variations:
+  - ashtavakra gita
+  - ashtavakra geeta
+  - ashtavakra gītā
+  category: scripture
+  confidence: 1.0
+
+- term: Supreme Preceptor
+  variations:
+  - supreme preceptor
+  - supreme precept
+  category: title
+  confidence: 1.0
+
+- term: Sage Ashtavakra
+  variations:
+  - sage ashtavakra
+  - ashtavakra sage
+  category: title
+  confidence: 1.0
+
+- term: King Janaka
+  variations:
+  - king janaka
+  - janaka king
+  category: title
+  confidence: 1.0

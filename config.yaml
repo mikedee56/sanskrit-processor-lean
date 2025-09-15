@@ -23,11 +23,25 @@ processing:
   # Enhanced fuzzy matching configuration (Story 10.3)
   fuzzy_matching:
     enabled: true
-    max_edit_distance: 3  # Maximum Levenshtein distance for matches
-    min_confidence: 0.6   # Minimum confidence threshold
+    max_edit_distance: 2  # Reduced from 3 - more conservative matching to prevent English word corruption
+    min_confidence: 0.8   # Increased from 0.6 - higher threshold to prevent false positives
     enable_caching: true  # Cache expensive fuzzy calculations
     enable_phonetic_matching: true  # Sanskrit-aware phonetic matching
     log_matches: false
+
+  # Capitalization preservation system (Story 11.2)
+  capitalization_categories:
+    divine_name: true          # Always preserve divine names (Krishna, Rama, etc.)
+    scripture_title: true      # Always preserve scripture titles (Bhagavad Gita, etc.)
+    scripture: true           # Support legacy category name
+    deity: true              # Support legacy category name
+    place_name: true         # Always preserve place names
+    concept: false           # Standard rules for concepts
+    compound: false          # Standard rules for compounds
+
+  # Special handling rules for capitalization
+  all_caps_handling: "intelligent"  # "upper", "title", "intelligent"
+  mixed_case_handling: "preserve"   # "preserve", "standardize"
     
   # ASR pattern matching configuration (Story 10.3)
   asr_pattern_matching:
@@ -40,14 +54,18 @@ processing:
       'v': 'w'
     sanskrit_specific: true
   
-  # ASR Mode Configuration
-  asr_correction_mode: false  # Default disabled
+  # ASR Mode Configuration - For automatic speech recognition generated files
+  asr_correction_mode: false  # Default disabled - enable with --asr flag
   asr_settings:
-    english_protection_threshold: 0.8  # Higher threshold allows more processing
+    english_protection_threshold: 0.6  # Lower threshold = more aggressive processing
     case_sensitive_matching: false     # ASR needs case flexibility
     sanskrit_whitelist_override: true  # Bypass protection for known terms
-    minimum_correction_target: 25      # Percentage target for correction rate
+    minimum_correction_target: 30      # Higher target for ASR files (30-40%)
     aggressive_compound_matching: true # Handle compound variations
+    enable_fuzzy_matching: true        # Enable fuzzy matching for ASR errors
+    fuzzy_threshold: 0.7               # Lower = more aggressive fuzzy matching
+    enable_phonetic_patterns: true     # Enable ASR phonetic error correction
+    context_detection_sensitivity: 0.5 # More sensitive context detection
   
   # Smart caching configuration
   caching:
@@ -116,7 +134,7 @@ database:
 # Context Detection Configuration (Story 10.2)
 context_detection:
   thresholds:
-    english_confidence: 0.8      # Increased from ~0.3 for more accurate English detection
+    english_confidence: 0.95     # Very high threshold - only skip Sanskrit processing for pure English
     sanskrit_confidence: 0.6     # Confidence for Sanskrit detection
     mixed_content: 0.5           # Threshold for mixed processing
     whitelist_override: 0.9      # High confidence override threshold

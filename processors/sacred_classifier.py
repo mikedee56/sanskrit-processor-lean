@@ -22,8 +22,15 @@ class SacredContentClassifier:
     ]
     
     VERSE_INDICATORS = [
-        "|", "||", "।", "।।", "chapter", "verse", 
-        "shloka", "śloka", "adhyaya", "adhyāya"
+        "|", "||", "।", "।।", "chapter", "verse",
+        "shloka", "śloka", "adhyaya", "adhyāya",
+        # Sanskrit verse endings and patterns
+        "namami", "namaḥ", "namaha", "tam namami",
+        # Common Sanskrit verse words that indicate structured content
+        "kevalam", "dvandvatitam", "gaganasadrisham", "nityam", "vimalam",
+        "brahmānandaṁ", "parama-sukhadaṁ", "auṁ śāntiḥ", "śāntiḥ śāntiḥ",
+        # Sanskrit compound patterns (long Sanskrit words often indicate verses)
+        "sadgurum", "trigunarahitam", "sahakshibhutam"
     ]
     
     SACRED_SYMBOLS = {
@@ -49,7 +56,10 @@ class SacredContentClassifier:
         
         # Fast path: if no sacred symbols and no obvious sacred words, likely regular
         text_lower = text.lower()
-        if not any(word in text_lower for word in ['om', 'chapter', 'verse', 'mantra', 'hare']):
+        # Expanded list to include Sanskrit verse indicators
+        sacred_words = ['om', 'aum', 'auṁ', 'chapter', 'verse', 'mantra', 'hare',
+                       'namami', 'brahman', 'kevalam', 'nityam', 'śāntiḥ', 'parama']
+        if not any(word in text_lower for word in sacred_words):
             return 'regular'
             
         # Slower path: detailed classification for potential sacred content

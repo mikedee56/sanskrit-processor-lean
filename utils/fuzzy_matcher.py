@@ -44,9 +44,9 @@ class FuzzyMatcher:
         # Initialize performance cache for expensive operations
         if enable_cache:
             self.perf_cache = get_performance_cache()
-            # Apply decorators to expensive methods
-            self.levenshtein_distance = self.perf_cache.cache_fuzzy_match(self.levenshtein_distance)
-            self._phonetic_distance = self.perf_cache.cache_fuzzy_match(self._phonetic_distance)
+            # Apply decorators to expensive methods (skip due to signature incompatibility)
+            # self.levenshtein_distance = self.perf_cache.cache_fuzzy_match(self.levenshtein_distance)
+            # self._phonetic_distance = self.perf_cache.cache_fuzzy_match(self._phonetic_distance)
         
         # Sanskrit-specific phonetic mappings for enhanced matching
         self.sanskrit_phonetic_groups = {
