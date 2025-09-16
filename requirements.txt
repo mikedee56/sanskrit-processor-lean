@@ -3,6 +3,7 @@
 # Core dependencies
 pyyaml>=6.0
 requests>=2.28.0
+indic-transliteration>=2.3.74
 
 # Optional MCP dependencies (install if using MCP services)
 # websocket-client>=1.4.0

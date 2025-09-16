@@ -5,6 +5,7 @@ processing:
   # Output configuration
   use_iast_diacritics: true  # Use IAST transliterations with diacritics
   preserve_capitalization: true  # Maintain proper noun capitalization
+  devanagari_to_iast: true  # Convert Devanagari script to IAST transliteration
   use_consolidated_services: false  # Use legacy services for better verse lookup
   enable_semantic_analysis: true  # Enable MCP semantic processing
   enable_scripture_lookup: true  # Enable API scripture references
@@ -13,6 +14,9 @@ processing:
   enable_systematic_matching: true  # Enable systematic term matching from scriptures
   enable_compound_processing: true  # Enable compound word processing
   
+  # Context pipeline configuration
+  enable_context_pipeline: false  # DISABLED: Use simple legacy processing for better performance
+
   # Systematic processing configuration
   case_sensitive_matching: false  # Enable case-insensitive matching (Story 10.3)
   confidence_threshold: 0.8  # Minimum confidence for systematic matches

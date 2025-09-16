@@ -59,7 +59,7 @@ class LexiconDatabase:
                     for db_row in cursor.fetchall():
                         try:
                             variations = json.loads(db_row['variations']) if db_row['variations'] else []
-                            if term_lower in [v.lower() for v in variations]:
+                            if term_lower in [v.lower() for v in variations if isinstance(v, str)]:
                                 row = db_row
                                 break
                         except json.JSONDecodeError:

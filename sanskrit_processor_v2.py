@@ -11,6 +11,14 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Optional, Any, Union
 import logging
 
+# Devanagari to IAST transliteration
+try:
+    from indic_transliteration import sanscript
+    TRANSLITERATION_AVAILABLE = True
+except ImportError:
+    TRANSLITERATION_AVAILABLE = False
+    sanscript = None
+
 # Import utilities for lean architecture
 from utils.srt_parser import SRTParser, SRTSegment
 # Import exceptions for enhanced error handling
@@ -190,14 +198,22 @@ class SanskritProcessor:
         from processors.capitalization_preserver import CapitalizationPreserver
         self.capitalization_preserver = CapitalizationPreserver(self.config.get('processing', {}))
         
-        # Initialize context-aware pipeline (Story 6.5)
-        try:
-            from processors.context_pipeline import ContextAwarePipeline
-            self.context_pipeline = ContextAwarePipeline(self.config)
-            self.use_context_pipeline = True
-            logger.info("Context-aware pipeline initialized")
-        except ImportError as e:
-            logger.warning(f"Context-aware pipeline not available: {e}")
+        # FIXED: Check config to decide whether to use context pipeline
+        enable_context_pipeline = self.config.get('processing', {}).get('enable_context_pipeline', True)
+        
+        # Initialize context-aware pipeline (Story 6.5) - ONLY if enabled in config
+        if enable_context_pipeline:
+            try:
+                from processors.context_pipeline import ContextAwarePipeline
+                self.context_pipeline = ContextAwarePipeline(self.config)
+                self.use_context_pipeline = True
+                logger.info("Context-aware pipeline initialized")
+            except ImportError as e:
+                logger.warning(f"Context-aware pipeline not available: {e}")
+                self.context_pipeline = None
+                self.use_context_pipeline = False
+        else:
+            logger.info("Context pipeline disabled by configuration - using legacy processing")
             self.context_pipeline = None
             self.use_context_pipeline = False
         
@@ -238,7 +254,10 @@ class SanskritProcessor:
             'sixteen': '16', 'seventeen': '17', 'eighteen': '18'
         }
         
-        logger.info("Sanskrit processor initialized with context-aware processing")
+        if self.use_context_pipeline:
+            logger.info("Sanskrit processor initialized with context-aware processing")
+        else:
+            logger.info("Sanskrit processor initialized with legacy processing")
 
     
     def _load_config(self, config_path: Path) -> dict:
@@ -433,7 +452,7 @@ class SanskritProcessor:
             corrections += capitalization_corrections
             
             # 4. Clean up extra whitespace (preserve line breaks)
-            text = re.sub(r'[ \\t]+', ' ', text).strip()
+            text = re.sub(r'[ \t]+', ' ', text).strip()
             
             # 5. Apply plugins (lean implementation)
             text = self.plugin_manager.execute_all(text)
@@ -442,10 +461,36 @@ class SanskritProcessor:
             logger.debug(f"Processed ({content_type}): '{original_text[:50]}...' -> '{text[:50]}...' ({corrections} corrections)")
             
         return text, corrections
-    
+
+    def _convert_devanagari_to_iast(self, text: str) -> str:
+        """Convert Devanagari script to IAST transliteration."""
+        if not TRANSLITERATION_AVAILABLE:
+            logger.warning("indic-transliteration library not available, skipping Devanagari conversion")
+            return text
+
+        if not self.config.get('processing', {}).get('devanagari_to_iast', True):
+            return text
+
+        # Check if text contains Devanagari characters (U+0900–U+097F)
+        devanagari_pattern = re.compile(r'[\u0900-\u097F]+')
+        if not devanagari_pattern.search(text):
+            return text
+
+        try:
+            # Convert Devanagari to IAST
+            converted = sanscript.transliterate(text, sanscript.DEVANAGARI, sanscript.IAST)
+            logger.debug(f"Converted Devanagari to IAST: '{text[:50]}...' -> '{converted[:50]}...'")
+            return converted
+        except Exception as e:
+            logger.warning(f"Devanagari to IAST conversion failed: {e}, keeping original text")
+            return text
+
     def _normalize_text(self, text: str) -> str:
         """Basic text normalization with punctuation enhancement."""
-        # Remove excessive whitespace (preserve line breaks)
+        # 1. Convert Devanagari to IAST first (before any other processing)
+        text = self._convert_devanagari_to_iast(text)
+
+        # 2. Remove excessive whitespace (preserve line breaks)
         text = re.sub(r'[ \t]+', ' ', text)
         
         # Convert number words to digits
@@ -541,20 +586,30 @@ class SanskritProcessor:
         score = 0.0
         text_lower = text.lower()
         
+        # CRITICAL FIX: Higher weight for opening mantra detection
+        if text_lower.startswith('om ') or text_lower.startswith('oṁ '):
+            score += 0.6  # Strong Sanskrit indicator
+        elif ' om ' in text_lower or ' oṁ ' in text_lower:
+            score += 0.5  # Strong Sanskrit indicator
+            
         # Sanskrit Context Indicators (higher weights)
-        if text_lower.startswith('om ') or ' om ' in text_lower:
-            score += 0.4
+        if 'purnam' in text_lower or 'pūrṇam' in text_lower:
+            score += 0.3  # Opening mantra indicator
+        if 'shanti' in text_lower or 'śānti' in text_lower:
+            score += 0.3  # Peace mantra indicator
+        if 'brahman' in text_lower:
+            score += 0.2
         
         # IAST diacritical marks
-        iast_chars = 'āīūṛṅṇṭḍṣśḥṃ'
+        iast_chars = 'āīūṛṇṣśḥṁ'
         iast_count = sum(1 for char in text if char in iast_chars)
         if len(text) > 0:
             score += min(0.3, iast_count / len(text) * 10)  # Cap at 0.3
         
-        # Verse number references (e.g., "2.41", "4.7") 
+        # Verse number references (e.g., "2.41", "4.7")
         verse_refs = len(re.findall(r'\d+\.\d+', text))
         score += min(0.2, verse_refs * 0.1)
-        
+
         # Sanskrit terms density
         words = text.lower().split()
         sanskrit_word_count = 0
@@ -562,23 +617,23 @@ class SanskritProcessor:
             clean_word = re.sub(r'[^\w]', '', word)
             if clean_word in self.lexicons.corrections or clean_word in self.lexicons.proper_nouns:
                 sanskrit_word_count += 1
-        
+
         if len(words) > 0:
             sanskrit_word_ratio = sanskrit_word_count / len(words)
             score += min(0.4, sanskrit_word_ratio)
-        
+
         # English Context Indicators (reduce score)
         english_indicators = [
             r'\b(means?|refers?\s+to|explains?|this|that|what|how|why|when)\b',
             r'\b(chapter|section|verse|explains?|teaching)\b',
             r'\?$',  # Question ending
         ]
-        
+
         for pattern in english_indicators:
             if re.search(pattern, text, re.IGNORECASE):
                 score -= 0.15
         
-        return max(0.0, min(1.0, score))  # Clamp between 0 and 1
+        return max(0.0, min(1.0, score))  # Clamp between 0 and 1  # Clamp between 0 and 1
     
     def _is_sanskrit_context(self, text: str) -> bool:
         """Check if text contains Sanskrit/sacred content that should be preserved."""
@@ -588,13 +643,16 @@ class SanskritProcessor:
     def _apply_lexicon_corrections(self, text: str) -> tuple[str, int]:
         """Apply corrections from lexicon files with compound matching and fuzzy matching fallback."""
         corrections = 0
+        original_text = text
         
         # 1. First pass: Compound term recognition (Story 6.1)
         if self.compound_matcher:
             text, compound_matches = self.compound_matcher.process_text(text)
             corrections += len(compound_matches)
             if compound_matches:
-                logger.debug(f"Compound corrections: {len(compound_matches)}")
+                logger.info(f"Compound corrections applied: {len(compound_matches)}")
+                for match in compound_matches:
+                    logger.debug(f"  Compound: '{match.original}' -> '{match.corrected}'")
         
         # 2. Second pass: Individual word corrections (context-aware and preserve line structure)
         lines = text.split('\n')
@@ -607,8 +665,10 @@ class SanskritProcessor:
         confidence_config = self.config.get('processing', {}).get('context_detection', {})
         confidence_threshold = confidence_config.get('confidence_threshold', 0.8)
         
-        logger.debug(f"Text context detected: {text_context} (confidence threshold: {confidence_threshold})")
+        logger.info(f"Processing text with context: {text_context} (confidence threshold: {confidence_threshold})")
+        logger.debug(f"Text sample: '{text[:100]}...'")
         
+        word_corrections = 0
         for line in lines:
             words = line.split()
             corrected_words = []
@@ -618,12 +678,18 @@ class SanskritProcessor:
                 corrected_word = self._process_word_with_punctuation(word, text_context, confidence_threshold)
                 corrected_words.append(corrected_word)
                 if corrected_word != word:
-                    corrections += 1
-                    logger.debug(f"Context-aware correction ({text_context}): {word} -> {corrected_word}")
+                    word_corrections += 1
+                    logger.debug(f"Word correction ({text_context}): '{word}' -> '{corrected_word}'")
             
             corrected_lines.append(' '.join(corrected_words))
         
-        return '\n'.join(corrected_lines), corrections
+        corrections += word_corrections
+        final_text = '\n'.join(corrected_lines)
+        
+        if final_text != original_text:
+            logger.info(f"Total lexicon corrections: {corrections} (compounds: {len(compound_matches) if self.compound_matcher else 0}, words: {word_corrections})")
+            
+        return final_text, corrections
     
     def _process_word_with_punctuation(self, word: str, context: str = None, confidence_threshold: float = 0.8) -> str:
         """Process word while preserving punctuation and respecting context.
@@ -645,14 +711,15 @@ class SanskritProcessor:
             return word  # Pure numbers
         if len(word.strip()) == 1:
             return word  # Single characters
-            
+
         # Extract leading/trailing punctuation with enhanced pattern
         # Handle complex punctuation like quotes, ellipsis, multiple punctuation
-        match = re.match(r'^(\W*?)(\w+(?:\'\w+)*?)(\W*?)$', word)
+        match = re.match(r'^(\W*)(\w+(?:\'\w+)*)(\W*)$', word)
         if not match:
             return word  # Fallback for complex cases
         
         prefix, clean_word, suffix = match.groups()
+        original_clean_word = clean_word
         
         # Handle contractions and possessives properly
         if "'" in clean_word:
@@ -663,6 +730,13 @@ class SanskritProcessor:
                 suffix = "'" + parts[1] + suffix
         
         clean_lower = clean_word.lower()
+        
+        # Debug logging for key Sanskrit terms
+        debug_terms = ['suhya', 'vicharana', 'tanumanasi', 'yogavashistha', 'uttapatti', 'prakarna', 'sadgurum', 'brahman']
+        is_debug_term = any(debug_term in clean_lower for debug_term in debug_terms)
+        
+        if is_debug_term:
+            logger.info(f"🔍 DEBUG: Processing '{word}' -> clean_word: '{clean_word}', context: {context}")
         
         # Validate context parameter
         if context not in ['english', 'sanskrit', 'mixed', None]:
@@ -685,15 +759,23 @@ class SanskritProcessor:
                         corrected = entry.get('term', clean_word)
                     else:
                         corrected = str(entry) if entry else clean_word
+                    if is_debug_term:
+                        logger.info(f"🔍 DEBUG: English context - proper noun correction: '{clean_word}' -> '{corrected}'")
                 else:
                     corrected = clean_word  # No correction in English context
+                    if is_debug_term:
+                        logger.info(f"🔍 DEBUG: English context - no correction for '{clean_word}'")
             elif context == 'sanskrit':
                 # In Sanskrit context, apply all corrections aggressively
                 corrected = self._get_best_correction(clean_lower, corrections_file, confidence_threshold)
+                if is_debug_term:
+                    logger.info(f"🔍 DEBUG: Sanskrit context - correction: '{clean_word}' -> '{corrected}'")
             else:  # mixed context or None
                 # In mixed context, apply corrections with higher confidence threshold
                 adjusted_threshold = min(0.9, confidence_threshold + 0.1)
                 corrected = self._get_best_correction(clean_lower, corrections_file, adjusted_threshold)
+                if is_debug_term:
+                    logger.info(f"🔍 DEBUG: Mixed context - correction: '{clean_word}' -> '{corrected}' (threshold: {adjusted_threshold})")
         except Exception as e:
             # Graceful error handling - log and return original
             logger.warning(f"Error processing word '{clean_word}': {e}")
@@ -702,6 +784,8 @@ class SanskritProcessor:
         # If no correction found, keep original
         if corrected == clean_lower or not corrected:
             corrected = clean_word
+            if is_debug_term:
+                logger.info(f"🔍 DEBUG: No correction applied for '{clean_word}', keeping original")
         
         # Apply intelligent capitalization preservation (Story 11.2)
         if clean_word and corrected and corrected != clean_word:
@@ -712,13 +796,21 @@ class SanskritProcessor:
 
             # Use CapitalizationPreserver for intelligent capitalization
             corrected = self.capitalization_preserver.apply_capitalization(clean_word, corrected, correction_entry)
+            
+            if is_debug_term:
+                logger.info(f"🔍 DEBUG: After capitalization: '{clean_word}' -> '{corrected}'")
         
         # Reconstruct word with preserved punctuation
         result = prefix + corrected + suffix
         
         # Final validation - ensure result is reasonable
         if not result or len(result) > len(word) * 3:  # Prevent unreasonable expansion
+            if is_debug_term:
+                logger.warning(f"🔍 DEBUG: Result validation failed for '{word}', returning original")
             return word
+        
+        if is_debug_term and result != word:
+            logger.info(f"🔍 DEBUG: Final result: '{word}' -> '{result}'")
             
         return result
     
@@ -733,10 +825,19 @@ class SanskritProcessor:
         if clean_lower in self.lexicons.corrections:
             entry = self.lexicons.corrections[clean_lower]
             use_diacritics = self.config.get('processing', {}).get('use_iast_diacritics', False)
-            if use_diacritics and 'transliteration' in entry:
+            
+            # CRITICAL FIX: Apply transliterations with diacritics when enabled
+            if use_diacritics and isinstance(entry, dict) and 'transliteration' in entry:
                 corrected = entry['transliteration']
-            else:
+                logger.debug(f"Applied diacritics: {clean_lower} -> {corrected}")
+            elif isinstance(entry, dict) and 'original_term' in entry:
                 corrected = entry['original_term']
+            elif isinstance(entry, dict):
+                # Fallback to any available term
+                corrected = entry.get('term', entry.get('transliteration', clean_lower))
+            else:
+                corrected = str(entry) if entry else clean_lower
+                
             # Cache the result
             self.lexicon_cache.cache_correction(clean_lower, corrected, corrections_file)
             return corrected
@@ -749,7 +850,7 @@ class SanskritProcessor:
                 self.lexicon_cache.cache_correction(clean_lower, fuzzy_match, corrections_file)
                 return fuzzy_match
         
-        return clean_lower  # No suitable correction found
+        return clean_lower  # No suitable correction found  # No suitable correction found
     
     def _apply_capitalization(self, text: str) -> tuple[str, int]:
         """Apply proper noun capitalization."""
@@ -827,12 +928,27 @@ class SanskritProcessor:
             
         best_match = None
         best_similarity = 0.0
+        best_entry = None
         
         for lexicon_term, entry in self.lexicons.corrections.items():
             similarity = self._calculate_similarity(word, lexicon_term)
             if similarity > threshold and similarity > best_similarity:
                 best_similarity = similarity
-                best_match = entry['original_term']
+                best_entry = entry
+                
+        if best_entry:
+            # CRITICAL FIX: Apply transliterations for fuzzy matches too
+            use_diacritics = self.config.get('processing', {}).get('use_iast_diacritics', False)
+            
+            if use_diacritics and isinstance(best_entry, dict) and 'transliteration' in best_entry:
+                best_match = best_entry['transliteration']
+                logger.debug(f"Fuzzy match with diacritics: {word} -> {best_match} (similarity: {best_similarity:.2f})")
+            elif isinstance(best_entry, dict) and 'original_term' in best_entry:
+                best_match = best_entry['original_term']
+            elif isinstance(best_entry, dict):
+                best_match = best_entry.get('term', best_entry.get('transliteration', word))
+            else:
+                best_match = str(best_entry) if best_entry else None
                 
         return best_match
     
