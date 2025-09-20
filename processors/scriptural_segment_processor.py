@@ -270,6 +270,41 @@ class ScripturalSegmentProcessor:
         """
         original_text = text
 
+        # CRITICAL: Context-aware protection for mixed content
+        # Detect if this is English commentary that should not be replaced
+        english_indicators = ['the', 'and', 'is', 'are', 'that', 'which', 'to', 'in', 'of', 'with', 'from', 'at', 'by']
+        english_score = sum(1 for indicator in english_indicators if indicator.lower() in text.lower())
+        
+        # Strong English detection patterns
+        mixed_content_patterns = [
+            r'\b(Chapter|entitled|Yoga of|in Chapter)\b',  # Commentary patterns
+            r'\b(Shrimad|Bhagavad Gita)\b.*\b(Chapter|entitled)\b',  # Title with commentary
+            r'\b(The verse number is)\b',  # Verse introduction
+            r'\b(following|explained|means)\b',  # Explanatory text
+            r'\b(Shankaracharya|personalities)\b.*\b(and|in)\b',  # Names in English context
+        ]
+        
+        has_mixed_patterns = any(re.search(pattern, text, re.IGNORECASE) for pattern in mixed_content_patterns)
+        
+        # If this looks like English commentary with Sanskrit terms, be very conservative
+        if english_score >= 2 or has_mixed_patterns:
+            # Check if this contains corrupted Sanskrit that needs surgical editing
+            corrupted_patterns = [
+                r'evam?\\s+pravartitam?\\s+chakram?',  # Specific corrupted verse patterns
+                r'mokha[mn]?\\s+pārtha',
+                r'aghāyur?\\s+indriya'
+            ]
+            
+            has_corrupted_sanskrit = any(re.search(pattern, text, re.IGNORECASE) for pattern in corrupted_patterns)
+            
+            if has_corrupted_sanskrit:
+                # Allow processing of corrupted Sanskrit within mixed content
+                logger.debug(f"Mixed content with corrupted Sanskrit detected, allowing targeted processing: {text[:50]}...")
+            else:
+                # This is English commentary - do not replace with verses
+                logger.debug(f"English commentary detected, skipping verse replacement: {text[:50]}...")
+                return text, False, None
+
         # Phase 1: Check for prayer patterns (highest priority)
         for pattern, correction in self.prayer_patterns.items():
             if re.match(pattern, text):
@@ -282,16 +317,19 @@ class ScripturalSegmentProcessor:
                 logger.info(f"Verse detected: {reference} - {text[:50]}... -> {correction[:50]}...")
                 return correction, True, reference
 
-        # Phase 3: Intelligent content-based verse detection
+        # Phase 3: Intelligent content-based verse detection with higher confidence requirements
         if self.verse_cache:
             content_result = self.detect_verse_by_content(text)
             if content_result:
                 corrected_text, reference, confidence = content_result
-                # Apply corrections for reasonable confidence matches
-                if confidence >= 0.15:
+                
+                # Increase confidence thresholds to prevent false replacements
+                confidence_threshold = 0.25 if english_score < 2 else 0.4  # Higher threshold for mixed content
+                
+                if confidence >= confidence_threshold:
                     logger.info(f"High-confidence content match: {reference} (confidence: {confidence:.2f})")
                     return corrected_text, True, reference
-                elif confidence >= 0.08:
+                elif confidence >= 0.15:
                     logger.info(f"Medium-confidence content match: {reference} (confidence: {confidence:.2f}) - preserving original")
                     return text, False, reference
 

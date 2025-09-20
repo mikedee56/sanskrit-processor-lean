@@ -1,0 +1,286 @@
+# Scripture Titles Database
+# Comprehensive database of Sanskrit scripture titles with proper IAST formatting
+# Handles various transliterations and ensures consistent formatting
+
+metadata:
+  version: "1.0"
+  description: "Database of Sanskrit scripture titles with IAST formatting"
+  author: "Sanskrit Processor Enhancement Project"
+  last_updated: "2025-09-20"
+
+# Scripture categories
+categories:
+  core_texts:
+    description: "Primary Hindu scriptures"
+  upanishads:
+    description: "Philosophical texts"
+  puranas:
+    description: "Mythological and historical texts"
+  epics:
+    description: "Great epic narratives"
+  commentaries:
+    description: "Classical commentaries"
+  modern_works:
+    description: "Modern spiritual literature"
+
+entries:
+  # Core Primary Texts
+  - title: "Bhagavad Gītā"
+    category: "core_texts"
+    variations:
+      - "Bhagavad Gita"
+      - "Bhagavat Gita"
+      - "Bhagwad Gita"
+      - "Bhagvad Geeta"
+      - "Shrimad Bhagavad Gita"
+      - "Srimad Bhagavad Gita"
+    full_title: "Śrīmad Bhagavad Gītā"
+    transliteration: "Śrīmad Bhagavad Gītā"
+    confidence: 0.98
+    context_patterns:
+      - "Bhagavad Gita, in Chapter"
+      - "studying the Bhagavad Gita"
+      - "verse from Bhagavad Gita"
+    preserve_capitalization: true
+    meaning: "Song of God"
+
+  - title: "Vedānta"
+    category: "core_texts"
+    variations:
+      - "Vedanta"
+      - "Vedānta"
+      - "Vedaanta"
+    transliteration: "Vedānta"
+    confidence: 0.95
+    context_patterns:
+      - "Advaita Vedanta"
+      - "Vedanta philosophy"
+      - "teachings of Vedanta"
+    preserve_capitalization: true
+    meaning: "End of the Vedas, philosophical culmination"
+
+  - title: "Yoga Vāsiṣṭha"
+    category: "core_texts"
+    variations:
+      - "Yoga Vasishtha"
+      - "Yoga Vasistha"
+      - "Yogavasistha"
+      - "Yogavasishtha"
+      - "Yoga Vāsiṣṭha"
+    transliteration: "Yoga Vāsiṣṭha"
+    confidence: 0.95
+    context_patterns:
+      - "teachings of Yoga Vasishtha"
+      - "according to Yoga Vasistha"
+    preserve_capitalization: true
+    meaning: "Yoga teaching of sage Vasistha"
+
+  # Upanishads
+  - title: "Upaniṣad"
+    category: "upanishads"
+    variations:
+      - "Upanishad"
+      - "Upanisad"
+      - "Upaniṣad"
+    transliteration: "Upaniṣad"
+    confidence: 0.95
+    context_patterns:
+      - "the Upanishads"
+      - "Upanishadic"
+      - "teaching of the Upanishad"
+    preserve_capitalization: true
+    meaning: "Sitting near, esoteric teaching"
+
+  - title: "Īśāvāsya Upaniṣad"
+    category: "upanishads"
+    variations:
+      - "Ishavasya Upanishad"
+      - "Isha Upanishad"
+      - "Isavasya"
+    transliteration: "Īśāvāsya Upaniṣad"
+    confidence: 0.9
+    preserve_capitalization: true
+
+  - title: "Kaṭha Upaniṣad"
+    category: "upanishads"
+    variations:
+      - "Katha Upanishad"
+      - "Kathopanishad"
+    transliteration: "Kaṭha Upaniṣad"
+    confidence: 0.9
+    preserve_capitalization: true
+
+  # Epics
+  - title: "Mahābhārata"
+    category: "epics"
+    variations:
+      - "Mahabharata"
+      - "Mahabharat"
+      - "Maha Bharata"
+    transliteration: "Mahābhārata"
+    confidence: 0.95
+    preserve_capitalization: true
+    meaning: "Great story of the Bharatas"
+
+  - title: "Rāmāyaṇa"
+    category: "epics"
+    variations:
+      - "Ramayana"
+      - "Ramayan"
+      - "Rama-yana"
+    transliteration: "Rāmāyaṇa"
+    confidence: 0.95
+    preserve_capitalization: true
+    meaning: "Journey of Rama"
+
+  # Puranas
+  - title: "Śrīmad Bhāgavatam"
+    category: "puranas"
+    variations:
+      - "Srimad Bhagavatam"
+      - "Shrimad Bhagavatam"
+      - "Bhagavata Purana"
+      - "Bhāgavata Purāṇa"
+    transliteration: "Śrīmad Bhāgavatam"
+    confidence: 0.95
+    preserve_capitalization: true
+    meaning: "Glorious story of the devotees"
+
+  # Technical Terms for Yoga/Philosophy
+  - title: "Karma Yoga"
+    category: "core_texts"
+    variations:
+      - "Karmayoga"
+      - "Karma-yoga"
+    transliteration: "Karma Yoga"
+    confidence: 0.95
+    context_patterns:
+      - "entitled Karma Yoga"
+      - "path of Karma Yoga"
+      - "Karma Yoga, Yoga of Action"
+    preserve_capitalization: true
+    meaning: "Yoga of Action"
+
+  - title: "Rāja Yoga"
+    category: "core_texts"
+    variations:
+      - "Raja Yoga"
+      - "Rajayoga"
+    transliteration: "Rāja Yoga"
+    confidence: 0.95
+    preserve_capitalization: true
+    meaning: "Royal Yoga, eightfold path"
+
+  - title: "Jñāna Yoga"
+    category: "core_texts"
+    variations:
+      - "Jnana Yoga"
+      - "Gyana Yoga"
+      - "Gnana Yoga"
+    transliteration: "Jñāna Yoga"
+    confidence: 0.9
+    preserve_capitalization: true
+    meaning: "Yoga of Knowledge"
+
+  - title: "Bhakti Yoga"
+    category: "core_texts"
+    variations:
+      - "Bhaktiyoga"
+    transliteration: "Bhakti Yoga"
+    confidence: 0.95
+    preserve_capitalization: true
+    meaning: "Yoga of Devotion"
+
+  # Commentaries and Authors
+  - title: "Śaṅkarācārya"
+    category: "commentaries"
+    variations:
+      - "Shankaracharya"
+      - "Sankaracharya"
+      - "Shankara"
+      - "Adi Shankara"
+      - "Ādi Śaṅkara"
+    transliteration: "Śaṅkarācārya"
+    confidence: 0.95
+    context_patterns:
+      - "according to Shankaracharya"
+      - "Shankaracharya says"
+      - "great Shankaracharya"
+    preserve_capitalization: true
+    meaning: "Teacher Shankara, Advaita master"
+
+  # Chapter/Section References
+  - title: "Yoga of Action"
+    category: "core_texts"
+    variations:
+      - "yoga of action"
+    transliteration: "Yoga of Action"
+    confidence: 0.8
+    context_patterns:
+      - "entitled Karma Yoga, Yoga of Action"
+      - "chapter on Yoga of Action"
+    preserve_capitalization: true
+
+# Processing configuration for scripture titles
+processing_config:
+  # Apply proper capitalization
+  apply_title_case: true
+
+  # Always preserve capitalization for sacred names
+  preserve_sacred_names: true
+
+  # Minimum confidence for title recognition
+  min_confidence: 0.7
+
+  # Should we process partial matches?
+  allow_partial_matches: true
+
+  # Maximum words in a title for recognition
+  max_title_length: 6
+
+# Context detection patterns
+context_indicators:
+  chapter_references:
+    - "Chapter"
+    - "chapter"
+    - "verse"
+    - "entitled"
+    - "in the"
+
+  study_context:
+    - "studying"
+    - "reading"
+    - "according to"
+    - "teaches"
+    - "says"
+
+  quotation_context:
+    - "from the"
+    - "in the"
+    - "verse from"
+    - "teaching of"
+
+# Special handling rules
+special_rules:
+  # Always capitalize when these patterns are found
+  force_capitalize_patterns:
+    - "Shrimad"
+    - "Srimad"
+    - "Śrīmad"
+    - "Bhagavad"
+    - "Gita"
+    - "Upanishad"
+    - "Yoga"
+
+  # Don't process if found in these contexts
+  exclude_contexts:
+    - "yoga class"
+    - "yoga mat"
+    - "yoga studio"
+    - "modern yoga"
+
+  # Prefix handling - these should trigger full title formatting
+  sacred_prefixes:
+    - "Śrī"
+    - "Sri"
+    - "Shri"

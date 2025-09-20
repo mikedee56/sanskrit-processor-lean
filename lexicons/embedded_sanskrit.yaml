@@ -1,0 +1,324 @@
+# Embedded Sanskrit Terms Database
+# Sanskrit terms commonly found within English commentary and their proper IAST forms
+# Used for mixed-content processing where Sanskrit terms appear in English sentences
+
+metadata:
+  version: "1.0"
+  description: "Database of Sanskrit terms commonly embedded in English commentary"
+  author: "Sanskrit Processor Enhancement Project"
+  last_updated: "2025-09-20"
+
+# Categories of embedded terms
+categories:
+  philosophical_concepts:
+    description: "Core philosophical and spiritual concepts"
+  practices_and_disciplines:
+    description: "Spiritual practices, yoga methods, disciplines"
+  sacred_names:
+    description: "Names of deities, sages, and sacred figures"
+  technical_terms:
+    description: "Technical Sanskrit terminology"
+  scriptural_references:
+    description: "References to texts, chapters, verses"
+
+# Embedded Sanskrit terms with context patterns
+entries:
+  # Philosophical Concepts
+  - term: "samskaras"
+    correct: "saṃskāras"
+    category: "philosophical_concepts"
+    variations:
+      - "sanskaras"
+      - "samscaras"
+      - "samskāras"
+    context_patterns:
+      - "these samskaras"
+      - "those samskaras"
+      - "samskaras are"
+      - "samskaras from"
+      - "mental samskaras"
+      - "deep samskaras"
+      - "old samskaras"
+      - "of samskaras"
+      - "group of those samskaras"
+    confidence: 0.9
+    meaning: "Mental impressions, tendencies"
+    preserve_in_english: true
+
+  - term: "dharma"
+    correct: "dharma"
+    category: "philosophical_concepts"
+    variations:
+      - "dhrma"
+      - "dharama"
+    context_patterns:
+      - "one's dharma"
+      - "path of dharma"
+      - "dharma of"
+    confidence: 0.95
+    meaning: "Righteous duty, cosmic order"
+    preserve_in_english: true
+
+  - term: "karma"
+    correct: "karma"
+    category: "philosophical_concepts"
+    variations:
+      - "karmas"
+      - "karmā"
+    context_patterns:
+      - "negative karma"
+      - "karmas and"
+      - "type of karma"
+    confidence: 0.95
+    meaning: "Action, work, deed"
+    preserve_in_english: true
+
+  - term: "āhār"
+    correct: "āhāra"
+    category: "technical_terms"
+    variations:
+      - "ahar"
+      - "ahara"
+      - "āhāra"
+    context_patterns:
+      - "require is āhār"
+      - "āhār, food"
+      - "type of āhār"
+    confidence: 0.9
+    meaning: "Food, nourishment"
+    preserve_in_english: true
+
+  - term: "prarabdha karma"
+    correct: "prārabdha karma"
+    category: "technical_terms"
+    variations:
+      - "prarabda karma"
+      - "prarabdha karmas"
+    context_patterns:
+      - "called prarabdha karma"
+      - "it's prarabdha karma"
+    confidence: 0.9
+    meaning: "Destiny karma, karma bearing fruit"
+    preserve_in_english: true
+
+  # Sacred Names and Figures
+  - term: "Shankaracharya"
+    correct: "Śaṅkarācārya"
+    category: "sacred_names"
+    variations:
+      - "Shankaracarya"
+      - "Sankaracharya"
+      - "Shankara"
+    context_patterns:
+      - "Shankaracharya and"
+      - "great Shankaracharya"
+      - "according to Shankaracharya"
+      - "personalities"
+      - "great personalities"
+    confidence: 0.95
+    meaning: "Great Advaita Vedanta teacher"
+    preserve_in_english: true
+
+  - term: "Krishna"
+    correct: "Kṛṣṇa"
+    category: "sacred_names"
+    variations:
+      - "Krsna"
+      - "Krshna"
+    context_patterns:
+      - "Lord Krishna"
+      - "to Krishna"
+      - "Krishna's"
+    confidence: 0.95
+    meaning: "Supreme Divine incarnation"
+    preserve_in_english: true
+
+  - term: "Arjuna"
+    correct: "Arjuna"
+    category: "sacred_names"
+    variations:
+      - "Arjun"
+      - "Arjunas"
+    context_patterns:
+      - "O Arjuna"
+      - "to Arjuna"
+      - "Arjuna,"
+    confidence: 0.95
+    meaning: "Warrior prince, Krishna's disciple"
+    preserve_in_english: true
+
+  # Technical and Practice Terms
+  - term: "gada pari naya"
+    correct: "gadā parinaya"
+    category: "technical_terms"
+    variations:
+      - "gada parinaya"
+      - "gadā pari naya"
+    context_patterns:
+      - "following gada pari naya"
+      - "gada pari naya, which means"
+    confidence: 0.8
+    meaning: "Methodical repetition, hammering technique"
+    preserve_in_english: true
+
+  - term: "yoga"
+    correct: "yoga"
+    category: "practices_and_disciplines"
+    variations:
+      - "yog"
+      - "yogā"
+    context_patterns:
+      - "karma yoga"
+      - "path of yoga"
+      - "yoga of"
+    confidence: 0.95
+    meaning: "Union, spiritual practice"
+    preserve_in_english: true
+
+  # ASR Common Errors
+  - term: "moksha"
+    correct: "mokṣa"
+    category: "philosophical_concepts"
+    variations:
+      - "mokha"
+      - "moksa"
+      - "mokshā"
+    context_patterns:
+      - "attain moksha"
+      - "path to moksha"
+    confidence: 0.9
+    meaning: "Liberation, final release"
+    preserve_in_english: true
+
+  - term: "jnana"
+    correct: "jñāna"
+    category: "philosophical_concepts"
+    variations:
+      - "gnana"
+      - "jnāna"
+      - "gyana"
+    context_patterns:
+      - "jnana yoga"
+      - "path of jnana"
+    confidence: 0.9
+    meaning: "Knowledge, wisdom"
+    preserve_in_english: true
+
+  # Invocation Terms (for embedded processing)
+  - term: "Vasudeva"
+    correct: "Vāsudeva"
+    category: "sacred_names"
+    variations:
+      - "Vasudev"
+      - "Vasudēva"
+    context_patterns:
+      - "Om Vasudeva"
+      - "Vasudeva, Sutam"
+    confidence: 0.95
+    meaning: "Name of Krishna, son of Vasudeva"
+    preserve_in_english: true
+
+  - term: "Devaki"
+    correct: "Devakī"
+    category: "sacred_names"
+    variations:
+      - "Devki"
+      - "Devakī"
+    context_patterns:
+      - "Devaki, Paramanandam"
+      - "Kamsa, Chanura, Mardanam, Devaki"
+    confidence: 0.95
+    meaning: "Krishna's mother"
+    preserve_in_english: true
+
+  - term: "Paramanandam"
+    correct: "Paramānandam"
+    category: "sacred_names"
+    variations:
+      - "Paramanand"
+      - "Paramanandam"
+    context_patterns:
+      - "Devaki, Paramanandam"
+      - "Paramanandam, Trishnam"
+    confidence: 0.9
+    meaning: "Supreme bliss"
+    preserve_in_english: true
+
+  - term: "Trishnam"
+    correct: "Tṛṣṇam"
+    category: "sacred_names"
+    variations:
+      - "Trishna"
+      - "Trshnam"
+    context_patterns:
+      - "Paramanandam, Trishnam"
+      - "Trishnam, Vande"
+    confidence: 0.9
+    meaning: "Sacred name/epithet"
+    preserve_in_english: true
+
+  - term: "Vande"
+    correct: "Vande"
+    category: "sacred_names"
+    variations:
+      - "Vandē"
+      - "Wande"
+    context_patterns:
+      - "Trishnam, Vande"
+      - "Vande, Jagadguru"
+    confidence: 0.95
+    meaning: "I bow, I worship"
+    preserve_in_english: true
+
+  - term: "Jagadguru"
+    correct: "Jagadguru"
+    category: "sacred_names"
+    variations:
+      - "Jagad guru"
+      - "Jagat guru"
+    context_patterns:
+      - "Vande, Jagadguru"
+      - "Jagadguru, Om"
+    confidence: 0.95
+    meaning: "Teacher of the world"
+    preserve_in_english: true
+
+# Processing configuration
+processing_config:
+  # Should terms be processed when found in English context?
+  process_in_english_context: true
+
+  # Minimum confidence required for processing
+  min_confidence_threshold: 0.7
+
+  # Should original capitalization be preserved in English?
+  preserve_english_capitalization: true
+
+  # Maximum edit distance for fuzzy matching
+  max_edit_distance: 2
+
+  # Context window for pattern matching (words before/after)
+  context_window: 3
+
+# Pattern matching rules
+pattern_rules:
+  # Don't process if term is part of a URL or technical identifier
+  exclude_patterns:
+    - "http://"
+    - "https://"
+    - ".com"
+    - ".org"
+    - "www."
+    - "@"
+
+  # Strong indicators this is Sanskrit in English context
+  include_indicators:
+    - "Sanskrit"
+    - "Vedic"
+    - "Hindu"
+    - "yoga"
+    - "meditation"
+    - "spiritual"
+    - "sacred"
+    - "mantra"
+    - "philosophy"

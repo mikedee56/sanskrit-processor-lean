@@ -24,11 +24,13 @@ except ImportError:
 @dataclass
 class ContextResult:
     """Result of context detection analysis."""
-    context_type: str  # 'english', 'sanskrit', 'mixed'
+    context_type: str  # 'english', 'sanskrit', 'mixed', 'invocation', 'corrupted_sanskrit'
     confidence: float  # 0.0 to 1.0
     segments: List[Tuple[int, int, str]] = None  # For mixed content: (start, end, type)
     markers_found: List[str] = None  # Specific markers that influenced decision
-    override_reason: str = None  # Reason for override (e.g., 'sanskrit_whitelist')  # Specific markers that influenced decision
+    override_reason: str = None  # Reason for override (e.g., 'sanskrit_whitelist')
+    processing_mode: str = None  # Recommended processing mode: 'preserve', 'correct', 'surgical', 'replace'
+    embedded_terms: List[str] = None  # Sanskrit terms found embedded in English
 
 class ContextDetector:
     """Enhanced context detection with configurable thresholds and Sanskrit whitelist override."""
@@ -105,10 +107,36 @@ class ContextDetector:
             # Preload patterns for better performance
             self.pattern_manager.preload_for_context('mixed')
         
+        # Initialize mixed content detection capabilities
+        self._initialize_mixed_content_detection()
+
         logger.info(f"Context detector initialized with {len(self.sanskrit_priority_set)} priority terms")
         if self.config.debug_logging:
             logger.info(f"Debug logging enabled for context detection")
-    
+
+    def _initialize_mixed_content_detection(self):
+        """Initialize mixed content detection patterns and capabilities."""
+        # Invocation patterns
+        self.invocation_patterns = {
+            'om_based': re.compile(r'\bom\s+\w+.*?(om|namaha?)\b', re.IGNORECASE),
+            'devotional': re.compile(r'devotions?\s+to\s+lord\s+\w+', re.IGNORECASE),
+            'divine_sequence': re.compile(r'\b(vasudeva|devaki|paramanandam|trishnam|vande|jagadguru)\b', re.IGNORECASE)
+        }
+
+        # Corrupted Sanskrit patterns
+        self.corrupted_sanskrit_patterns = {
+            'verse_3_16': re.compile(r'evam?\s+pravartitam?\s+chakram?\s+.*?pārtha\s+sa\s+jīvati', re.IGNORECASE),
+            'mixed_verse': re.compile(r'verse\s+number\s+is\s+\d+\.\s+[a-z\s]*?(pārtha|mokha|karma)', re.IGNORECASE)
+        }
+
+        # Embedded Sanskrit term patterns
+        self.embedded_term_patterns = {
+            'philosophical': re.compile(r'\b(samskaras?|dharma|karma|moksha|jnana)\b', re.IGNORECASE),
+            'practices': re.compile(r'\b(gada\s+pari\s+naya|prarabdha\s+karma|āhār)\b', re.IGNORECASE),
+            'names': re.compile(r'\b(shankaracharya|krishna|arjuna)\b', re.IGNORECASE),
+            'titles': re.compile(r'\b(shrimad\s+)?bhagavad\s+gita\b', re.IGNORECASE)
+        }
+
     def _convert_legacy_config(self, legacy_config: dict) -> 'ContextConfig':
         """Convert legacy language markers config to new ContextConfig format."""
         from .context_config import ContextConfig
@@ -186,7 +214,24 @@ class ContextDetector:
         
         if step_times is not None:
             step_times['whitelist_check'] = (time.perf_counter() - step_start) * 1000
-        
+
+        # Step 1.5: Check for specialized content types (invocations, corrupted Sanskrit)
+        step_start = time.perf_counter() if step_times is not None else None
+
+        specialized_result = self._check_specialized_content(text)
+        if specialized_result is not None:
+            if step_times is not None:
+                step_times['specialized_content'] = (time.perf_counter() - step_start) * 1000
+
+            if self.config.debug_logging:
+                logger.debug(f"Specialized content detected: {specialized_result.context_type}")
+
+            self._cache_result(text, specialized_result)
+            return specialized_result
+
+        if step_times is not None:
+            step_times['specialized_check'] = (time.perf_counter() - step_start) * 1000
+
         # Step 2: Fast English Protection (with configurable threshold)
         step_start = time.perf_counter() if step_times is not None else None
         
@@ -275,41 +320,86 @@ class ContextDetector:
     
     def _check_sanskrit_whitelist_override(self, text: str) -> 'ContextResult':
         """Check if text contains Sanskrit priority terms that should override context detection.
-        
+
+        Smart override: Only classifies as Sanskrit if Sanskrit terms dominate,
+        otherwise allows English detection for English text with embedded Sanskrit.
+
         Args:
             text: Input text to check
-            
+
         Returns:
             ContextResult with Sanskrit context if override applies, None otherwise
         """
         text_lower = text.lower()
         words = text_lower.split()
-        
-        # Check for priority terms
+
+        # Count Sanskrit priority terms
         found_priority_terms = []
-        for term in self.sanskrit_priority_set:
-            if term in text_lower:
-                found_priority_terms.append(term)
-        
+        sanskrit_word_count = 0
+
+        for word in words:
+            if word in self.sanskrit_priority_set:
+                found_priority_terms.append(word)
+                sanskrit_word_count += 1
+
         # Check for ASR variations
         found_variations = []
         for variation, correct_term in self.asr_variations.items():
             if variation.lower() in text_lower:
                 found_variations.append(f"{variation}→{correct_term}")
-                found_priority_terms.append(variation)
-        
+                if variation.lower() not in found_priority_terms:
+                    found_priority_terms.append(variation.lower())
+                    sanskrit_word_count += 1
+
         if found_priority_terms:
+            # NEW: Smart decision logic - check if this is English with embedded Sanskrit
+            if len(words) > 0:
+                # Calculate Sanskrit term ratio
+                sanskrit_ratio = sanskrit_word_count / len(words)
+
+                # Count English function words
+                english_function_count = sum(1 for w in words if w in self.english_function_set)
+
+                # Enhanced English sentence structure patterns
+                english_patterns = [
+                    'to the', 'who is', 'of the', 'in the', 'and the', 'is the', 'are the',
+                    'that is', 'which is', 'in chapter', 'is entitled', 'entitled to',
+                    'chapter 3', 'yoga of', 'of action', 'very short', 'great personalities',
+                    'and great', 'following', 'explained', 'which means'
+                ]
+                has_english_structure = any(pattern in text_lower for pattern in english_patterns)
+
+                # Commentary structure indicators
+                commentary_indicators = [
+                    'chapter', 'entitled', 'explained', 'following', 'means', 'personalities',
+                    'very short', 'great', 'according to'
+                ]
+                commentary_count = sum(1 for indicator in commentary_indicators if indicator in text_lower)
+
+                # Smart decision: Only override if Sanskrit dominates
+                if (sanskrit_ratio < 0.35 and  # Less than 35% Sanskrit terms
+                    (english_function_count >= 2 or commentary_count >= 1) and  # Has English function words or commentary
+                    (has_english_structure or commentary_count >= 2)):  # Has English sentence structure or clear commentary
+
+                    # Don't override - let normal English detection work
+                    if self.config.debug_logging:
+                        logger.debug(f"Smart whitelist: English structure detected, not overriding to Sanskrit. "
+                                   f"Sanskrit ratio: {sanskrit_ratio:.2f}, English functions: {english_function_count}, "
+                                   f"Commentary count: {commentary_count}, Sanskrit terms: {found_priority_terms[:3]}")
+                    return None
+
+            # Original logic for true Sanskrit text
             markers_found = [f'priority_term_{term}' for term in found_priority_terms[:3]]
             if found_variations:
                 markers_found.extend([f'asr_variation_{var}' for var in found_variations[:2]])
-            
+
             return ContextResult(
                 context_type='sanskrit',
                 confidence=self.config.whitelist_override_threshold,
                 markers_found=markers_found,
                 override_reason='sanskrit_whitelist'
             )
-        
+
         return None
     
     def _cache_result(self, text: str, result: 'ContextResult') -> None:
@@ -566,7 +656,146 @@ class ContextDetector:
         has_sanskrit_terms = any(word.lower() in self.sanskrit_sacred_set for word in segment_words)
         
         return has_diacriticals or has_sanskrit_terms
-    
+
+    def _check_specialized_content(self, text: str) -> Optional['ContextResult']:
+        """Check for specialized content types that need specific handling."""
+
+        # Check for scripture titles in commentary FIRST (before Sanskrit detection)
+        scripture_commentary_patterns = [
+            r'\b(Shrimad|Srimad)\s+Bhagavad\s+Gita\b.*\b(Chapter|entitled|Yoga)\b',
+            r'\bBhagavad\s+Gita\b.*\b(Chapter|in\s+Chapter|entitled)\b',
+            r'\b(Chapter\s+\d+|entitled)\b.*\b(Karma\s+Yoga|Yoga\s+of)\b'
+        ]
+        
+        has_scripture_commentary = any(re.search(pattern, text, re.IGNORECASE) for pattern in scripture_commentary_patterns)
+        
+        if has_scripture_commentary:
+            return ContextResult(
+                context_type='mixed',
+                confidence=0.95,
+                markers_found=['scripture_title_commentary'],
+                processing_mode='embedded_correction',
+                embedded_terms=['scripture_title']
+            )
+
+        # Check for invocations/prayers
+        invocation_result = self._detect_invocation(text)
+        if invocation_result:
+            return invocation_result
+
+        # Check for corrupted Sanskrit that needs surgical editing
+        corrupted_result = self._detect_corrupted_sanskrit(text)
+        if corrupted_result:
+            return corrupted_result
+
+        # Check for mixed content with embedded Sanskrit terms
+        mixed_result = self._detect_mixed_content_with_embedded_terms(text)
+        if mixed_result:
+            return mixed_result
+
+        return None
+
+    def _detect_invocation(self, text: str) -> Optional['ContextResult']:
+        """Detect Sanskrit invocations and prayers."""
+        invocation_indicators = []
+
+        # Check each invocation pattern
+        for pattern_name, pattern in self.invocation_patterns.items():
+            if pattern.search(text):
+                invocation_indicators.append(f'invocation_{pattern_name}')
+
+        # Count divine names
+        divine_name_count = len(self.invocation_patterns['divine_sequence'].findall(text))
+
+        if invocation_indicators or divine_name_count >= 3:
+            return ContextResult(
+                context_type='invocation',
+                confidence=0.95 if divine_name_count >= 3 else 0.8,
+                markers_found=invocation_indicators + [f'divine_names_{divine_name_count}'],
+                processing_mode='invocation_format'
+            )
+
+        return None
+
+    def _detect_corrupted_sanskrit(self, text: str) -> Optional['ContextResult']:
+        """Detect corrupted Sanskrit that needs surgical editing."""
+        corrupted_indicators = []
+
+        for pattern_name, pattern in self.corrupted_sanskrit_patterns.items():
+            if pattern.search(text):
+                corrupted_indicators.append(f'corrupted_{pattern_name}')
+
+        if corrupted_indicators:
+            return ContextResult(
+                context_type='corrupted_sanskrit',
+                confidence=0.9,
+                markers_found=corrupted_indicators,
+                processing_mode='surgical_edit'
+            )
+
+        return None
+
+    def _detect_mixed_content_with_embedded_terms(self, text: str) -> Optional['ContextResult']:
+        """Detect mixed content with embedded Sanskrit terms."""
+        # Check for English sentence structure
+        english_indicators = ['the ', 'and ', 'is ', 'are ', 'that ', 'which ', 'to ', 'in ', 'of ', 'with']
+        english_count = sum(1 for indicator in english_indicators if indicator in text.lower())
+
+        # Special case: Scripture titles in commentary
+        scripture_commentary_patterns = [
+            r'\b(Shrimad|Srimad)\s+Bhagavad\s+Gita\b.*\b(Chapter|entitled|Yoga)\b',
+            r'\bBhagavad\s+Gita\b.*\b(Chapter|in\s+Chapter|entitled)\b',
+            r'\b(Chapter\s+\d+|entitled)\b.*\b(Karma\s+Yoga|Yoga\s+of)\b'
+        ]
+        
+        has_scripture_commentary = any(re.search(pattern, text, re.IGNORECASE) for pattern in scripture_commentary_patterns)
+        
+        if has_scripture_commentary:
+            return ContextResult(
+                context_type='mixed',
+                confidence=0.9,
+                markers_found=[f'english_structure_{english_count}', 'scripture_title_commentary'],
+                processing_mode='embedded_correction',
+                embedded_terms=['scripture_title']
+            )
+
+        # Names in commentary patterns
+        names_in_commentary_patterns = [
+            r'\b(Shankaracharya|Shankara)\b.*\b(and|personalities|in)\b',
+            r'\b(great\s+personalities|according\s+to)\b'
+        ]
+        
+        has_names_commentary = any(re.search(pattern, text, re.IGNORECASE) for pattern in names_in_commentary_patterns)
+        
+        if has_names_commentary and english_count >= 1:
+            return ContextResult(
+                context_type='mixed',
+                confidence=0.8,
+                markers_found=[f'english_structure_{english_count}', 'names_in_commentary'],
+                processing_mode='embedded_correction',
+                embedded_terms=['sacred_names']
+            )
+
+        if english_count < 2:
+            return None  # Not English commentary
+
+        # Find embedded Sanskrit terms
+        embedded_terms = []
+        for category, pattern in self.embedded_term_patterns.items():
+            matches = pattern.findall(text)
+            embedded_terms.extend([f'{category}_{match}' for match in matches])
+
+        if embedded_terms:
+            return ContextResult(
+                context_type='mixed',
+                confidence=0.8,
+                markers_found=[f'english_structure_{english_count}'] + embedded_terms[:5],
+                processing_mode='embedded_correction',
+                embedded_terms=embedded_terms
+            )
+
+        return None
+
     def get_performance_stats(self) -> dict:
         """Get comprehensive performance statistics for context detection."""
         stats = {}
