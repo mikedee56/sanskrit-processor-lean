@@ -15,11 +15,23 @@ processing:
   enable_compound_processing: true  # Enable compound word processing
   
   # Context pipeline configuration
-  enable_context_pipeline: false  # DISABLED: Use simple legacy processing for better performance
+  enable_context_pipeline: false  # DISABLED: Context pipeline corrupts English text - needs fixing
+
+  # Number word conversion configuration
+  number_conversion:
+    enabled: false  # Disabled by default for subtitle processing
+    context_aware: true  # Only convert in specific contexts if enabled
+
+  # Punctuation enhancement configuration
+  punctuation_enhancement:
+    enabled: false  # Disabled by default for subtitle processing
+    preserve_transcription: true  # Keep original punctuation
+    auto_periods: false  # Don't add periods automatically
+    auto_questions: false  # Don't add question marks automatically
 
   # Systematic processing configuration
   case_sensitive_matching: false  # Enable case-insensitive matching (Story 10.3)
-  confidence_threshold: 0.8  # Minimum confidence for systematic matches
+  confidence_threshold: 0.6  # Reduced threshold for better verse recognition
   enable_phonetic_matching: true  # Enable Sanskrit phonetic similarity
   enable_asr_correction: true  # Enable ASR pattern reversal
   max_corrections_per_segment: 20  # Limit corrections to prevent over-processing
@@ -27,8 +39,8 @@ processing:
   # Enhanced fuzzy matching configuration (Story 10.3)
   fuzzy_matching:
     enabled: true
-    max_edit_distance: 2  # Reduced from 3 - more conservative matching to prevent English word corruption
-    min_confidence: 0.8   # Increased from 0.6 - higher threshold to prevent false positives
+    max_edit_distance: 3  # Increased for better ASR error handling in verse recognition
+    min_confidence: 0.6   # Reduced threshold for better verse matching while maintaining quality
     enable_caching: true  # Cache expensive fuzzy calculations
     enable_phonetic_matching: true  # Sanskrit-aware phonetic matching
     log_matches: false
@@ -138,9 +150,10 @@ database:
 # Context Detection Configuration (Story 10.2)
 context_detection:
   thresholds:
-    english_confidence: 0.95     # Very high threshold - only skip Sanskrit processing for pure English
-    sanskrit_confidence: 0.6     # Confidence for Sanskrit detection
-    mixed_content: 0.5           # Threshold for mixed processing
+    english_confidence: 0.85     # Lowered threshold - better English protection with enhanced detection
+    sanskrit_confidence: 0.6     # Reduced threshold for better Sanskrit verse detection
+    mixed_content: 0.4           # Lower threshold for mixed processing to be more conservative
+    confidence_threshold: 0.6    # Reduced threshold for better scriptural content recognition
     whitelist_override: 0.9      # High confidence override threshold
     diacritical_density_high: 0.3
     diacritical_density_medium: 0.1
@@ -172,7 +185,35 @@ context_detection:
       - are
       - was
       - were
-      # Reduced list - removed words that commonly appear with Sanskrit
+      - will
+      - would
+      - could
+      - should
+      - can
+      - may
+      - might
+      - in
+      - "on"
+      - at
+      - to
+      - from
+      - with
+      - by
+      - for
+      - of
+      - about
+      - this
+      - that
+      - these
+      - those
+      - but
+      - however
+      - therefore
+      - because
+      - since
+      - although
+      - while
+      # Enhanced list to better detect English context
     
   processing:
     enable_whitelist_override: true

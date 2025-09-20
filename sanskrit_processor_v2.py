@@ -233,6 +233,15 @@ class SanskritProcessor:
             self.confidence_scorer = None
             self.issue_detector = None
             self.qa_enabled = False
+
+        # Initialize scriptural segment processor for multi-pass architecture
+        try:
+            from processors.scriptural_segment_processor import ScripturalSegmentProcessor
+            self.scriptural_processor = ScripturalSegmentProcessor(self.config)
+            logger.info("Scriptural segment processor initialized")
+        except ImportError as e:
+            logger.warning(f"Scriptural segment processor not available: {e}")
+            self.scriptural_processor = None
         
         # Metrics collection
         self.collect_metrics = collect_metrics
@@ -247,12 +256,6 @@ class SanskritProcessor:
         
         # Basic text normalization patterns
         self.filler_words = ['um', 'uh', 'er', 'ah', 'like', 'you know']
-        self.number_words = {
-            'one': '1', 'two': '2', 'three': '3', 'four': '4', 'five': '5',
-            'six': '6', 'seven': '7', 'eight': '8', 'nine': '9', 'ten': '10',
-            'eleven': '11', 'twelve': '12', 'thirteen': '13', 'fourteen': '14', 'fifteen': '15',
-            'sixteen': '16', 'seventeen': '17', 'eighteen': '18'
-        }
         
         if self.use_context_pipeline:
             logger.info("Sanskrit processor initialized with context-aware processing")
@@ -367,44 +370,52 @@ class SanskritProcessor:
             logger.warning(f"Plugin loading failed: {e}")
     
     def process_text(self, text: str) -> tuple[str, int]:
-        """Process a single text segment with context-aware processing. Returns (processed_text, corrections_made)."""
-        # Use context-aware pipeline if available (Story 6.5)
+        """Process a single text segment with multi-pass architecture. Returns (processed_text, corrections_made)."""
+        # Phase 1: Scriptural segment processing (full-text pattern matching)
+        if self.scriptural_processor:
+            processed_text, was_modified, reference = self.scriptural_processor.process_segment(text)
+            if was_modified:
+                logger.info(f"Scriptural correction applied: {reference}")
+                return processed_text, 1  # Count as 1 major correction
+            text = processed_text  # Continue with the (possibly unchanged) text
+
+        # Phase 2: Use context-aware pipeline if available (Story 6.5)
         if self.use_context_pipeline and self.context_pipeline:
             try:
                 result = self.context_pipeline.process_segment(text)
                 return result.processed_text, result.corrections_made
             except Exception as e:
                 logger.warning(f"Context pipeline failed, falling back to legacy processing: {e}")
-        
-        # Fallback to legacy processing pipeline
+
+        # Phase 3: Fallback to legacy processing pipeline
         return self._legacy_process_text(text)
     
     def process_segment_detailed(self, segment) -> 'ProcessingResult':
         """
-        New method providing detailed processing results with context information.
+        New method providing detailed processing results with multi-pass architecture.
         Returns comprehensive processing result from context-aware pipeline.
         """
+        # Use the same multi-pass architecture as process_text
+        processed_text, corrections = self.process_text(segment.text)
+
         if self.use_context_pipeline and self.context_pipeline:
             from processors.context_pipeline import ProcessingResult as ContextProcessingResult
-            
-            # Use the context-aware pipeline for detailed results
-            result = self.context_pipeline.process_segment(segment.text)
-            
-            # Convert to the format expected by the existing system
-            # Note: We import from context_pipeline to avoid conflicts
-            return result
-        else:
-            # Fallback to basic processing
-            processed_text, corrections = self._legacy_process_text(segment.text)
-            
-            # Create a basic ProcessingResult (import from utils.processing_reporter)
-            from utils.processing_reporter import ProcessingResult
-            return ProcessingResult(
-                segments_processed=1,
-                corrections_made=corrections,
-                processing_time=0.0,
-                errors=[]
-            )
+
+            # Try to get detailed results from context pipeline if it was used
+            try:
+                result = self.context_pipeline.process_segment(processed_text)
+                return result
+            except Exception as e:
+                logger.warning(f"Context pipeline detailed processing failed: {e}")
+
+        # Fallback to basic processing result
+        from utils.processing_reporter import ProcessingResult
+        return ProcessingResult(
+            segments_processed=1,
+            corrections_made=corrections,
+            processing_time=0.0,
+            errors=[]
+        )
     
     def _legacy_process_text(self, text: str) -> tuple[str, int]:
         """Legacy processing pipeline (pre-Story 6.5) for fallback."""
@@ -486,46 +497,50 @@ class SanskritProcessor:
             return text
 
     def _normalize_text(self, text: str) -> str:
-        """Basic text normalization with punctuation enhancement."""
+        """Basic text normalization with configurable punctuation enhancement."""
         # 1. Convert Devanagari to IAST first (before any other processing)
         text = self._convert_devanagari_to_iast(text)
 
         # 2. Remove excessive whitespace (preserve line breaks)
         text = re.sub(r'[ \t]+', ' ', text)
         
-        # Convert number words to digits
-        for word, digit in self.number_words.items():
-            text = re.sub(rf'\b{re.escape(word)}\b', digit, text, flags=re.IGNORECASE)
-        
         # Remove common filler words
         for filler in self.filler_words:
             text = re.sub(rf'\b{re.escape(filler)}\b', '', text, flags=re.IGNORECASE)
         
-        # Apply punctuation enhancement if enabled
-        if self.config.get('punctuation', {}).get('enabled', False):
+        # Apply punctuation enhancement if enabled (Story 12.2: Disabled by default)
+        if self.config.get('processing', {}).get('punctuation_enhancement', {}).get('enabled', False):
             text = self._enhance_punctuation(text)
         
         return text.strip()
 
     def _enhance_punctuation(self, text: str) -> str:
-        """Simplified punctuation enhancement for lean architecture."""
+        """Configurable punctuation enhancement for lean architecture."""
+        punct_config = self.config.get('processing', {}).get('punctuation_enhancement', {})
+        
         if self._is_sanskrit_context(text):
             return text
         
-        # Basic punctuation fixes only
-        endings = ["thank you", "namaste", "om shanti"]
-        for phrase in endings:
-            if text.lower().rstrip().endswith(phrase.lower()):
-                if not text.rstrip().endswith('.'):
-                    text = text.rstrip() + '.'
-                break
+        # Only proceed if enabled
+        if not punct_config.get('enabled', False):
+            return text
         
-        # Basic question detection
-        if any(text.lower().strip().startswith(q) for q in ['what', 'how', 'why', 'when']):
-            if not text.rstrip().endswith('?'):
-                text = text.rstrip() + '?'
+        # Basic punctuation fixes only - controlled by configuration
+        if punct_config.get('auto_periods', False):
+            endings = ["thank you", "namaste", "om shanti"]
+            for phrase in endings:
+                if text.lower().rstrip().endswith(phrase.lower()):
+                    if not text.rstrip().endswith('.'):
+                        text = text.rstrip() + '.'
+                    break
         
-        # Clean spacing (preserve line breaks)
+        # Basic question detection - controlled by configuration
+        if punct_config.get('auto_questions', False):
+            if any(text.lower().strip().startswith(q) for q in ['what', 'how', 'why', 'when']):
+                if not text.rstrip().endswith('?'):
+                    text = text.rstrip() + '?'
+        
+        # Clean spacing (preserve line breaks) - always applied when enhancement is enabled
         text = re.sub(r'[ \t]+([.,:;!?])', r'\1', text)
         text = re.sub(r'([.!?])([A-Z])', r'\1 \2', text)
         
@@ -555,11 +570,14 @@ class SanskritProcessor:
             self._context_cache = {}
         
         sanskrit_score = self.calculate_sanskrit_density(normalized_text)
-        confidence_config = self.config.get('processing', {}).get('context_detection', {})
         
-        # Validate and constrain thresholds for reliability
-        high_threshold = max(0.5, min(0.9, confidence_config.get('sanskrit_threshold', 0.7)))
-        low_threshold = max(0.1, min(0.5, confidence_config.get('english_threshold', 0.3)))
+        # FIX: Read from correct config structure
+        context_config = self.config.get('context_detection', {})
+        thresholds = context_config.get('thresholds', {})
+        
+        # Use configured values with proper fallbacks
+        high_threshold = max(0.5, min(0.9, thresholds.get('sanskrit_confidence', 0.6)))
+        low_threshold = max(0.1, min(0.5, 1.0 - thresholds.get('english_confidence', 0.95)))
         
         # Ensure thresholds are logically consistent
         if low_threshold >= high_threshold:
@@ -622,16 +640,40 @@ class SanskritProcessor:
             sanskrit_word_ratio = sanskrit_word_count / len(words)
             score += min(0.4, sanskrit_word_ratio)
 
-        # English Context Indicators (reduce score)
+        # English Context Indicators (reduce score aggressively)
         english_indicators = [
-            r'\b(means?|refers?\s+to|explains?|this|that|what|how|why|when)\b',
-            r'\b(chapter|section|verse|explains?|teaching)\b',
+            r'\b(means?|refers?\s+to|explains?|this|that|what|how|why|when|where|which|who)\b',
+            r'\b(chapter|section|verse|explains?|teaching|lecture|says?|telling|talking)\b',
+            r'\b(the|and|is|are|was|were|will|would|could|should|can|may|might)\b',
+            r'\b(in|on|at|to|from|with|by|for|of|about|through|during)\b',
+            r'\b(but|however|therefore|because|since|although|while|if|unless)\b',
+            r'\b(very|really|quite|just|only|even|also|still|already|yet)\b',
             r'\?$',  # Question ending
+            r'\.{3}',  # Ellipsis indicating explanation
         ]
 
+        english_penalty = 0.0
         for pattern in english_indicators:
-            if re.search(pattern, text, re.IGNORECASE):
-                score -= 0.15
+            matches = len(re.findall(pattern, text, re.IGNORECASE))
+            if matches > 0:
+                # Heavy penalty for English function words
+                english_penalty += matches * 0.3
+
+        # Additional penalty for high density of English function words
+        words = text.lower().split()
+        english_function_words = ['the', 'and', 'is', 'are', 'was', 'were', 'will', 'would', 'could',
+                                'should', 'can', 'may', 'might', 'in', 'on', 'at', 'to', 'from',
+                                'with', 'by', 'for', 'of', 'about', 'this', 'that', 'these', 'those']
+        english_word_count = sum(1 for word in words if word in english_function_words)
+
+        if len(words) > 0:
+            english_density = english_word_count / len(words)
+            if english_density > 0.3:  # More than 30% English function words
+                english_penalty += 0.5
+            elif english_density > 0.2:  # More than 20% English function words
+                english_penalty += 0.3
+
+        score -= english_penalty
         
         return max(0.0, min(1.0, score))  # Clamp between 0 and 1  # Clamp between 0 and 1
     
@@ -661,9 +703,9 @@ class SanskritProcessor:
         # Detect context for the entire text
         text_context = self.detect_context(text)
         
-        # Get confidence threshold from config
-        confidence_config = self.config.get('processing', {}).get('context_detection', {})
-        confidence_threshold = confidence_config.get('confidence_threshold', 0.8)
+        # FIX: Read confidence threshold from correct config structure
+        context_config = self.config.get('context_detection', {})
+        confidence_threshold = context_config.get('thresholds', {}).get('confidence_threshold', 0.8)
         
         logger.info(f"Processing text with context: {text_context} (confidence threshold: {confidence_threshold})")
         logger.debug(f"Text sample: '{text[:100]}...'")
@@ -744,7 +786,23 @@ class SanskritProcessor:
             
         # Validate confidence threshold
         confidence_threshold = max(0.1, min(1.0, confidence_threshold))
-        
+
+        # SAFETY CHECK: Common English words should never be corrected
+        common_english_words = {
+            'the', 'and', 'is', 'are', 'was', 'were', 'will', 'would', 'could', 'should',
+            'can', 'may', 'might', 'in', 'on', 'at', 'to', 'from', 'with', 'by', 'for',
+            'of', 'about', 'this', 'that', 'these', 'those', 'but', 'however', 'therefore',
+            'because', 'since', 'although', 'while', 'if', 'unless', 'very', 'really',
+            'quite', 'just', 'only', 'even', 'also', 'still', 'already', 'yet', 'means',
+            'refers', 'explains', 'what', 'how', 'why', 'when', 'where', 'which', 'who',
+            'chapter', 'section', 'verse', 'teaching', 'lecture', 'says', 'telling', 'talking'
+        }
+
+        if clean_lower in common_english_words:
+            if is_debug_term:
+                logger.info(f"🔍 DEBUG: Skipping correction for common English word: '{clean_word}'")
+            return word  # Return original word with punctuation intact
+
         corrections_file = self.lexicon_dir / "corrections.yaml"
         corrected = clean_word  # Default to no change
         
