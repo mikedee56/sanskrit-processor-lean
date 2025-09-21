@@ -548,85 +548,85 @@ class SanskritProcessor:
 
     def detect_context(self, text: str) -> str:
         """Detect content context: 'sanskrit', 'english', or 'mixed'.
-        
+
         Enhanced with input validation and caching for optimal performance.
         """
         # Input validation for robustness
         if not text or not isinstance(text, str):
             return 'mixed'  # Default to mixed for safety
-            
+
         # Normalize whitespace for consistent processing
         normalized_text = ' '.join(text.split())
         if not normalized_text.strip():
             return 'mixed'
-        
+
         # Check cache for performance optimization
         cache_key = hash(normalized_text)
         if hasattr(self, '_context_cache') and cache_key in self._context_cache:
             return self._context_cache[cache_key]
-        
+
         # Initialize cache if needed
         if not hasattr(self, '_context_cache'):
             self._context_cache = {}
-        
+
         sanskrit_score = self.calculate_sanskrit_density(normalized_text)
-        
-        # FIX: Read from correct config structure
+
+        # FIX: More reasonable thresholds that actually allow Sanskrit processing
         context_config = self.config.get('context_detection', {})
         thresholds = context_config.get('thresholds', {})
-        
-        # Use configured values with proper fallbacks
-        high_threshold = max(0.5, min(0.9, thresholds.get('sanskrit_confidence', 0.6)))
-        low_threshold = max(0.1, min(0.5, 1.0 - thresholds.get('english_confidence', 0.95)))
-        
+
+        # CRITICAL FIX: Lower thresholds to allow more Sanskrit corrections
+        high_threshold = max(0.3, min(0.7, thresholds.get('sanskrit_confidence', 0.4)))  # Was 0.6
+        low_threshold = max(0.1, min(0.4, 1.0 - thresholds.get('english_confidence', 0.8)))  # Was 0.95
+
         # Ensure thresholds are logically consistent
         if low_threshold >= high_threshold:
-            low_threshold = high_threshold - 0.2
-            
+            low_threshold = high_threshold - 0.1
+
         if sanskrit_score > high_threshold:
             result = 'sanskrit'
         elif sanskrit_score < low_threshold:
             result = 'english'
         else:
             result = 'mixed'
-            
+
         # Cache result for future lookups (limit cache size)
         if len(self._context_cache) < 1000:
             self._context_cache[cache_key] = result
-            
+
         return result
     
     def calculate_sanskrit_density(self, text: str) -> float:
         """Calculate the density of Sanskrit indicators in text."""
         if not text.strip():
             return 0.0
-        
+
         score = 0.0
         text_lower = text.lower()
-        
+
         # CRITICAL FIX: Higher weight for opening mantra detection
-        if text_lower.startswith('om ') or text_lower.startswith('oṁ '):
-            score += 0.6  # Strong Sanskrit indicator
-        elif ' om ' in text_lower or ' oṁ ' in text_lower:
-            score += 0.5  # Strong Sanskrit indicator
-            
+        if text_lower.startswith('om ') or text_lower.startswith('oṃ '):
+            score += 0.8  # Very strong Sanskrit indicator (increased from 0.6)
+        elif ' om ' in text_lower or ' oṃ ' in text_lower:
+            score += 0.7  # Very strong Sanskrit indicator (increased from 0.5)
+
         # Sanskrit Context Indicators (higher weights)
         if 'purnam' in text_lower or 'pūrṇam' in text_lower:
-            score += 0.3  # Opening mantra indicator
+            score += 0.4  # Opening mantra indicator (increased from 0.3)
         if 'shanti' in text_lower or 'śānti' in text_lower:
-            score += 0.3  # Peace mantra indicator
+            score += 0.4  # Peace mantra indicator (increased from 0.3)
         if 'brahman' in text_lower:
-            score += 0.2
-        
-        # IAST diacritical marks
-        iast_chars = 'āīūṛṇṣśḥṁ'
+            score += 0.3  # Increased from 0.2
+
+        # IAST diacritical marks (strong indicator)
+        iast_chars = 'āīūṛṇṣśḥṃ'
         iast_count = sum(1 for char in text if char in iast_chars)
         if len(text) > 0:
-            score += min(0.3, iast_count / len(text) * 10)  # Cap at 0.3
-        
+            score += min(0.5, iast_count / len(text) * 15)  # Increased weight and cap
+
         # Verse number references (e.g., "2.41", "4.7")
         verse_refs = len(re.findall(r'\d+\.\d+', text))
-        score += min(0.2, verse_refs * 0.1)
+        score += min(0.3, verse_refs * 0.15)  # Increased from 0.2 and 0.1
 
         # Sanskrit terms density
         words = text.lower().split()
@@ -638,9 +638,9 @@ class SanskritProcessor:
 
         if len(words) > 0:
             sanskrit_word_ratio = sanskrit_word_count / len(words)
-            score += min(0.4, sanskrit_word_ratio)
+            score += min(0.5, sanskrit_word_ratio * 1.2)  # Increased from 0.4
 
-        # English Context Indicators (reduce score aggressively)
+        # English Context Indicators (REDUCED penalty to allow more Sanskrit processing)
         english_indicators = [
             r'\b(means?|refers?\s+to|explains?|this|that|what|how|why|when|where|which|who)\b',
             r'\b(chapter|section|verse|explains?|teaching|lecture|says?|telling|talking)\b',
@@ -656,10 +656,10 @@ class SanskritProcessor:
         for pattern in english_indicators:
             matches = len(re.findall(pattern, text, re.IGNORECASE))
             if matches > 0:
-                # Heavy penalty for English function words
-                english_penalty += matches * 0.3
+                # REDUCED penalty for English function words (from 0.3 to 0.15)
+                english_penalty += matches * 0.15
 
-        # Additional penalty for high density of English function words
+        # REDUCED penalty for high density of English function words
         words = text.lower().split()
         english_function_words = ['the', 'and', 'is', 'are', 'was', 'were', 'will', 'would', 'could',
                                 'should', 'can', 'may', 'might', 'in', 'on', 'at', 'to', 'from',
@@ -668,14 +668,14 @@ class SanskritProcessor:
 
         if len(words) > 0:
             english_density = english_word_count / len(words)
-            if english_density > 0.3:  # More than 30% English function words
-                english_penalty += 0.5
-            elif english_density > 0.2:  # More than 20% English function words
-                english_penalty += 0.3
+            if english_density > 0.5:  # More lenient threshold (was 0.3)
+                english_penalty += 0.3  # Reduced from 0.5
+            elif english_density > 0.3:  # More lenient threshold (was 0.2)
+                english_penalty += 0.15  # Reduced from 0.3
 
-        score -= english_penalty
-        
-        return max(0.0, min(1.0, score))  # Clamp between 0 and 1  # Clamp between 0 and 1
+            score -= english_penalty
+
+        return max(0.0, min(1.0, score))  # Clamp between 0 and 1
     
     def _is_sanskrit_context(self, text: str) -> bool:
         """Check if text contains Sanskrit/sacred content that should be preserved."""
@@ -686,7 +686,7 @@ class SanskritProcessor:
         """Apply corrections from lexicon files with compound matching and fuzzy matching fallback."""
         corrections = 0
         original_text = text
-        
+
         # 1. First pass: Compound term recognition (Story 6.1)
         if self.compound_matcher:
             text, compound_matches = self.compound_matcher.process_text(text)
@@ -695,48 +695,67 @@ class SanskritProcessor:
                 logger.info(f"Compound corrections applied: {len(compound_matches)}")
                 for match in compound_matches:
                     logger.debug(f"  Compound: '{match.original}' -> '{match.corrected}'")
-        
+    
         # 2. Second pass: Individual word corrections (context-aware and preserve line structure)
         lines = text.split('\n')
         corrected_lines = []
-        
+
         # Detect context for the entire text
         text_context = self.detect_context(text)
-        
+
         # FIX: Read confidence threshold from correct config structure
         context_config = self.config.get('context_detection', {})
         confidence_threshold = context_config.get('thresholds', {}).get('confidence_threshold', 0.8)
-        
+
         logger.info(f"Processing text with context: {text_context} (confidence threshold: {confidence_threshold})")
         logger.debug(f"Text sample: '{text[:100]}...'")
-        
+
         word_corrections = 0
         for line in lines:
             words = line.split()
             corrected_words = []
-            
+
             for word in words:
+                original_word = word  # Keep track of original
                 # Process word with context-aware punctuation preservation
                 corrected_word = self._process_word_with_punctuation(word, text_context, confidence_threshold)
                 corrected_words.append(corrected_word)
-                if corrected_word != word:
+
+                # CRITICAL FIX: Only count as correction if word actually changed
+                if corrected_word != original_word:
                     word_corrections += 1
                     logger.debug(f"Word correction ({text_context}): '{word}' -> '{corrected_word}'")
-            
+
             corrected_lines.append(' '.join(corrected_words))
-        
+
         corrections += word_corrections
         final_text = '\n'.join(corrected_lines)
-        
+
         if final_text != original_text:
             logger.info(f"Total lexicon corrections: {corrections} (compounds: {len(compound_matches) if self.compound_matcher else 0}, words: {word_corrections})")
-            
+
         return final_text, corrections
     
     def _process_word_with_punctuation(self, word: str, context: str = None, confidence_threshold: float = 0.8) -> str:
         """Process word while preserving punctuation and respecting context.
         
-        Enhanced with comprehensive edge case handling and validation.
+        This method implements the core fix for Story 12.4: Fix English Context Processing.
+        It enables Sanskrit term corrections in English context with configurable higher thresholds,
+        resolving the issue where English context was overly conservative.
+        
+        Args:
+            word: Input word with potential punctuation
+            context: Processing context ('english', 'sanskrit', 'mixed', None)
+            confidence_threshold: Base confidence threshold for corrections (0.1-1.0)
+            
+        Returns:
+            Corrected word with preserved punctuation
+            
+        Key Enhancements for Story 12.4:
+            - English context now applies lexicon corrections with higher thresholds
+            - Configuration-driven behavior via 'english_context_processing' config section
+            - Backward compatibility through 'proper_nouns_only' rollback option
+            - Enhanced safety checks prevent common English word corrections
         """
         # Input validation for robustness
         if not word or not isinstance(word, str):
@@ -755,7 +774,7 @@ class SanskritProcessor:
             return word  # Single characters
 
         # Extract leading/trailing punctuation with enhanced pattern
-        # Handle complex punctuation like quotes, ellipsis, multiple punctuation
+        # Handles complex punctuation like quotes, ellipsis, multiple punctuation
         match = re.match(r'^(\W*)(\w+(?:\'\w+)*)(\W*)$', word)
         if not match:
             return word  # Fallback for complex cases
@@ -764,6 +783,7 @@ class SanskritProcessor:
         original_clean_word = clean_word
         
         # Handle contractions and possessives properly
+        # Example: "Krishna's" -> process "Krishna", preserve "'s"
         if "'" in clean_word:
             # For contractions like "don't" or possessives like "Krishna's"
             parts = clean_word.split("'")
@@ -773,29 +793,39 @@ class SanskritProcessor:
         
         clean_lower = clean_word.lower()
         
-        # Debug logging for key Sanskrit terms
+        # Debug logging for key Sanskrit terms (development aid)
         debug_terms = ['suhya', 'vicharana', 'tanumanasi', 'yogavashistha', 'uttapatti', 'prakarna', 'sadgurum', 'brahman']
         is_debug_term = any(debug_term in clean_lower for debug_term in debug_terms)
         
         if is_debug_term:
             logger.info(f"🔍 DEBUG: Processing '{word}' -> clean_word: '{clean_word}', context: {context}")
         
-        # Validate context parameter
+        # Validate and normalize context parameter
         if context not in ['english', 'sanskrit', 'mixed', None]:
             context = 'mixed'  # Default to mixed for invalid context
             
-        # Validate confidence threshold
+        # Validate and bound confidence threshold
         confidence_threshold = max(0.1, min(1.0, confidence_threshold))
 
-        # SAFETY CHECK: Common English words should never be corrected
+        # SAFETY CHECK: Protect common English words from correction
+        # This is a curated list of high-frequency English words that should never be "corrected"
+        # Story 12.4 enhancement: Reduced scope to allow more Sanskrit terms through
         common_english_words = {
+            # Core English function words that should never be "corrected"
             'the', 'and', 'is', 'are', 'was', 'were', 'will', 'would', 'could', 'should',
             'can', 'may', 'might', 'in', 'on', 'at', 'to', 'from', 'with', 'by', 'for',
             'of', 'about', 'this', 'that', 'these', 'those', 'but', 'however', 'therefore',
             'because', 'since', 'although', 'while', 'if', 'unless', 'very', 'really',
-            'quite', 'just', 'only', 'even', 'also', 'still', 'already', 'yet', 'means',
-            'refers', 'explains', 'what', 'how', 'why', 'when', 'where', 'which', 'who',
-            'chapter', 'section', 'verse', 'teaching', 'lecture', 'says', 'telling', 'talking'
+            'quite', 'just', 'only', 'even', 'also', 'still', 'already', 'yet',
+            # Common lecture/explanation words that might sound Sanskrit-like
+            'means', 'refers', 'explains', 'says', 'tells', 'calls', 'gives', 'takes',
+            'makes', 'does', 'goes', 'comes', 'gets', 'puts', 'sees', 'knows', 'thinks',
+            'feels', 'seems', 'looks', 'becomes', 'appears', 'happens', 'occurs',
+            # Educational/spiritual context words
+            'teaching', 'lecture', 'chapter', 'section', 'verse', 'student', 'teacher',
+            'master', 'practice', 'study', 'learn', 'understand', 'realize', 'experience',
+            # Prevent common mistranslations
+            'what', 'how', 'why', 'when', 'where', 'which', 'who', 'whose', 'whom'
         }
 
         if clean_lower in common_english_words:
@@ -807,10 +837,20 @@ class SanskritProcessor:
         corrected = clean_word  # Default to no change
         
         try:
-            # Context-aware processing with enhanced error handling
+            # STORY 12.4 CORE ENHANCEMENT: Configuration-driven English context processing
+            # Read configuration for English context behavior control
+            english_config = self.config.get('processing', {}).get('english_context_processing', {})
+            enable_lexicon = english_config.get('enable_lexicon_corrections', True)
+            threshold_increase = english_config.get('threshold_increase', 0.15)
+            max_threshold = english_config.get('max_threshold', 0.95)
+            proper_nouns_only = english_config.get('proper_nouns_only', False)
+            
             if context == 'english':
-                # In English context, be very conservative with corrections
-                # Only correct if it's a clear Sanskrit proper noun
+                # ENHANCED ENGLISH CONTEXT PROCESSING (Story 12.4 Fix)
+                # Previous behavior: Only corrected proper nouns, ignored all other Sanskrit terms
+                # New behavior: Apply lexicon corrections with higher confidence thresholds
+                
+                # First check proper nouns (preserves existing logic)
                 if hasattr(self.lexicons, 'proper_nouns') and clean_lower in self.lexicons.proper_nouns:
                     entry = self.lexicons.proper_nouns[clean_lower]
                     if isinstance(entry, dict):
@@ -819,23 +859,42 @@ class SanskritProcessor:
                         corrected = str(entry) if entry else clean_word
                     if is_debug_term:
                         logger.info(f"🔍 DEBUG: English context - proper noun correction: '{clean_word}' -> '{corrected}'")
+                        
+                elif enable_lexicon and not proper_nouns_only:
+                    # NEW FOR STORY 12.4: Apply general lexicon corrections with higher threshold
+                    # This is the core fix that resolves inconsistent Sanskrit term processing
+                    english_threshold = min(max_threshold, confidence_threshold + threshold_increase)
+                    corrected = self._get_best_correction(clean_lower, corrections_file, english_threshold)
+                    if corrected != clean_word and is_debug_term:
+                        logger.info(f"🔍 DEBUG: English context - lexicon correction: '{clean_word}' -> '{corrected}' (threshold: {english_threshold})")
+                    elif corrected == clean_word and is_debug_term:
+                        logger.info(f"🔍 DEBUG: English context - no correction for '{clean_word}' (threshold too high)")
+                        
                 else:
-                    corrected = clean_word  # No correction in English context
+                    # Fallback to no correction (old behavior or config disabled)
+                    # This path provides backward compatibility via 'proper_nouns_only: true'
+                    corrected = clean_word
                     if is_debug_term:
-                        logger.info(f"🔍 DEBUG: English context - no correction for '{clean_word}'")
+                        logger.info(f"🔍 DEBUG: English context - no correction for '{clean_word}' (lexicon disabled or proper_nouns_only mode)")
+                        
             elif context == 'sanskrit':
                 # In Sanskrit context, apply all corrections aggressively
-                corrected = self._get_best_correction(clean_lower, corrections_file, confidence_threshold)
+                # Lower threshold for more liberal correction matching
+                corrected = self._get_best_correction(clean_lower, corrections_file, max(0.5, confidence_threshold - 0.2))
                 if is_debug_term:
                     logger.info(f"🔍 DEBUG: Sanskrit context - correction: '{clean_word}' -> '{corrected}'")
+                    
             else:  # mixed context or None
-                # In mixed context, apply corrections with higher confidence threshold
-                adjusted_threshold = min(0.9, confidence_threshold + 0.1)
+                # In mixed context, apply corrections with reasonable threshold
+                # Slightly more lenient than base threshold for mixed content
+                adjusted_threshold = max(0.6, confidence_threshold - 0.1)
                 corrected = self._get_best_correction(clean_lower, corrections_file, adjusted_threshold)
                 if is_debug_term:
                     logger.info(f"🔍 DEBUG: Mixed context - correction: '{clean_word}' -> '{corrected}' (threshold: {adjusted_threshold})")
+                    
         except Exception as e:
-            # Graceful error handling - log and return original
+            # Graceful error handling - log and return original word
+            # Prevents processing failures from breaking the entire pipeline
             logger.warning(f"Error processing word '{clean_word}': {e}")
             corrected = clean_word
         
@@ -845,7 +904,8 @@ class SanskritProcessor:
             if is_debug_term:
                 logger.info(f"🔍 DEBUG: No correction applied for '{clean_word}', keeping original")
         
-        # Apply intelligent capitalization preservation (Story 11.2)
+        # Apply intelligent capitalization preservation (Story 11.2 integration)
+        # Maintains proper capitalization based on original word and correction rules
         if clean_word and corrected and corrected != clean_word:
             # Find the correction entry to check for preserve_capitalization flag
             correction_entry = {}
@@ -862,7 +922,8 @@ class SanskritProcessor:
         result = prefix + corrected + suffix
         
         # Final validation - ensure result is reasonable
-        if not result or len(result) > len(word) * 3:  # Prevent unreasonable expansion
+        # Prevents unreasonable text expansion that could indicate processing errors
+        if not result or len(result) > len(word) * 3:  # 3x expansion limit
             if is_debug_term:
                 logger.warning(f"🔍 DEBUG: Result validation failed for '{word}', returning original")
             return word
@@ -915,52 +976,59 @@ class SanskritProcessor:
         corrections = 0
         lines = text.split('\n')
         corrected_lines = []
-        
+
         proper_nouns_file = self.lexicon_dir / "proper_nouns.yaml"
-        
+
         for line in lines:
             words = line.split()
             corrected_words = []
-            
+
             for word in words:
                 clean_word = re.sub(r'[^\w\s]', '', word.lower())
-                
+                original_word = word  # Keep track of original for comparison
+
                 # Try cache first
                 cached_proper_noun = self.lexicon_cache.get_proper_noun(clean_word, proper_nouns_file)
                 if cached_proper_noun is not None:
-                    # Record metrics if collecting
-                    if self.metrics_collector:
-                        self.metrics_collector.start_correction('capitalization', word)
-                        self.metrics_collector.end_correction('capitalization', word, cached_proper_noun, 1.0)
-                    
+                    # CRITICAL FIX: Only count as correction if it actually changes the word
+                    if cached_proper_noun != original_word:
+                        # Record metrics if collecting
+                        if self.metrics_collector:
+                            self.metrics_collector.start_correction('capitalization', word)
+                            self.metrics_collector.end_correction('capitalization', word, cached_proper_noun, 1.0)
+
+                        corrections += 1
+                        logger.debug(f"Cached capitalization: {word} -> {cached_proper_noun}")
+
                     corrected_words.append(cached_proper_noun)
-                    corrections += 1
-                    logger.debug(f"Cached capitalization: {word} -> {cached_proper_noun}")
                     continue
-                
+
                 # Try lexicon lookup
                 if clean_word in self.lexicons.proper_nouns:
                     entry = self.lexicons.proper_nouns[clean_word]
                     corrected = entry.get('term') or entry.get('original_term', word)
-                    
+
                     # Cache the result
                     self.lexicon_cache.cache_proper_noun(clean_word, corrected, proper_nouns_file)
-                    
-                    # Record metrics if collecting
-                    if self.metrics_collector:
-                        self.metrics_collector.start_correction('capitalization', word)
-                        self.metrics_collector.end_correction('capitalization', word, corrected, 1.0)
-                    
+
+                    # CRITICAL FIX: Only count as correction if it actually changes the word
+                    if corrected != original_word:
+                        # Record metrics if collecting
+                        if self.metrics_collector:
+                            self.metrics_collector.start_correction('capitalization', word)
+                            self.metrics_collector.end_correction('capitalization', word, corrected, 1.0)
+
+                        corrections += 1
+                        logger.debug(f"Capitalization: {word} -> {corrected}")
+
                     corrected_words.append(corrected)
-                    corrections += 1
-                    logger.debug(f"Capitalization: {word} -> {corrected}")
                 else:
                     # Cache negative result (no capitalization needed)
                     self.lexicon_cache.cache_proper_noun(clean_word, word, proper_nouns_file)
                     corrected_words.append(word)
-            
+
             corrected_lines.append(' '.join(corrected_words))
-        
+
         return '\n'.join(corrected_lines), corrections
 
     def _calculate_similarity(self, str1: str, str2: str) -> float:
