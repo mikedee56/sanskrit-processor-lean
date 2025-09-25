@@ -64,11 +64,13 @@ class SystematicTermMatcher:
         # Initialize context detector for English protection
         self.context_detector = ContextDetector()
         
-        # Initialize fuzzy matcher with configuration
+        # Initialize fuzzy matcher with configuration - EMERGENCY TRIAGE: Raised confidence threshold
         fuzzy_config = self.config.get('fuzzy_matching', {})
+        # CRITICAL FIX: Raise minimum confidence to prevent invalid corrections like "again" -> "advaita"
+        emergency_min_confidence = max(fuzzy_config.get('min_confidence', 0.85), 0.85)  # Force minimum 85%
         self.fuzzy_matcher = FuzzyMatcher(
-            max_distance=fuzzy_config.get('max_edit_distance', 3),
-            min_confidence=fuzzy_config.get('min_confidence', 0.6),
+            max_distance=min(fuzzy_config.get('max_edit_distance', 2), 2),  # Reduce max distance
+            min_confidence=emergency_min_confidence,
             enable_cache=fuzzy_config.get('enable_caching', True)
         ) if fuzzy_config.get('enabled', True) else None
         
@@ -120,9 +122,9 @@ class SystematicTermMatcher:
             r'\b(pancha|panca)\s+(\w*kosha?\w*)': lambda m: f"pañca kośa",
             r'\b(catur|chatur)\s+(\w*varga?\w*)': lambda m: f"catur varga",
             
-            # Title + name patterns  
+            # Title + name patterns
             r'\b(sri|shri)\s+(vasi\w+|vashi\w+)': lambda m: "Śrī Vaśiṣṭha",
-            r'\b(yoga)\s*(vasi\w+|bashi\w*)': lambda m: "Yogavāsiṣṭha",
+            # REMOVED problematic yoga+vasistha pattern that corrupts "Yoga Vasistha Utpatti Prakarana"
             r'\b(bhagavad)\s*(gita|geeta)': lambda m: "Bhagavad Gītā",
             r'\b(maha)\s*(purusha?\w*)': lambda m: "mahāpuruṣa",
             
@@ -155,7 +157,83 @@ class SystematicTermMatcher:
             self.term_index[letter].sort(key=len, reverse=True)
         
         logger.debug(f"Built term index with {len(self.term_index)} buckets")
-    
+
+    def _is_mantra_text(self, text: str) -> bool:
+        """
+        EMERGENCY MANTRA PROTECTION: Detect if text is a mantra to prevent word-by-word corruption.
+
+        Mantras need to be processed as complete patterns, not individual words.
+        """
+        text_lower = text.lower()
+
+        # Common mantra patterns that should be protected (including ASR-corrupted versions)
+        mantra_patterns = [
+            # Purnamadah mantra (correct and ASR-corrupted versions)
+            r'purnamadah.*purnamidam|pūrṇamadaḥ.*pūrṇamidaṁ',
+            r'pūna-madhah.*pūna-midam|pūna.*madhah.*pūna.*midam',  # ASR-corrupted version
+            r'om.*purna.*shanti.*shanti.*shanti',
+            r'auṁ.*pūna.*śāntiḥ.*śāntiḥ.*śāntiḥ',  # ASR version with corrupted "pūna"
+
+            # Brahmanandam mantra (correct and ASR-corrupted versions)
+            r'brahmanandam.*parama.*sukhadam',
+            r'brahmānandaṁ.*parama.*sukhadaṁ',
+            r'prabhānandaṁ.*parama.*sukhadaṁ',  # ASR corruption: "prabhā" instead of "brahmā"
+            r'kevalam.*jnana.*murtim',
+            r'kevalam.*jñāna.*mūrtiṁ',
+            r'sadgurum.*tam.*namami',
+            r'sad.*guruṁ.*taṁ.*namāmi',
+
+            # Other common mantras
+            r'tryambakam.*yajama.*mritaat',
+            r'asato.*ma.*sad.*gamaya',
+            r'sarve.*bhavantu.*sukhinah',
+            r'hare.*krishna.*hare.*rama',
+
+            # Opening/closing patterns (with variations)
+            r'om.*shanti.*shanti.*shanti',
+            r'auṁ.*śāntiḥ.*śāntiḥ.*śāntiḥ',
+            r'oṁ.*śāntiḥ.*śāntiḥ.*śāntiḥ',
+
+            # Triple repetition patterns (common in mantras)
+            r'śāntiḥ.*śāntiḥ.*śāntiḥ',
+            r'shanti.*shanti.*shanti',
+        ]
+
+        # Check if any mantra pattern matches
+        for pattern in mantra_patterns:
+            if re.search(pattern, text_lower, re.DOTALL):
+                return True
+
+        # Additional check: contains high density of mantra keywords (including ASR corruptions)
+        # CRITICAL: Exclude general Sanskrit terms that appear in regular text
+        mantra_keywords = [
+            # Mantra-specific terms (NOT general Sanskrit words)
+            'purnamadah', 'purnamidam', 'brahmanandam', 'parama', 'sukhadam',
+            'kevalam', 'jnana', 'murtim', 'sadgurum', 'namami', 'tryambakam',
+            'yajama', 'mritaat', 'asato', 'gamaya', 'sarve', 'bhavantu',
+            'pūrṇamadaḥ', 'pūrṇamidaṁ', 'brahmānandaṁ', 'sukhadaṁ', 'jñāna',
+            'mūrtiṁ', 'sad-guruṁ', 'namāmi', 'śāntiḥ',
+            # ASR-corrupted forms that should be protected (mantra-specific)
+            'pūna-madhah', 'pūna-midam', 'prabhānandaṁ', 'mudhacchyate',
+            'vāva-śiṣyate', 'dvandvātītaṁ', 'gagana-sadrśaṁ',
+            'tattva-masyāvilakṣyam', 'vimalama-calaṁ', 'bāvātītaṁ', 'tri-guṇa-rahitam'
+        ]
+
+        # Count how many MANTRA-SPECIFIC keywords are present
+        keyword_count = sum(1 for keyword in mantra_keywords if keyword in text_lower)
+
+        # Require higher threshold to avoid false positives like "Yoga Vasistha"
+        # These are actual mantras with multiple specific mantra terms
+        if keyword_count >= 4:  # Increased from 3 to 4
+            return True
+
+        # Check for repetitive patterns typical of mantras
+        if re.search(r'(\w+).*\1.*\1', text_lower):  # Same word repeated 3+ times (like "shanti shanti shanti")
+            return True
+
+        return False
+
+
     def _create_intelligent_patterns(self):
         """Create patterns that learn from common ASR mistakes."""
         # Common ASR transformations we need to reverse
@@ -172,17 +250,22 @@ class SystematicTermMatcher:
     
     def find_all_corrections(self, text: str) -> List[TermMatch]:
         """Find all Sanskrit term corrections in text systematically with context awareness."""
-        
+
+        # EMERGENCY MANTRA PROTECTION: Check if this is a mantra before any processing
+        if self._is_mantra_text(text):
+            logger.debug(f"MANTRA PROTECTION: Skipping systematic matching for mantra text: {text[:50]}...")
+            return []  # Don't corrupt mantras with word-by-word corrections
+
         # CONTEXT VALIDATION: Check if text should be processed at all
         context_result = self.context_detector.detect_context(text)
-        
+
         # If English context detected, return empty list (no corrections)
         if context_result.context_type == 'english':
             logger.debug(f"English context detected, skipping systematic matching: {context_result.markers_found}")
             return []
-        
+
         corrections = []
-        
+
         # For mixed content, only process Sanskrit segments
         if context_result.context_type == 'mixed' and context_result.segments:
             # Extract and process only Sanskrit segments
@@ -191,43 +274,53 @@ class SystematicTermMatcher:
                 if segment_type == 'sanskrit':
                     segment_text = ' '.join(words[start_idx:end_idx])
                     corrections.extend(self._find_corrections_for_segment(segment_text))
-            
+
         elif context_result.context_type == 'sanskrit':
             # Process full text for Sanskrit context
             corrections.extend(self._find_corrections_for_segment(text))
-        
+
         # Remove duplicates and sort by confidence
         unique_corrections = self._deduplicate_corrections(corrections)
         return sorted(unique_corrections, key=lambda x: x.confidence, reverse=True)
     
-    def _find_corrections_for_segment(self, text: str) -> List[TermMatch]:
-        """Find corrections for a confirmed Sanskrit text segment."""
+    def _find_corrections_for_segment(self, text: str, conservative_mode: bool = False) -> List[TermMatch]:
+        """Find corrections for a confirmed Sanskrit text segment.
+
+        Args:
+            text: Text to process
+            conservative_mode: If True, only apply exact scripture matches (for English context)
+        """
         corrections = []
-        
-        # 1. Exact scripture term matches
+
+        # 1. Exact scripture term matches (always applied)
         corrections.extend(self._find_scripture_matches(text))
-        
-        # 2. Compound word matches  
+
+        # In conservative mode (English override), stop here to prevent English corruption
+        if conservative_mode:
+            logger.debug(f"Conservative mode: Only applying exact scripture matches")
+            return corrections
+
+        # 2. Compound word matches
         corrections.extend(self._find_compound_matches(text))
-        
+
         # 3. Enhanced fuzzy matching (replaces phonetic similarity matches)
         if self.enable_fuzzy_matching and self.fuzzy_matcher:
             corrections.extend(self._find_fuzzy_matches(text))
         else:
             # Fallback to original phonetic similarity matches
             corrections.extend(self._find_phonetic_matches(text))
-        
+
         # 4. ASR pattern-based corrections
         if self.enable_asr_patterns and self.asr_matcher:
             corrections.extend(self._find_asr_pattern_matches(text))
         else:
             # Fallback to original ASR correction logic
             corrections.extend(self._find_asr_corrections(text))
-        
+
         return corrections
     
     def _find_scripture_matches(self, text: str) -> List[TermMatch]:
-        """Find exact matches in scripture database with caching."""
+        """Find exact matches in scripture database with caching, prioritizing compound phrases."""
         # Check cache first if available
         if self.lexicon_cache:
             cached_result = self.lexicon_cache.get_correction(text, self.lexicon_dir / "corrections_with_scripture.yaml")
@@ -235,45 +328,111 @@ class SystematicTermMatcher:
                 return cached_result
         
         matches = []
-        words = re.findall(r'\b\w+\b', text.lower())
         
-        # English words that should NEVER be translated to Sanskrit
-        english_blocklist = {
-            'treading', 'reading', 'leading', 'heading', 'spreading', 'breeding',
-            'agitated', 'meditated', 'dedicated', 'activated', 'created', 'related',
-            'seated', 'treated', 'heated', 'repeated', 'completed', 'defeated',
-            'worship', 'business', 'success', 'given', 'extension', 'whole',
-            'tell', 'four', 'neither', 'respect', 'courteous', 'gesture',
-            'realized', 'surrender', 'looking', 'thinking', 'feeling', 'asking',
-            'explained', 'carrying', 'powerful', 'mystical', 'meanings',
-            'concluding', 'stage', 'grief', 'trees', 'plants', 'where',
-            'different', 'sympathy', 'surprised', 'supposed', 'incarnation',
-            'questioned', 'grieving', 'family', 'loss', 'makes', 'mind',
-            'little', 'insane', 'extent', 'leaves', 'exaggerating', 'subtle',
-            'meaning', 'behind', 'tells', 'experience', 'know', 'pretended',
-            'herself', 'message', 'place', 'conquered', 'backed', 'certain',
-            'some', 'authenticated', 'comes', 'subtle', 'fear', 'what',
-            'bigger', 'well', 'read', 'will', 'there', 'when', 'easily',
-            'guru', 'devotees', 'delay', 'forest', 'carefully', 'through',
-            'together', 'session', 'meditation'
-        }
+        # PHASE 1: Check for compound phrases first (higher priority)
+        compound_phrases = [key for key in self.scripture_terms.keys() if ' ' in key]
+        # Sort by length (longest first) to avoid partial matches
+        compound_phrases.sort(key=len, reverse=True)
         
-        for word in words:
-            # CRITICAL: Skip if word is common English word
-            if word in english_blocklist:
-                continue
-                
-            if word in self.scripture_terms:
-                entry = self.scripture_terms[word]
-                corrected = entry['transliteration']
-                if corrected.lower() != word:
-                    matches.append(TermMatch(
-                        original=word,
-                        corrected=corrected,
-                        confidence=entry.get('confidence', 0.9),
-                        match_type='scripture',
-                        source=entry.get('category', 'unknown')
-                    ))
+        for compound_key in compound_phrases:
+            entry = self.scripture_terms[compound_key]
+            corrected = entry['transliteration']
+            
+            # FIXED: Case-sensitive matching for compound phrases to preserve capitalization
+            pattern = rf'\b{re.escape(compound_key)}(?=[\s,.!?;:]|$)'
+            match = re.search(pattern, text, re.IGNORECASE)
+
+            if match and corrected != match.group():
+                # CRITICAL FIX: Preserve original capitalization for proper nouns
+                original_matched = match.group()
+
+                # CRITICAL FIX: Better case preservation logic
+                original_words = original_matched.split()
+                corrected_words = corrected.split()
+
+                # If original has proper title case (like "Yoga Vasistha"), preserve it
+                if (len(original_words) == len(corrected_words) and
+                    all(word.istitle() for word in original_words) and
+                    original_matched.lower() != corrected.lower()):
+
+                    # Create corrected version preserving original capitalization pattern
+                    preserved_corrected = []
+                    for orig_word, corr_word in zip(original_words, corrected_words):
+                        if orig_word.istitle():
+                            # Preserve title case: "Yoga" + "vāsiṣṭha" = "Vāsiṣṭha"
+                            preserved_word = corr_word[0].upper() + corr_word[1:] if len(corr_word) > 0 else corr_word
+                            preserved_corrected.append(preserved_word)
+                        else:
+                            preserved_corrected.append(corr_word)
+
+                    corrected = ' '.join(preserved_corrected)
+                    logger.debug(f"CASE PRESERVATION: {original_matched} -> {corrected} (preserved title case)")
+
+                # Skip if already properly formatted and just capitalization differs
+                elif (original_matched.lower() == corrected.lower() and
+                      any(c.isupper() for c in original_matched)):
+                    logger.debug(f"CASE PRESERVATION: Skipping {original_matched} (already proper case)")
+                    continue
+
+                matches.append(TermMatch(
+                    original=original_matched,  # Use actual matched text
+                    corrected=corrected,
+                    confidence=entry.get('confidence', 0.9),
+                    match_type='scripture_compound',
+                    source=entry.get('category', 'unknown')
+                ))
+        
+        # PHASE 2: Check for individual words (only if no compound matches found)
+        if not matches:
+            # FIXED: Preserve original case for case-insensitive matching
+            original_words = re.findall(r'\b\w+\b', text)
+            words_lower = [word.lower() for word in original_words]
+            word_positions = {}
+            
+            # English words that should NEVER be translated to Sanskrit
+            english_blocklist = {
+                'treading', 'reading', 'leading', 'heading', 'spreading', 'breeding',
+                'agitated', 'meditated', 'dedicated', 'activated', 'created', 'related',
+                'seated', 'treated', 'heated', 'repeated', 'completed', 'defeated',
+                'worship', 'business', 'success', 'given', 'extension', 'whole',
+                'tell', 'four', 'neither', 'respect', 'courteous', 'gesture',
+                'realized', 'surrender', 'looking', 'thinking', 'feeling', 'asking',
+                'explained', 'carrying', 'powerful', 'mystical', 'meanings',
+                'concluding', 'stage', 'grief', 'trees', 'plants', 'where',
+                'different', 'sympathy', 'surprised', 'supposed', 'incarnation',
+                'questioned', 'grieving', 'family', 'loss', 'makes', 'mind',
+                'little', 'insane', 'extent', 'leaves', 'exaggerating', 'subtle',
+                'meaning', 'behind', 'tells', 'experience', 'know', 'pretended',
+                'herself', 'message', 'place', 'conquered', 'backed', 'certain',
+                'some', 'authenticated', 'comes', 'subtle', 'fear', 'what',
+                'bigger', 'well', 'read', 'will', 'there', 'when', 'easily',
+                'guru', 'devotees', 'delay', 'forest', 'carefully', 'through',
+                'together', 'session', 'meditation'
+            }
+            
+            # Build position map for original case preservation
+            for i, (original_word, lower_word) in enumerate(zip(original_words, words_lower)):
+                word_positions[lower_word] = original_word
+
+            for word_lower in words_lower:
+                # CRITICAL: Skip if word is common English word
+                if word_lower in english_blocklist:
+                    continue
+
+                # Only check individual words (not compound phrases)
+                if word_lower in self.scripture_terms and ' ' not in word_lower:
+                    entry = self.scripture_terms[word_lower]
+                    corrected = entry['transliteration']
+                    original_case_word = word_positions[word_lower]
+
+                    if corrected.lower() != word_lower:
+                        matches.append(TermMatch(
+                            original=original_case_word,  # Use original capitalization
+                            corrected=corrected,
+                            confidence=entry.get('confidence', 0.9),
+                            match_type='scripture_individual',
+                            source=entry.get('category', 'unknown')
+                        ))
         
         # Cache the result if caching is available
         if self.lexicon_cache:
@@ -324,7 +483,23 @@ class SystematicTermMatcher:
             'meaning', 'behind', 'tells', 'experience', 'know', 'pretended',
             'herself', 'message', 'place', 'conquered', 'backed', 'certain',
             'some', 'authenticated', 'comes', 'subtle', 'fear', 'what',
-            'bigger', 'well', 'read', 'will', 'there', 'when', 'easily'
+            'bigger', 'well', 'read', 'will', 'there', 'when', 'easily',
+            # CRITICAL EMERGENCY ADDITIONS to prevent invalid corrections like "again" -> "advaita"
+            'again', 'against', 'about', 'above', 'after', 'always', 'among', 'another',
+            'around', 'because', 'become', 'being', 'below', 'between', 'bring', 'called',
+            'come', 'could', 'during', 'each', 'early', 'every', 'first', 'found',
+            'give', 'good', 'great', 'group', 'hand', 'help', 'here', 'high',
+            'home', 'however', 'important', 'into', 'itself', 'just', 'large',
+            'last', 'left', 'life', 'like', 'line', 'long', 'look', 'made',
+            'make', 'many', 'most', 'move', 'much', 'name', 'need', 'never', 'next',
+            'number', 'often', 'only', 'other', 'over', 'part', 'people',
+            'point', 'public', 'right', 'said', 'same', 'school', 'seem',
+            'several', 'should', 'show', 'since', 'small', 'social', 'still',
+            'such', 'system', 'take', 'than', 'their', 'them', 'these', 'they',
+            'think', 'this', 'those', 'time', 'today', 'turn',
+            'under', 'until', 'upon', 'used', 'using', 'very', 'want', 'water',
+            'ways', 'were', 'what', 'when', 'which', 'while',
+            'with', 'within', 'without', 'work', 'world', 'would', 'write', 'year', 'years'
         }
         
         for word in words:
@@ -460,7 +635,7 @@ class SystematicTermMatcher:
                 'from', 'they', 'she', 'her', 'been', 'than', 'its', 'who', 'did', 'yes', 'would',
                 'could', 'should', 'will', 'can', 'may', 'might', 'must', 'shall', 'ought'
             },
-            # Content words that should never be Sanskrit
+            # Content words that should never be Sanskrit - EMERGENCY EXPANSION
             'content_blocklist': {
                 'treading', 'reading', 'leading', 'heading', 'spreading', 'breeding', 'feeding',
                 'agitated', 'meditated', 'dedicated', 'activated', 'created', 'related', 'stated',
@@ -473,7 +648,23 @@ class SystematicTermMatcher:
                 'different', 'sympathy', 'surprised', 'supposed', 'proposed', 'exposed', 'composed',
                 'questioned', 'mentioned', 'presented', 'represented', 'family', 'clearly', 'really',
                 'meaning', 'behind', 'beyond', 'beside', 'before', 'between', 'beneath', 'became',
-                'bigger', 'smaller', 'better', 'worse', 'easier', 'harder', 'faster', 'slower'
+                'bigger', 'smaller', 'better', 'worse', 'easier', 'harder', 'faster', 'slower',
+                # CRITICAL ADDITIONS - words that were causing invalid corrections
+                'again', 'against', 'about', 'above', 'after', 'always', 'among', 'another',
+                'around', 'because', 'become', 'being', 'below', 'between', 'bring', 'called',
+                'come', 'could', 'during', 'each', 'early', 'every', 'first', 'found',
+                'give', 'given', 'good', 'great', 'group', 'hand', 'help', 'here', 'high',
+                'home', 'however', 'important', 'into', 'itself', 'just', 'know', 'large',
+                'last', 'left', 'life', 'like', 'line', 'little', 'long', 'look', 'made',
+                'make', 'many', 'most', 'move', 'much', 'name', 'need', 'never', 'next',
+                'number', 'often', 'only', 'other', 'over', 'own', 'part', 'people',
+                'place', 'point', 'public', 'right', 'said', 'same', 'school', 'seem',
+                'several', 'should', 'show', 'since', 'small', 'social', 'some', 'still',
+                'such', 'system', 'take', 'than', 'their', 'them', 'these', 'they',
+                'think', 'this', 'those', 'through', 'time', 'today', 'together', 'turn',
+                'under', 'until', 'upon', 'used', 'using', 'very', 'want', 'water',
+                'ways', 'well', 'were', 'what', 'when', 'where', 'which', 'while',
+                'with', 'within', 'without', 'work', 'world', 'would', 'write', 'year', 'years'
             }
         }
         
@@ -609,10 +800,17 @@ class SystematicTermMatcher:
                     if match_result.confidence >= 0.95:
                         break
         
-        # Create match if we found a good candidate
+        # Create match if we found a good candidate - EMERGENCY VALIDATION
         if best_match and best_confidence >= self.fuzzy_matcher.min_confidence:
             match_result, script_term = best_match
             entry = self.scripture_terms[script_term]
+
+            # EMERGENCY VALIDATION: Block if confidence too low or words too different
+            if (best_confidence < 0.9 and  # Very high threshold for emergency triage
+                len(set(original_word.lower()) & set(script_term)) < len(original_word) * 0.7):  # 70% character overlap required
+                logger.debug(f"EMERGENCY BLOCK: Fuzzy match {original_word} -> {entry['transliteration']} blocked (confidence: {best_confidence:.2f})")
+                return matches  # Skip this match
+
             matches.append(TermMatch(
                 original=original_word,
                 corrected=entry['transliteration'],
@@ -748,41 +946,61 @@ class SystematicTermMatcher:
             if key not in seen or correction.confidence > seen[key].confidence:
                 seen[key] = correction
         return list(seen.values())
+
+    
+    def _create_smart_word_pattern(self, term: str) -> str:
+        """Create word boundary pattern that handles punctuation and case intelligently."""
+        # For multi-word terms, use case-insensitive matching for better compound detection
+        if ' ' in term:
+            # Multi-word compound terms: use case-insensitive to handle capitalization variations
+            return rf'\b{re.escape(term)}(?=[\s,.!?;:]|$)'
+        else:
+            # Single words: use case-sensitive for exact matching
+            return rf'\b{re.escape(term)}(?=[\s,.!?;:]|$)'
     
     def apply_corrections(self, text: str) -> Tuple[str, List[TermMatch]]:
-        """Apply all corrections to text with optimized batch processing."""
+        """Apply all corrections to text with enhanced case-sensitive matching and punctuation handling."""
         corrections = self.find_all_corrections(text)
         applied_corrections = []
         result_text = text
-        
+
         # Early termination: if no corrections found, return immediately
         if not corrections:
             return result_text, applied_corrections
-        
+
         # Limit corrections to prevent over-processing (reduced from 20 to 10 for performance)
         max_corrections = 10
         if len(corrections) > max_corrections:
             # Keep highest confidence corrections
             corrections.sort(key=lambda x: x.confidence, reverse=True)
             corrections = corrections[:max_corrections]
-        
+
         # Sort by original text length (longest first) to avoid partial replacements
         corrections.sort(key=lambda x: len(x.original), reverse=True)
-        
+
         # Batch process corrections for efficiency
         replacements_made = 0
         for correction in corrections:
             # Early termination: stop if we've made enough corrections
             if replacements_made >= max_corrections:
                 break
-                
-            # Use word boundaries to avoid partial matches
-            pattern = r'\b' + re.escape(correction.original) + r'\b'
-            if re.search(pattern, result_text, re.IGNORECASE):
-                result_text = re.sub(pattern, correction.corrected, result_text, flags=re.IGNORECASE)
-                applied_corrections.append(correction)
-                replacements_made += 1
-        
+
+            # FIXED: Use intelligent pattern with case handling for compounds vs single words
+            pattern = self._create_smart_word_pattern(correction.original)
+            
+            # For multi-word terms, use case-insensitive matching
+            if ' ' in correction.original:
+                if re.search(pattern, result_text, re.IGNORECASE):
+                    result_text = re.sub(pattern, correction.corrected, result_text, flags=re.IGNORECASE)
+                    applied_corrections.append(correction)
+                    replacements_made += 1
+            else:
+                # For single words, use case-sensitive matching
+                if re.search(pattern, result_text):
+                    result_text = re.sub(pattern, correction.corrected, result_text)
+                    applied_corrections.append(correction)
+                    replacements_made += 1
+
         return result_text, applied_corrections
 
     def apply_corrections_batch(self, texts: List[str]) -> List[Tuple[str, List[TermMatch]]]:

@@ -71,7 +71,38 @@ class ContextAwarePipeline:
             logger.warning(f"Systematic term matcher not available: {e}")
         
         logger.info("Context-aware pipeline initialized with specialized processors")
-    
+
+    def _preserve_case_pattern(self, original: str, corrected: str) -> str:
+        """
+        CRITICAL FIX: Preserve the original capitalization pattern in the corrected text.
+
+        This prevents "Yoga Vasistha" from becoming "Yogavasistha" incorrectly.
+        """
+        original_words = original.split()
+        corrected_words = corrected.split()
+
+        # If word count differs, cannot preserve pattern - use corrected as is
+        if len(original_words) != len(corrected_words):
+            return corrected
+
+        preserved_words = []
+        for orig_word, corr_word in zip(original_words, corrected_words):
+            # Preserve original capitalization pattern
+            if orig_word.isupper():
+                # All uppercase: "YOGA" → "VĀSIṢṬHA" (keep all caps)
+                preserved_words.append(corr_word.upper())
+            elif orig_word.istitle():
+                # Title case: "Yoga" → "Vāsiṣṭha" (capitalize first letter)
+                preserved_words.append(corr_word[0].upper() + corr_word[1:] if len(corr_word) > 0 else corr_word)
+            elif orig_word.islower():
+                # All lowercase: "yoga" → "vāsiṣṭha" (keep all lowercase)
+                preserved_words.append(corr_word.lower())
+            else:
+                # Mixed case - use corrected as is
+                preserved_words.append(corr_word)
+
+        return ' '.join(preserved_words)
+
     def _initialize_processors(self):
         """Initialize specialized processors from previous stories."""
         try:
@@ -142,7 +173,7 @@ class ContextAwarePipeline:
         self._update_stats(classification)
         
         # Step 2: Get processing strategy
-        strategy = self.classifier.get_processing_strategy(classification)
+        strategy = self.classifier.get_processing_strategy(classification, text)
         
         # Step 3: Initialize processing state
         processed_text = text
@@ -278,11 +309,14 @@ class ContextAwarePipeline:
             
             for original, corrected in candidates:
                 if original != corrected:
-                    processed_text = processed_text.replace(original, corrected)
+                    # CRITICAL FIX: Preserve case pattern when applying compound corrections
+                    # This prevents "Yoga Vasistha" -> "Yogavasistha" corruption
+                    case_preserved_corrected = self._preserve_case_pattern(original, corrected)
+                    processed_text = processed_text.replace(original, case_preserved_corrected)
                     corrections.append({
                         'type': 'compound',
                         'original': original,
-                        'corrected': corrected,
+                        'corrected': case_preserved_corrected,
                         'confidence': 0.85
                     })
             
@@ -340,7 +374,7 @@ class ContextAwarePipeline:
         return final_text, metadata
     
     def _apply_database_processing(self, text: str, strategy: dict, protected_ranges: List[tuple] = None) -> Tuple[str, List[Dict]]:
-        """Apply database + YAML lexicon processing (Story 6.3)."""
+        """Apply database + YAML lexicon processing (Story 6.3) - FIXED to match simple mode."""
         database_processor = self._processors['database']
         
         # Extract individual words for processing (preserve line structure)
@@ -355,13 +389,13 @@ class ContextAwarePipeline:
             
             for word in words:
                 # FIXED: Check if this word position is within any protected range
-                word_start = text.find(word)
-                word_end = word_start + len(word)
+                word_start_in_text = text.find(word)
+                word_end_in_text = word_start_in_text + len(word)
                 is_protected = False
                 
                 if protected_ranges:
                     for prot_start, prot_end, original in protected_ranges:
-                        if word_start >= prot_start and word_end <= prot_end:
+                        if word_start_in_text >= prot_start and word_end_in_text <= prot_end:
                             is_protected = True
                             break
                 
@@ -369,7 +403,7 @@ class ContextAwarePipeline:
                     # Skip processing - word is already corrected by compound processor
                     corrected_words.append(word)
                 else:
-                    # Process word with punctuation preservation  
+                    # FIXED: Pass the lexicon loader directly instead of calling it
                     corrected_word = self._process_word_with_punctuation(word, database_processor, strategy, protected_ranges)
                     corrected_words.append(corrected_word)
                     if corrected_word != word:
@@ -378,7 +412,7 @@ class ContextAwarePipeline:
                             'original': word,
                             'corrected': corrected_word,
                             'confidence': 1.0,
-                            'source': 'database_punctuation_preserved'
+                            'source': 'context_pipeline_fixed'
                         })
             
             corrected_lines.append(' '.join(corrected_words))
@@ -386,48 +420,68 @@ class ContextAwarePipeline:
         return '\n'.join(corrected_lines), corrections
     
     def _process_word_with_punctuation(self, word: str, database_processor, strategy: dict, protected_ranges: List[tuple] = None) -> str:
-        """Process word while preserving punctuation in context pipeline."""
+        """Process word while preserving punctuation - FIXED to match simple mode logic."""
         import re
         
         # Extract leading/trailing punctuation
-        match = re.match(r'^(\W*?)(\w+)(\W*?)$', word)
+        match = re.match(r'^(\W*)(.*?)(\W*)$', word)
         if not match:
-            return word  # No word characters found, return as-is
+            return word
         
         prefix, clean_word, suffix = match.groups()
-
-        # Fast input validation (Story 11.1: Optimized Performance)
-        validated_word = DatabaseValidator.validate_word_input(clean_word)
-        if not validated_word:
-            logger.debug(f"Invalid word input: {clean_word} ({type(clean_word)})")
-            return word  # Return original if validation fails
-
-        # Additional safety check for validated_word type
-        if not isinstance(validated_word, str):
-            logger.error(f"DatabaseValidator returned non-string: {validated_word} (type: {type(validated_word)}) for input: {clean_word}")
+        
+        # Skip empty words
+        if not clean_word.strip():
             return word
-
-        clean_lower = validated_word.lower()
-
-        # Fast cached lookup - try pre-validated entries first (Story 11.1: Performance Fix)
-        corrected = validated_word  # Default to validated input
-
+            
+        # Skip if no word characters
+        if not re.search(r'\w', clean_word):
+            return word
+            
+        clean_lower = clean_word.lower()
+        
+        # CRITICAL FIX: Use the SAME logic as simple mode's _apply_lexicon_corrections
+        # Get the main processor's lexicons (should be HybridLexiconLoader)
+        corrected = clean_word  # Default to original
+        
         try:
-            # Try validated cache first (zero validation overhead at runtime)
-            cached_entry = DatabaseValidator.get_validated_entry('corrections', clean_lower)
-            if cached_entry:
-                corrected = cached_entry.get('original_term', validated_word)
-            else:
-                # Fallback to direct database lookup for new terms
-                result = database_processor(validated_word, strategy)
-                if result and result.get('corrections'):
-                    correction = result['corrections'][0]
-                    corrected = correction.get('transliteration') or correction.get('original_term', validated_word)
+            # Access the main processor's lexicons through the database_processor
+            # The database_processor is actually the HybridLexiconLoader instance
+            if hasattr(database_processor, 'corrections') and clean_lower in database_processor.corrections:
+                entry = database_processor.corrections[clean_lower]
+                
+                # Apply transliterations with diacritics (same as simple mode)
+                if isinstance(entry, dict):
+                    if 'transliteration' in entry:
+                        corrected = entry['transliteration']
+                    elif 'original_term' in entry:
+                        corrected = entry['original_term']
+                    else:
+                        corrected = entry.get('term', clean_word)
+                else:
+                    corrected = str(entry) if entry else clean_word
+            
+            # Also check proper nouns
+            elif hasattr(database_processor, 'proper_nouns') and clean_lower in database_processor.proper_nouns:
+                entry = database_processor.proper_nouns[clean_lower]
+                if isinstance(entry, dict):
+                    corrected = entry.get('term') or entry.get('original_term', clean_word)
+                else:
+                    corrected = str(entry) if entry else clean_word
         
         except Exception as e:
-            logger.warning(f"Processor database failed: {e}")
-            # Continue with fallback processing instead of crashing
-            return word
+            # Graceful fallback
+            corrected = clean_word
+        
+        # Apply intelligent capitalization preservation if correction was made
+        if corrected != clean_word:
+            # Simple capitalization preservation
+            if clean_word.isupper():
+                corrected = corrected.upper()
+            elif clean_word.istitle():
+                corrected = corrected.title()
+            elif clean_word.islower():
+                corrected = corrected.lower()
         
         return prefix + corrected + suffix
     

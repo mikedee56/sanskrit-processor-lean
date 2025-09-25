@@ -66,9 +66,9 @@ class SanskritCompoundProcessor:
         
         # Common ASR compound splitting errors
         self.compound_corrections = {
-            'yogavashistha': 'Yogavāsiṣṭha',
-            'yoga vasistha': 'Yogavāsiṣṭha',
-            'yogabashi': 'Yogavāsiṣṭha',
+            'yogavashistha': 'Yoga Vāsiṣṭha',  # FIXED: Preserve space between words
+            'yoga vasistha': 'Yoga Vāsiṣṭha',  # FIXED: Preserve space between words
+            'yogabashi': 'Yoga Vāsiṣṭha',      # FIXED: Preserve space between words
             'bhagavad gita': 'Bhagavad Gītā',
             'bhagvad geeta': 'Bhagavad Gītā',
             'mahabharata': 'Mahābhārata',

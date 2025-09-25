@@ -738,29 +738,34 @@ class SanskritProcessor:
     
     def _process_word_with_punctuation(self, word: str, context: str = None, confidence_threshold: float = 0.8) -> str:
         """Process word while preserving punctuation and respecting context.
-        
+
         This method implements the core fix for Story 12.4: Fix English Context Processing.
         It enables Sanskrit term corrections in English context with configurable higher thresholds,
         resolving the issue where English context was overly conservative.
-        
+
         Args:
             word: Input word with potential punctuation
             context: Processing context ('english', 'sanskrit', 'mixed', None)
             confidence_threshold: Base confidence threshold for corrections (0.1-1.0)
-            
+
         Returns:
             Corrected word with preserved punctuation
-            
+
         Key Enhancements for Story 12.4:
             - English context now applies lexicon corrections with higher thresholds
             - Configuration-driven behavior via 'english_context_processing' config section
             - Backward compatibility through 'proper_nouns_only' rollback option
             - Enhanced safety checks prevent common English word corrections
         """
+        # CRITICAL FIX: Skip processing if word contains Sanskrit diacriticals from compound processing
+        # This prevents corruption of correctly processed compounds like "Yoga Vāsiṣṭha" -> "Yogavasistha"
+        if re.search(r'[āīūṛṝḷēōṃṁṅñṇṭḍśṣḥ]', word):
+            return word  # Already properly processed by compound matcher
+
         # Input validation for robustness
         if not word or not isinstance(word, str):
             return word or ''
-            
+
         # Handle empty or whitespace-only words
         if not word.strip():
             return word
@@ -970,7 +975,29 @@ class SanskritProcessor:
                 return fuzzy_match
         
         return clean_lower  # No suitable correction found  # No suitable correction found
-    
+
+    def _contains_processed_compound_terms(self, text: str) -> bool:
+        """
+        CRITICAL FIX: Detect if text contains properly processed compound terms.
+
+        This prevents the capitalization processor from corrupting compounds like
+        "Yoga Vāsiṣṭha" → "Yogavasistha".
+        """
+        # Check for Sanskrit diacriticals that indicate proper processing
+        if re.search(r'[āīūṛṝḷēōṃṁṅñṇṭḍśṣḥ]', text):
+            # Additional check: if it contains compound title patterns
+            compound_patterns = [
+                r'Yoga\s+[VvV][āa]si[sṣś][tṭṭh][ha]',  # "Yoga Vāsiṣṭha" etc
+                r'Bhagavad\s+G[īi]t[āa]',              # "Bhagavad Gītā" etc
+                r'[A-Z]\w+\s+[A-Z][āīūṛṝḷēōṃṁṅñṇṭḍśṣḥ]\w+',  # General pattern: "Title Diacritical..."
+            ]
+
+            for pattern in compound_patterns:
+                if re.search(pattern, text):
+                    return True
+
+        return False
+
     def _apply_capitalization(self, text: str) -> tuple[str, int]:
         """Apply proper noun capitalization."""
         corrections = 0
@@ -980,6 +1007,12 @@ class SanskritProcessor:
         proper_nouns_file = self.lexicon_dir / "proper_nouns.yaml"
 
         for line in lines:
+            # CRITICAL FIX: Skip capitalization if line contains correctly processed compound terms
+            # This prevents "Yoga Vāsiṣṭha" from being corrupted to "Yogavasistha"
+            if self._contains_processed_compound_terms(line):
+                corrected_lines.append(line)
+                continue
+
             words = line.split()
             corrected_words = []
 

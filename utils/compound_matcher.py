@@ -96,8 +96,10 @@ class CompoundTermMatcher:
         # Apply corrections (reverse order to maintain positions)
         matches.sort(key=lambda m: m.start_pos, reverse=True)
         for match in matches:
-            result_text = (result_text[:match.start_pos] + 
-                          match.corrected + 
+            # CRITICAL FIX: Preserve original capitalization pattern
+            corrected_text = self._preserve_case_pattern(match.original, match.corrected)
+            result_text = (result_text[:match.start_pos] +
+                          corrected_text +
                           result_text[match.end_pos:])
         
         return result_text, matches
@@ -157,7 +159,38 @@ class CompoundTermMatcher:
                 base_score = 0.7  # Moderate penalization if no Śrīmad context
         
         return base_score
-    
+
+    def _preserve_case_pattern(self, original: str, corrected: str) -> str:
+        """
+        CRITICAL FIX: Preserve the original capitalization pattern in the corrected text.
+
+        This prevents "Yoga Vasistha" from becoming "Yoga Vāsiṣṭha" incorrectly.
+        """
+        original_words = original.split()
+        corrected_words = corrected.split()
+
+        # If word count differs, cannot preserve pattern - use corrected as is
+        if len(original_words) != len(corrected_words):
+            return corrected
+
+        preserved_words = []
+        for orig_word, corr_word in zip(original_words, corrected_words):
+            # Preserve original capitalization pattern
+            if orig_word.isupper():
+                # All uppercase: "YOGA" → "VĀSIṢṬHA" (keep all caps)
+                preserved_words.append(corr_word.upper())
+            elif orig_word.istitle():
+                # Title case: "Yoga" → "Vāsiṣṭha" (capitalize first letter)
+                preserved_words.append(corr_word[0].upper() + corr_word[1:] if len(corr_word) > 0 else corr_word)
+            elif orig_word.islower():
+                # All lowercase: "yoga" → "vāsiṣṭha" (keep all lowercase)
+                preserved_words.append(corr_word.lower())
+            else:
+                # Mixed case - use corrected as is
+                preserved_words.append(corr_word)
+
+        return ' '.join(preserved_words)
+
     def _select_best_matches(self, candidate_matches: List[CompoundMatch]) -> List[CompoundMatch]:
         """Select best non-overlapping matches based on confidence and position."""
         if not candidate_matches:
