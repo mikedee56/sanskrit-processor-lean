@@ -254,10 +254,31 @@ class SanskritProcessor:
             self.plugin_manager.enable()
             self._load_plugins()
         
+        # Initialize Sanskrit Linguistic Engine (NEW ARCHITECTURE)
+        enable_linguistic_engine = self.config.get('processing', {}).get('enable_linguistic_engine', True)
+
+        if enable_linguistic_engine:
+            try:
+                from sanskrit_linguistics import LinguisticMatcher
+                self.linguistic_matcher = LinguisticMatcher(self.config)
+                self.use_linguistic_engine = True
+                logger.info("Sanskrit Linguistic Engine initialized - intelligent processing enabled")
+            except ImportError as e:
+                logger.warning(f"Sanskrit Linguistic Engine not available: {e}")
+                self.linguistic_matcher = None
+                self.use_linguistic_engine = False
+        else:
+            logger.info("Linguistic engine disabled by configuration - using traditional processing")
+            self.linguistic_matcher = None
+            self.use_linguistic_engine = False
+
         # Basic text normalization patterns
         self.filler_words = ['um', 'uh', 'er', 'ah', 'like', 'you know']
-        
-        if self.use_context_pipeline:
+
+        # Log initialization summary
+        if self.use_linguistic_engine:
+            logger.info("Sanskrit processor initialized with LINGUISTIC ENGINE (intelligent processing)")
+        elif self.use_context_pipeline:
             logger.info("Sanskrit processor initialized with context-aware processing")
         else:
             logger.info("Sanskrit processor initialized with legacy processing")
@@ -370,32 +391,139 @@ class SanskritProcessor:
             logger.warning(f"Plugin loading failed: {e}")
     
     def process_text(self, text: str) -> tuple[str, int]:
-        """Process a single text segment with multi-pass architecture. Returns (processed_text, corrections_made)."""
-        # Phase 1: Scriptural segment processing (full-text pattern matching)
+        """Process a single text segment with PHRASE-FIRST INTELLIGENT ARCHITECTURE.
+        
+        TRANSFORMATION: Complete units (prayers, verses) processed before word-by-word lookup.
+        This is the core change from "glorified lookup table" to "intelligent processor".
+        
+        Returns (processed_text, corrections_made).
+        """
+        original_text = text
+        
+        # PHASE 1: INTELLIGENT SCRIPTURAL SEGMENT PROCESSING (HIGHEST PRIORITY)
+        # This is the key transformation - phrase-level processing comes FIRST
         if self.scriptural_processor:
-            processed_text, was_modified, reference = self.scriptural_processor.process_segment(text)
-            if was_modified:
-                logger.info(f"Scriptural correction applied: {reference}")
-                return processed_text, 1  # Count as 1 major correction
-            text = processed_text  # Continue with the (possibly unchanged) text
+            try:
+                processed_text, was_modified, reference = self.scriptural_processor.process_segment(text)
+                if was_modified:
+                    logger.info(f"PHRASE-LEVEL PROCESSING: {reference or 'Complete unit replacement'}")
+                    logger.debug(f"Transformation: '{text[:50]}...' -> '{processed_text[:50]}...'")
+                    return processed_text, 1  # Count as 1 major correction (complete unit)
+                text = processed_text  # Continue with the (possibly unchanged) text
+            except Exception as e:
+                logger.warning(f"Phrase-level processing failed, falling back to word-level: {e}")
 
-        # Phase 2: Use context-aware pipeline if available (Story 6.5)
+        # PHASE 2: SANSKRIT LINGUISTIC ENGINE (intelligent Sanskrit processing)
+        if self.use_linguistic_engine and self.linguistic_matcher:
+            try:
+                # Detect content context for appropriate processing
+                context_type = self._detect_content_context(text)
+
+                # Apply intelligent linguistic processing
+                result = self.linguistic_matcher.process_text_linguistically(text, context_type)
+
+                if result.corrections_made > 0:
+                    logger.info(f"Linguistic engine applied {result.corrections_made} enhancements "
+                              f"(confidence: {result.confidence:.2f}, type: {result.enhancement_type})")
+                    return result.enhanced_text, result.corrections_made
+                else:
+                    # Continue with original text if no enhancements were confident enough
+                    text = result.enhanced_text
+
+            except Exception as e:
+                logger.warning(f"Linguistic engine failed, falling back to context pipeline: {e}")
+
+        # PHASE 3: CONTEXT-AWARE PIPELINE (if available)
         if self.use_context_pipeline and self.context_pipeline:
             try:
                 result = self.context_pipeline.process_segment(text)
-                return result.processed_text, result.corrections_made
+                if hasattr(result, 'corrections_made') and result.corrections_made > 0:
+                    logger.info(f"Context pipeline applied {result.corrections_made} corrections")
+                    return result.processed_text, result.corrections_made
             except Exception as e:
                 logger.warning(f"Context pipeline failed, falling back to legacy processing: {e}")
 
-        # Phase 3: Fallback to legacy processing pipeline
+        # PHASE 4: LEGACY WORD-BY-WORD PROCESSING (FALLBACK ONLY)
+        # This is now the LAST resort, not the primary method
+        logger.debug(f"Falling back to legacy word-by-word processing for: '{text[:50]}...'")
         return self._legacy_process_text(text)
-    
+
+    def _detect_content_context(self, text: str) -> str:
+        """
+        Detect content context for linguistic processing.
+
+        Maps from existing context detection to linguistic engine context types.
+        """
+        if not text or not isinstance(text, str):
+            return 'mixed'
+
+        text_lower = text.lower().strip()
+
+        # Mantra detection (high confidence indicators)
+        if (text_lower.startswith('om ') or text_lower.startswith('aum ') or
+            'om namah' in text_lower or 'om mani' in text_lower or
+            text_lower.startswith('gayatri') or 'svaha' in text_lower):
+            return 'mantra'
+
+        # Prayer detection
+        if ('namaste' in text_lower or 'namaskara' in text_lower or
+            'prasadam' in text_lower or 'blessing' in text_lower):
+            return 'prayer'
+
+        # Verse detection (scripture references, structured content)
+        if (re.search(r'\d+\.\d+', text) or  # Verse references like "2.47"
+            'verse' in text_lower or 'shloka' in text_lower or
+            'chapter' in text_lower or text_lower.startswith('in ')):
+            return 'verse'
+
+        # Use existing context detection for Sanskrit density
+        try:
+            # Leverage existing sophisticated context detection
+            detected_context = self.detect_context(text)
+
+            # Map to linguistic engine context types
+            if detected_context == 'sanskrit':
+                # High Sanskrit density - likely verse or mantra content
+                if any(term in text_lower for term in ['om', 'aum', 'mantra', 'gayatri']):
+                    return 'mantra'
+                elif any(term in text_lower for term in ['verse', 'shloka', 'gita', 'upanishad']):
+                    return 'verse'
+                else:
+                    return 'verse'  # Default high-Sanskrit content to verse processing
+
+            elif detected_context == 'mixed':
+                return 'explanation'  # Mixed content is usually explanatory
+
+            else:  # 'english'
+                return 'mixed'  # English context gets mixed processing
+
+        except Exception as e:
+            logger.warning(f"Context detection failed: {e}")
+            return 'mixed'  # Safe fallback
+
     def process_segment_detailed(self, segment) -> 'ProcessingResult':
         """
         New method providing detailed processing results with multi-pass architecture.
-        Returns comprehensive processing result from context-aware pipeline.
+        Returns comprehensive processing result with linguistic analysis.
         """
-        # Use the same multi-pass architecture as process_text
+        # Use linguistic engine for detailed processing if available
+        if self.use_linguistic_engine and self.linguistic_matcher:
+            try:
+                context_type = self._detect_content_context(segment.text)
+                result = self.linguistic_matcher.process_text_linguistically(segment.text, context_type)
+
+                # Convert LinguisticEnhancement to ProcessingResult
+                from utils.processing_reporter import ProcessingResult
+                return ProcessingResult(
+                    segments_processed=1,
+                    corrections_made=result.corrections_made,
+                    processing_time=result.processing_time,
+                    errors=[]
+                )
+            except Exception as e:
+                logger.warning(f"Linguistic engine detailed processing failed: {e}")
+
+        # Use the same multi-pass architecture as process_text (fallback)
         processed_text, corrections = self.process_text(segment.text)
 
         if self.use_context_pipeline and self.context_pipeline:
