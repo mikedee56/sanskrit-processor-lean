@@ -67,9 +67,9 @@ class PrayerRecognitionEngine:
             self.mantra_entries = {}
     
     def _construct_complete_prayer_units(self):
-        """Construct complete prayer units from individual components."""
+        """Construct complete prayer units from individual components with CORRECT Sanskrit texts."""
         
-        # 1. UPANISHAD OPENING MANTRA (most critical - appears 1000s of times)
+        # 1. UPANISHAD OPENING MANTRA (Īśāvāsya Upaniṣad - CORRECTED)
         self.opening_mantras['upanishad_opening'] = {
             'name': 'Īśāvāsya Upaniṣad Opening Mantra',
             'complete_sanskrit': 'oṁ pūrṇam-adaḥ pūrṇam-idaṁ pūrṇāt-pūrṇam-udacyate | pūrṇasya pūrṇam-ādāya pūrṇam-evāvaśiṣyate || oṁ śāntiḥ śāntiḥ śāntiḥ ||',
@@ -96,7 +96,22 @@ class PrayerRecognitionEngine:
             'confidence': 1.0
         }
         
-        # 2. KRISHNA PRAYER (from current hardcoded patterns)
+        # 2. GURU MANTRA (Brahmānandam - CORRECTED COMPLETE VERSION)
+        self.guru_prayers['brahmanandam'] = {
+            'name': 'Brahmānandam Guru Prayer',
+            'complete_transliteration': 'oṁ brahmānandaṁ parama-sukhadam kevalaṁ jñāna-mūrtiṁ dvandvātītaṁ gagana-sadṛśaṁ tattvam-asyādi-lakṣyam | ekaṁ nityaṁ vimala-macalaṁ sarvadhī-sākṣibhūtaṁ bhāvātītaṁ tri-guṇa-rahitaṁ sad-guruṁ taṁ namāmi || oṁ ||',
+            'asr_variations': [
+                'brahmanandam parama sukhadam kevalam jnana murtim',
+                'brahmanandam paramasukhadam kevalam jnanamurtim',
+                'brahm\u0101nandam parama-sukhadam kevala\u1e43 j\u00f1\u0101nam\u016brti\u1e43',
+                'om brahmanandam parama sukhadam kevalam jnana murtim',
+                'brahmananda parama sukhadam kevalam jnana murtim'
+            ],
+            'meaning': 'Adorations to Sadguru who is Brahman; The Giver of Supreme Bliss; the Embodiment of Pure Consciousness; One without a second; Vast as the ether; Infinite, Eternal; beyond the three gunas and their modifications; the Supreme Preceptor.',
+            'confidence': 1.0
+        }
+        
+        # 3. KRISHNA PRAYER (Vāsudeva - CORRECTED)
         self.krishna_prayers['vasudeva_prayer'] = {
             'name': 'Vāsudeva Prayer',
             'complete_transliteration': 'oṁ vāsudeva-sutaṁ devaṁ kaṁsa-cāṇūra-mardanam | devakī-paramānandaṁ kṛṣṇaṁ vande jagad-gurum || oṁ ||',
@@ -104,36 +119,85 @@ class PrayerRecognitionEngine:
                 'Om Vahudevo Sutam Devam Kansa Chan Uram Ardanam Devaki Paramahnam Trishnam Vande Jagad Guru',
                 'om vahudevo sutam devam kansa chan uram ardanam devaki paramahnam trishnam vande jagad guru',
                 'O\u1e43 Vahudevo Sutam Devam Kansa Chan Uram Ardanam Devaki Paramahnam Trishnam Vande Jagad guru',
+                'Om vasudevasutam devam kamsa chanura mardanam',
+                'devaki paramanandham krishnam vande jagadgurum',
                 # Split variations
                 'Om Vahudevo Sutam Devam Kansa Chan Uram Ardanam',
                 'Devaki Paramahnam Trishnam Vande Jagad Guru'
             ],
-            'meaning': 'Om, I bow to Krishna, son of Vasudeva, destroyer of Kamsa and Chanura, supreme bliss of Devaki, teacher of the universe',
+            'meaning': 'Adorations to Lord Krishna; the Preceptor of the Universe; Destroyer of the forces of Darkness and bestower of immortality',
             'confidence': 1.0
         }
         
-        # 3. GURU PRAYERS (from current patterns)
-        self.guru_prayers['brahmanandam'] = {
-            'name': 'Brahmānandam Prayer',
-            'complete_transliteration': 'brahmānandam parama-sukhadam kevalaṁ jñānamūrtiṁ | dvandvātītaṁ gagana-sadṛśaṁ tattvam-asy-ādi-lakṣyam || eka nitya-vimalam-acalaṁ sarva-dhī-sākṣi-bhūtam | bhāvātītaṁ tri-guṇa-rahitaṁ sad-guruṁ taṁ namāmi ||',
+        # 4. RAMA PRAYER (ADDED - missing from original)
+        self.guru_prayers['rama_prayer'] = {
+            'name': 'Rama Prayer', 
+            'complete_transliteration': 'nīlāmbuja-śyāmala-komalāṅgaṁ sītā-samāropita-vāma-bhāgam | pāṇau mahā-sāyaka-cāru-cāpaṁ namāmi rāmaṁ raghuvaṁśa-nātham ||',
             'asr_variations': [
-                'brahmanandam parama sukhadam kevalam jnana murtim',
-                'brahmanandam paramasukhadam kevalam jnanamurtim',
-                'brahm\u0101nandam parama-sukhadam kevala\u1e43 j\u00f1\u0101nam\u016brti\u1e43'
+                'nilambuja shyamala komalangam',
+                'sita samaropita vama bhagam',
+                'panau maha sayaka charu chapam',
+                'namami ramam raghuvamsha natham',
+                'nilambuja shyamala komalangam sita samaropita vama bhagam panau maha sayaka charu chapam namami ramam raghuvamsha natham'
             ],
-            'meaning': 'I bow to the Guru who is Brahman-bliss, supreme happiness, absolute, the embodiment of knowledge',
+            'meaning': 'Adoration to Lord Rama whose complexion is like a blue lotus. Very tender and delightful in appearance. Sita is seated on His left side and He is carrying a powerful bow and arrow in His hands.',
             'confidence': 1.0
         }
         
+        # 5. TRYAMBAKAM MANTRA (ADDED - Mahāmṛtyuñjaya)
+        self.opening_mantras['tryambakam'] = {
+            'name': 'Tryambakam Mantra (Mahāmṛtyuñjaya)',
+            'complete_transliteration': 'oṁ tryambakaṁ yajāmahe sugandhiṁ puṣṭi-vardhanam | urvārukam-iva bandhanān mṛtyor-mukṣīya mā\'mṛtāt ||',
+            'asr_variations': [
+                'om tryambakam yajamahe sugandhim pushti vardhanam',
+                'urvarukamiva bandhanan mrityormukshiya mamritat',
+                'om tryambakam yajamahe sugandhim pushti vardhanam urvarukamiva bandhanan mrityormukshiya mamritat',
+                'tryambakam yajamahe sugandhim pushti vardhanam'
+            ],
+            'meaning': 'We worship the three-eyed Lord Shiva who is fragrant and who nourishes all. Like the fruit falls off from the bondage of the stem, may we be liberated from death, from mortality.',
+            'confidence': 1.0
+        }
+        
+        # 6. SARVE BHAVANTU SUKHINAḤ (ADDED - Universal Peace Prayer)
+        self.closing_mantras['universal_peace'] = {
+            'name': 'Universal Peace Prayer',
+            'complete_transliteration': 'oṁ sarve bhavantu sukhinaḥ sarve santu nirāmayāḥ | sarve bhadrāṇi paśyantu mā kaścid-duḥkha-bhāg-bhavet || oṁ śāntiḥ śāntiḥ śāntiḥ ||',
+            'asr_variations': [
+                'om sarve bhavantu sukhinah sarve santu niramayah',
+                'sarve bhadrani pashyantu ma kashchid dukhkha bhag bhavet',
+                'om sarve bhavantu sukhinah sarve santu niramayah sarve bhadrani pashyantu ma kashchid dukhkha bhag bhavet om shanti shanti shanti',
+                'sarve bhavantu sukhinah'
+            ],
+            'meaning': 'May all beings be happy, may all be free from illness. May all see what is auspicious, may no one suffer.',
+            'confidence': 1.0
+        }
+        
+        # 7. ASATO MĀ SAD-GAMAYA (ADDED - Bṛhadāraṇyaka Upaniṣad)
+        self.closing_mantras['asato_ma'] = {
+            'name': 'Asato Mā Sad-gamaya Prayer',
+            'complete_transliteration': 'oṁ asato mā sad-gamaya | tamaso mā jyotir-gamaya | mṛtyor-mā amṛtaṁ gamaya || oṁ śāntiḥ śāntiḥ śāntiḥ ||',
+            'asr_variations': [
+                'om asato ma sadgamaya tamaso ma jyotirgamaya mrityorma amritam gamaya',
+                'asato ma sadgamaya tamaso ma jyotirgamaya mrityorma amritam gamaya om shanti shanti shanti',
+                'asato ma sadgamaya',
+                'tamaso ma jyotirgamaya',
+                'mrityorma amritam gamaya'
+            ],
+            'meaning': 'Lead me from the unreal to the real, from darkness to light, from death to immortality.',
+            'confidence': 1.0
+        }
+        
+        # 8. GURU BRAHMA (CORRECTED - Complete version)
         self.guru_prayers['guru_brahma'] = {
             'name': 'Guru Brahma Prayer', 
             'complete_transliteration': 'gurur brahmā gurur viṣṇuḥ gurur devo maheśvaraḥ | gurur-sākṣāt paraṁ brahma tasmai śrī-gurave namaḥ ||',
             'asr_variations': [
                 'gurur brahma gurur vishnu gurur devo maheshwara',
                 'guru brahma guru vishnu guru devo maheshwara',
-                'gurur brahm\u0101 gurur vi\u1e63\u1e47u\u1e25 gurur devo mahe\u015bvara\u1e25'
+                'gurur brahm\u0101 gurur vi\u1e63\u1e47u\u1e25 gurur devo mahe\u015bvara\u1e25',
+                'gurur brahma gurur vishnu gurur devo maheshwara gurur sakshat param brahma tasmai shri gurave namah'
             ],
-            'meaning': 'The Guru is Brahma, the Guru is Vishnu, the Guru is Shiva - I bow to that glorious Guru',
+            'meaning': 'The Guru is Brahma, the Guru is Vishnu, the Guru is Shiva. The Guru is verily the Supreme Brahman. I offer my salutations to that Guru.',
             'confidence': 1.0
         }
         
@@ -182,12 +246,17 @@ class PrayerRecognitionEngine:
         if result:
             return result
             
+        # Check closing mantras
+        result = self._match_closing_mantras(text_normalized, text)
+        if result:
+            return result
+            
         # Check Krishna prayers
         result = self._match_krishna_prayers(text_normalized, text)
         if result:
             return result
             
-        # Check Guru prayers
+        # Check Guru prayers (includes Rama prayer now)
         result = self._match_guru_prayers(text_normalized, text)
         if result:
             return result
@@ -224,6 +293,20 @@ class PrayerRecognitionEngine:
                         if self._calculate_prayer_similarity(normalized_text, segment_norm) > 0.8:
                             logger.info(f"Partial opening mantra recognized: {segment}")
                             return segment, f"{mantra_data['name']} (partial)", 0.9
+        
+        return None
+
+    
+    def _match_closing_mantras(self, normalized_text: str, original_text: str) -> Optional[Tuple[str, str, float]]:
+        """Match against closing mantras (peace prayers, universal welfare)."""
+        for mantra_key, mantra_data in self.closing_mantras.items():
+            for variation in mantra_data['asr_variations']:
+                variation_norm = self._normalize_for_prayer_matching(variation)
+                similarity = self._calculate_prayer_similarity(normalized_text, variation_norm)
+                
+                if similarity > 0.7:  # High threshold for closing prayers
+                    logger.info(f"Closing mantra recognized: {mantra_data['name']} (similarity: {similarity:.2f})")
+                    return mantra_data['complete_transliteration'], mantra_data['name'], similarity
         
         return None
     
