@@ -19,10 +19,10 @@ REM Install dependencies
 pip install -r requirements.txt
 
 REM Process SRT file with basic corrections
-python simple_cli.py input.srt output.srt --lexicons lexicons
+python cli.py input.srt output.srt --simple --verbose
 
 REM Enhanced processing with external services
-python enhanced_cli.py input.srt output.srt --config config.yaml
+python cli.py input.srt output.srt --config config.yaml --verbose
 ```
 
 #### **PowerShell**
@@ -31,10 +31,10 @@ python enhanced_cli.py input.srt output.srt --config config.yaml
 pip install -r requirements.txt
 
 # Process SRT file with basic corrections
-python simple_cli.py input.srt output.srt --lexicons lexicons
+python cli.py input.srt output.srt --simple --verbose
 
 # Enhanced processing with external services
-python enhanced_cli.py input.srt output.srt --config config.yaml
+python cli.py input.srt output.srt --config config.yaml --verbose
 ```
 
 #### **WSL2 Ubuntu**
@@ -43,10 +43,10 @@ python enhanced_cli.py input.srt output.srt --config config.yaml
 pip install -r requirements.txt
 
 # Process SRT file with basic corrections
-python3 simple_cli.py input.srt output.srt --lexicons lexicons
+python3 cli.py input.srt output.srt --simple --verbose
 
 # Enhanced processing with external services
-python3 enhanced_cli.py input.srt output.srt --config config.yaml
+python3 cli.py input.srt output.srt --config config.yaml --verbose
 ```
 
 ### Example Processing
@@ -58,23 +58,27 @@ python3 enhanced_cli.py input.srt output.srt --config config.yaml
 # "Welcome to this Bhagavad Gita lecture on dharma"
 ```
 
-## 📁 **Project Structure**
+## 📁 **Project Structure** 🧹 **(Recently Cleaned)**
 
 ```
 sanskrit-processor-lean/
-├── sanskrit_processor_v2.py   # Core processor (200 lines)
-├── simple_cli.py              # Basic CLI interface
+├── sanskrit_processor_v2.py   # Core processor (752 lines)
+├── cli.py                     # Unified CLI interface
 ├── enhanced_processor.py      # MCP/API integration
-├── enhanced_cli.py            # Full-featured CLI
 ├── config.yaml               # Configuration
 ├── lexicons/                 # Sanskrit/Hindi corrections
 │   ├── corrections.yaml      # Term corrections and variations
-│   └── proper_nouns.yaml    # Proper noun capitalization
+│   ├── proper_nouns.yaml    # Proper noun capitalization
+│   └── compounds.yaml        # Compound term handling
 ├── services/                 # External service clients
 │   ├── mcp_client.py        # MCP integration
 │   └── api_client.py        # External APIs
+├── processors/               # Processing modules
+├── utils/                    # Utility modules
 └── requirements.txt          # Dependencies
 ```
+
+**✨ Cleanup Completed**: Removed 31 development artifacts (23 debug scripts, 6 test lexicons, 2 backup files) for cleaner navigation and reduced maintenance overhead.
 
 ## ✨ **Features**
 
@@ -122,25 +126,25 @@ processing:
 ### Basic Processing
 ```cmd
 REM Command Prompt - Simple corrections only
-python simple_cli.py lecture.srt processed_lecture.srt --lexicons lexicons
+python cli.py lecture.srt processed_lecture.srt --simple --verbose
 ```
 
-### Enhanced Processing  
+### Enhanced Processing
 ```powershell
 # PowerShell - With MCP and API services
-python enhanced_cli.py lecture.srt processed_lecture.srt --verbose
+python cli.py lecture.srt processed_lecture.srt --config config.yaml --verbose
 ```
 
 ### Service Status Check
 ```bash
 # WSL2 Ubuntu - Check all service availability
-python3 enhanced_cli.py --status-only
+python3 cli.py --status-only
 ```
 
 ### Custom Configuration
 ```cmd
 REM Command Prompt - Use custom config file
-python enhanced_cli.py lecture.srt output.srt --config custom_config.yaml
+python cli.py lecture.srt output.srt --config custom_config.yaml --verbose
 ```
 
 ## 📊 **Performance Metrics**
@@ -199,7 +203,7 @@ All external services include circuit breakers to prevent cascade failures:
 ```cmd
 REM Command Prompt - Ensure you're in the correct directory
 cd D:\sanskrit-processor-lean
-python simple_cli.py --help
+python cli.py --help
 ```
 
 **Missing Dependencies**
@@ -211,16 +215,16 @@ pip install -r requirements.txt
 **Python Command Issues**
 ```cmd
 REM If 'python' not found, try:
-python3 simple_cli.py --help
+python3 cli.py --help
 
 REM Or use full Python path:
-py simple_cli.py --help
+py cli.py --help
 ```
 
 **Service Connection Issues**
 ```bash
 # WSL2 Ubuntu - Check service status
-python3 enhanced_cli.py --status-only
+python3 cli.py --status-only
 
 # Disable external services if needed
 # Edit config.yaml: enabled: false
@@ -229,19 +233,20 @@ python3 enhanced_cli.py --status-only
 ### Debug Mode
 ```powershell
 # PowerShell - Run with verbose logging
-python enhanced_cli.py input.srt output.srt --verbose
+python cli.py input.srt output.srt --config config.yaml --verbose
 ```
 
 ## 🏗️ **Architecture Comparison**
 
 | Aspect | Original System | Lean Architecture |
 |--------|----------------|------------------|
-| **Lines of Code** | 10,000+ | 500 |
-| **Files** | 100+ | 7 |
+| **Lines of Code** | 10,000+ | ~1,000 (core) |
+| **Files** | 100+ | 15+ (post-cleanup) |
 | **Functionality** | Broken imports | Fully working |
 | **Maintainability** | Unmaintainable | Clean & focused |
 | **External Services** | Local bloat | MCP + API integration |
 | **Error Handling** | Silent failures | Fail-fast with clear messages |
+| **Development Artifacts** | Scattered everywhere | Removed (31 files cleaned) |
 
 ## 🤝 **Contributing**
 
