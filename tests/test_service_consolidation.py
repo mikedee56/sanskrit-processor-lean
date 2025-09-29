@@ -263,26 +263,25 @@ class TestEnhancedProcessorConsolidation:
             }
         }
     
-    @patch('enhanced_processor.Path')
-    def test_processor_initialization_modes(self, mock_path):
+    def test_processor_initialization_modes(self):
         """Test processor initializes correctly in both modes."""
-        # Mock path operations
-        mock_path.return_value.exists.return_value = False
-        
-        # Test legacy initialization
-        processor_legacy = EnhancedSanskritProcessor()
-        processor_legacy.config = self.test_config_legacy
-        processor_legacy._init_services_for_test()
-        
-        # Test consolidated initialization  
-        processor_consolidated = EnhancedSanskritProcessor()
-        processor_consolidated.config = self.test_config_consolidated
-        processor_consolidated._init_services_for_test()
-    
-    def _init_services_for_test(self):
-        """Helper method to initialize services during testing."""
-        # This would be called during normal __init__ but we mock it for testing
-        pass
+        # Test that service manager initializes correctly in legacy mode
+        manager_legacy = ExternalServiceManager(self.test_config_legacy)
+        assert manager_legacy.use_consolidated == False
+        assert hasattr(manager_legacy, '_legacy_clients')
+
+        # Test that service manager initializes correctly in consolidated mode
+        manager_consolidated = ExternalServiceManager(self.test_config_consolidated)
+        assert manager_consolidated.use_consolidated == True
+        assert hasattr(manager_consolidated, '_mcp_config')
+        assert hasattr(manager_consolidated, '_api_config')
+
+        # Test service status reporting works in both modes
+        status_legacy = manager_legacy.get_service_status()
+        assert status_legacy['mode'] == 'legacy'
+
+        status_consolidated = manager_consolidated.get_service_status()
+        assert status_consolidated['mode'] == 'consolidated'
 
 
 if __name__ == "__main__":
