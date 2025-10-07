@@ -35,12 +35,11 @@ class MCPConfig:
     enabled: bool = True
 
 class MCPClient:
-    """Simple MCP client for Sanskrit processing enhancements."""
+    """Simplified MCP client using HTTP instead of WebSocket for basic operations."""
     
     def __init__(self, config: MCPConfig):
         self.config = config
-        self.connected = False
-        self.ws = None
+        self.session = None
         
         if not MCP_AVAILABLE:
             logger.warning("MCP client dependencies not available - running in fallback mode")
@@ -49,52 +48,47 @@ class MCPClient:
             
         if self.config.enabled:
             try:
-                self._connect()
+                # Use HTTP session instead of WebSocket for simplicity
+                import requests
+                self.session = requests.Session()
+                self.session.headers.update({
+                    'Content-Type': 'application/json',
+                    'User-Agent': 'Sanskrit-Processor-MCP/1.0'
+                })
+                # Convert ws:// URL to http:// for simplified API
+                self.api_url = self.config.server_url.replace('ws://', 'http://').replace('wss://', 'https://')
+                if not self.api_url.endswith('/'):
+                    self.api_url += '/'
+                logger.info(f"MCP client configured for HTTP API at {self.api_url}")
             except Exception as e:
-                logger.warning(f"Failed to connect to MCP server: {e}")
+                logger.warning(f"Failed to initialize MCP client: {e}")
                 self.config.enabled = False
     
-    def _connect(self):
-        """Establish connection to MCP server."""
-        if not self.config.enabled or not MCP_AVAILABLE:
-            return
+    def _send_request(self, endpoint: str, data: Dict) -> Dict:
+        """Send HTTP request to MCP server instead of WebSocket."""
+        if not self.config.enabled or not self.session:
+            return {}
             
         try:
-            self.ws = websocket.WebSocket()
-            self.ws.connect(self.config.server_url)
-            self.connected = True
-            logger.info(f"Connected to MCP server at {self.config.server_url}")
-        except Exception as e:
-            logger.error(f"MCP connection failed: {e}")
-            self.connected = False
-            raise
-    
-    def _send_request(self, method: str, params: Dict) -> Dict:
-        """Send request to MCP server."""
-        if not self.connected:
-            raise ConnectionError("MCP server not connected")
+            url = f"{self.api_url}{endpoint}"
+            response = self.session.post(
+                url, 
+                json=data, 
+                timeout=self.config.timeout if hasattr(self.config, 'timeout') else 10
+            )
             
-        request = {
-            "method": method,
-            "params": params,
-            "id": 1
-        }
-        
-        try:
-            self.ws.send(json.dumps(request))
-            response = json.loads(self.ws.recv())
-            
-            if "error" in response:
-                raise RuntimeError(f"MCP error: {response['error']}")
+            if response.status_code == 200:
+                return response.json()
+            else:
+                logger.warning(f"MCP API returned status {response.status_code}")
+                return {}
                 
-            return response.get("result", {})
-            
         except Exception as e:
-            logger.error(f"MCP request failed: {e}")
-            raise
+            logger.warning(f"MCP HTTP request failed: {e}")
+            return {}
     
     def analyze_semantics(self, text: str, context: Dict = None) -> SemanticAnalysisResult:
-        """Perform semantic analysis on text via MCP."""
+        """Perform semantic analysis on text via simplified MCP API."""
         if not self.config.enabled:
             # Fallback: return unchanged text
             return SemanticAnalysisResult(
@@ -105,23 +99,32 @@ class MCPClient:
             )
         
         try:
-            params = {
+            data = {
                 "text": text,
                 "domain": "yoga_vedanta",
                 "features": ["ner", "capitalization", "context_correction"]
             }
             
             if context:
-                params["context"] = context
+                data["context"] = context
             
-            result = self._send_request("analyze_semantics", params)
+            result = self._send_request("analyze", data)
             
-            return SemanticAnalysisResult(
-                enhanced_text=result.get("enhanced_text", text),
-                entities_found=result.get("entities", []),
-                confidence_score=result.get("confidence", 0.8),
-                corrections_applied=result.get("corrections", [])
-            )
+            if result:
+                return SemanticAnalysisResult(
+                    enhanced_text=result.get("enhanced_text", text),
+                    entities_found=result.get("entities", []),
+                    confidence_score=result.get("confidence", 0.8),
+                    corrections_applied=result.get("corrections", [])
+                )
+            else:
+                # Fallback on API failure
+                return SemanticAnalysisResult(
+                    enhanced_text=text,
+                    entities_found=[],
+                    confidence_score=0.5,
+                    corrections_applied=[]
+                )
             
         except Exception as e:
             logger.warning(f"MCP semantic analysis failed, using fallback: {e}")
@@ -133,48 +136,48 @@ class MCPClient:
             )
     
     def enhance_capitalization(self, text: str, domain: str = "spiritual") -> str:
-        """Enhance capitalization using MCP NER capabilities."""
+        """Enhance capitalization using simplified MCP API."""
         if not self.config.enabled:
             return text
         
         try:
-            params = {
+            data = {
                 "text": text,
                 "operation": "capitalize_entities",
                 "domain": domain
             }
             
-            result = self._send_request("enhance_text", params)
-            return result.get("enhanced_text", text)
+            result = self._send_request("enhance", data)
+            return result.get("enhanced_text", text) if result else text
             
         except Exception as e:
             logger.warning(f"MCP capitalization enhancement failed: {e}")
             return text
     
     def context_correct(self, text: str, previous_text: str = None, domain: str = "yoga_vedanta") -> str:
-        """Apply context-aware corrections via MCP."""
+        """Apply context-aware corrections via simplified MCP API."""
         if not self.config.enabled:
             return text
         
         try:
-            params = {
+            data = {
                 "text": text,
                 "operation": "context_correct",
                 "domain": domain
             }
             
             if previous_text:
-                params["context"] = {"previous_segment": previous_text}
+                data["context"] = {"previous_segment": previous_text}
             
-            result = self._send_request("enhance_text", params)
-            return result.get("enhanced_text", text)
+            result = self._send_request("correct", data)
+            return result.get("enhanced_text", text) if result else text
             
         except Exception as e:
             logger.warning(f"MCP context correction failed: {e}")
             return text
     
     def batch_analyze(self, texts: List[str], context: Dict = None) -> List[SemanticAnalysisResult]:
-        """Analyze multiple texts in a single request."""
+        """Analyze multiple texts via simplified batch API."""
         if not self.config.enabled:
             return [SemanticAnalysisResult(
                 enhanced_text=text,
@@ -184,29 +187,38 @@ class MCPClient:
             ) for text in texts]
         
         try:
-            params = {
+            data = {
                 "texts": texts,
                 "domain": "yoga_vedanta",
                 "features": ["ner", "capitalization", "context_correction"]
             }
             
             if context:
-                params["context"] = context
+                data["context"] = context
             
-            result = self._send_request("batch_analyze", params)
+            result = self._send_request("batch", data)
             
-            results = []
-            for i, text in enumerate(texts):
-                batch_result = result.get("results", [{}])[i] if i < len(result.get("results", [])) else {}
+            if result and "results" in result:
+                results = []
+                for i, text in enumerate(texts):
+                    batch_result = result["results"][i] if i < len(result["results"]) else {}
+                    
+                    results.append(SemanticAnalysisResult(
+                        enhanced_text=batch_result.get("enhanced_text", text),
+                        entities_found=batch_result.get("entities", []),
+                        confidence_score=batch_result.get("confidence", 0.8),
+                        corrections_applied=batch_result.get("corrections", [])
+                    ))
                 
-                results.append(SemanticAnalysisResult(
-                    enhanced_text=batch_result.get("enhanced_text", text),
-                    entities_found=batch_result.get("entities", []),
-                    confidence_score=batch_result.get("confidence", 0.8),
-                    corrections_applied=batch_result.get("corrections", [])
-                ))
-            
-            return results
+                return results
+            else:
+                # Fallback on API failure
+                return [SemanticAnalysisResult(
+                    enhanced_text=text,
+                    entities_found=[],
+                    confidence_score=0.5,
+                    corrections_applied=[]
+                ) for text in texts]
             
         except Exception as e:
             logger.warning(f"MCP batch analysis failed: {e}")
@@ -218,14 +230,13 @@ class MCPClient:
             ) for text in texts]
     
     def close(self):
-        """Close MCP connection."""
-        if self.ws:
+        """Close HTTP session."""
+        if self.session:
             try:
-                self.ws.close()
-                self.connected = False
-                logger.info("MCP connection closed")
+                self.session.close()
+                logger.info("MCP HTTP session closed")
             except Exception as e:
-                logger.warning(f"Error closing MCP connection: {e}")
+                logger.warning(f"Error closing MCP session: {e}")
 
 def create_mcp_client(config_path: Path = None) -> MCPClient:
     """Factory function to create MCP client with configuration."""

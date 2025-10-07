@@ -202,11 +202,11 @@ class ExternalServiceManager:
                 'User-Agent': 'Sanskrit-Processor/1.0 (Academic Research)'
             })
             
-            # Initialize circuit breakers
+            # Initialize simple failure handlers (no circuit breaking)
             self._circuit_breakers = {
-                "bhagavad_gita": self._create_circuit_breaker(),
-                "wisdom_library": self._create_circuit_breaker(),
-                "validation": self._create_circuit_breaker()
+                "bhagavad_gita": self._create_simple_handler(),
+                "wisdom_library": self._create_simple_handler(),
+                "validation": self._create_simple_handler()
             }
             
             # Initialize verse cache
@@ -218,30 +218,22 @@ class ExternalServiceManager:
             logger.warning("Requests library not available - API features disabled")
             self._api_config = None
     
-    def _create_circuit_breaker(self):
-        """Create a simple circuit breaker for API resilience."""
-        class SimpleCircuitBreaker:
+    def _create_simple_handler(self):
+        """Create a simple failure tracking handler - no circuit breaking."""
+        class SimpleFailureTracker:
             def __init__(self):
                 self.failure_count = 0
-                self.max_failures = 3
-                self.reset_timeout = 60
-                self.last_failure = None
             
             def can_execute(self):
-                if self.failure_count < self.max_failures:
-                    return True
-                return False  # Simplified - in production would check timeout
+                return True  # Always allow execution - no circuit breaking
             
             def record_success(self):
                 self.failure_count = 0
-                self.last_failure = None
             
             def record_failure(self):
                 self.failure_count += 1
-                import time
-                self.last_failure = time.time()
         
-        return SimpleCircuitBreaker()
+        return SimpleFailureTracker()
     
     def _init_verse_cache(self):
         """Initialize verse cache for scripture lookup."""

@@ -27,10 +27,10 @@ logger = logging.getLogger(__name__)
 class EnhancedSanskritProcessor(SanskritProcessor):
     """Enhanced processor with MCP and external API integration."""
     
-    def __init__(self, lexicon_dir: Path = None, config_path: Path = None):
-        """Initialize with enhanced services."""
+    def __init__(self, lexicon_dir: Path = None, config_path: Path = None, metadata_path: Path = None):
+        """Initialize with enhanced services and optional LID metadata."""
         # Initialize base processor with metrics collection enabled
-        super().__init__(lexicon_dir, collect_metrics=True)
+        super().__init__(lexicon_dir, collect_metrics=True, metadata_path=metadata_path)
         
         # Load configuration
         self.config = self._load_config(config_path)
@@ -80,7 +80,7 @@ class EnhancedSanskritProcessor(SanskritProcessor):
         # Initialize enhanced context detector with configuration
         try:
             from processors.context_config import ContextConfig
-            
+
             # Create context config from main configuration
             context_config = ContextConfig.from_dict(self.config)
             self.context_detector = ContextDetector(context_config=context_config)
@@ -90,7 +90,24 @@ class EnhancedSanskritProcessor(SanskritProcessor):
             logger.warning(f"Enhanced context detector not available, using legacy: {e}")
             self.context_detector = ContextDetector()
             logger.info("Legacy context detector initialized for English protection")
-        
+
+        # Initialize mixed content processors
+        try:
+            from processors.invocation_processor import InvocationProcessor
+            from processors.mixed_content_parser import MixedContentParser
+            from processors.surgical_editor import SurgicalEditor
+
+            self.invocation_processor = InvocationProcessor()
+            self.mixed_content_parser = MixedContentParser()
+            self.surgical_editor = SurgicalEditor()
+
+            logger.info("Mixed content processors initialized (invocation, parser, surgical editor)")
+        except ImportError as e:
+            logger.warning(f"Mixed content processors not available: {e}")
+            self.invocation_processor = None
+            self.mixed_content_parser = None
+            self.surgical_editor = None
+
         logger.info("Enhanced Sanskrit processor initialized")
     
     def _load_config(self, config_path: Path) -> Dict[str, Any]:
@@ -228,6 +245,8 @@ class EnhancedSanskritProcessor(SanskritProcessor):
     def process_text(self, text: str, context: Dict = None) -> tuple[str, int]:
         """Enhanced text processing with context-aware protection and per-segment overrides.
         
+        FIXED: If context pipeline is disabled, use parent's simple processing method.
+        
         Args:
             text: Input text to process
             context: Optional context dictionary that can include:
@@ -242,6 +261,14 @@ class EnhancedSanskritProcessor(SanskritProcessor):
         if not text or not text.strip():
             return text, 0
         
+        # CRITICAL FIX: Check if context pipeline is disabled in config
+        enable_context_pipeline = self.config.get('processing', {}).get('enable_context_pipeline', True)
+        
+        if not enable_context_pipeline:
+            # Context pipeline disabled - use parent's simple legacy processing
+            return super().process_text(text)
+        
+        # Context pipeline enabled - use enhanced processing with context detection
         processed_text = text
         total_corrections = 0
         
@@ -318,17 +345,28 @@ class EnhancedSanskritProcessor(SanskritProcessor):
                 if debug_enabled:
                     logger.debug(f"English context detected, bypassing all processing: {context_result.markers_found}")
                 return text, 0
-            
+
+            elif context_result.context_type == 'invocation':
+                # Invocation/prayer: Use specialized invocation processor
+                return self._process_invocation(text, context_result, context)
+
+            elif context_result.context_type == 'corrupted_sanskrit':
+                # Corrupted Sanskrit: Use surgical editor
+                return self._process_corrupted_sanskrit(text, context_result, context)
+
             elif context_result.context_type == 'mixed':
-                # Mixed content: Process only Sanskrit segments
-                return self._process_mixed_content(text, context_result, context)
-            
+                # Mixed content: Use mixed content parser with embedded term processing
+                if hasattr(context_result, 'processing_mode') and context_result.processing_mode == 'embedded_correction':
+                    return self._process_embedded_terms(text, context_result, context)
+                else:
+                    return self._process_mixed_content(text, context_result, context)
+
             elif context_result.context_type == 'sanskrit':
                 # Sanskrit context: Full processing pipeline
                 if debug_enabled:
                     logger.debug(f"Sanskrit context detected, applying full processing: {context_result.markers_found}")
                 return self._process_sanskrit_segment(text, context)
-            
+
             else:
                 # Unknown context: Default to safe mode (no processing)
                 if debug_enabled:
@@ -343,8 +381,7 @@ class EnhancedSanskritProcessor(SanskritProcessor):
                 self.context_detector.config.mixed_threshold = original_config['mixed_threshold']
                 
                 if debug_enabled:
-                    logger.debug("🔧 Restored original threshold configuration")
-    
+                    logger.debug("🔧 Restored original threshold configuration")    
     def _process_mixed_content(self, text: str, context_result: 'ContextResult', context: Dict = None) -> tuple[str, int]:
         """Process mixed content with enhanced segment handling.
         
@@ -398,7 +435,70 @@ class EnhancedSanskritProcessor(SanskritProcessor):
             if debug_enabled:
                 logger.debug("Mixed content with no Sanskrit segments, bypassing processing")
             return text, 0
-    
+
+    def _process_invocation(self, text: str, context_result: 'ContextResult', context: Dict = None) -> tuple[str, int]:
+        """Process invocations and prayers with specialized formatting."""
+        if not self.invocation_processor:
+            # Fallback to Sanskrit processing
+            return self._process_sanskrit_segment(text, context)
+
+        try:
+            result = self.invocation_processor.process_invocation(text)
+            if result.is_invocation and result.processed_text != text:
+                logger.debug(f"Invocation processed: {result.invocation_type} (confidence: {result.confidence:.2f})")
+                logger.debug(f"Corrections: {result.corrections_made}")
+                return result.processed_text, len(result.corrections_made)
+            else:
+                # Not recognized as invocation, fallback to Sanskrit processing
+                return self._process_sanskrit_segment(text, context)
+        except Exception as e:
+            logger.warning(f"Invocation processing failed: {e}")
+            return self._process_sanskrit_segment(text, context)
+
+    def _process_corrupted_sanskrit(self, text: str, context_result: 'ContextResult', context: Dict = None) -> tuple[str, int]:
+        """Process corrupted Sanskrit using surgical editing."""
+        if not self.surgical_editor:
+            # Fallback to Sanskrit processing
+            return self._process_sanskrit_segment(text, context)
+
+        try:
+            # Determine edit mode based on context confidence
+            edit_mode = 'conservative' if context_result.confidence < 0.8 else 'moderate'
+            result = self.surgical_editor.perform_surgical_edit(text, edit_mode)
+
+            if result.success and result.edited_text != text:
+                logger.debug(f"Surgical edit applied: {result.edit_count} edits (confidence: {result.confidence:.2f})")
+                for edit in result.edits_applied:
+                    logger.debug(f"  {edit.original_text} → {edit.replacement_text} ({edit.reason})")
+                return result.edited_text, result.edit_count
+            else:
+                # No surgical edits applied, fallback to Sanskrit processing
+                return self._process_sanskrit_segment(text, context)
+        except Exception as e:
+            logger.warning(f"Surgical editing failed: {e}")
+            return self._process_sanskrit_segment(text, context)
+
+    def _process_embedded_terms(self, text: str, context_result: 'ContextResult', context: Dict = None) -> tuple[str, int]:
+        """Process mixed content with embedded Sanskrit terms."""
+        if not self.mixed_content_parser:
+            # Fallback to mixed content processing
+            return self._process_mixed_content(text, context_result, context)
+
+        try:
+            result = self.mixed_content_parser.parse_mixed_content(text)
+
+            if result.corrections_count > 0:
+                logger.debug(f"Mixed content processed: {result.processing_mode} (confidence: {result.confidence:.2f})")
+                for term in result.embedded_terms:
+                    logger.debug(f"  {term.original} → {term.corrected} ({term.term_type})")
+                return result.processed_text, result.corrections_count
+            else:
+                # No embedded terms found, preserve text
+                return text, 0
+        except Exception as e:
+            logger.warning(f"Mixed content parsing failed: {e}")
+            return text, 0
+
     def _process_sanskrit_segment(self, text: str, context: Dict = None) -> tuple[str, int]:
         """Process a confirmed Sanskrit text segment through the full pipeline."""
         processed_text = text
@@ -469,96 +569,241 @@ class EnhancedSanskritProcessor(SanskritProcessor):
             except Exception as e:
                 logger.debug(f"MCP enhancement skipped: {e}")
         
-        # Step 6: Apply scripture lookup if available - ONLY for improving existing Sanskrit terms
+        # Step 6: ENHANCED Scripture Processing with Multi-Source Fallback Chain
         if self.config.get('processing', {}).get('enable_scripture_lookup', True):
-            try:
-                # CRITICAL: Only apply scripture lookup to segments that already contain Sanskrit diacriticals
-                sanskrit_diacriticals = ['ā', 'ī', 'ū', 'ṛ', 'ṝ', 'ḷ', 'ḹ', 'ṁ', 'ṃ', 'ḥ', 'ś', 'ṣ', 'ñ', 'ṇ', 'ṭ', 'ḍ']
-                has_diacriticals = any(char in processed_text for char in sanskrit_diacriticals)
-                
-                if not has_diacriticals:
-                    logger.debug(f"Scripture lookup skipped: No Sanskrit diacriticals in text: '{processed_text}'")
-                elif len(processed_text.split()) > 8:
-                    logger.debug(f"Scripture lookup skipped: Text too long ({len(processed_text.split())} words > 8): '{processed_text[:50]}...'")
-                else:
-                    # Enhanced English word detection - expanded list of common English words
-                    english_words = [
-                        'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by',
-                        'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had',
-                        'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'can',
-                        'this', 'that', 'these', 'those', 'then', 'there', 'here', 'where', 'when',
-                        'you', 'your', 'yours', 'he', 'she', 'it', 'his', 'her', 'its', 'we', 'our', 'ours',
-                        'they', 'them', 'their', 'theirs', 'i', 'my', 'mine', 'me',
-                        'as', 'if', 'so', 'than', 'very', 'just', 'now', 'only', 'also', 'even',
-                        'worship', 'succeed', 'business', 'given', 'bigger', 'extension', 'read', 'whole', 'tell'
-                    ]
-                    
-                    # Check for English words in the text
-                    words_in_text = [word.lower().strip('.,!?;:()[]{}"\'-') for word in processed_text.split()]
-                    english_detected = any(word in english_words for word in words_in_text if word)
-                    
-                    if english_detected:
-                        detected_words = [word for word in words_in_text if word in english_words]
-                        logger.debug(f"Scripture lookup skipped: English words detected: {detected_words} in text: '{processed_text}'")
-                    else:
-                        # Proceed with scripture lookup
-                        scripture_match = None
-                        if self.external_services:
-                            scripture_match = self.external_services.api_lookup_scripture(processed_text)
-                        elif self.external_clients and self.external_clients.api_client:
-                            scripture_match = self.external_clients.api_client.lookup_scripture(processed_text)
-                        
-                        if scripture_match:
-                            # Enhanced validation for scripture responses
-                            confidence = getattr(scripture_match, 'confidence', 0.0)
-                            transliteration = getattr(scripture_match, 'transliteration', '')
-                            verse_ref = getattr(scripture_match, 'verse_reference', 'unknown')
-                            
-                            # Validation checks
-                            if confidence < 0.9:
-                                logger.debug(f"Scripture lookup rejected: Low confidence ({confidence:.2f} < 0.9) for text: '{processed_text}'")
-                            elif not transliteration:
-                                logger.debug(f"Scripture lookup rejected: Empty transliteration for text: '{processed_text}'")
-                            elif abs(len(transliteration) - len(processed_text)) > 10:
-                                logger.debug(f"Scripture lookup rejected: Length mismatch (input: {len(processed_text)}, output: {len(transliteration)}) for text: '{processed_text}'")
-                            elif len(transliteration.split('\n')) > 1:
-                                logger.debug(f"Scripture lookup rejected: Multi-line response (verse injection) for text: '{processed_text}'")
-                            elif any(pattern in transliteration.lower() for pattern in ['verse', 'chapter', 'bhagavad gītā 1.', 'bhagavad gītā 2.']):
-                                # Detect if response contains verse references or typical verse patterns
-                                # Note: Removed generic 'gītā' pattern as it blocks legitimate Sanskrit term enhancements
-                                logger.debug(f"Scripture lookup rejected: Contains verse patterns in response for text: '{processed_text}'")
-                            elif transliteration.count('.') > 2:
-                                # Detect if response looks like full verses (multiple sentences)
-                                logger.debug(f"Scripture lookup rejected: Response appears to be full verse content for text: '{processed_text}'")
-                            else:
-                                # Additional semantic validation - check if key terms are preserved
-                                original_key_terms = [word for word in processed_text.split() if len(word) > 2]
-                                response_text = transliteration.lower()
-                                
-                                # Check if at least 50% of original key terms are preserved in some form
-                                preserved_terms = sum(1 for term in original_key_terms if term.lower() in response_text)
-                                preservation_ratio = preserved_terms / len(original_key_terms) if original_key_terms else 0
-                                
-                                if preservation_ratio < 0.5:
-                                    logger.debug(f"Scripture lookup rejected: Poor term preservation ({preservation_ratio:.2f} < 0.5) for text: '{processed_text}'")
-                                else:
-                                    # All validations passed - apply enhancement
-                                    processed_text = transliteration
-                                    total_corrections += 1
-                                    logger.info(f"Applied scripture enhancement: '{text}' → '{transliteration}' (confidence: {confidence:.2f}, ref: {verse_ref})")
-                        else:
-                            logger.debug(f"Scripture lookup returned no match for text: '{processed_text}'")
-                
-            except Exception as e:
-                logger.error(f"Scripture lookup failed: {e}")
+            scripture_processed_text, scripture_corrections = self._apply_scripture_processing(processed_text, context)
+            if scripture_corrections > 0:
+                processed_text = scripture_processed_text
+                total_corrections += scripture_corrections
         
         return processed_text, total_corrections
+
+    def _apply_scripture_processing(self, text: str, context: Dict = None) -> tuple[str, int]:
+        """Apply scripture processing with fallback chain: API -> ScripturalSegmentProcessor -> VerseCache.
+        
+        FIXED: Implements comprehensive scripture processing with proper fallback logic.
+        
+        Args:
+            text: Input text to process
+            context: Processing context
+            
+        Returns:
+            Tuple of (processed_text, corrections_count)
+        """
+        original_text = text
+        
+        # Skip very short or clearly English text  
+        if len(text.strip()) < 3:
+            return text, 0
+            
+        # Enhanced English detection - but less aggressive than before
+        english_words = [
+            'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by',
+            'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had',
+            'this', 'that', 'these', 'those', 'then', 'there', 'here', 'where', 'when',
+            'you', 'your', 'he', 'she', 'it', 'his', 'her', 'its', 'we', 'our',
+            'they', 'them', 'their', 'i', 'my', 'mine', 'me'
+        ]
+        
+        words_in_text = [word.lower().strip('.,!?;:()[]{}"\'-') for word in text.split()]
+        english_count = sum(1 for word in words_in_text if word in english_words and len(word) > 1)
+        english_ratio = english_count / len(words_in_text) if words_in_text else 0
+        
+        # Skip if text is predominantly English (>60% English words)
+        if english_ratio > 0.6:
+            logger.debug(f"Scripture processing skipped: High English ratio ({english_ratio:.2f}) in text: '{text}'")
+            return text, 0
+        
+        # PHASE 1: Try API scripture lookup (with relaxed validation)
+        api_result = self._try_api_scripture_lookup(text)
+        if api_result:
+            processed_text, corrections = api_result
+            logger.debug(f"API scripture lookup successful: '{text}' → '{processed_text}' ({corrections} corrections)")
+            return processed_text, corrections
+        
+        # PHASE 2: Try ScripturalSegmentProcessor for pattern-based corrections
+        scriptural_result = self._try_scriptural_segment_processor(text)
+        if scriptural_result:
+            processed_text, corrections = scriptural_result
+            logger.debug(f"ScripturalSegmentProcessor successful: '{text}' → '{processed_text}' ({corrections} corrections)")
+            return processed_text, corrections
+        
+        # PHASE 3: Try VerseCache for content-based matching
+        verse_cache_result = self._try_verse_cache_lookup(text)
+        if verse_cache_result:
+            processed_text, corrections = verse_cache_result
+            logger.debug(f"VerseCache lookup successful: '{text}' → '{processed_text}' ({corrections} corrections)")
+            return processed_text, corrections
+        
+        # PHASE 4: No scripture processing applied
+        logger.debug(f"No scripture processing applied to: '{text}'")
+        return text, 0
+    
+    def _try_api_scripture_lookup(self, text: str) -> tuple[str, int] | None:
+        """Try API-based scripture lookup with STRICT validation to prevent content corruption."""
+        try:
+            # Check for basic Sanskrit content indicators before API call
+            sanskrit_indicators = ['om', 'oṃ', 'krishna', 'kṛṣṇa', 'gita', 'gītā', 'dharma', 'karma', 'yoga', 'arjuna']
+            has_sanskrit_indicators = any(indicator in text.lower() for indicator in sanskrit_indicators)
+            
+            # Only try API if we have Sanskrit indicators OR existing diacriticals
+            sanskrit_diacriticals = ['ā', 'ī', 'ū', 'ṛ', 'ṝ', 'ḷ', 'ḹ', 'ṃ', 'ṁ', 'ḥ', 'ś', 'ṣ', 'ñ', 'ṇ', 'ṭ', 'ḍ']
+            has_diacriticals = any(char in text for char in sanskrit_diacriticals)
+            
+            if not (has_sanskrit_indicators or has_diacriticals):
+                return None
+            
+            # Try API lookup
+            scripture_match = None
+            if self.external_services:
+                scripture_match = self.external_services.api_lookup_scripture(text)
+            elif self.external_clients and self.external_clients.api_client:
+                scripture_match = self.external_clients.api_client.lookup_scripture(text)
+            
+            if not scripture_match:
+                return None
+            
+            # STRICT validation to prevent content corruption
+            confidence = getattr(scripture_match, 'confidence', 0.0)
+            transliteration = getattr(scripture_match, 'transliteration', '')
+            verse_ref = getattr(scripture_match, 'verse_reference', 'unknown')
+            
+            # Very high confidence threshold - only exact matches
+            if confidence < 0.95:
+                logger.debug(f"API scripture lookup: Low confidence ({confidence:.2f} < 0.95) for text: '{text}'")
+                return None
+            
+            if not transliteration or len(transliteration.strip()) < 3:
+                logger.debug(f"API scripture lookup: Invalid transliteration for text: '{text}'")
+                return None
+            
+            # STRICT length validation - prevent complete text replacement
+            length_ratio = len(transliteration) / len(text) if text else 0
+            if length_ratio > 2.0 or length_ratio < 0.5:
+                logger.debug(f"API scripture lookup: Excessive length change ratio {length_ratio:.2f} for text: '{text}'")
+                return None
+            
+            # Block complete verse injections - these are content replacements, not corrections
+            dangerous_patterns = [
+                'bhagavad gītā chapter', 'verse number', 'śrīmad bhagavad gītā', 
+                'thus speaks', 'arjuna said', 'kṛṣṇa said', 'bhagavān uvāca',
+                '||', '|', 'chapter', 'verse'
+            ]
+            
+            if any(pattern in transliteration.lower() for pattern in dangerous_patterns):
+                logger.debug(f"API scripture lookup: Contains verse injection patterns in response for text: '{text}'")
+                return None
+            
+            # CONTENT SIMILARITY CHECK - ensure API result is actually related to input
+            original_words = set(text.lower().split())
+            enhanced_words = set(transliteration.lower().split())
+            
+            # Require at least 30% word overlap for content similarity
+            common_words = original_words.intersection(enhanced_words)
+            similarity_ratio = len(common_words) / len(original_words) if original_words else 0
+            
+            if similarity_ratio < 0.3:
+                logger.debug(f"API scripture lookup: Low content similarity ({similarity_ratio:.2f}) between '{text}' and '{transliteration}'")
+                return None
+            
+            # Apply the enhancement only if it passes all strict validation
+            logger.info(f"Applied API scripture enhancement: '{text}' → '{transliteration}' (confidence: {confidence:.2f}, ref: {verse_ref})")
+            return transliteration, 1
+            
+        except Exception as e:
+            logger.debug(f"API scripture lookup failed: {e}")
+            return None
+    
+    def _try_scriptural_segment_processor(self, text: str) -> tuple[str, int] | None:
+        """Try ScripturalSegmentProcessor for pattern-based corrections."""
+        try:
+            # Initialize ScripturalSegmentProcessor if not already done
+            if not hasattr(self, 'scriptural_processor'):
+                from processors.scriptural_segment_processor import ScripturalSegmentProcessor
+                self.scriptural_processor = ScripturalSegmentProcessor(self.config)
+                logger.debug("ScripturalSegmentProcessor initialized for fallback")
+            
+            # Process the segment
+            processed_text, was_modified, reference = self.scriptural_processor.process_segment(text)
+            
+            if was_modified and processed_text != text:
+                logger.debug(f"ScripturalSegmentProcessor correction: {reference or 'pattern-based'}")
+                return processed_text, 1
+            
+            return None
+            
+        except Exception as e:
+            logger.debug(f"ScripturalSegmentProcessor failed: {e}")
+            return None
+    
+    def _try_verse_cache_lookup(self, text: str) -> tuple[str, int] | None:
+        """Try VerseCache for content-based verse matching.
+        
+        CRITICAL FIX: Made much more conservative to prevent inappropriate verse substitutions.
+        Only applies high-confidence exact matches, not broad content searches.
+        """
+        try:
+            # Initialize verse cache if not already done
+            if not hasattr(self, 'verse_cache_processor'):
+                from services.verse_cache import VerseCache
+                self.verse_cache_processor = VerseCache(self.config)
+                
+                # Download verses if cache is empty
+                if not self.verse_cache_processor.is_cache_valid():
+                    logger.info("Downloading verse cache for scripture processing...")
+                    self.verse_cache_processor.download_verses()
+                
+                logger.debug(f"VerseCache initialized with {len(self.verse_cache_processor.verses)} verses")
+            
+            # CRITICAL: Only use verse cache for very specific patterns, not general content search
+            # This prevents inappropriate verse substitutions
+            
+            # Check for explicit verse references (e.g., "gita 3.32", "bhagavad gita verse 47")
+            verse_ref_patterns = [
+                r'(?i)\b(?:gita|bhagavad\s*gita)\s*(?:verse\s*)?(\d+)\.(\d+)',
+                r'(?i)\b(?:chapter\s*)?(\d+)\s*verse\s*(\d+)',
+                r'(?i)\bverse\s*(\d+)\.(\d+)'
+            ]
+            
+            for pattern in verse_ref_patterns:
+                import re
+                match = re.search(pattern, text)
+                if match:
+                    try:
+                        chapter, verse = int(match.group(1)), int(match.group(2))
+                        cached_verse = self.verse_cache_processor.get_verse(chapter, verse)
+                        if cached_verse and hasattr(cached_verse, 'transliteration') and cached_verse.transliteration:
+                            logger.debug(f"VerseCache reference match: {chapter}.{verse}")
+                            return cached_verse.transliteration, 1
+                    except (ValueError, AttributeError):
+                        continue
+            
+            # REMOVED: General content search that was causing inappropriate replacements
+            # The content search was too aggressive and replaced original text with unrelated verses
+            
+            return None
+            
+        except Exception as e:
+            logger.debug(f"VerseCache lookup failed: {e}")
+            return None
     
     def process_srt_file(self, input_path: Path, output_path: Path) -> ProcessingResult:
-        """Enhanced SRT processing with batch optimizations."""
+        """Enhanced SRT processing with batch optimizations.
+        
+        FIXED: If context pipeline is disabled, use parent's simple processing method.
+        """
         import time
         start_time = time.time()
         
+        # CRITICAL FIX: Check if context pipeline is disabled in config
+        enable_context_pipeline = self.config.get('processing', {}).get('enable_context_pipeline', True)
+        
+        if not enable_context_pipeline:
+            # Context pipeline disabled - use parent's simple SRT processing
+            logger.info(f"Context pipeline disabled - using parent's simple processing: {input_path} -> {output_path}")
+            return super().process_srt_file(input_path, output_path)
+        
+        # Context pipeline enabled - use enhanced processing
         logger.info(f"Enhanced processing: {input_path} -> {output_path}")
         
         try:

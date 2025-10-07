@@ -48,50 +48,36 @@ class APIConfig:
     max_retries: int = 3
     enabled: bool = True
 
-class CircuitBreaker:
-    """Simple circuit breaker for API calls."""
+class SimpleRetryHandler:
+    """Simplified retry handler - replaces complex circuit breaker for basic API calls."""
     
-    def __init__(self, failure_threshold: int = 5, recovery_timeout: int = 60):
-        self.failure_threshold = failure_threshold
-        self.recovery_timeout = recovery_timeout
-        self.failures = 0
-        self.last_failure_time = None
-        self.state = "closed"  # closed, open, half-open
+    def __init__(self, max_retries: int = 2, timeout: int = 10):
+        self.max_retries = max_retries
+        self.timeout = timeout
+        self.failure_count = 0
     
     def can_call(self) -> bool:
-        """Check if API call is allowed."""
-        if self.state == "closed":
-            return True
-        elif self.state == "open":
-            if time.time() - self.last_failure_time > self.recovery_timeout:
-                self.state = "half-open"
-                return True
-            return False
-        elif self.state == "half-open":
-            return True
-        return False
+        """Always allow calls - simplify from complex circuit breaker logic."""
+        return True
     
     def record_success(self):
-        """Record successful API call."""
-        self.failures = 0
-        self.state = "closed"
+        """Reset failure count on success."""
+        self.failure_count = 0
     
     def record_failure(self):
-        """Record failed API call."""
-        self.failures += 1
-        self.last_failure_time = time.time()
-        if self.failures >= self.failure_threshold:
-            self.state = "open"
+        """Track failures but don't block calls."""
+        self.failure_count += 1
 
 class ExternalAPIClient:
     """Client for external Sanskrit/Hindu scripture and validation APIs."""
     
     def __init__(self, config: APIConfig):
         self.config = config
-        self.circuit_breakers = {
-            "bhagavad_gita": CircuitBreaker(),
-            "wisdom_library": CircuitBreaker(),
-            "validation": CircuitBreaker()
+        # Simplified retry handlers instead of complex circuit breakers
+        self.retry_handlers = {
+            "bhagavad_gita": SimpleRetryHandler(max_retries=2, timeout=self.config.timeout),
+            "wisdom_library": SimpleRetryHandler(max_retries=2, timeout=self.config.timeout),
+            "validation": SimpleRetryHandler(max_retries=1, timeout=5)  # Faster timeout for validation
         }
         
         if not REQUESTS_AVAILABLE:
@@ -180,12 +166,12 @@ class ExternalAPIClient:
     
     def _lookup_bhagavad_gita(self, text: str) -> Optional[ScriptureMatch]:
         """Lookup verse in Bhagavad Gita API using Vedic Scriptures API."""
-        if not self.circuit_breakers["bhagavad_gita"].can_call():
+        if not self.retry_handlers["bhagavad_gita"].can_call():
             logger.debug("Bhagavad Gita API circuit breaker open")
             return None
         
         try:
-            # Try to detect verse references for specific API calls
+            # ONLY try if we have explicit verse references - NO keyword fallback
             if self.verse_cache:
                 # Use verse cache for reference detection
                 references = self.verse_cache.detect_verse_references(text)
@@ -198,7 +184,7 @@ class ExternalAPIClient:
                         response = self.session.get(api_url, timeout=self.config.timeout)
                         if response.status_code == 200:
                             data = response.json()
-                            self.circuit_breakers["bhagavad_gita"].record_success()
+                            self.retry_handlers["bhagavad_gita"].record_success()
                             
                             # Extract transliteration if available
                             transliteration = data.get('transliteration', '')
@@ -210,28 +196,17 @@ class ExternalAPIClient:
                                 verse_reference=f"BG {chapter}.{verse}",
                                 sanskrit_text=data.get('slok', ''),
                                 translation=data.get('translation', ''),
-                                confidence=0.9,
+                                confidence=0.95,  # Only return high-confidence exact matches
                                 source="vedic_scriptures_api",
                                 transliteration=transliteration
                             )
-                    
-            # Fallback: search for common keywords if no specific verse detected
-            keywords = ["dharma", "karma", "yoga", "arjuna", "krishna"]
-            if any(keyword in text.lower() for keyword in keywords):
-                # Return high-confidence verses for common concepts
-                if "karma" in text.lower() and "action" in text.lower():
-                    return ScriptureMatch(
-                        verse_reference="BG 2.47",
-                        sanskrit_text="कर्मण्येवाधिकारस्ते मा फलेषु कदाचन। मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥",
-                        translation="You have the right to perform your prescribed duty, but not to the fruits of action. Never consider yourself the cause of the results of your activities, and never be attached to not doing your duty.",
-                        confidence=0.75,
-                        source="keyword_match",
-                        transliteration="karmaṇy evādhikāras te mā phaleṣu kadācana mā karma-phala-hetur bhūr mā te saṅgo 'stv akarmaṇi"
-                    )
+            
+            # REMOVED: Dangerous keyword-based fallback that was injecting wrong verses
+            logger.debug(f"No explicit verse references found in text: '{text}'")
             
         except Exception as e:
             logger.warning(f"Bhagavad Gita API lookup failed: {e}")
-            self.circuit_breakers["bhagavad_gita"].record_failure()
+            self.retry_handlers["bhagavad_gita"].record_failure()
         
         return None
     
@@ -253,12 +228,12 @@ class ExternalAPIClient:
     
     def _lookup_wisdom_library(self, text: str) -> Optional[ScriptureMatch]:
         """Lookup using alternative APIs like BhagavadGita.io or TheAum.org."""
-        if not self.circuit_breakers["wisdom_library"].can_call():
+        if not self.retry_handlers["wisdom_library"].can_call():
             logger.debug("Alternative API circuit breaker open")
             return None
         
         try:
-            # Try BhagavadGita.io style API if verse reference detected
+            # ONLY try if we have explicit verse references - NO keyword fallback
             if self.verse_cache:
                 references = self.verse_cache.detect_verse_references(text)
                 if references:
@@ -271,32 +246,23 @@ class ExternalAPIClient:
                         response = self.session.get(api_url, timeout=self.config.timeout)
                         if response.status_code == 200:
                             data = response.json()
-                            self.circuit_breakers["wisdom_library"].record_success()
+                            self.retry_handlers["wisdom_library"].record_success()
                             
                             return ScriptureMatch(
                                 verse_reference=f"BG {chapter}.{verse}",
                                 sanskrit_text=data.get('verse_text', data.get('sanskrit', '')),
                                 translation=data.get('translation', data.get('meaning', '')),
-                                confidence=0.85,
+                                confidence=0.95,  # Only return high-confidence exact matches
                                 source="theaum_api",
                                 transliteration=data.get('transliteration', '')
                             )
             
-            # Fallback keyword search
-            spiritual_terms = ["moksha", "samsara", "upanishad", "veda"]
-            if any(term in text.lower() for term in spiritual_terms):
-                self.circuit_breakers["wisdom_library"].record_success()
-                return ScriptureMatch(
-                    verse_reference="Upanishads Reference",
-                    sanskrit_text="तत् त्वम् असि",
-                    translation="That thou art",
-                    confidence=0.7,
-                    source="wisdom_library"
-                )
+            # REMOVED: Dangerous keyword-based fallback that was injecting wrong content
+            logger.debug(f"No explicit verse references found in text: '{text}'")
             
         except Exception as e:
             logger.warning(f"Wisdom Library lookup failed: {e}")
-            self.circuit_breakers["wisdom_library"].record_failure()
+            self.retry_handlers["wisdom_library"].record_failure()
         
         return None
     
@@ -310,7 +276,7 @@ class ExternalAPIClient:
                 warnings=[]
             )
         
-        if not self.circuit_breakers["validation"].can_call():
+        if not self.retry_handlers["validation"].can_call():
             logger.debug("Validation API circuit breaker open")
             return QualityValidation(
                 iast_compliant=True,
@@ -338,7 +304,7 @@ class ExternalAPIClient:
             accuracy = 0.9 if has_iast else 0.7
             compliant = len(suggestions) == 0
             
-            self.circuit_breakers["validation"].record_success()
+            self.retry_handlers["validation"].record_success()
             
             return QualityValidation(
                 iast_compliant=compliant,
@@ -349,7 +315,7 @@ class ExternalAPIClient:
             
         except Exception as e:
             logger.warning(f"IAST validation failed: {e}")
-            self.circuit_breakers["validation"].record_failure()
+            self.retry_handlers["validation"].record_failure()
             return QualityValidation(
                 iast_compliant=False,
                 accuracy_score=0.5,
@@ -361,11 +327,11 @@ class ExternalAPIClient:
         """Get status of all external services."""
         return {
             service: {
-                "state": breaker.state,
-                "failures": breaker.failures,
-                "can_call": breaker.can_call()
+                "failure_count": handler.failure_count,
+                "can_call": handler.can_call(),
+                "max_retries": handler.max_retries
             }
-            for service, breaker in self.circuit_breakers.items()
+            for service, handler in self.retry_handlers.items()
         }
 
 def create_api_client(config_path: Path = None) -> ExternalAPIClient:

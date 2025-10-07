@@ -36,7 +36,7 @@ class ContextDetector:
     """Enhanced context detection with configurable thresholds and Sanskrit whitelist override."""
     
     def __init__(self, config_path: str = None, context_config: 'ContextConfig' = None):
-        """Initialize context detector with enhanced configuration.
+        """Initialize context detector with enhanced configuration and scripture database integration.
         
         Args:
             config_path: Path to configuration file (legacy support)
@@ -78,6 +78,10 @@ class ContextDetector:
         self.sanskrit_diacriticals_set = set(self.config.sanskrit_diacriticals)
         self.sanskrit_sacred_set = set(term.lower() for term in self.config.sanskrit_sacred_terms)
         
+        # ENHANCEMENT: Load scripture terms database for comprehensive Sanskrit recognition
+        self.scripture_terms = {}
+        self._load_scripture_database()
+        
         # Load ASR variations from priority terms file if available
         self.asr_variations = {}
         priority_terms_path = Path(__file__).parent.parent / 'lexicons' / 'sanskrit_priority_terms.yaml'
@@ -110,9 +114,41 @@ class ContextDetector:
         # Initialize mixed content detection capabilities
         self._initialize_mixed_content_detection()
 
-        logger.info(f"Context detector initialized with {len(self.sanskrit_priority_set)} priority terms")
+        total_sanskrit_terms = len(self.sanskrit_priority_set) + len(self.scripture_terms)
+        logger.info(f"Context detector initialized with {len(self.sanskrit_priority_set)} priority terms + {len(self.scripture_terms)} scripture terms = {total_sanskrit_terms} total Sanskrit terms")
         if self.config.debug_logging:
             logger.info(f"Debug logging enabled for context detection")
+
+    def _load_scripture_database(self):
+        """Load scripture terms database for comprehensive Sanskrit recognition."""
+        from pathlib import Path
+        import yaml
+        
+        lexicon_dir = Path(__file__).parent.parent / "lexicons"
+        corrections_file = lexicon_dir / "corrections_with_scripture.yaml"
+        
+        if corrections_file.exists():
+            try:
+                with open(corrections_file, 'r', encoding='utf-8') as f:
+                    data = yaml.safe_load(f)
+                
+                for entry in data.get('entries', []):
+                    original = entry['original_term'].lower()
+                    self.scripture_terms[original] = entry
+                    
+                    # Also index by variations
+                    for variation in entry.get('variations', []):
+                        if isinstance(variation, str):  # Skip non-string variations
+                            self.scripture_terms[variation.lower()] = entry
+                            
+                logger.debug(f"Loaded {len(data.get('entries', []))} scripture entries for context detection")
+                
+            except Exception as e:
+                logger.warning(f"Could not load scripture database for context detection: {e}")
+                self.scripture_terms = {}
+        else:
+            logger.debug(f"Scripture corrections file not found: {corrections_file}")
+            self.scripture_terms = {}
 
     def _initialize_mixed_content_detection(self):
         """Initialize mixed content detection patterns and capabilities."""
@@ -321,8 +357,8 @@ class ContextDetector:
     def _check_sanskrit_whitelist_override(self, text: str) -> 'ContextResult':
         """Check if text contains Sanskrit priority terms that should override context detection.
 
-        Smart override: Only classifies as Sanskrit if Sanskrit terms dominate,
-        otherwise allows English detection for English text with embedded Sanskrit.
+        ENHANCED: Improved logic for scripture processing - allows more Sanskrit content through
+        while maintaining protection against mistranslations.
 
         Args:
             text: Input text to check
@@ -333,14 +369,31 @@ class ContextDetector:
         text_lower = text.lower()
         words = text_lower.split()
 
-        # Count Sanskrit priority terms
+        # Count Sanskrit priority terms AND scripture database terms
         found_priority_terms = []
+        found_scripture_terms = []
         sanskrit_word_count = 0
 
         for word in words:
+            # Check priority terms first (highest precedence)
             if word in self.sanskrit_priority_set:
                 found_priority_terms.append(word)
                 sanskrit_word_count += 1
+            # ENHANCEMENT: Also check comprehensive scripture database
+            elif word in self.scripture_terms:
+                found_scripture_terms.append(word)
+                sanskrit_word_count += 1
+
+        # Check for compound phrases in scripture database
+        found_compounds = []
+        compound_phrases = [key for key in self.scripture_terms.keys() if ' ' in key]
+        for compound_key in compound_phrases:
+            if compound_key in text_lower:
+                found_compounds.append(compound_key)
+                # Don't double-count if individual words were already found
+                compound_words = compound_key.split()
+                new_sanskrit_words = sum(1 for w in compound_words if w not in found_priority_terms and w not in found_scripture_terms)
+                sanskrit_word_count += new_sanskrit_words
 
         # Check for ASR variations
         found_variations = []
@@ -351,8 +404,8 @@ class ContextDetector:
                     found_priority_terms.append(variation.lower())
                     sanskrit_word_count += 1
 
-        if found_priority_terms:
-            # NEW: Smart decision logic - check if this is English with embedded Sanskrit
+        if found_priority_terms or found_scripture_terms or found_compounds:
+            # ENHANCED: Much more permissive logic for scripture processing
             if len(words) > 0:
                 # Calculate Sanskrit term ratio
                 sanskrit_ratio = sanskrit_word_count / len(words)
@@ -360,38 +413,78 @@ class ContextDetector:
                 # Count English function words
                 english_function_count = sum(1 for w in words if w in self.english_function_set)
 
-                # Enhanced English sentence structure patterns
-                english_patterns = [
-                    'to the', 'who is', 'of the', 'in the', 'and the', 'is the', 'are the',
-                    'that is', 'which is', 'in chapter', 'is entitled', 'entitled to',
-                    'chapter 3', 'yoga of', 'of action', 'very short', 'great personalities',
-                    'and great', 'following', 'explained', 'which means'
+                # Detect clear English commentary patterns (more specific than before)
+                english_commentary_patterns = [
+                    'chapter entitled to', 'very short prayer', 'and great personalities',
+                    'according to shankaracharya', 'following prayer', 'this is explained',
+                    'commentary on the', 'meaning of this verse', 'translation of the'
                 ]
-                has_english_structure = any(pattern in text_lower for pattern in english_patterns)
+                has_strong_commentary = any(pattern in text_lower for pattern in english_commentary_patterns)
 
-                # Commentary structure indicators
-                commentary_indicators = [
-                    'chapter', 'entitled', 'explained', 'following', 'means', 'personalities',
-                    'very short', 'great', 'according to'
+                # Detect English sentence structure (stricter patterns)
+                strong_english_patterns = [
+                    'this is the', 'which is the', 'and the great', 'very short prayer to',
+                    'according to the great', 'commentary explains that'
                 ]
-                commentary_count = sum(1 for indicator in commentary_indicators if indicator in text_lower)
+                has_strong_english_structure = any(pattern in text_lower for pattern in strong_english_patterns)
 
-                # Smart decision: Only override if Sanskrit dominates
-                if (sanskrit_ratio < 0.35 and  # Less than 35% Sanskrit terms
-                    (english_function_count >= 2 or commentary_count >= 1) and  # Has English function words or commentary
-                    (has_english_structure or commentary_count >= 2)):  # Has English sentence structure or clear commentary
+                # NEW: Detect corrupted Sanskrit that should be processed
+                corrupted_sanskrit_indicators = [
+                    'yey che dhabhyasu', 'sarva jnanavi moor', 'nashtana che tashaar',
+                    'evam pravartitam chakram', 'paartha sa jeevati',
+                    'om vahudevo sutam devam', 'kansa chan uram ardanam'
+                ]
+                has_corrupted_sanskrit = any(indicator in text_lower for indicator in corrupted_sanskrit_indicators)
 
-                    # Don't override - let normal English detection work
+                # NEW: Detect verses and prayers that should always be processed
+                verse_prayer_indicators = [
+                    'om ', 'oṃ ', 'krishna', 'kṛṣṇa', 'arjuna', 'bhagavad gita', 'dharma', 'karma',
+                    'namaha', 'namaḥ', 'vande', 'vandana', 'guru', 'brahma', 'vishnu', 'shiva'
+                ]
+                has_verse_prayer_content = any(indicator in text_lower for indicator in verse_prayer_indicators)
+
+                # CRITICAL IMPROVEMENT: Only block if it's clearly English commentary 
+                # AND doesn't contain corrupted Sanskrit or verses
+                if (sanskrit_ratio < 0.25 and  # Very low Sanskrit ratio (reduced from 0.35)
+                    english_function_count >= 3 and  # Many English function words (increased from 2)
+                    (has_strong_commentary or has_strong_english_structure) and  # Strong English patterns
+                    not has_corrupted_sanskrit and  # No corrupted Sanskrit detected
+                    not has_verse_prayer_content):  # No verses or prayers detected
+
+                    # This is clearly English commentary - don't override
                     if self.config.debug_logging:
-                        logger.debug(f"Smart whitelist: English structure detected, not overriding to Sanskrit. "
+                        logger.debug(f"Smart whitelist: Clear English commentary detected, not overriding to Sanskrit. "
                                    f"Sanskrit ratio: {sanskrit_ratio:.2f}, English functions: {english_function_count}, "
-                                   f"Commentary count: {commentary_count}, Sanskrit terms: {found_priority_terms[:3]}")
+                                   f"Strong patterns: {has_strong_commentary or has_strong_english_structure}, "
+                                   f"Sanskrit terms: {found_priority_terms[:3]}")
                     return None
 
-            # Original logic for true Sanskrit text
+                # ENHANCEMENT: For borderline cases, check for specific Sanskrit content
+                if sanskrit_ratio < 0.4 and english_function_count >= 2:
+                    # Borderline case - check for specific scripture/verse content
+                    scripture_content_patterns = [
+                        'gita', 'verse', 'sloka', 'chapter', 'yoga', 'dharma', 'karma', 'moksha',
+                        'sanskrit', 'transliteration', 'prayer', 'invocation', 'mantra'
+                    ]
+                    has_scripture_content = any(pattern in text_lower for pattern in scripture_content_patterns)
+                    
+                    if not has_scripture_content and not has_corrupted_sanskrit:
+                        # Borderline English text without clear scripture content
+                        if self.config.debug_logging:
+                            logger.debug(f"Smart whitelist: Borderline case without scripture content, not overriding. "
+                                       f"Sanskrit ratio: {sanskrit_ratio:.2f}, terms: {found_priority_terms[:3]}")
+                        return None
+
+            # Apply Sanskrit override - this text should be processed for Sanskrit corrections
             markers_found = [f'priority_term_{term}' for term in found_priority_terms[:3]]
+            # ENHANCEMENT: Include scripture database matches in markers
+            markers_found.extend([f'scripture_term_{term}' for term in found_scripture_terms[:3]])
+            markers_found.extend([f'scripture_compound_{compound}' for compound in found_compounds[:2]])
             if found_variations:
                 markers_found.extend([f'asr_variation_{var}' for var in found_variations[:2]])
+
+            if self.config.debug_logging:
+                logger.debug(f"Sanskrit whitelist override applied: {markers_found}")
 
             return ContextResult(
                 context_type='sanskrit',
@@ -659,6 +752,25 @@ class ContextDetector:
 
     def _check_specialized_content(self, text: str) -> Optional['ContextResult']:
         """Check for specialized content types that need specific handling."""
+
+        # CRITICAL FIX: Check for language tags FIRST - force Sanskrit processing
+        language_tag_patterns = [
+            r'^\s*\[SA\]',   # Sanskrit tag at beginning
+            r'^\s*\[HI\]',   # Hindi tag at beginning  
+            r'^\s*\[SANSKRIT\]',  # Full Sanskrit tag
+            r'^\s*\[HINDI\]'      # Full Hindi tag
+        ]
+        
+        has_language_tag = any(re.search(pattern, text, re.IGNORECASE) for pattern in language_tag_patterns)
+        
+        if has_language_tag:
+            # Force Sanskrit processing for tagged content
+            return ContextResult(
+                context_type='sanskrit',
+                confidence=1.0,
+                markers_found=['language_tag_override'],
+                override_reason='Language tag forces Sanskrit processing'
+            )
 
         # Check for scripture titles in commentary FIRST (before Sanskrit detection)
         scripture_commentary_patterns = [

@@ -3927,3 +3927,25 @@ entries:
   transliteration: purana
   variations:
   - purana
+- category: scripture
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: true
+  meaning: Philosophical text by sage Vasistha - with proper capitalization
+  original_term: yoga vaśiṣṭha
+  source_authority: IAST
+  transliteration: Yoga Vāsiṣṭha
+  variations:
+  - yoga vaśiṣṭha
+  - yoga Vaśiṣṭha
+- category: scripture
+  confidence: 1.0
+  difficulty_level: intermediate
+  is_proper_noun: true
+  meaning: Creation chapter in Yoga Vasistha - with proper capitalization
+  original_term: utpatti prakaraṇa
+  source_authority: IAST
+  transliteration: Utpatti Prakaraṇa
+  variations:
+  - utpatti prakaraṇa
+  - utpatti Prakaraṇa

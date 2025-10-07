@@ -169,6 +169,8 @@ Examples:
                         help='Configuration file (default: config.yaml)')
     parser.add_argument('--lexicons', type=Path, default=Path('lexicons'),
                         help='Directory containing lexicon YAML files (default: lexicons)')
+    parser.add_argument('--metadata', type=Path,
+                        help='Path to LID metadata JSON file from production pipeline')
     parser.add_argument('--verbose', '-v', action='store_true',
                         help='Enable verbose logging and detailed metrics')
     parser.add_argument('--status-only', action='store_true',
@@ -253,7 +255,13 @@ def process_single(args):
             # Initialize processor based on mode
             if args.simple:
                 logger.info("Initializing Simple Sanskrit processor...")
-                processor = SanskritProcessor(args.lexicons, collect_metrics=True)
+                processor = SanskritProcessor(
+                    lexicon_dir=args.lexicons,
+                    collect_metrics=True,
+                    metadata_path=args.metadata
+                )
+                if args.metadata:
+                    logger.info(f"LID metadata enabled: {args.metadata}")
             elif args.asr:
                 logger.info("Initializing ASR Sanskrit processor...")
                 from processors.asr_processor import ASRProcessor
@@ -265,8 +273,11 @@ def process_single(args):
                 logger.info("Initializing Enhanced Sanskrit processor...")
                 processor = EnhancedSanskritProcessor(
                     lexicon_dir=args.lexicons,
-                    config_path=args.config
+                    config_path=args.config,
+                    metadata_path=args.metadata
                 )
+                if args.metadata:
+                    logger.info(f"LID metadata enabled: {args.metadata}")
                 
                 # Enable debug context logging if requested
                 if args.debug_context and hasattr(processor, 'context_detector'):
@@ -740,14 +751,26 @@ def process_batch(args):
             # Initialize processor based on mode
             if args.simple:
                 logger.info("Initializing Simple Sanskrit processor for batch processing...")
-                processor = SanskritProcessor(args.lexicons, collect_metrics=True)
+                processor = SanskritProcessor(
+                    lexicon_dir=args.lexicons,
+                    collect_metrics=True,
+                    metadata_path=args.metadata
+                )
+                if args.metadata:
+                    logger.info(f"LID metadata enabled: {args.metadata}")
             elif args.asr:
                 logger.info("Initializing ASR Sanskrit processor for batch processing...")
                 from processors.asr_processor import ASRProcessor
                 processor = ASRProcessor(args.lexicons, args.config)
             else:
                 logger.info("Initializing Enhanced Sanskrit processor for batch processing...")
-                processor = EnhancedSanskritProcessor(args.lexicons, args.config)
+                processor = EnhancedSanskritProcessor(
+                    lexicon_dir=args.lexicons,
+                    config_path=args.config,
+                    metadata_path=args.metadata
+                )
+                if args.metadata:
+                    logger.info(f"LID metadata enabled: {args.metadata}")
             
             # Initialize batch processor with performance optimizations
             batch_processor = BatchProcessor(

@@ -1051,6 +1051,127 @@ entries:
   confidence: 1.0
   source_authority: Traditional
   difficulty_level: advanced
+  meaning: practical, empirical level of reality
+# TARGETED FIXES FOR IDENTIFIED GAPS
+- original_term: karmana
+  variations:
+  - karmana
+  transliteration: karmaṇā
+  is_proper_noun: false
+  category: grammar
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: intermediate
+  meaning: by action (instrumental case of karma)
+- original_term: manipur chakra
+  variations:
+  - manipur chakra
+  - manipura chakra
+  transliteration: maṇipūra cakra
+  is_proper_noun: false
+  category: yoga
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: beginner
+  meaning: solar plexus energy center
+- original_term: kriya shakti
+  variations:
+  - kriya shakti
+  - kriyashakti
+  transliteration: kriyā śakti
+  is_proper_noun: false
+  category: yoga
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: intermediate
+  meaning: power of action
+- original_term: gayatri mantra
+  variations:
+  - gayatri mantra
+  - gayatrimantra
+  - gayatri mantram
+  transliteration: gāyatrī mantra
+  is_proper_noun: true
+  category: mantra
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: beginner
+  meaning: sacred Vedic mantra
+  preserve_capitalization: true
+- original_term: suryavansha
+  variations:
+  - suryavansha
+  - surya vansha
+  transliteration: sūryavaṃśa
+  is_proper_noun: true
+  category: lineage
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: intermediate
+  meaning: solar dynasty, lineage of the sun
+  preserve_capitalization: true
+- original_term: chittakash
+  variations:
+  - chittakash
+  - chitta kash
+  - chittaakash
+  transliteration: cittākāśa
+  is_proper_noun: false
+  category: meditation
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: advanced
+  meaning: space of consciousness
+- original_term: shatarupa
+  variations:
+  - shatarupa
+  - shata rupa
+  transliteration: śatarūpā
+  is_proper_noun: true
+  category: deity
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: intermediate
+  meaning: she of a hundred forms
+  preserve_capitalization: true
+- original_term: prakriti
+  variations:
+  - prakriti
+  - prakrti
+  transliteration: prakṛti
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: intermediate
+  meaning: primordial nature, cosmic matter
+- original_term: bhakti
+  variations:
+  - bhakti
+  - bhakthi
+  transliteration: bhakti
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: beginner
+  meaning: devotion, loving service
+- original_term: chakra
+  variations:
+  - chakra
+  - cakra
+  - chakraa
+  transliteration: cakra
+  is_proper_noun: false
+  category: yoga
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: beginner
+  meaning: energy center, wheel of energy
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
   meaning: practical level of reality, relative existence
 - original_term: paramarthika
   variations:
@@ -1123,6 +1244,126 @@ entries:
   difficulty_level: advanced
   meaning: limiting condition, conditioning factor
 # Critical Missing Sanskrit Terms for Mantras and Lectures
+
+# Complete Opening Mantra Terms - Critical for Perfect Processing
+- original_term: oṁ
+  variations:
+    - om
+    - Om
+    - OM
+    - ohm
+    - aum
+    - Aum
+    - AUM
+  transliteration: oṁ
+  is_proper_noun: false
+  category: sacred_symbol
+  confidence: 1.0
+  source_authority: Vedic
+  difficulty_level: beginner
+  meaning: sacred syllable, cosmic sound
+
+- original_term: pūrṇamadaḥ
+  variations:
+    - purnamadah      # Critical ASR form from opening mantra
+    - purnam adah
+    - purna madah
+    - purnamaadah
+  transliteration: pūrṇamadaḥ
+  is_proper_noun: false
+  category: mantra
+  confidence: 1.0
+  source_authority: Īśāvāsya Upaniṣad
+  difficulty_level: intermediate
+  meaning: that is complete
+
+- original_term: pūrṇam idam
+  variations:
+    - purnamidam      # Critical ASR form from opening mantra
+    - purnam idam
+    - purna midam
+    - purnaamidam
+  transliteration: pūrṇam idam
+  is_proper_noun: false
+  category: mantra
+  confidence: 1.0
+  source_authority: Īśāvāsya Upaniṣad
+  difficulty_level: intermediate
+  meaning: this is complete
+
+- original_term: pūrṇāt
+  variations:
+    - purnat          # Critical ASR form
+    - purnat
+    - purnaat
+  transliteration: pūrṇāt
+  is_proper_noun: false
+  category: mantra
+  confidence: 1.0
+  source_authority: Īśāvāsya Upaniṣad
+  difficulty_level: intermediate
+  meaning: from the complete
+
+- original_term: pūrṇam udacyate
+  variations:
+    - purnamudatyate  # Critical ASR form
+    - purnamudachyate
+    - purnam udatyate
+    - purnam udachyate
+  transliteration: pūrṇam udacyate
+  is_proper_noun: false
+  category: mantra
+  confidence: 1.0
+  source_authority: Īśāvāsya Upaniṣad
+  difficulty_level: intermediate
+  meaning: the complete emerges
+
+- original_term: śānti
+  variations:
+    - shanti
+    - Shanti
+    - SHANTI
+    - shaanti
+    - santi
+    - shanty
+  transliteration: śānti
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Vedic
+  difficulty_level: beginner
+  meaning: peace, tranquility
+
+- original_term: brahmānandaṁ
+  variations:
+    - brahmanandam    # Critical ASR form from opening mantra
+    - brahmananda
+    - brahmanand
+    - brahmanandam
+    - bramananda
+    - brahamananda
+  transliteration: brahmānandaṁ
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Daśaślokī
+  difficulty_level: intermediate
+  meaning: bliss of Brahman
+
+- original_term: paramasukhadaṁ
+  variations:
+    - paramsukhadam   # Critical ASR form from opening mantra
+    - paramasukhadam
+    - param sukhadam
+    - parma sukhadam
+  transliteration: paramasukhadaṁ
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Daśaślokī
+  difficulty_level: intermediate
+  meaning: supreme bliss
+
 - original_term: purnam
   variations:
   - puna
@@ -1495,12 +1736,14 @@ entries:
   variations:
   - bhagavan
   - bhagvaan
+  - bhagwan
   transliteration: Bhagavān
   is_proper_noun: true
   category: deity
   confidence: 1.0
   source_authority: Traditional
   difficulty_level: beginner
+  # NOTE: Excludes "bhagavad" to avoid conflict with "Bhagavad Gītā"
   meaning: the blessed one, God
 - original_term: jeevan mukta
   variations:
@@ -1821,6 +2064,68 @@ entries:
   meaning: sage Vasistha (ASR commonly mistakes this as "Shiva + something")
   
 # Critical ASR corrections that were missed
+
+# Seven stages of wisdom - critical ASR errors found in real output
+- original_term: śubhecchā
+  variations:
+    - suhya ca          # Critical ASR error from actual output
+    - subhaccha         # Critical ASR error from actual output
+    - subhecha
+    - shubhecha
+    - subha cha
+    - suhyaca
+    - shubha cha
+    - shubhaccha
+  transliteration: śubhecchā
+  is_proper_noun: false
+  confidence: 1.0
+  source_authority: Yogavasishtha
+  difficulty_level: intermediate
+  meaning: first stage of knowledge, pure desire for truth
+
+- original_term: sattva-patti
+  variations:
+    - sattva-pakti      # Critical ASR error from actual output
+    - sattva pakti
+    - sattvapatti
+    - sattva patti
+    - satva patti
+    - sattvapakti
+  transliteration: sattva-patti
+  is_proper_noun: false
+  confidence: 1.0
+  source_authority: Yogavasishtha
+  difficulty_level: intermediate
+  meaning: fourth stage of knowledge, attainment of purity
+
+- original_term: vicāraṇa
+  variations:
+    - vicharana         # ASR missing diacritics from actual output
+    - vicharan
+    - vicharanaa
+    - vicharna
+    - vichaarana
+  transliteration: vicāraṇa
+  is_proper_noun: false
+  confidence: 1.0
+  source_authority: Yogavasishtha
+  difficulty_level: intermediate
+  meaning: second stage of knowledge, pure inquiry
+
+- original_term: tanumānasī
+  variations:
+    - tanumanasi        # ASR missing diacritics from actual output
+    - tanu manasi
+    - tanuma nasi
+    - tanu manaasee
+    - tanumanaasee
+  transliteration: tanumānasī
+  is_proper_noun: false
+  confidence: 1.0
+  source_authority: Yogavasishtha
+  difficulty_level: intermediate
+  meaning: third stage of knowledge, subtle mind
+
 - original_term: Yogabashi
   variations:
   - yogabashi
@@ -1834,12 +2139,13 @@ entries:
   difficulty_level: advanced
   meaning: classical text on Advaita Vedanta (keep as separate words per user specification)
 
-- original_term: Yoga Vasistha  
+- original_term: Yoga Vasistha
   variations:
   - yoga vasistha
   - Yoga Vasishta
   - yoga vasishta
   - yogavasistha   # compound form (incorrect)
+  - yoga vaśiṣṭha  # partial diacritics
   transliteration: Yoga Vāsiṣṭha
   is_proper_noun: true
   category: scripture
@@ -2032,6 +2338,7 @@ entries:
   - Utpati Prakarana
   - utpatti prakarana
   - utpati prakaranam
+  - utpatti prakaraṇa  # partial diacritics
   transliteration: Utpatti Prakaraṇa
   is_proper_noun: true
   category: scripture_section
@@ -2092,3 +2399,348 @@ entries:
   source_authority: IAST
   difficulty_level: intermediate
   meaning: bliss of Brahman (from opening mantra)
+
+# ===== ASR PATTERN ANALYSIS - 50 MOST CRITICAL VARIATIONS =====
+# Based on Yoga Vasistha processing analysis and systematic ASR errors
+
+# CRITICAL GITA TERMS - Pre-emptive for Gita lecture testing
+- original_term: Bhagavad Gītā
+  variations:
+  - bhagavad gita          # common lowercase
+  - bhagwad geeta          # ASR w substitution + long vowel
+  - bhagavat gita          # ASR d→t substitution
+  - bhagavad geeta         # ASR long vowel confusion
+  - bhagwat gita           # ASR multiple substitutions
+  - bagavad gita           # ASR h-drop
+  - bhagabad gita          # ASR v→b substitution
+  - bhagvad gita           # ASR vowel drop
+  - BHAGAVAD GITA          # ASR all caps
+  - bhagavadgita           # compound form
+  transliteration: Bhagavad Gītā
+  is_proper_noun: true
+  category: scripture
+  confidence: 1.0
+  source_authority: IAST_Critical
+  difficulty_level: beginner
+  meaning: Song of God - foundational Hindu scripture
+
+- original_term: Kṛṣṇa
+  variations:
+  - krishna                # most common ASR form
+  - krishn                 # ASR vowel drop
+  - kristna                # ASR consonant cluster confusion
+  - krishan                # ASR vowel confusion
+  - krisna                 # ASR consonant drop
+  - krishnaa               # ASR vowel extension
+  - KRISHNA                # ASR all caps
+  - krrshna                # ASR consonant doubling
+  - krshna                 # ASR vowel omission
+  transliteration: Kṛṣṇa
+  is_proper_noun: true
+  category: deity
+  confidence: 1.0
+  source_authority: IAST_Critical
+  difficulty_level: beginner
+  meaning: Lord Krishna, divine teacher in Bhagavad Gita
+
+- original_term: Arjuna
+  variations:
+  - arjun                  # ASR vowel drop
+  - arjuna                 # base form
+  - arjunan                # ASR consonant addition
+  - arjunaa                # ASR vowel extension
+  - ARJUNA                 # ASR all caps
+  - arjona                 # ASR vowel substitution
+  - arjina                 # ASR vowel substitution
+  transliteration: Arjuna
+  is_proper_noun: true
+  category: character
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: Prince Arjuna, disciple in Bhagavad Gita
+
+# SYSTEMATIC ASR PATTERN VARIATIONS
+
+# Pattern 1: Double Consonant Insertion/Deletion
+- original_term: dharma
+  variations:
+  - dharma                 # base form
+  - dhrma                  # ASR vowel drop
+  - dharmma                # ASR double consonant
+  - dharama                # ASR vowel insertion
+  - darma                  # ASR consonant drop
+  - dharm                  # ASR vowel truncation
+  - dhrama                 # ASR vowel rearrangement
+  - DHARMA                 # ASR all caps
+  - dharmaa                # ASR vowel extension
+  transliteration: dharma
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: righteous duty, cosmic law
+
+# Pattern 2: SH/S/TH Consonant Confusion
+- original_term: śāstra
+  variations:
+  - shastra                # common transliteration
+  - sastra                 # ASR sh→s substitution
+  - shaastra               # ASR vowel extension
+  - sasrta                 # ASR consonant drop
+  - shastar                # ASR vowel confusion
+  - shasthra               # ASR th insertion
+  - SHASTRA                # ASR all caps
+  - śāstra                 # proper diacritical
+  transliteration: śāstra
+  is_proper_noun: false
+  category: literature
+  confidence: 1.0
+  source_authority: IAST
+  difficulty_level: intermediate
+  meaning: sacred text, scripture
+
+# Pattern 3: Guru/Teacher Variations
+- original_term: guru
+  variations:
+  - guru                   # base form
+  - garu                   # ASR vowel substitution
+  - guroo                  # ASR vowel extension
+  - gur                    # ASR truncation
+  - goru                   # ASR vowel confusion
+  - GURU                   # ASR all caps
+  - gurru                  # ASR consonant doubling
+  transliteration: guru
+  is_proper_noun: false
+  category: role
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: spiritual teacher, guide
+
+# Pattern 4: Yoga Compound Variations
+- original_term: rāja yoga
+  variations:
+  - raja yoga              # common form
+  - rajayoga               # compound form
+  - raj yoga               # ASR vowel drop
+  - raaja yoga             # ASR vowel extension
+  - raga yoga              # ASR consonant confusion
+  - RAJA YOGA              # ASR all caps
+  - raaj yoga              # ASR vowel doubling
+  transliteration: rāja yoga
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: royal path of yoga, path of meditation
+
+# Pattern 5: Vedic/Vedantic Terms
+- original_term: vedānta
+  variations:
+  - vedanta                # common form
+  - vedant                 # ASR vowel drop
+  - vedaanta               # ASR vowel extension
+  - vedanta                # base transliteration
+  - wedanta                # ASR v→w substitution
+  - VEDANTA                # ASR all caps
+  - vedanata               # ASR consonant insertion
+  transliteration: vedānta
+  is_proper_noun: false
+  category: philosophy
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: end of Vedas, Advaita philosophy
+
+# Pattern 6: Sanskrit Pronunciation Variations
+- original_term: ācārya
+  variations:
+  - acharya                # common transliteration
+  - achary                 # ASR vowel drop
+  - acarya                 # ASR ch→c substitution
+  - accharya               # ASR consonant doubling
+  - acharya                # base form
+  - ACHARYA                # ASR all caps
+  - acharyaa               # ASR vowel extension
+  transliteration: ācārya
+  is_proper_noun: false
+  category: role
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: spiritual teacher, learned person
+
+# Pattern 7: Meditation/Practice Terms
+- original_term: sādhana
+  variations:
+  - sadhana                # common form
+  - sadhan                 # ASR vowel drop
+  - saadana                # ASR vowel extension
+  - sadhna                 # ASR vowel omission
+  - sadhaan                # ASR vowel confusion
+  - SADHANA                # ASR all caps
+  - sadhanna               # ASR consonant doubling
+  transliteration: sādhana
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: spiritual practice, discipline
+
+# Pattern 8: Consciousness Terms
+- original_term: caitanya
+  variations:
+  - chaitanya              # common ch form
+  - caitany                # ASR vowel drop
+  - chaitany               # ASR vowel drop with ch
+  - caitania               # ASR vowel confusion
+  - chaitanaya             # ASR vowel insertion
+  - CHAITANYA              # ASR all caps
+  - chaitanyaa             # ASR vowel extension
+  transliteration: caitanya
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: consciousness, awareness
+
+# Pattern 9: Devotional Terms
+- original_term: bhakti
+  variations:
+  - bhakti                 # base form
+  - bhakity                # ASR consonant confusion
+  - bhakti                 # base transliteration
+  - bhakthi                # ASR th insertion
+  - bhakty                 # ASR vowel drop
+  - BHAKTI                 # ASR all caps
+  - bhaktii                # ASR vowel extension
+  transliteration: bhakti
+  is_proper_noun: false
+  category: practice
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: devotion, love of God
+
+# Pattern 10: Knowledge Terms
+- original_term: jñāna
+  variations:
+  - jnana                  # common form
+  - gyan                   # Hindi pronunciation
+  - jnan                   # ASR vowel drop
+  - jnaana                 # ASR vowel extension
+  - gyana                  # Hindi with vowel
+  - JNANA                  # ASR all caps
+  - jnaann                 # ASR consonant doubling
+  - gnyaan                 # Hindi extended form
+  transliteration: jñāna
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: intermediate
+  meaning: knowledge, wisdom
+
+# Pattern 11: Action Terms
+- original_term: karma
+  variations:
+  - karma                  # base form
+  - karam                  # ASR vowel rearrangement
+  - karman                 # Sanskrit declension
+  - karmaa                 # ASR vowel extension
+  - karmu                  # ASR vowel confusion
+  - KARMA                  # ASR all caps
+  - karmma                 # ASR consonant doubling
+  transliteration: karma
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: beginner
+  meaning: action, deed, law of cause and effect
+
+# Pattern 12: Liberation Terms
+- original_term: mokṣa
+  variations:
+  - moksha                 # common form
+  - mokash                 # ASR consonant rearrangement
+  - moksh                  # ASR vowel drop
+  - moksa                  # ASR sh→s substitution
+  - mokshaa                # ASR vowel extension
+  - MOKSHA                 # ASR all caps
+  - mokshha                # ASR consonant doubling
+  transliteration: mokṣa
+  is_proper_noun: false
+  category: concept
+  confidence: 1.0
+  source_authority: Traditional
+  difficulty_level: advanced
+  meaning: liberation, release from cycle of rebirth
+
+# ===== CRITICAL SANSKRIT PRAYERS & MANTRAS =====
+# These appear hundreds of times in Swamiji's lectures and MUST be perfect
+
+- original_term: oṁ vāsudeva-sutaṁ devaṁ kaṁsa-cāṇūra-mardanam devakī-paramānandaṁ kṛṣṇaṁ vande jagad-gurum
+  variations:
+  - Om Vahudevo Sutam Devam Kansa Chan Uram Ardanam Devaki Paramahnam Trishnam Vande Jagad Guru
+  - Oṃ Vahudevo Sutam Devam Kansa Chan Uram Ardanam Devaki Paramahnam Trishnam Vande Jagad guru
+  - Vahudevo Sutam Devam Kansa Chan Uram Ardanam Devaki Paramahnam Trishnam Vande Jagad Guru
+  - Om Vasudeva Sutam Devam Kamsa Chanura Mardanam Devaki Paramandam Krishna Vande Jagadgurum
+  - Om Vasudeva sutam devam kamsa chanura mardanam devaki paramandam krishnam vande jagadgurum
+  - Vasudeva sutam devam kamsa chanura mardanam devaki paramandam krishnam vande jagadgurum
+  transliteration: oṁ vāsudeva-sutaṁ devaṁ kaṁsa-cāṇūra-mardanam devakī-paramānandaṁ kṛṣṇaṁ vande jagad-gurum
+  is_proper_noun: false
+  category: mantra
+  confidence: 1.0
+  source_authority: Traditional_Critical
+  difficulty_level: advanced
+  meaning: Om, I bow to Krishna, son of Vasudeva, destroyer of Kamsa and Chanura, supreme joy of Devaki, teacher of the universe
+
+- original_term: oṃ kṛṣṇāya vāsudevāya haraye paramatmane
+  variations:
+  - Om Krishnaya Vasudevaya Haraye Paramatmane
+  - Om Krishna ya Vasudevaya Haraye Paramatmane
+  - Om Krishnaya Vasudevaya Haraye Paramatmane Pranatah Kleshananashaya Govindaya Namo Namah
+  transliteration: oṃ kṛṣṇāya vāsudevāya haraye paramatmane
+  is_proper_noun: false
+  category: mantra
+  confidence: 1.0
+  source_authority: Vedic_Critical
+  difficulty_level: advanced
+  meaning: Om to Krishna, to Vasudeva, to Hari, to the Supreme Soul
+
+# ===== BHAGAVAD GITA VERSES - CRITICAL SCRIPTURAL CONTENT =====
+# Chapter 3, Verse 32 - The verse that was completely butchered
+
+- original_term: ye tv etad abhyasūyanto nānutiṣṭhanti me matam
+  variations:
+  - Yey che dhabhyasu yanto naanuti sthanti me matam sarva jnanavi moor haan sthan mit ji
+  - Yey che dhabhyasu yanto naanuti sthanti me matam
+  - ye tv etad abhyasuyanto nanutishthanti me matam
+  - ye tu etad abhyasuyanto nanutishthanti me matam
+  - Yetu etad abhyasuyanto na anutishthanti me matam
+  transliteration: ye tv etad abhyasūyanto nānutiṣṭhanti me matam
+  is_proper_noun: false
+  category: scripture_verse
+  confidence: 1.0
+  source_authority: Bhagavad_Gita_3_32
+  difficulty_level: advanced
+  meaning: But those who find fault with My teaching and do not practice it
+
+- original_term: sarva-jñāna-vimūḍhāṁs tān viddhi naṣṭān acetasaḥ
+  variations:
+  - sarva jnanavi moor haan sthan mit ji nashtana che tashaar
+  - sarva gyana vimoodhan stan viddhi nashtan achetasa
+  - sarva jnana vimudhan tan viddhi nashtan acetasah
+  transliteration: sarva-jñāna-vimūḍhāṁs tān viddhi naṣṭān acetasaḥ
+  is_proper_noun: false
+  category: scripture_verse
+  confidence: 1.0
+  source_authority: Bhagavad_Gita_3_32
+  difficulty_level: advanced
+  meaning: know them to be deluded in all knowledge and lost, being devoid of understanding

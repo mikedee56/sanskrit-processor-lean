@@ -32,14 +32,44 @@ compound_terms:
     type: "scriptural_title" 
     context_clues: ["chapter", "verse", "adhyaya", "sloka", "the"]
     
+  # Fixed: Full phrase compound to prevent incorrect smashing
+  - phrase: "Yoga Vāsiṣṭha Utpatti Prakaraṇa"
+    variations:
+      - "yoga vasistha utpatti prakarana"
+      - "yoga vasishtha utpatti prakarana"
+      - "yoga vashishtha utpatti prakarana"
+      - "yoga vashistha utpatti prakarana"
+      - "yoga vasistha utpati prakarana"
+      - "yoga vasishtha utpati prakarana"
+      - "yoga vaśiṣṭha, utpatti prakaraṇa"
+    type: "scriptural_title_section"
+    context_clues: []  # No context clues to prevent over-matching
+
   - phrase: "Yoga Vāsiṣṭha"
     variations:
+      - "yoga vasistha"      # Exact match from input
       - "yoga vasishtha"
       - "yoga vashishtha"
       - "yoga vashistha"
+      - "yogavasishtha"      # ASR concatenated form
+      - "yogavashishtha"     # ASR concatenated form
+      - "yogavashistha"      # ASR concatenated form
+      - "yogavasishta"       # ASR short form
+      - "yogavāsiṣṭhen"      # ASR with partial diacritics (from actual output)
     type: "scriptural_title"
-    context_clues: ["chapter", "story", "prakarana", "the"]
-    
+    context_clues: []  # Removed problematic context clues
+
+  - phrase: "Utpatti Prakaraṇa"
+    variations:
+      - "utpatti prakarana"
+      - "uttapatti prakarana"    # ASR double t error
+      - "utpati prakarana"       # ASR missing t
+      - "uttapatti prakarna"     # ASR mixed errors
+      - "utpatti prakaraṇa"      # partial diacritics
+      - "utpatti prakarna"       # ASR mixed errors
+    type: "scriptural_section"
+    context_clues: []  # Removed problematic context clues
+
   - phrase: "Viveka Cūḍāmaṇi"
     variations:
       - "viveka chudamani"

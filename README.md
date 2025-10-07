@@ -97,29 +97,49 @@ sanskrit-processor-lean/
 
 ## 🔧 **Configuration**
 
-Edit `config.yaml` to enable/disable features:
+Edit `config.yaml` to enable/disable features. The configuration has been simplified into logical sections:
 
 ```yaml
-# Basic settings
-lexicons:
-  directory: "lexicons"
-
-# MCP Integration
-mcp:
-  enabled: true
-  server_url: "ws://localhost:3001/mcp"
-
-# External APIs  
-external_apis:
-  enabled: true
-  rapidapi_key: "your_key_here"
-  
-# Processing settings
+# === Core Processing Configuration ===
 processing:
-  batch_size: 10
+  # Output settings
+  use_iast_diacritics: true
+  preserve_capitalization: true
+  devanagari_to_iast: true
+
+  # External services
   enable_semantic_analysis: true
   enable_scripture_lookup: true
+  enable_systematic_matching: true
+
+  # Fuzzy matching
+  fuzzy_matching:
+    enabled: true
+    min_confidence: 0.6
+    enable_caching: true
+
+# === Service Configuration ===
+services:
+  consolidated:
+    mcp:
+      enabled: true
+      server_url: "ws://localhost:8080"
+    api:
+      enabled: true
+      timeout: 10
+
+# === Lexicon Configuration ===
+lexicons:
+  corrections_file: "corrections.yaml"
+  proper_nouns_file: "proper_nouns.yaml"
 ```
+
+**Configuration Improvements (Story 7.3):**
+- Reduced from 293 to 249 lines (15% smaller)
+- Consolidated duplicate `processing` sections
+- Removed unused/disabled features
+- Better organization with clear section headers
+- Maintained full backward compatibility
 
 ## 🎯 **Usage Examples**
 

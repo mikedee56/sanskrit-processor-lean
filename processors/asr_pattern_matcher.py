@@ -91,10 +91,11 @@ class ASRPatternMatcher:
             r'\basam\s*sakti\b': ('asaṁsakti', 0.9),
             r'\bsattva\s*patti\b': ('sattvāpatti', 0.9),
             r'\bshubh\s*iccha\b': ('śubhecchā', 0.9),
-            r'\byoga\s*bashi\b': ('yogavāsiṣṭha', 0.85),
-            r'\byoga\s*vashi\b': ('yogavāsiṣṭha', 0.85),
-            r'\bsri\s*vasi\w*\b': ('śrī vaśiṣṭha', 0.85),
-            r'\bshri\s*vasi\w*\b': ('śrī vaśiṣṭha', 0.85),
+            # DISABLED: These patterns incorrectly match "Yoga Vasistha Utpatti Prakarana"
+            # r'\byoga\s*bashi\b': ('yogavāsiṣṭha', 0.85),
+            # r'\byoga\s*vashi\b': ('yogavāsiṣṭha', 0.85),
+            # r'\bsri\s*vasi\w*\b': ('śrī vaśiṣṭha', 0.85),  # \w* wildcard too aggressive
+            # r'\bshri\s*vasi\w*\b': ('śrī vaśiṣṭha', 0.85), # \w* wildcard too aggressive
             r'\bjivan\s*mukta?\w*\b': ('jīvanmukta', 0.85),
             r'\bmaha\s*purusha?\w*\b': ('mahāpuruṣa', 0.85),
             r'\bbhagavad\s*gita\b': ('bhagavad gītā', 0.95),
@@ -104,10 +105,10 @@ class ASRPatternMatcher:
         
         # Sanskrit phonological rules that ASR commonly violates
         self.phonological_corrections = {
-            # Sandhi rules that ASR often gets wrong
-            r'\b(\w+)o\s+a(\w+)\b': r'\1ava\2',  # o + a → ava
-            r'\b(\w+)a\s+i(\w+)\b': r'\1e\2',    # a + i → e  
-            r'\b(\w+)a\s+u(\w+)\b': r'\1o\2',    # a + u → o
+            # DISABLED: These sandhi rules incorrectly smash separate words together
+            # r'\b(\w+)o\s+a(\w+)\b': r'\1ava\2',  # o + a → ava
+            # r'\b(\w+)a\s+i(\w+)\b': r'\1e\2',    # a + i → e
+            # r'\b(\w+)a\s+u(\w+)\b': r'\1o\2',    # a + u → o - CORRUPTS "Vasistha Utpatti"
         }
         
         logger.info(f"ASR pattern matcher initialized with {len(self.phonetic_patterns)} phonetic patterns, "
@@ -125,29 +126,87 @@ class ASRPatternMatcher:
         """
         corrections = []
         
-        # 1. Apply phonetic pattern corrections
+        # 1. Apply English ASR pattern corrections (for mixed content)
+        corrections.extend(self._apply_english_asr_corrections(text))
+        
+        # 2. Apply phonetic pattern corrections
         corrections.extend(self._apply_phonetic_corrections(text))
         
-        # 2. Apply compound word corrections  
+        # 3. Apply compound word corrections  
         if self.enable_compound_splitting:
             corrections.extend(self._apply_compound_corrections(text))
         
-        # 3. Apply phonological rule corrections
+        # 4. Apply phonological rule corrections
         corrections.extend(self._apply_phonological_corrections(text))
         
         # Remove duplicates and sort by confidence
         unique_corrections = self._deduplicate_corrections(corrections)
         return sorted(unique_corrections, key=lambda x: x.confidence, reverse=True)
     
+    def _apply_english_asr_corrections(self, text: str) -> List[ASRCorrection]:
+        """Apply English ASR pattern corrections for mixed content."""
+        corrections = []
+        
+        # Direct pattern matching for common English ASR errors
+        english_corrections = [
+            # Common ASR transcription errors
+            (r'\btat\'s\b', "That's", 0.95),
+            (r'\bte\s+eśential\b', 'the essential', 0.95),  # Exact match for "te eśential"
+            (r'\bte\s+essential\b', 'the essential', 0.95),  # Also match without diacritics
+            (r'\bte\s+secret\b', 'the secret', 0.95),
+            (r'\bteacing\b', 'teaching', 0.95),
+            (r'\bteh\b', 'the', 0.9),
+            (r'\band\s+and\b', 'and', 0.95),
+            (r'\bof\s+of\b', 'of', 0.95),
+            (r'\bto\s+to\b', 'to', 0.95),
+            (r'\bis\s+is\b', 'is', 0.95),
+        ]
+        
+        for pattern, replacement, confidence in english_corrections:
+            matches = list(re.finditer(pattern, text, re.IGNORECASE))
+            for match in matches:
+                original = match.group()
+                corrected = replacement
+                
+                if original.lower() != corrected.lower():
+                    corrections.append(ASRCorrection(
+                        original=original,
+                        corrected=corrected,
+                        confidence=confidence,
+                        pattern_applied=pattern,
+                        transformation_type='english_asr'
+                    ))
+        
+        return corrections
+
     def _apply_phonetic_corrections(self, text: str) -> List[ASRCorrection]:
-        """Apply phonetic pattern corrections."""
+        """Apply phonetic pattern corrections - only to Sanskrit-looking words."""
         corrections = []
         words = re.findall(r'\b\w+\b', text)
+        
+        # Common English words to NEVER apply Sanskrit phonetic corrections to
+        english_words = {
+            'that', 'this', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with',
+            'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had',
+            'you', 'your', 'he', 'she', 'it', 'his', 'her', 'we', 'our', 'they', 'them', 'their',
+            'i', 'my', 'mine', 'me', 'will', 'would', 'could', 'should', 'can', 'may', 'might',
+            'do', 'does', 'did', 'done', 'make', 'made', 'get', 'got', 'go', 'went', 'come', 'came',
+            'see', 'saw', 'know', 'knew', 'think', 'thought', 'say', 'said', 'tell', 'told',
+            'teaching', 'teacher', 'student', 'class', 'school', 'book', 'read', 'write'
+        }
         
         for word in words:
             word_lower = word.lower()
             
-            # Try each phonetic pattern
+            # Skip English words - don't apply Sanskrit phonetic patterns to them
+            if word_lower in english_words:
+                continue
+                
+            # Skip words that are clearly English (have common English patterns)
+            if any(pattern in word_lower for pattern in ['ing', 'ed', 'er', 'est', 'ly', 'tion', 'sion']):
+                continue
+            
+            # Try each phonetic pattern only on Sanskrit-looking words
             for pattern_str, asr_pattern in self.phonetic_patterns.items():
                 if pattern_str in word_lower:
                     corrected = word_lower.replace(pattern_str, asr_pattern.correction)
@@ -155,7 +214,7 @@ class ASRPatternMatcher:
                         corrections.append(ASRCorrection(
                             original=word,
                             corrected=corrected,
-                            confidence=asr_pattern.confidence * 0.8,  # Lower confidence for automatic corrections
+                            confidence=asr_pattern.confidence * 0.7,  # Lower confidence for automatic corrections
                             pattern_applied=pattern_str,
                             transformation_type=asr_pattern.pattern_type
                         ))

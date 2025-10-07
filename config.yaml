@@ -1,51 +1,56 @@
 # Sanskrit Processor Configuration
 # Enable IAST diacritics for proper Sanskrit representation
 
+# === Core Processing Configuration ===
 processing:
-  # Output configuration
-  use_iast_diacritics: true  # Use IAST transliterations with diacritics
+  # Output settings - AGGRESSIVE IAST
+  use_iast_diacritics: true  # FORCE IAST transliterations with diacritics
   preserve_capitalization: true  # Maintain proper noun capitalization
   devanagari_to_iast: true  # Convert Devanagari script to IAST transliteration
+  force_iast_conversion: true  # FORCE diacritics on all Sanskrit terms
+
+  # External services
   use_consolidated_services: false  # Use legacy services for better verse lookup
   enable_semantic_analysis: true  # Enable MCP semantic processing
   enable_scripture_lookup: true  # Enable API scripture references
-  
-  # Systematic Sanskrit Processing
   enable_systematic_matching: true  # Enable systematic term matching from scriptures
   enable_compound_processing: true  # Enable compound word processing
-  
-  # Context pipeline configuration
-  enable_context_pipeline: false  # DISABLED: Context pipeline corrupts English text - needs fixing
 
-  # Number word conversion configuration
-  number_conversion:
-    enabled: false  # Disabled by default for subtitle processing
-    context_aware: true  # Only convert in specific contexts if enabled
+  # Context processing
+  enable_context_pipeline: true  # Context pipeline with enhanced protection against mistranslations
 
-  # Punctuation enhancement configuration
-  punctuation_enhancement:
-    enabled: false  # Disabled by default for subtitle processing
-    preserve_transcription: true  # Keep original punctuation
-    auto_periods: false  # Don't add periods automatically
-    auto_questions: false  # Don't add question marks automatically
+  # Sanskrit Linguistic Engine (disabled due to case corruption issues)
+  enable_linguistic_engine: false  # DISABLED: Testing revealed case corruption issues
 
-  # Systematic processing configuration
-  case_sensitive_matching: false  # Enable case-insensitive matching (Story 10.3)
-  confidence_threshold: 0.6  # Reduced threshold for better verse recognition
+  # Mantra Standardization Engine (ADR-003)
+  enable_mantra_standardization: true  # Enable phonetic-to-IAST mantra normalization and smart capitalization
+
+  # Artifact Filter (Post-Processing Enhancement)
+  enable_artifact_filter: false  # Default disabled - opt-in for ASR artifact cleanup
+
+  # Core processing settings
+  case_sensitive_matching: false  # Enable case-insensitive matching
+  confidence_threshold: 0.3  # AGGRESSIVE: Force corrections (was 0.6)
   enable_phonetic_matching: true  # Enable Sanskrit phonetic similarity
   enable_asr_correction: true  # Enable ASR pattern reversal
-  max_corrections_per_segment: 20  # Limit corrections to prevent over-processing
+  max_corrections_per_segment: 50  # INCREASED: Allow more corrections (was 20)
   
-  # Enhanced fuzzy matching configuration (Story 10.3)
+  # Fuzzy matching
   fuzzy_matching:
     enabled: true
     max_edit_distance: 3  # Increased for better ASR error handling in verse recognition
-    min_confidence: 0.6   # Reduced threshold for better verse matching while maintaining quality
+    min_confidence: 0.3   # AGGRESSIVE: Force fuzzy matches (was 0.6)
     enable_caching: true  # Cache expensive fuzzy calculations
     enable_phonetic_matching: true  # Sanskrit-aware phonetic matching
-    log_matches: false
 
-  # Capitalization preservation system (Story 11.2)
+  # English context processing
+  english_context_processing:
+    enable_lexicon_corrections: true  # Apply corrections even in English context
+    threshold_increase: 0.0          # DISABLED: No threshold increase (was 0.15)
+    max_threshold: 0.4              # AGGRESSIVE: Allow corrections in English (was 0.95)
+    proper_nouns_only: false         # If true, revert to old behavior
+
+  # Capitalization preservation
   capitalization_categories:
     divine_name: true          # Always preserve divine names (Krishna, Rama, etc.)
     scripture_title: true      # Always preserve scripture titles (Bhagavad Gita, etc.)
@@ -58,8 +63,8 @@ processing:
   # Special handling rules for capitalization
   all_caps_handling: "intelligent"  # "upper", "title", "intelligent"
   mixed_case_handling: "preserve"   # "preserve", "standardize"
-    
-  # ASR pattern matching configuration (Story 10.3)
+
+  # ASR pattern matching
   asr_pattern_matching:
     enabled: true
     enable_compound_splitting: true  # Handle compound word ASR errors
@@ -82,27 +87,23 @@ processing:
     fuzzy_threshold: 0.7               # Lower = more aggressive fuzzy matching
     enable_phonetic_patterns: true     # Enable ASR phonetic error correction
     context_detection_sensitivity: 0.5 # More sensitive context detection
-  
+
   # Smart caching configuration
   caching:
     enabled: true  # Enable/disable lexicon caching
     max_corrections: 2000  # Max cached correction entries
     max_proper_nouns: 1000  # Max cached proper noun entries
     max_memory_mb: 30  # Total memory limit for all caches
-    
-    # Cache behavior
     file_check_interval: 1.0  # Seconds between file modification checks
     preload_common_terms: true  # Preload frequently used terms
-    
-    # Cache statistics
     report_stats: false  # Report cache stats with processing results
 
-# Lexicon settings  
+# === Lexicon Configuration ===
 lexicons:
   corrections_file: "corrections.yaml"
   proper_nouns_file: "proper_nouns.yaml"
 
-# Service Layer Configuration
+# === Service Configuration ===
 services:
   consolidated:
     mcp:
@@ -115,19 +116,47 @@ services:
       timeout: 10
       max_retries: 2
 
-# Performance Monitoring Configuration
+# === Mixed Content Processing Configuration ===
+mixed_content_processing:
+  enable_invocation_recognition: true  # Detect and format Sanskrit invocations/prayers
+  enable_embedded_term_extraction: true  # Extract Sanskrit terms from English commentary
+  enable_surgical_editing: true  # Apply surgical edits to corrupted Sanskrit
+  enable_scripture_title_formatting: true  # Format scripture titles properly
+
+  # Processing confidence thresholds
+  confidence_thresholds:
+    invocation_processing: 0.3  # AGGRESSIVE: Force invocation processing (was 0.8)
+    surgical_editing: 0.3       # AGGRESSIVE: Force surgical edits (was 0.7)
+    embedded_terms: 0.3        # AGGRESSIVE: Force embedded corrections (was 0.75)
+    verse_replacement: 0.4     # AGGRESSIVE: Allow verse replacement (was 0.95)
+
+  # Processing modes for different content types
+  processing_modes:
+    invocation: "format"        # format, preserve, correct
+    corrupted_sanskrit: "surgical"  # surgical, replace, preserve
+    embedded_terms: "correct"   # correct, preserve, enhance
+    mixed_content: "selective"  # selective, comprehensive, preserve
+
+  # Surgical editing configuration
+  surgical_editing:
+    edit_mode: "moderate"       # conservative, moderate, aggressive
+    preserve_english_structure: true
+    max_changes_per_segment: 5
+    enable_verse_reconstruction: true
+
+# === Performance Configuration ===
 performance:
   profiling:
     enabled: false  # Default disabled for zero impact
     detail_level: "basic"  # basic, detailed, full
     memory_sampling_interval: 0.1  # seconds
     cache_reports: true  # Cache for historical comparison
-    
+
   monitoring:
     track_segment_rate: true
     track_memory_usage: true
     track_service_response_times: true
-    
+
   # Optimization for concurrent GPU usage
   concurrent_processing:
     cpu_throttle: true  # Reduce CPU usage when GPU processes detected
@@ -135,34 +164,33 @@ performance:
     batch_size_limit: 50  # Process smaller batches to reduce memory pressure
     io_optimization: true  # Optimize database I/O patterns
 
-# Database Integration Configuration (Story 6.3)
+# === Database Configuration ===
 database:
   enabled: true  # Enable database integration
   path: "data/sanskrit_terms.db"  # Path to existing term database
   fallback_to_yaml: true  # Use YAML lexicons when database unavailable
   connection_timeout: 2.0  # Reduced timeout for concurrent processing
   cache_size: 2000  # Increased cache to reduce I/O
-  # Optimizations for concurrent GPU usage
   connection_pool_size: 1  # Single connection to reduce overhead
   batch_queries: true  # Batch database queries for efficiency
   pragma_optimizations: true  # Enable SQLite performance pragmas
 
-# Context Detection Configuration (Story 10.2)
+# === Context Detection Configuration ===
 context_detection:
   thresholds:
-    english_confidence: 0.85     # Lowered threshold - better English protection with enhanced detection
-    sanskrit_confidence: 0.6     # Reduced threshold for better Sanskrit verse detection
-    mixed_content: 0.4           # Lower threshold for mixed processing to be more conservative
-    confidence_threshold: 0.6    # Reduced threshold for better scriptural content recognition
-    whitelist_override: 0.9      # High confidence override threshold
+    english_confidence: 0.95     # STRICTER: Only protect pure English (was 0.85)
+    sanskrit_confidence: 0.2     # AGGRESSIVE: Force Sanskrit processing (was 0.6)
+    mixed_content: 0.2           # AGGRESSIVE: Force mixed processing (was 0.4)
+    confidence_threshold: 0.3    # AGGRESSIVE: Lower barrier (was 0.6)
+    whitelist_override: 0.3      # AGGRESSIVE: Easy override (was 0.9)
     diacritical_density_high: 0.3
     diacritical_density_medium: 0.1
-    english_markers_required: 2
-  
+    english_markers_required: 5  # STRICTER: Require more markers for English (was 2)
+
   markers:
     sanskrit_priority_terms:
       - dharma
-      - karma  
+      - karma
       - yoga
       - jñāna
       - jnana
@@ -177,7 +205,7 @@ context_detection:
       - gita
       - upaniṣad
       - upanishad
-    
+
     english_function_words:
       - the
       - and
@@ -213,25 +241,31 @@ context_detection:
       - since
       - although
       - while
-      # Enhanced list to better detect English context
-    
+
   processing:
     enable_whitelist_override: true
     debug_logging: false
     cache_context_results: true
     performance_profiling: false
 
-# Plugin System Configuration (Lean Implementation)
+# === Artifact Filter Configuration (Post-Processing) ===
+artifact_filter:
+  # Pattern-specific toggles
+  remove_laughter: true                    # Remove "ha ha", [Laughter] patterns
+  remove_phantom_phrases: true             # Remove "thank you for watching" artifacts
+  remove_sound_annotations: true           # Remove [Music], [Applause], etc.
+  normalize_punctuation: true              # Normalize excessive !!!! and ????
+
+  # Duration thresholds (seconds)
+  phantom_phrase_max_duration: 2.0         # Max duration for phantom phrase removal
+  standalone_thanks_max_duration: 1.5      # Max duration for standalone "thank you"
+
+  # Context validation
+  require_context_check: true              # Enable context-aware filtering
+
+# === Plugin Configuration ===
 plugins:
   enabled: false  # Master plugin enable/disable (default: disabled)
-  auto_discover: false  # Simple manual configuration only
-  
-  # Enabled plugins list (plugins must exist in plugins/ directory)
-  enabled_plugins: []
-    # - custom_corrections  # Enable this to use custom corrections plugin
-    # - template_plugin     # Example template plugin
-  
-  # Plugin-specific configuration (optional)
+  enabled_plugins: []  # Enabled plugins list (plugins must exist in plugins/ directory)
   custom_corrections:
-    # Plugin-specific settings can go here
     strict_mode: false

@@ -142,8 +142,12 @@ class HybridLexiconDict(dict):
         return super().__contains__(key)
         
     def __getitem__(self, key):
-        # Filter out English words immediately
-        if key.lower().strip() in ENGLISH_BLOCKLIST:
+        # Handle slice objects for list slicing
+        if isinstance(key, slice):
+            return super().__getitem__(key)
+
+        # Filter out English words immediately (only for string keys)
+        if isinstance(key, str) and key.lower().strip() in ENGLISH_BLOCKLIST:
             self.stats['misses'] += 1
             raise KeyError(key)
         
@@ -405,13 +409,26 @@ class HybridLexiconLoader:
                             }]
                         }
 
-        # Check proper nouns
-        for noun in self.proper_nouns:
-            if not isinstance(noun, dict):
+        # Check proper nouns - direct dictionary lookup
+        if word_lower in self.proper_nouns:
+            noun_entry = self.proper_nouns[word_lower]
+            term = noun_entry.get('term', noun_entry.get('original_term', ''))
+            if isinstance(term, str):
+                return {
+                    'corrections': [{
+                        'original_term': term,
+                        'transliteration': term,
+                        'confidence': 0.95
+                    }]
+                }
+
+        # Also check proper nouns by iterating over values (fallback)
+        for noun_key, noun_entry in self.proper_nouns.items():
+            if not isinstance(noun_entry, dict):
                 continue
 
             # For proper nouns, look for 'term' field instead of 'original_term'
-            term = noun.get('term', noun.get('original_term', ''))
+            term = noun_entry.get('term', noun_entry.get('original_term', ''))
             if isinstance(term, str) and term.lower() == word_lower:
                 return {
                     'corrections': [{
@@ -422,7 +439,7 @@ class HybridLexiconLoader:
                 }
 
             # Check proper noun variations
-            variations = noun.get('variations', [])
+            variations = noun_entry.get('variations', [])
             if isinstance(variations, list):
                 for var in variations:
                     if isinstance(var, str) and var.lower() == word_lower:

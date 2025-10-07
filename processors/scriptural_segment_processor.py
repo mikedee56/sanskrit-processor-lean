@@ -202,10 +202,13 @@ class PrayerRecognitionEngine:
         }
         
     def _generate_asr_variations(self):
-        """Generate additional ASR variations for better recognition."""
+        """Generate additional ASR variations for better recognition.
+        
+        Enhanced to handle IAST input from normalization-first architecture.
+        """
         asr_transforms = {
-            'oṁ': ['om', 'Om', 'OM', 'ohm', 'aum', 'Aum', 'AUM'],
-            'ṁ': ['m', 'n', 'ng'],
+            'oṃ': ['om', 'Om', 'OM', 'ohm', 'aum', 'Aum', 'AUM'],
+            'ṃ': ['m', 'n', 'ng'],
             'ā': ['a', 'aa'],
             'ī': ['i', 'ee'],
             'ū': ['u', 'oo'], 
@@ -216,13 +219,26 @@ class PrayerRecognitionEngine:
             'ṣ': ['s', 'sh'],
             'ḥ': ['h', ''],
             'kṛṣṇa': ['krishna', 'Krishna', 'krsna'],
-            'śānti': ['shanti', 'Shanti', 'santi']
+            'śānti': ['shanti', 'Shanti', 'santi'],
+            # Enhanced IAST mappings for better recognition
+            'pūrṇa': ['purna', 'purnam', 'poorna'],
+            'brahma': ['brahma', 'brahmā'],
+            'viṣṇu': ['vishnu', 'visnu'],
+            'maheśvara': ['maheshwara', 'maheshvara'],
+            'guru': ['guru', 'guruji'],
+            'vāsudeva': ['vasudeva', 'vaasudeva'],
+            'rāma': ['rama', 'raama'],
+            'gaṇeśa': ['ganesha', 'ganesh']
         }
         
-        # Apply transforms to enhance recognition
-        for prayer_dict in [self.opening_mantras, self.krishna_prayers, self.guru_prayers]:
+        # Apply transforms to enhance recognition for all prayer categories
+        for prayer_dict in [self.opening_mantras, self.krishna_prayers, self.guru_prayers, self.closing_mantras]:
             for prayer_key, prayer_data in prayer_dict.items():
                 enhanced_variations = set(prayer_data.get('asr_variations', []))
+                
+                # Add the complete transliteration as a variation for IAST matching
+                if 'complete_transliteration' in prayer_data:
+                    enhanced_variations.add(prayer_data['complete_transliteration'])
                 
                 # Generate phonetic variations
                 for variation in list(enhanced_variations):
@@ -231,6 +247,17 @@ class PrayerRecognitionEngine:
                             new_variation = variation.replace(original, replacement)
                             if new_variation != variation:
                                 enhanced_variations.add(new_variation)
+                
+                # Generate partial segment variations for better matching
+                if 'segments' in prayer_data:
+                    for segment in prayer_data['segments']:
+                        enhanced_variations.add(segment)
+                        # Apply transforms to segments too
+                        for original, replacements in asr_transforms.items():
+                            for replacement in replacements:
+                                new_segment = segment.replace(original, replacement)
+                                if new_segment != segment:
+                                    enhanced_variations.add(new_segment)
                 
                 prayer_data['asr_variations'] = list(enhanced_variations)
     
@@ -264,15 +291,32 @@ class PrayerRecognitionEngine:
         return None
     
     def _normalize_for_prayer_matching(self, text: str) -> str:
-        """Normalize text for prayer pattern matching."""
+        """Normalize text for prayer pattern matching.
+        
+        Enhanced to handle IAST transliteration properly after Devanagari conversion.
+        """
         # Convert to lowercase and normalize whitespace
         normalized = re.sub(r'\s+', ' ', text.lower().strip())
         
         # Remove common punctuation that interferes with matching
         normalized = re.sub(r'[.,;:!?\'"()]', ' ', normalized)
+        
+        # ENHANCEMENT: Normalize IAST diacritics for better matching
+        # Map IAST characters to their closest ASCII equivalents for matching
+        iast_mappings = {
+            'ā': 'a', 'ī': 'i', 'ū': 'u', 'ṛ': 'r', 'ṝ': 'r', 'ḷ': 'l', 'ḹ': 'l',
+            'ē': 'e', 'ō': 'o', 'ṃ': 'm', 'ḥ': 'h', 'ñ': 'n', 'ṅ': 'n', 'ṇ': 'n',
+            'ṭ': 't', 'ḍ': 'd', 'ś': 's', 'ṣ': 's', 'ṁ': 'm', 'ŋ': 'n'
+        }
+        
+        for iast_char, ascii_char in iast_mappings.items():
+            normalized = normalized.replace(iast_char, ascii_char)
+        
+        # Remove extra hyphens and normalize spacing
+        normalized = re.sub(r'-+', '', normalized)
         normalized = re.sub(r'\s+', ' ', normalized)
         
-        return normalized
+        return normalized.strip()
     
     def _match_opening_mantras(self, normalized_text: str, original_text: str) -> Optional[Tuple[str, str, float]]:
         """Match against opening mantras (Upanishad opening)."""

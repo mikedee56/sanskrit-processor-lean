@@ -50,9 +50,97 @@ entries:
 - term: Upanishads
   variations:
   - upanishads
+  - upanishad
+  category: scripture
+  confidence: 1.0
+# TARGETED FIXES FOR CASE CORRUPTION ISSUES
+- term: Kundalini Yoga
+  variations:
+  - kundalini yoga
+  - Kundalini yoga
+  - kundalini Yoga
+  - KUNDALINI YOGA
+  category: yoga_style
+  confidence: 1.0
+- term: Karma Yoga
+  variations:
+  - karma yoga
+  - Karma yoga
+  - karma Yoga
+  - KARMA YOGA
+  category: yoga_style
+  confidence: 1.0
+- term: Integral Yoga
+  variations:
+  - integral yoga
+  - Integral yoga
+  - integral Yoga
+  - INTEGRAL YOGA
+  category: yoga_style
+  confidence: 1.0
+- term: Raja Yoga
+  variations:
+  - raja yoga
+  - Raja yoga
+  - raja Yoga
+  - RAJA YOGA
+  category: yoga_style
+  confidence: 1.0
+- term: Bhakti Yoga
+  variations:
+  - bhakti yoga
+  - Bhakti yoga
+  - bhakti Yoga
+  - BHAKTI YOGA
+  category: yoga_style
+  confidence: 1.0
+- term: Jnana Yoga
+  variations:
+  - jnana yoga
+  - Jnana yoga
+  - jnana Yoga
+  - JNANA YOGA
+  - jñāna yoga
+  category: yoga_style
+  confidence: 1.0
+- term: Hatha Yoga
+  variations:
+  - hatha yoga
+  - Hatha yoga
+  - hatha Yoga
+  - HATHA YOGA
+  category: yoga_style
+  confidence: 1.0
+- term: Raga Dvesha
+  variations:
+  - raga dvesha
+  - Raga dvesha
+  - raga Dvesha
+  - RAGA DVESHA
+  category: concept
+  confidence: 1.0
+  variations:
+  - upanishads
   - upanisads
   - upanishad
   category: scripture
+- term: Brahman
+  variations:
+  - brahman
+  - brahmam
+  - braahman
+  - brhman  # ASR vowel drop
+  category: philosophical_concept
+  confidence: 1.0
+- term: Sadguru
+  variations:
+  - sadguru
+  - sadgurum
+  - sad guru
+  - sadhguru
+  - sadhugurum  # ASR phonetic variation
+  category: spiritual_title
+  confidence: 1.0
 - term: Vedas
   variations:
   - vedas
@@ -130,8 +218,11 @@ entries:
   - vasiṣṭha         # proper diacritical
   - wasistha         # ASR v→w substitution
   - vasishtha        # common spelling
+  - vashishta        # ASR double consonant insertion (CRITICAL MISS)
+  - vashiṣṭha        # diacritical with double consonant
   - washishtha       # ASR error
   - VASISTHA         # all caps ASR
+  - VASHISHTA        # all caps with double consonant
   - vasitta          # ASR consonant drop
   category: sage
   confidence: 1.0
@@ -818,6 +909,25 @@ entries:
   - ashtavakra gita
   - ashtavakra geeta
   - ashtavakra gītā
+  category: scripture
+  confidence: 1.0
+
+- term: Bhagavad Gītā
+  variations:
+  - bhagavad gita
+  - bhagwad gita
+  - bhagavad geeta
+  - srimad bhagavad gita
+  - shrimad bhagavad gita
+  - bhagwad geeta
+  - bhagavatgita      # ASR space removal
+  - bhagavadgita      # ASR space removal
+  - bagavad gita      # ASR bh→b substitution
+  - bhagabad gita     # ASR v→b substitution
+  - bhagavat gita     # ASR d→t substitution
+  - BHAGAVAD GITA     # all caps ASR
+  - Bhagavad Gītā     # proper diacritical
+  - Bhagavān Gītā     # incorrect deity form - should not be used
   category: scripture
   confidence: 1.0
 
